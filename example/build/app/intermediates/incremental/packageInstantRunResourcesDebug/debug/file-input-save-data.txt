@@ -1,0 +1,27 @@
+#Internal package file, do not edit.
+#Mon May 28 19:15:36 CEST 2018
+2.base=/Users/Florian/IdeaProjects/AlternaDarts/wifi_iot/example/build/app/intermediates/assets/debug
+5.set=ASSET
+0.path=flutter_assets/AssetManifest.json
+2.baseType=DIRECTORY
+3.base=/Users/Florian/IdeaProjects/AlternaDarts/wifi_iot/example/build/app/intermediates/assets/debug
+2.set=ASSET
+1.path=flutter_assets/FontManifest.json
+4.base=/Users/Florian/IdeaProjects/AlternaDarts/wifi_iot/example/build/app/intermediates/assets/debug
+count=6
+5.baseType=DIRECTORY
+2.path=flutter_assets/fonts/MaterialIcons-Regular.ttf
+5.base=/Users/Florian/IdeaProjects/AlternaDarts/wifi_iot/example/build/app/intermediates/assets/debug
+4.set=ASSET
+3.path=flutter_assets/LICENSE
+3.baseType=DIRECTORY
+1.set=ASSET
+4.path=flutter_assets/packages/cupertino_icons/assets/CupertinoIcons.ttf
+1.baseType=DIRECTORY
+5.path=flutter_assets/snapshot_blob.bin
+0.base=/Users/Florian/IdeaProjects/AlternaDarts/wifi_iot/example/build/app/intermediates/assets/debug
+0.baseType=DIRECTORY
+3.set=ASSET
+1.base=/Users/Florian/IdeaProjects/AlternaDarts/wifi_iot/example/build/app/intermediates/assets/debug
+4.baseType=DIRECTORY
+0.set=ASSET
