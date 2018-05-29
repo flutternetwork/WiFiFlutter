@@ -189,10 +189,6 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  test() async {
-    await WiFiForIoTPlugin.test();
-  }
-
   loadWifiList() async {
     List<WifiNetwork> htResultNetwork;
     try {

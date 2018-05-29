@@ -6,7 +6,7 @@
     density="xxhdpi"
     format="10"
     plugin-version="3.0.1"
-    timestamp="1527618204974"
+    timestamp="1527620775110"
     token="2087761265702069189"
     verifier="COLD_SWAP_REQUESTED" >
 
@@ -79,7 +79,7 @@
     </build>
     <build
         build-mode="COLD"
-        timestamp="1527618204974"
+        timestamp="1527620775110"
         verifier="COLD_SWAP_REQUESTED" >
         <artifact
             location="/Users/Florian/IdeaProjects/AlternaDarts/wifi_iot/example/build/app/outputs/apk/debug/app-debug.apk"

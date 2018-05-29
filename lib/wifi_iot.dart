@@ -8,25 +8,6 @@ enum WIFI_AP_STATE { WIFI_AP_STATE_DISABLING, WIFI_AP_STATE_DISABLED, WIFI_AP_ST
 class WiFiForIoTPlugin {
   static const MethodChannel _channel = const MethodChannel('wifi_iot');
 
-//  static Future<String> get platformVersion async {
-//    final String version = await _channel.invokeMethod('getPlatformVersion');
-//    return version;
-//  }
-
-//  static Future<String> connectWifi(String psSSID, String psPWD) async {
-//    Map<String, String> htArguments = new Map();
-//    htArguments["SSID"] = psSSID;
-//    htArguments["PWD"] = psPWD;
-//    final String sResult = await _channel.invokeMethod('connectWifi', htArguments);
-//    return sResult;
-//  }
-
-  static Future<Object> test() async {
-    Map<String, bool> htArguments = new Map();
-//    htArguments["enabled"] = enabled;
-    return await _channel.invokeMethod('test', htArguments);
-  }
-
   static Future<bool> isWiFiAPEnabled() async {
     Map<String, String> htArguments = new Map();
     final bool bResult = await _channel.invokeMethod('isWiFiAPEnabled', htArguments);
