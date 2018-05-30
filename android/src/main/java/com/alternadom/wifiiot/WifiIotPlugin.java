@@ -44,10 +44,6 @@ import io.flutter.plugin.common.PluginRegistry.Registrar;
  * WifiIotPlugin
  */
 public class WifiIotPlugin implements MethodCallHandler {
-    /// NOTE
-    /// https://github.com/devstepbcn/react-native-android-wifi
-    /// https://github.com/nickrussler/Android-Wifi-Hotspot-Manager-Class/tree/master/hotspotmanager/src/main/java/info/whitebyte/hotspotmanager
-
     private WifiManager moWiFi;
     private Context moContext;
     private WifiApManager moWiFiAPManager;
