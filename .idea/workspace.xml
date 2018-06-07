@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="258356cc-19a4-4dd5-84fe-82bad08cc8f1" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/wifi_iot.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/src/main/java/com/alternadom/wifiiot/WifiIotPlugin.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/java/com/alternadom/wifiiot/WifiIotPlugin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/wifi_iot.iml" beforeDir="false" afterPath="$PROJECT_DIR$/android/wifi_iot.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/example/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/.packages" beforeDir="false" afterPath="$PROJECT_DIR$/example/.packages" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/android/.gradle/4.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/example/android/.gradle/4.1/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/android/.gradle/4.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/example/android/.gradle/4.1/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/android/.gradle/4.1/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/example/android/.gradle/4.1/fileHashes/resourceHashesCache.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/android/.gradle/4.1/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/example/android/.gradle/4.1/javaCompile/classAnalysis.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/android/.gradle/4.1/javaCompile/jarAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/example/android/.gradle/4.1/javaCompile/jarAnalysis.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/android/.gradle/4.1/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/example/android/.gradle/4.1/javaCompile/javaCompile.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/android/.gradle/4.1/javaCompile/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/example/android/.gradle/4.1/javaCompile/taskHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/android/.gradle/4.1/javaCompile/taskJars.bin" beforeDir="false" afterPath="$PROJECT_DIR$/example/android/.gradle/4.1/javaCompile/taskJars.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/android/.gradle/4.1/taskHistory/fileSnapshots.bin" beforeDir="false" afterPath="$PROJECT_DIR$/example/android/.gradle/4.1/taskHistory/fileSnapshots.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/android/.gradle/4.1/taskHistory/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/example/android/.gradle/4.1/taskHistory/taskHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/android/.gradle/4.1/taskHistory/taskHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/example/android/.gradle/4.1/taskHistory/taskHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/android/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/example/android/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/android/app/app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/example/android/app/app.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/assets/debug/flutter_assets/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/app/intermediates/assets/debug/flutter_assets/LICENSE" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/assets/debug/flutter_assets/packages/cupertino_icons/assets/CupertinoIcons.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/assets/debug/flutter_assets/snapshot_blob.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/build-info/debug/build-info.xml" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/app/intermediates/build-info/debug/build-info.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/flutter/debug/flutter_assets/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/app/intermediates/flutter/debug/flutter_assets/LICENSE" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/flutter/debug/flutter_assets/packages/cupertino_icons/assets/CupertinoIcons.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/flutter/debug/flutter_assets/snapshot_blob.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/flutter/debug/snapshot_blob.bin.d" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/app/intermediates/flutter/debug/snapshot_blob.bin.d" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/flutter/debug/snapshot_blob.bin.d.fingerprint" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/app/intermediates/flutter/debug/snapshot_blob.bin.d.fingerprint" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/flutter/flutter-x86.jar" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/app/intermediates/flutter/flutter-x86.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/incremental-verifier/debug/com/alternadom/wifiiot/Closer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/incremental-verifier/debug/com/alternadom/wifiiot/WifiIotPlugin$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/app/intermediates/incremental-verifier/debug/com/alternadom/wifiiot/WifiIotPlugin$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/incremental-verifier/debug/com/alternadom/wifiiot/WifiIotPlugin$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/app/intermediates/incremental-verifier/debug/com/alternadom/wifiiot/WifiIotPlugin$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/incremental-verifier/debug/com/alternadom/wifiiot/WifiIotPlugin.class" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/app/intermediates/incremental-verifier/debug/com/alternadom/wifiiot/WifiIotPlugin.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/incremental/debug-mergeJavaRes/merge-state" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/app/intermediates/incremental/debug-mergeJavaRes/merge-state" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/incremental/debug-mergeJavaRes/zip-cache/9c29RVr5MLHJGfAW5OPhHSaCqlY=" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/app/intermediates/incremental/debug-mergeJavaRes/zip-cache/9c29RVr5MLHJGfAW5OPhHSaCqlY=" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/incremental/debug-mergeJavaRes/zip-cache/MGLa1zF8labjwsn+JGNxC0FQLpQ=" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/app/intermediates/incremental/debug-mergeJavaRes/zip-cache/MGLa1zF8labjwsn+JGNxC0FQLpQ=" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/incremental/debug-mergeJniLibs/merge-state" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/app/intermediates/incremental/debug-mergeJniLibs/merge-state" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/incremental/debug-mergeJniLibs/zip-cache/9c29RVr5MLHJGfAW5OPhHSaCqlY=" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/app/intermediates/incremental/debug-mergeJniLibs/zip-cache/9c29RVr5MLHJGfAW5OPhHSaCqlY=" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/incremental/debug-mergeJniLibs/zip-cache/MGLa1zF8labjwsn+JGNxC0FQLpQ=" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/app/intermediates/incremental/debug-mergeJniLibs/zip-cache/MGLa1zF8labjwsn+JGNxC0FQLpQ=" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/incremental/mergeDebugResources/compile-file-map.properties" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/app/intermediates/incremental/mergeDebugResources/compile-file-map.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/incremental/packageDebug/debug/dex-renamer-state.txt" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/app/intermediates/incremental/packageDebug/debug/dex-renamer-state.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/incremental/packageDebug/debug/file-input-save-data.txt" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/app/intermediates/incremental/packageDebug/debug/file-input-save-data.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/incremental/packageInstantRunResourcesDebug/debug/dex-renamer-state.txt" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/app/intermediates/incremental/packageInstantRunResourcesDebug/debug/dex-renamer-state.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/incremental/packageInstantRunResourcesDebug/debug/file-input-save-data.txt" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/app/intermediates/incremental/packageInstantRunResourcesDebug/debug/file-input-save-data.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/instant-run-resources/resources-debug.ir.ap_" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/app/intermediates/instant-run-resources/resources-debug.ir.ap_" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/instant-run-support/debug/package_dependencies/dex-renamer-state.txt" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/app/intermediates/instant-run-support/debug/package_dependencies/dex-renamer-state.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/instant-run-support/debug/package_slice_4/dex-renamer-state.txt" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/app/intermediates/instant-run-support/debug/package_slice_4/dex-renamer-state.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/instant-run-support/debug/package_slice_8/dex-renamer-state.txt" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/app/intermediates/instant-run-support/debug/package_slice_8/dex-renamer-state.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/split-apk/debug/dep/dependencies.apk" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/app/intermediates/split-apk/debug/dep/dependencies.apk" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/split-apk/debug/slices/slice_4.apk" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/app/intermediates/split-apk/debug/slices/slice_4.apk" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/split-apk/debug/slices/slice_8.apk" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/app/intermediates/split-apk/debug/slices/slice_8.apk" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/transforms/dexBuilder/debug/35/com/alternadom/wifiiot/Closer.dex" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/transforms/dexBuilder/debug/35/com/alternadom/wifiiot/WifiIotPlugin$1.dex" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/app/intermediates/transforms/dexBuilder/debug/35/com/alternadom/wifiiot/WifiIotPlugin$1.dex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/transforms/dexBuilder/debug/35/com/alternadom/wifiiot/WifiIotPlugin$2.dex" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/app/intermediates/transforms/dexBuilder/debug/35/com/alternadom/wifiiot/WifiIotPlugin$2.dex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/transforms/dexBuilder/debug/35/com/alternadom/wifiiot/WifiIotPlugin.dex" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/app/intermediates/transforms/dexBuilder/debug/35/com/alternadom/wifiiot/WifiIotPlugin.dex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/transforms/dexBuilder/debug/39/com/alternadom/wifiiotexample/MainActivity.dex" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/app/intermediates/transforms/dexBuilder/debug/39/com/alternadom/wifiiotexample/MainActivity.dex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/transforms/dexBuilder/debug/5.jar" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/app/intermediates/transforms/dexBuilder/debug/5.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/transforms/dexBuilder/debug/6.jar" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/app/intermediates/transforms/dexBuilder/debug/6.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/transforms/dexBuilder/debug/7.jar" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/app/intermediates/transforms/dexBuilder/debug/7.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/transforms/dexBuilder/debug/8.jar" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/app/intermediates/transforms/dexBuilder/debug/8.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/transforms/dexBuilder/debug/9.jar" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/app/intermediates/transforms/dexBuilder/debug/9.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/transforms/dexMerger/debug/11/classes.dex" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/app/intermediates/transforms/dexMerger/debug/11/classes.dex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/transforms/dexMerger/debug/5/classes.dex" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/app/intermediates/transforms/dexMerger/debug/5/classes.dex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/transforms/dexMerger/debug/9/classes.dex" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/app/intermediates/transforms/dexMerger/debug/9/classes.dex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/transforms/externalLibsDexMerger/debug/0/classes.dex" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/app/intermediates/transforms/externalLibsDexMerger/debug/0/classes.dex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/transforms/extractJars/debug/0/com/alternadom/wifiiot/Closer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/transforms/extractJars/debug/0/com/alternadom/wifiiot/WifiIotPlugin$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/app/intermediates/transforms/extractJars/debug/0/com/alternadom/wifiiot/WifiIotPlugin$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/transforms/extractJars/debug/0/com/alternadom/wifiiot/WifiIotPlugin$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/app/intermediates/transforms/extractJars/debug/0/com/alternadom/wifiiot/WifiIotPlugin$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/transforms/extractJars/debug/0/com/alternadom/wifiiot/WifiIotPlugin.class" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/app/intermediates/transforms/extractJars/debug/0/com/alternadom/wifiiot/WifiIotPlugin.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/transforms/instantRun/debug/0/com/alternadom/wifiiot/Closer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/transforms/instantRun/debug/0/com/alternadom/wifiiot/WifiIotPlugin$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/app/intermediates/transforms/instantRun/debug/0/com/alternadom/wifiiot/WifiIotPlugin$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/transforms/instantRun/debug/0/com/alternadom/wifiiot/WifiIotPlugin$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/app/intermediates/transforms/instantRun/debug/0/com/alternadom/wifiiot/WifiIotPlugin$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/transforms/instantRun/debug/0/com/alternadom/wifiiot/WifiIotPlugin.class" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/app/intermediates/transforms/instantRun/debug/0/com/alternadom/wifiiot/WifiIotPlugin.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/transforms/instantRun/debug/0/com/alternadom/wifiiotexample/MainActivity.class" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/app/intermediates/transforms/instantRun/debug/0/com/alternadom/wifiiotexample/MainActivity.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/transforms/instantRunSlicer/debug/4/buildId.txt" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/app/intermediates/transforms/instantRunSlicer/debug/4/buildId.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/transforms/instantRunSlicer/debug/4/com/alternadom/wifiiot/Closer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/transforms/instantRunSlicer/debug/4/com/alternadom/wifiiot/WifiIotPlugin$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/app/intermediates/transforms/instantRunSlicer/debug/4/com/alternadom/wifiiot/WifiIotPlugin$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/transforms/instantRunSlicer/debug/4/com/alternadom/wifiiot/WifiIotPlugin$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/app/intermediates/transforms/instantRunSlicer/debug/4/com/alternadom/wifiiot/WifiIotPlugin$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/transforms/instantRunSlicer/debug/4/com/alternadom/wifiiot/WifiIotPlugin.class" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/app/intermediates/transforms/instantRunSlicer/debug/4/com/alternadom/wifiiot/WifiIotPlugin.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/transforms/instantRunSlicer/debug/8/com/alternadom/wifiiotexample/MainActivity.class" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/app/intermediates/transforms/instantRunSlicer/debug/8/com/alternadom/wifiiotexample/MainActivity.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/transforms/mergeJavaRes/debug/__content__.json" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/app/intermediates/transforms/mergeJavaRes/debug/__content__.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/transforms/mergeJniLibs/debug/0/lib/armeabi-v7a/libflutter.so" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/app/intermediates/transforms/mergeJniLibs/debug/0/lib/armeabi-v7a/libflutter.so" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/transforms/mergeJniLibs/debug/0/lib/x86/libflutter.so" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/app/intermediates/transforms/mergeJniLibs/debug/0/lib/x86/libflutter.so" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/transforms/mergeJniLibs/debug/0/lib/x86_64/libflutter.so" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/app/intermediates/transforms/mergeJniLibs/debug/0/lib/x86_64/libflutter.so" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/intermediates/transforms/mergeJniLibs/debug/__content__.json" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/app/intermediates/transforms/mergeJniLibs/debug/__content__.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/app/outputs/apk/debug/app-debug.apk" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/app/outputs/apk/debug/app-debug.apk" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/wifi_iot/intermediates/classes/debug/com/alternadom/wifiiot/Closer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/wifi_iot/intermediates/classes/debug/com/alternadom/wifiiot/WifiIotPlugin$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/wifi_iot/intermediates/classes/debug/com/alternadom/wifiiot/WifiIotPlugin$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/wifi_iot/intermediates/classes/debug/com/alternadom/wifiiot/WifiIotPlugin$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/wifi_iot/intermediates/classes/debug/com/alternadom/wifiiot/WifiIotPlugin$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/wifi_iot/intermediates/classes/debug/com/alternadom/wifiiot/WifiIotPlugin.class" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/wifi_iot/intermediates/classes/debug/com/alternadom/wifiiot/WifiIotPlugin.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/wifi_iot/intermediates/incremental/packageDebugResources/compile-file-map.properties" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/wifi_iot/intermediates/incremental/packageDebugResources/compile-file-map.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/wifi_iot/intermediates/intermediate-jars/debug/classes.jar" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/wifi_iot/intermediates/intermediate-jars/debug/classes.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/build/wifi_iot/intermediates/transforms/mergeJniLibs/debug/__content__.json" beforeDir="false" afterPath="$PROJECT_DIR$/example/build/wifi_iot/intermediates/transforms/mergeJniLibs/debug/__content__.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Flutter/App.framework/App" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/Flutter/App.framework/App" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Flutter/App.framework/Info.plist" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/Flutter/App.framework/Info.plist" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Flutter/AppFrameworkInfo.plist" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/Flutter/AppFrameworkInfo.plist" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Flutter/Flutter.framework/Flutter" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/Flutter/Flutter.framework/Flutter" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Flutter/Flutter.framework/Headers/FlutterPlugin.h" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/Flutter/Flutter.framework/Headers/FlutterPlugin.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Flutter/Generated.xcconfig" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/Flutter/Generated.xcconfig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Flutter/app.flx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Flutter/flutter_assets/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/Flutter/flutter_assets/LICENSE" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Podfile" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/Podfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Podfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/Podfile.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Pods/Headers/Private/wifi_iot/WifiIotPlugin.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Pods/Headers/Public/Flutter/Flutter/Flutter.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Pods/Headers/Public/Flutter/Flutter/FlutterAppDelegate.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Pods/Headers/Public/Flutter/Flutter/FlutterBinaryMessenger.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Pods/Headers/Public/Flutter/Flutter/FlutterChannels.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Pods/Headers/Public/Flutter/Flutter/FlutterCodecs.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Pods/Headers/Public/Flutter/Flutter/FlutterDartProject.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Pods/Headers/Public/Flutter/Flutter/FlutterHeadlessDartRunner.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Pods/Headers/Public/Flutter/Flutter/FlutterMacros.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Pods/Headers/Public/Flutter/Flutter/FlutterNavigationController.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Pods/Headers/Public/Flutter/Flutter/FlutterPlugin.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Pods/Headers/Public/Flutter/Flutter/FlutterTexture.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Pods/Headers/Public/Flutter/Flutter/FlutterViewController.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Pods/Headers/Public/wifi_iot/WifiIotPlugin.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Pods/Manifest.lock" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/Pods/Manifest.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Pods/Pods.xcodeproj/project.pbxproj" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/Pods/Pods.xcodeproj/project.pbxproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Pods/Pods.xcodeproj/xcuserdata/Florian.xcuserdatad/xcschemes/Pods-Runner.xcscheme" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/Pods/Pods.xcodeproj/xcuserdata/Florian.xcuserdatad/xcschemes/Pods-Runner.xcscheme" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Pods/Pods.xcodeproj/xcuserdata/Florian.xcuserdatad/xcschemes/wifi_iot.xcscheme" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/Pods/Pods.xcodeproj/xcuserdata/Florian.xcuserdatad/xcschemes/wifi_iot.xcscheme" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Pods/Target Support Files/Pods-Runner/Pods-Runner-acknowledgements.markdown" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/Pods/Target Support Files/Pods-Runner/Pods-Runner-acknowledgements.markdown" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Pods/Target Support Files/Pods-Runner/Pods-Runner-acknowledgements.plist" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/Pods/Target Support Files/Pods-Runner/Pods-Runner-acknowledgements.plist" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Pods/Target Support Files/Pods-Runner/Pods-Runner-frameworks.sh" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/Pods/Target Support Files/Pods-Runner/Pods-Runner-frameworks.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Pods/Target Support Files/Pods-Runner/Pods-Runner-resources.sh" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/Pods/Target Support Files/Pods-Runner/Pods-Runner-resources.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Pods/Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/Pods/Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Pods/Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/Pods/Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Pods/Target Support Files/wifi_iot/wifi_iot.xcconfig" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/Pods/Target Support Files/wifi_iot/wifi_iot.xcconfig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Runner.xcodeproj/project.pbxproj" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/Runner.xcodeproj/project.pbxproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Runner.xcworkspace/xcuserdata/Florian.xcuserdatad/UserInterfaceState.xcuserstate" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/Runner.xcworkspace/xcuserdata/Florian.xcuserdatad/UserInterfaceState.xcuserstate" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Runner/AppDelegate.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Runner/AppDelegate.m" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Runner/Info.plist" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/Runner/Info.plist" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Runner/main.m" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/example/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/example/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/ios/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/Classes/WifiIotPlugin.m" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Classes/WifiIotPlugin.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/wifi_iot.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/wifi_iot.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf />
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>Running on</find>
+    </findStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="y" value="22" />
+    <option name="width" value="1440" />
+    <option name="height" value="834" />
+  </component>
+  <component name="ProjectReloadState">
+    <option name="STATE" value="1" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="AndroidView" />
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="wifi_iot" type="b2602c69:ProjectViewProjectNode" />
+              <item name="wifi_iot" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="android.sdk.path" value="$USER_HOME$/Library/Android/sdk" />
+    <property name="dart.analysis.tool.window.force.activate" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="android.sdk-updates" />
+    <property name="show.migrate.to.gradle.popup" value="false" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="Application" factoryName="Application">
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+    </configuration>
+    <configuration name="main.dart" type="FlutterRunConfigurationType" factoryName="Flutter">
+      <option name="filePath" value="$PROJECT_DIR$/example/lib/main.dart" />
+    </configuration>
+    <configuration default="true" type="JUnit" factoryName="JUnit">
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <patterns />
+    </configuration>
+    <configuration default="true" type="TestNG" factoryName="TestNG">
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="SUITE_NAME" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="GROUP_NAME" />
+      <option name="TEST_OBJECT" value="CLASS" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
+      <option name="OUTPUT_DIRECTORY" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <option name="USE_DEFAULT_REPORTERS" value="false" />
+      <option name="PROPERTIES_FILE" />
+      <properties />
+      <listeners />
+    </configuration>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="258356cc-19a4-4dd5-84fe-82bad08cc8f1" name="Default" comment="" />
+      <created>1528365888305</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1528365888305</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="0" y="0" width="1440" height="900" extended-state="0" />
+    <layout>
+      <window_info anchor="right" id="Palette" order="3" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Messages" weight="0.32969698" />
+      <window_info anchor="right" id="Palette&#9;" order="3" />
+      <window_info id="Image Layers" order="2" />
+      <window_info anchor="right" id="Capture Analysis" order="3" />
+      <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
+      <window_info anchor="right" id="Maven Projects" order="3" />
+      <window_info anchor="bottom" id="Dart Analysis" visible="true" weight="0.32969698" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Version Control" order="7" />
+      <window_info anchor="bottom" id="Terminal" order="7" />
+      <window_info anchor="right" id="Flutter Outline" order="3" />
+      <window_info id="Capture Tool" order="2" />
+      <window_info id="Designer" order="2" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2532189" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info id="UI Designer" order="2" />
+      <window_info anchor="right" id="Theme Preview" order="3" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="right" id="Flutter Inspector" order="3" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+    </layout>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/lib/wifi_iot.dart">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ProjectJDKs.UI">
+        <settings>
+          <last-edited>1.8</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.19525802" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>
