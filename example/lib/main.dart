@@ -2,20 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:wifi_iot/wifi_iot.dart';
 
-const String STA_DEFAULT_SSID = "NkPhone";
-const String STA_DEFAULT_PASSWORD = "0601773693";
+const String STA_DEFAULT_SSID = "STA_SSID";
+const String STA_DEFAULT_PASSWORD = "STA_PASSWORD";
 
-/// Connecting on 'AlternaRings-36:BA:34'!
-/// Password = '32312400000000000000160603261f595644542305555e75'
-
-const String AP_DEFAULT_SSID = "NkPhone";
-const String AP_DEFAULT_PASSWORD = "0601773693";
-
-//const String STA_DEFAULT_SSID = "STA_SSID";
-//const String STA_DEFAULT_PASSWORD = "STA_PASSWORD";
-
-//const String AP_DEFAULT_SSID = "AP_SSID";
-//const String AP_DEFAULT_PASSWORD = "AP_PASSWORD";
+const String AP_DEFAULT_SSID = "AP_SSID";
+const String AP_DEFAULT_PASSWORD = "AP_PASSWORD";
 
 void main() => runApp(new MyApp());
 
