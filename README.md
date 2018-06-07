@@ -1,22 +1,38 @@
 # WiFiFlutter
 Plugin Flutter which can handle WiFi connections (AP, STA)
 
-For now, we have the Android part which is working :
+Android :
  * For WiFi connection :
-   - Enabling / Disabling WiFi module,
-   - Getting WiFi status,
-   - Scanning for networks with "already-associated" flag,
-   - Connecting / Disconnecting on a network in WPA / WEP,
-   - Getting informations like : SSID, BSSID, current signal strength, frequency, IP,
-   - Registering / Unregistering a WiFi network,
+   [x] Enabling / Disabling WiFi module,
+   [x] Getting WiFi status,
+   [x] Scanning for networks, with "already-associated" flag,
+   [x] Connecting / Disconnecting on a network in WPA / WEP,
+   [x] Getting informations like : 
+        [x] SSID, 
+        [x] BSSID, 
+        [x] Current signal strength, 
+        [x] Frequency, 
+        [x] IP,
+   [x] Registering / Unregistering a WiFi network,
 
  * For Access Point :
-   - Getting the status of the Access Point (Disable, disabling, enable, enabling, failed),
-   - Enabling / Disabling Access Point,
-   - Getting / Setting new credentials (SSID / Password),
-   - Enabling / Disabling the visibility of the SSID Access Point,
-   - Getting the clients list (IP, BSSID, Device, Reachable),
+   [x] Getting the status of the Access Point (Disable, disabling, enable, enabling, failed),
+   [x] Enabling / Disabling Access Point,
+   [x] Getting / Setting new credentials (SSID / Password),
+   [x] Enabling / Disabling the visibility of the SSID Access Point,
+   [x] Getting the clients list (IP, BSSID, Device, Reachable),
+   [ ] Handling the MAC filtering,
 
-There is one thing we want to add but don't know how : handling the MAC filtering!
+iOS 11.0, just WiFi connection :
+   [ ] Enabling / Disabling WiFi module,
+   [ ] Getting WiFi status,
+   [ ] Scanning for networks, with "already-associated" flag,
+   [x] Connecting / Disconnecting on a network in WPA / WEP,
+   [-] Getting informations like : 
+        [x] SSID, 
+        [ ] BSSID, 
+        [ ] Current signal strength, 
+        [ ] Frequency, 
+        [ ] IP,
+   [ ] Registering / Unregistering a WiFi network,
 
-We will work soon on the iOS part, we just receive an iPhone for test :)
