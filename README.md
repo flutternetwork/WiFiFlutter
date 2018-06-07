@@ -12,20 +12,22 @@ Becareful, some commands as no effect on iOS because Apple don't let us to do wh
 | Enabling / Disabling WiFi module                      | :white_check_mark: |  :x:  |
 | Getting WiFi status                                   | :white_check_mark: |  :x:  |
 | Scanning for networks, with "already-associated" flag | :white_check_mark: |  :x:  |
-| Connecting / Disconnecting on a network in WPA / WEP  | :white_check_mark: |  :white_check_mark:  |
-| Registering / Unregistering a WiFi network            | :white_check_mark: |  :warning:(1)  |
-| Getting informations like :                           | :white_check_mark: |  :warning:(2)  |
+| Connecting / Disconnecting on a network in WPA / WEP  | :white_check_mark: |  :white_check_mark:(1)  |
+| Registering / Unregistering a WiFi network            | :white_check_mark: |  :warning:(2)  |
+| Getting informations like :                           | :white_check_mark: |  :warning:(3)  |
 | - SSID                                                | :white_check_mark: |  :white_check_mark:  |
 | - BSSID                                               | :white_check_mark: |  :x:  |
 | - Current signal strength                             | :white_check_mark: |  :x:  |
 | - Frequency                                           | :white_check_mark: |  :x:  |
-| - IP                                                  | :white_check_mark: |  :question:(3)  |
+| - IP                                                  | :white_check_mark: |  :question:(4)  |
 
-:warning:(1) : On iOS, you can forget a WiFi network by connecting to it with the joinOnce flag to true!
+:white_check_mark:(1) : On iOS, you can only disconnect from a network which has been added by your app. In order to disconnect from a system network, you have to connect to an other!
 
-:warning:(2) : On iOS, you can just getting the SSID, or maybe(probably) I'm missing something! 
+:warning:(2) : On iOS, you can forget a WiFi network by connecting to it with the joinOnce flag to true!
 
-:question:(3) : I think there is a way to get the IP address but for now, this is not implemented..
+:warning:(3) : On iOS, you can just getting the SSID, or maybe(probably) I'm missing something! 
+
+:question:(4) : I think there is a way to get the IP address but for now, this is not implemented..
 
 ## Access Point :
 |                                       Description                                     |      Android       |         iOS          |
