@@ -168,20 +168,25 @@ class WiFiForIoTPlugin {
     }
   }
 
-  static Future<bool> findAndConnect(String ssid, String password, {bool joinOnce, bool isWep}) async {
+  static Future<bool> findAndConnect(String ssid, String password, {bool joinOnce = true, bool isWep = false}) async {
     if (!await isEnabled()) {
       await setEnabled(true);
     }
-    Map<String, Object> htArguments = new Map();
-    htArguments["ssid"] = ssid;
-    htArguments["password"] = password;
-    if (joinOnce != null && isWep != null) {
-      htArguments["join_once"] = joinOnce;
-      htArguments["is_wep"] = isWep;
-    }
+//    Map<String, Object> htArguments = new Map();
+//    htArguments["ssid"] = ssid;
+//    htArguments["password"] = password;
+//    if (joinOnce != null && isWep != null) {
+//      htArguments["join_once"] = joinOnce;
+//      htArguments["is_wep"] = isWep;
+//    }
     bool bResult;
     try {
-      bResult = await _channel.invokeMethod('findAndConnect', htArguments);
+      bResult = await _channel.invokeMethod('findAndConnect', {
+      "ssid": ssid.toString(),
+      "password": password.toString(),
+      "join_once": joinOnce,
+      "is_wep": isWep,
+      });
     } on MissingPluginException catch (e) {
       print("MissingPluginException : ${e.toString()}");
     }

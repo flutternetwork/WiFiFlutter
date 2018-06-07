@@ -2,20 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:wifi_iot/wifi_iot.dart';
 
-const String STA_DEFAULT_SSID = "NkPhone";
-const String STA_DEFAULT_PASSWORD = "0601773693";
+const String STA_DEFAULT_SSID = "STA_SSID";
+const String STA_DEFAULT_PASSWORD = "STA_PASSWORD";
 
-/// Connecting on 'AlternaRings-36:BA:34'!
-/// Password = '32312400000000000000160603261f595644542305555e75'
-
-const String AP_DEFAULT_SSID = "NkPhone";
-const String AP_DEFAULT_PASSWORD = "0601773693";
-
-//const String STA_DEFAULT_SSID = "STA_SSID";
-//const String STA_DEFAULT_PASSWORD = "STA_PASSWORD";
-
-//const String AP_DEFAULT_SSID = "AP_SSID";
-//const String AP_DEFAULT_PASSWORD = "AP_PASSWORD";
+const String AP_DEFAULT_SSID = "AP_SSID";
+const String AP_DEFAULT_PASSWORD = "AP_PASSWORD";
 
 void main() => runApp(new MyApp());
 
@@ -802,20 +793,34 @@ class _MyAppState extends State<MyApp> {
 //        new Text("Signal : $_iCurrentSignalStrength"),
 //        new Text("Frequency : $_iFrequency"),
 //        new Text("IP : $_sIP"),
-          new RaisedButton(
-            child: new Text("Disconnect"),
-            onPressed: () {
-              WiFiForIoTPlugin.disconnect();
-            },
-          ),
         ]);
+
+        if (_sSSID == STA_DEFAULT_SSID) {
+          htPrimaryWidgets.addAll(<Widget>[
+            new RaisedButton(
+              child: new Text("Disconnect"),
+              onPressed: () {
+                WiFiForIoTPlugin.disconnect();
+              },
+            ),
+          ]);
+        } else {
+          htPrimaryWidgets.addAll(<Widget>[
+            new RaisedButton(
+              child: new Text("Connect to '$AP_DEFAULT_SSID'"),
+              onPressed: () {
+                WiFiForIoTPlugin.findAndConnect(STA_DEFAULT_SSID, STA_DEFAULT_PASSWORD, joinOnce: true, isWep: false);
+              },
+            ),
+          ]);
+        }
       } else {
         htPrimaryWidgets.addAll(<Widget>[
           new Text("Disconnected"),
           new RaisedButton(
             child: new Text("Connect to '$AP_DEFAULT_SSID'"),
             onPressed: () {
-              WiFiForIoTPlugin.findAndConnect(STA_DEFAULT_SSID, STA_DEFAULT_PASSWORD);
+              WiFiForIoTPlugin.findAndConnect(STA_DEFAULT_SSID, STA_DEFAULT_PASSWORD, joinOnce: true, isWep: false);
             },
           ),
         ]);
@@ -829,6 +834,12 @@ class _MyAppState extends State<MyApp> {
 //            WiFiForIoTPlugin.setEnabled(true);
 //          },
 //        ),
+        new RaisedButton(
+          child: new Text("Connect to '$AP_DEFAULT_SSID'"),
+          onPressed: () {
+            WiFiForIoTPlugin.findAndConnect(STA_DEFAULT_SSID, STA_DEFAULT_PASSWORD, joinOnce: true, isWep: false);
+          },
+        ),
       ]);
     }
 
