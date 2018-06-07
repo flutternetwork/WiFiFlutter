@@ -10,31 +10,54 @@ class WiFiForIoTPlugin {
 
   static Future<bool> isWiFiAPEnabled() async {
     Map<String, String> htArguments = new Map();
-    final bool bResult = await _channel.invokeMethod('isWiFiAPEnabled', htArguments);
+    bool bResult;
+    try {
+      bResult = await _channel.invokeMethod('isWiFiAPEnabled', htArguments);
+    } on MissingPluginException catch (e) {
+      print("MissingPluginException : ${e.toString()}");
+    }
     return (bResult != null && bResult);
   }
 
-  static void setWiFiAPEnabled(bool enabled) async {
+  static void setWiFiAPEnabled(bool state) async {
     Map<String, bool> htArguments = new Map();
-    htArguments["enabled"] = enabled;
-    await _channel.invokeMethod('setWiFiAPEnabled', htArguments);
+    htArguments["state"] = state;
+    try {
+      await _channel.invokeMethod('setWiFiAPEnabled', htArguments);
+    } on MissingPluginException catch (e) {
+      print("MissingPluginException : ${e.toString()}");
+    }
   }
 
   static Future<bool> isWiFiAPSSIDHidden() async {
     Map<String, String> htArguments = new Map();
-    final bool bResult = await _channel.invokeMethod('isSSIDHidden', htArguments);
+    bool bResult;
+    try {
+      bResult = await _channel.invokeMethod('isSSIDHidden', htArguments);
+    } on MissingPluginException catch (e) {
+      print("MissingPluginException : ${e.toString()}");
+    }
     return (bResult != null && bResult);
   }
 
   static setWiFiAPSSIDHidden(bool hidden) async {
     Map<String, bool> htArguments = new Map();
     htArguments["hidden"] = hidden;
-    await _channel.invokeMethod('setSSIDHidden', htArguments);
+    try {
+      await _channel.invokeMethod('setSSIDHidden', htArguments);
+    } on MissingPluginException catch (e) {
+      print("MissingPluginException : ${e.toString()}");
+    }
   }
 
   static Future<int> getWiFiAPState() async {
     Map<String, String> htArguments = new Map();
-    final int iResult = await _channel.invokeMethod('getWiFiAPState', htArguments);
+    int iResult;
+    try {
+      iResult = await _channel.invokeMethod('getWiFiAPState', htArguments);
+    } on MissingPluginException catch (e) {
+      print("MissingPluginException : ${e.toString()}");
+    }
     return iResult;
   }
 
@@ -42,8 +65,14 @@ class WiFiForIoTPlugin {
     Map<String, Object> htArguments = new Map();
     htArguments["onlyReachables"] = onlyReachables;
     htArguments["reachableTimeout"] = reachableTimeout;
-    final String sResult = await _channel.invokeMethod('getClientList', htArguments);
-    List<APClient> htResult = APClient.parse(sResult);
+    String sResult;
+    List<APClient> htResult = new List();
+    try {
+      sResult = await _channel.invokeMethod('getClientList', htArguments);
+      htResult = APClient.parse(sResult);
+    } on MissingPluginException catch (e) {
+      print("MissingPluginException : ${e.toString()}");
+    }
     return htResult;
   }
 
@@ -55,116 +84,206 @@ class WiFiForIoTPlugin {
 
   static Future<String> getWiFiAPSSID() async {
     Map<String, String> htArguments = new Map();
-    final String sResult = await _channel.invokeMethod('getWiFiAPSSID', htArguments);
+    String sResult;
+    try {
+      sResult = await _channel.invokeMethod('getWiFiAPSSID', htArguments);
+    } on MissingPluginException catch (e) {
+      print("MissingPluginException : ${e.toString()}");
+    }
     return sResult;
   }
 
   static setWiFiAPSSID(String psSSID) async {
     Map<String, String> htArguments = new Map();
     htArguments["ssid"] = psSSID;
-    await _channel.invokeMethod('setWiFiAPSSID', htArguments);
+    try {
+      await _channel.invokeMethod('setWiFiAPSSID', htArguments);
+    } on MissingPluginException catch (e) {
+      print("MissingPluginException : ${e.toString()}");
+    }
   }
 
   static Future<String> getWiFiAPPreSharedKey() async {
     Map<String, String> htArguments = new Map();
-    final String sResult = await _channel.invokeMethod('getWiFiAPPreSharedKey', htArguments);
+    String sResult;
+    try {
+      sResult = await _channel.invokeMethod('getWiFiAPPreSharedKey', htArguments);
+    } on MissingPluginException catch (e) {
+      print("MissingPluginException : ${e.toString()}");
+    }
     return sResult;
   }
 
   static setWiFiAPPreSharedKey(String psPreSharedKey) async {
     Map<String, String> htArguments = new Map();
     htArguments["preSharedKey"] = psPreSharedKey;
-    await _channel.invokeMethod('setWiFiAPPreSharedKey', htArguments);
+    try {
+      await _channel.invokeMethod('setWiFiAPPreSharedKey', htArguments);
+    } on MissingPluginException catch (e) {
+      print("MissingPluginException : ${e.toString()}");
+    }
   }
 
   static Future<List<WifiNetwork>> loadWifiList() async {
     Map<String, String> htArguments = new Map();
-    final String sResult = await _channel.invokeMethod('loadWifiList', htArguments);
-    List<WifiNetwork> htResult = WifiNetwork.parse(sResult);
+    String sResult;
+    List<WifiNetwork> htResult = new List();
+    try {
+      sResult = await _channel.invokeMethod('loadWifiList', htArguments);
+      htResult = WifiNetwork.parse(sResult);
+    } on MissingPluginException catch (e) {
+      print("MissingPluginException : ${e.toString()}");
+    }
     return htResult;
   }
 
   static void forceWifiUsage(bool useWifi) async {
     Map<String, bool> htArguments = new Map();
     htArguments["useWifi"] = useWifi;
-    await _channel.invokeMethod('forceWifiUsage', htArguments);
+    try {
+      await _channel.invokeMethod('forceWifiUsage', htArguments);
+    } on MissingPluginException catch (e) {
+      print("MissingPluginException : ${e.toString()}");
+    }
   }
 
   static Future<bool> isEnabled() async {
     Map<String, String> htArguments = new Map();
-    final bool bResult = await _channel.invokeMethod('isEnabled', htArguments);
+    bool bResult;
+    try {
+      bResult = await _channel.invokeMethod('isEnabled', htArguments);
+    } on MissingPluginException catch (e) {
+      print("MissingPluginException : ${e.toString()}");
+    }
     return (bResult != null && bResult);
   }
 
-  static setEnabled(bool enabled) async {
+  static setEnabled(bool state) async {
     Map<String, bool> htArguments = new Map();
-    htArguments["enabled"] = enabled;
-    await _channel.invokeMethod('setEnabled', htArguments);
+    htArguments["state"] = state;
+    try {
+      await _channel.invokeMethod('setEnabled', htArguments);
+    } on MissingPluginException catch (e) {
+      print("MissingPluginException : ${e.toString()}");
+    }
   }
 
-  static Future<bool> findAndConnect(String ssid, String password) async {
+  static Future<bool> findAndConnect(String ssid, String password, {bool joinOnce, bool isWep}) async {
     if (!await isEnabled()) {
       await setEnabled(true);
     }
-    Map<String, String> htArguments = new Map();
+    Map<String, Object> htArguments = new Map();
     htArguments["ssid"] = ssid;
     htArguments["password"] = password;
-    final bool bResult = await _channel.invokeMethod('findAndConnect', htArguments);
+    if (joinOnce != null && isWep != null) {
+      htArguments["join_once"] = joinOnce;
+      htArguments["is_wep"] = isWep;
+    }
+    bool bResult;
+    try {
+      bResult = await _channel.invokeMethod('findAndConnect', htArguments);
+    } on MissingPluginException catch (e) {
+      print("MissingPluginException : ${e.toString()}");
+    }
     return (bResult != null && bResult);
   }
 
-  static Future<bool> connectionStatus() async {
+  static Future<bool> isConnected() async {
     Map<String, String> htArguments = new Map();
-    final bool bResult = await _channel.invokeMethod('connectionStatus', htArguments);
+    bool bResult;
+    try {
+      bResult = await _channel.invokeMethod('isConnected', htArguments);
+    } on MissingPluginException catch (e) {
+      print("MissingPluginException : ${e.toString()}");
+    }
     return (bResult != null && bResult);
   }
 
   static disconnect() async {
     Map<String, bool> htArguments = new Map();
-    await _channel.invokeMethod('disconnect', htArguments);
+    try {
+      await _channel.invokeMethod('disconnect', htArguments);
+    } on MissingPluginException catch (e) {
+      print("MissingPluginException : ${e.toString()}");
+    }
   }
 
   static Future<String> getSSID() async {
     Map<String, String> htArguments = new Map();
-    final String sResult = await _channel.invokeMethod('getSSID', htArguments);
+    String sResult;
+    try {
+      sResult = await _channel.invokeMethod('getSSID', htArguments);
+    } on MissingPluginException catch (e) {
+      print("MissingPluginException : ${e.toString()}");
+    }
     return sResult;
   }
 
   static Future<String> getBSSID() async {
     Map<String, String> htArguments = new Map();
-    final String sResult = await _channel.invokeMethod('getBSSID', htArguments);
+    String sResult;
+    try {
+      sResult = await _channel.invokeMethod('getBSSID', htArguments);
+    } on MissingPluginException catch (e) {
+      print("MissingPluginException : ${e.toString()}");
+    }
     return sResult;
   }
 
   static Future<int> getCurrentSignalStrength() async {
     Map<String, String> htArguments = new Map();
-    final int iResult = await _channel.invokeMethod('getCurrentSignalStrength', htArguments);
+    int iResult;
+    try {
+      iResult = await _channel.invokeMethod('getCurrentSignalStrength', htArguments);
+    } on MissingPluginException catch (e) {
+      print("MissingPluginException : ${e.toString()}");
+    }
     return iResult;
   }
 
   static Future<int> getFrequency() async {
     Map<String, String> htArguments = new Map();
-    final int iResult = await _channel.invokeMethod('getFrequency', htArguments);
+    int iResult;
+    try {
+      iResult = await _channel.invokeMethod('getFrequency', htArguments);
+    } on MissingPluginException catch (e) {
+      print("MissingPluginException : ${e.toString()}");
+    }
     return iResult;
   }
 
   static Future<String> getIP() async {
     Map<String, String> htArguments = new Map();
-    final String sResult = await _channel.invokeMethod('getIP', htArguments);
+    String sResult;
+    try {
+      sResult = await _channel.invokeMethod('getIP', htArguments);
+    } on MissingPluginException catch (e) {
+      print("MissingPluginException : ${e.toString()}");
+    }
     return sResult;
   }
 
   static Future<bool> removeWifiNetwork(String ssid) async {
     Map<String, String> htArguments = new Map();
     htArguments["ssid"] = ssid;
-    final bool bResult = await _channel.invokeMethod('removeWifiNetwork', htArguments);
+    bool bResult;
+    try {
+      bResult = await _channel.invokeMethod('removeWifiNetwork', htArguments);
+    } on MissingPluginException catch (e) {
+      print("MissingPluginException : ${e.toString()}");
+    }
     return (bResult != null && bResult);
   }
 
   static Future<bool> isRegisteredWifiNetwork(String ssid) async {
     Map<String, String> htArguments = new Map();
     htArguments["ssid"] = ssid;
-    final bool bResult = await _channel.invokeMethod('isRegisteredWifiNetwork', htArguments);
+    bool bResult;
+    try {
+      bResult = await _channel.invokeMethod('isRegisteredWifiNetwork', htArguments);
+    } on MissingPluginException catch (e) {
+      print("MissingPluginException : ${e.toString()}");
+    }
     return (bResult != null && bResult);
   }
 }
@@ -182,11 +301,11 @@ class APClient {
         isReachable = json['isReachable'];
 
   Map<String, dynamic> toJson() => {
-        'IPAddr': ipAddr,
-        'HWAddr': hwAddr,
-        'Device': device,
-        'isReachable': isReachable,
-      };
+    'IPAddr': ipAddr,
+    'HWAddr': hwAddr,
+    'Device': device,
+    'isReachable': isReachable,
+  };
 
   static List<APClient> parse(String psString) {
     /// []
@@ -226,27 +345,32 @@ class WifiNetwork {
         timestamp = json['timestamp'];
 
   Map<String, dynamic> toJson() => {
-        'SSID': ssid,
-        'BSSID': bssid,
-        'capabilities': capabilities,
-        'frequency': frequency,
-        'level': level,
-        'timestamp': timestamp,
-      };
+    'SSID': ssid,
+    'BSSID': bssid,
+    'capabilities': capabilities,
+    'frequency': frequency,
+    'level': level,
+    'timestamp': timestamp,
+  };
 
   static List<WifiNetwork> parse(String psString) {
     /// [{"SSID":"Florian","BSSID":"30:7e:cb:8c:48:e4","capabilities":"[WPA-PSK-CCMP+TKIP][ESS]","frequency":2462,"level":-64,"timestamp":201307720907},{"SSID":"Pi3-AP","BSSID":"b8:27:eb:b1:fa:e1","capabilities":"[WPA2-PSK-CCMP][ESS]","frequency":2437,"level":-66,"timestamp":201307720892},{"SSID":"AlternaDom-SonOff","BSSID":"b8:27:eb:98:b4:81","capabilities":"[WPA2-PSK-CCMP][ESS]","frequency":2437,"level":-86,"timestamp":201307720897},{"SSID":"SFR_1CF0_2GEXT","BSSID":"9c:3d:cf:58:98:07","capabilities":"[WPA-PSK-CCMP+TKIP][WPA2-PSK-CCMP+TKIP][WPS][ESS]","frequency":2412,"level":-87,"timestamp":201307720887},{"SSID":"Freebox-5CC952","BSSID":"f4:ca:e5:96:71:c4","capabilities":"[WPA-PSK-CCMP][ESS]","frequency":2442,"level":-90,"timestamp":201307720902}]
 
     List<WifiNetwork> htList = new List();
 
-    List<dynamic> htMapNetworks = json.decode(psString);
+    try{
+      List<dynamic> htMapNetworks = json.decode(psString);
 //    List<Map<String, dynamic>> htMapNetworks = json.decode(psString);
 
-    htMapNetworks.forEach((htMapNetwork) {
+      htMapNetworks.forEach((htMapNetwork) {
 //    htMapNetworks.forEach((Map<String, dynamic> htMapNetwork) {
-      htList.add(new WifiNetwork.fromJson(htMapNetwork));
-    });
+        htList.add(new WifiNetwork.fromJson(htMapNetwork));
+      });
 
+    } on FormatException catch (e) {
+      print("FormatException : ${e.toString()}");
+      print("psString = '$psString'");
+    }
     return htList;
   }
 }

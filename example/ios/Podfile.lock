@@ -4,19 +4,19 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
-  - Flutter (from `Pods/.symlinks/flutter/ios-release`)
-  - wifi_iot (from `Pods/.symlinks/plugins/wifi_iot/ios`)
+  - Flutter (from `.symlinks/flutter/ios`)
+  - wifi_iot (from `.symlinks/plugins/wifi_iot/ios`)
 
 EXTERNAL SOURCES:
   Flutter:
-    :path: Pods/.symlinks/flutter/ios-release
+    :path: ".symlinks/flutter/ios"
   wifi_iot:
-    :path: Pods/.symlinks/plugins/wifi_iot/ios
+    :path: ".symlinks/plugins/wifi_iot/ios"
 
 SPEC CHECKSUMS:
-  Flutter: 58dd7d1b27887414a370fcccb9e645c08ffd7a6a
-  wifi_iot: 0f2163b4e269722d78ab9994807965117c7c95a3
+  Flutter: 9d0fac939486c9aba2809b7982dfdbb47a7b0296
+  wifi_iot: acfe29a9f28377eabcdc6bfb383d07896565dd0c
 
-PODFILE CHECKSUM: 13dcf421f4da2e937a57e8ba760ed880beae536f
+PODFILE CHECKSUM: 7765ea4305eaab0b3dfd384c7de11902aa3195fd
 
-COCOAPODS: 1.4.0.beta.2
+COCOAPODS: 1.5.3

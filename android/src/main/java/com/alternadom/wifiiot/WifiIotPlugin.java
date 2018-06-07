@@ -81,8 +81,8 @@ public class WifiIotPlugin implements MethodCallHandler {
             case "findAndConnect":
                 findAndConnect(poCall, poResult);
                 break;
-            case "connectionStatus":
-                connectionStatus(poResult);
+            case "isConnected":
+                isConnected(poResult);
                 break;
             case "disconnect":
                 disconnect(poResult);
@@ -155,7 +155,7 @@ public class WifiIotPlugin implements MethodCallHandler {
     private void setMACFiltering(MethodCall poCall, Result poResult) {
 //        String sResult = sudoForResult("iptables --list");
 //        Log.d(this.getClass().toString(), sResult);
-        boolean bEnable = poCall.argument("enable");
+        boolean bEnable = poCall.argument("state");
 
 
         /// cat /data/misc/wifi_hostapd/hostapd.accept
@@ -289,7 +289,7 @@ public class WifiIotPlugin implements MethodCallHandler {
         };
 
         if (reachableTimeout != null) {
-            moWiFiAPManager.getClientList(onlyReachables, reachableTimeout.intValue(), oFinishScanListener);
+            moWiFiAPManager.getClientList(onlyReachables, reachableTimeout, oFinishScanListener);
         } else {
             moWiFiAPManager.getClientList(onlyReachables, oFinishScanListener);
         }
@@ -315,7 +315,7 @@ public class WifiIotPlugin implements MethodCallHandler {
      * return {@code true} if the operation succeeds, {@code false} otherwise
      */
     private void setWiFiAPEnabled(MethodCall poCall, Result poResult) {
-        boolean enabled = poCall.argument("enabled");
+        boolean enabled = poCall.argument("state");
         moWiFiAPManager.setWifiApEnabled(null, enabled);
         poResult.success(null);
     }
@@ -440,7 +440,7 @@ public class WifiIotPlugin implements MethodCallHandler {
 
     /// Method to connect/disconnect wifi service
     private void setEnabled(MethodCall poCall, Result poResult) {
-        Boolean enabled = poCall.argument("enabled");
+        Boolean enabled = poCall.argument("state");
         moWiFi.setWifiEnabled(enabled);
         poResult.success(null);
     }
@@ -467,7 +467,7 @@ public class WifiIotPlugin implements MethodCallHandler {
     }
 
     /// Use this method to check if the device is currently connected to Wifi.
-    private void connectionStatus(Result poResult) {
+    private void isConnected(Result poResult) {
         ConnectivityManager connManager = (ConnectivityManager) moContext.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo mWifi = connManager != null ? connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI) : null;
         if (mWifi != null && mWifi.isConnected()) {
@@ -534,13 +534,15 @@ public class WifiIotPlugin implements MethodCallHandler {
 
     /// This method will remove the WiFi network as per the passed SSID from the device list
     private void removeWifiNetwork(MethodCall poCall, Result poResult) {
-
-        String ssid = poCall.argument("ssid");
+        String prefix_ssid = poCall.argument("prefix_ssid");
+        if (prefix_ssid.equals("")) {
+            poResult.error("Error", "No prefix SSID was given!", null);
+        }
 
         List<WifiConfiguration> mWifiConfigList = moWiFi.getConfiguredNetworks();
         for (WifiConfiguration wifiConfig : mWifiConfigList) {
-            String comparableSSID = ('"' + ssid + '"'); //Add quotes because wifiConfig.SSID has them
-            if (wifiConfig.SSID.equals(comparableSSID)) {
+            String comparableSSID = ('"' + prefix_ssid); //Add quotes because wifiConfig.SSID has them
+            if (wifiConfig.SSID.startsWith(comparableSSID)) {
                 moWiFi.removeNetwork(wifiConfig.networkId);
                 moWiFi.saveConfiguration();
                 poResult.success(true);
@@ -557,10 +559,12 @@ public class WifiIotPlugin implements MethodCallHandler {
 
         List<WifiConfiguration> mWifiConfigList = moWiFi.getConfiguredNetworks();
         String comparableSSID = ('"' + ssid + '"'); //Add quotes because wifiConfig.SSID has them
-        for (WifiConfiguration wifiConfig : mWifiConfigList) {
-            if (wifiConfig.SSID.equals(comparableSSID)) {
-                poResult.success(true);
-                return;
+        if (mWifiConfigList != null) {
+            for (WifiConfiguration wifiConfig : mWifiConfigList) {
+                if (wifiConfig.SSID.equals(comparableSSID)) {
+                    poResult.success(true);
+                    return;
+                }
             }
         }
         poResult.success(false);

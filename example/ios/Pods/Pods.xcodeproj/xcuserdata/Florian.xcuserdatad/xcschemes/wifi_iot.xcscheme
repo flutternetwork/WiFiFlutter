@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0700"
+   LastUpgradeVersion = "0930"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -13,11 +13,11 @@
             buildForProfiling = "YES"
             buildForArchiving = "YES">
             <BuildableReference
-               BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '45F68FE6BDFBF6A8528DBA84F0A7B59E'
-               BlueprintName = 'wifi_iot'
-               ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'libwifi_iot.a'>
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "18E1A4F9766A1563F5712BCBA75B46C5"
+               BlueprintName = "wifi_iot"
+               ReferencedContainer = "container:Pods.xcodeproj"
+               BuildableName = "wifi_iot.framework">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

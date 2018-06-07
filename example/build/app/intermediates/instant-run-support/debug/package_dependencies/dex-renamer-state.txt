@@ -1,4 +1,0 @@
-#Mon May 28 16:02:28 CEST 2018
-base.0=/Users/Florian/IdeaProjects/AlternaDarts/wifi_iot/example/build/app/intermediates/transforms/dexMerger/debug/11
-path.0=classes.dex
-renamed.0=classes.dex
