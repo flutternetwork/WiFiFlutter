@@ -1,5 +1,7 @@
 # <img src="https://flutter.io/images/flutter-mark-square-100.png" alt="Flutter" width="40" height="40" /> WiFi Flutter
 
+## Introduction
+
 Plugin Flutter which can handle WiFi connections (AP, STA)
 
 Becareful, some commands as no effect on iOS because Apple don't let us to do whatever we want...
@@ -36,3 +38,7 @@ Becareful, some commands as no effect on iOS because Apple don't let us to do wh
 | Handling the MAC filtering                                                            | :sos: |  :x:  |
 
 For now, there is no way to set the access point on iOS... 
+
+## Troubleshooting
+
+Don't hesitate and come [here](https://github.com/alternadom/WiFiFlutter/issues), we will be happy to help you!
