@@ -48,14 +48,14 @@
       <file leaf-file-name="WifiIotPlugin.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/../../android/src/main/java/com/alternadom/wifiiot/WifiIotPlugin.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-74">
-              <caret line="254" column="17" lean-forward="false" selection-start-line="254" selection-start-column="17" selection-end-line="254" selection-end-column="17" />
+            <state relative-caret-position="162">
+              <caret line="108" column="16" lean-forward="false" selection-start-line="108" selection-start-column="16" selection-end-line="108" selection-end-column="16" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#9293#10565#0" expanded="true" />
-                <element signature="e#10564#10565#0" expanded="true" />
-                <element signature="e#15962#16710#0" expanded="true" />
-                <element signature="e#16709#16710#0" expanded="true" />
+                <element signature="e#9059#10331#0" expanded="true" />
+                <element signature="e#10330#10331#0" expanded="true" />
+                <element signature="e#15715#16463#0" expanded="true" />
+                <element signature="e#16462#16463#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -64,7 +64,7 @@
       <file leaf-file-name="WifiApManager.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../../android/src/main/java/info/whitebyte/hotspotmanager/WifiApManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-215">
+            <state relative-caret-position="2175">
               <caret line="174" column="73" lean-forward="false" selection-start-line="174" selection-start-column="60" selection-end-line="174" selection-end-column="73" />
               <folding />
             </state>
@@ -74,7 +74,7 @@
       <file leaf-file-name="WifiManager.java" pinned="false" current-in-tab="false">
         <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-27/android/net/wifi/WifiManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
+            <state relative-caret-position="13365">
               <caret line="945" column="52" lean-forward="false" selection-start-line="945" selection-start-column="40" selection-end-line="945" selection-end-column="52" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -86,75 +86,10 @@
       <file leaf-file-name="WifiConfiguration.java" pinned="false" current-in-tab="false">
         <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-27/android/net/wifi/WifiConfiguration.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="25185">
+            <state relative-caret-position="25155">
               <caret line="1764" column="37" lean-forward="false" selection-start-line="1764" selection-start-column="17" selection-end-line="1764" selection-end-column="37" />
               <folding>
-                <element signature="e#0#84805#0" expanded="false" />
                 <element signature="docComment;field#BACKUP_VERSION#0;class#WifiConfiguration#0" expanded="false" />
-                <element signature="e#19237#19238#0" expanded="false" />
-                <element signature="e#19272#19273#0" expanded="false" />
-                <element signature="e#21231#21232#0" expanded="false" />
-                <element signature="e#21278#21279#0" expanded="false" />
-                <element signature="e#23450#23451#0" expanded="false" />
-                <element signature="e#23480#23481#0" expanded="false" />
-                <element signature="e#36098#36099#0" expanded="false" />
-                <element signature="e#36154#36155#0" expanded="false" />
-                <element signature="e#36368#36369#0" expanded="false" />
-                <element signature="e#36414#36415#0" expanded="false" />
-                <element signature="e#37381#37382#0" expanded="false" />
-                <element signature="e#37431#37432#0" expanded="false" />
-                <element signature="e#37694#37695#0" expanded="false" />
-                <element signature="e#37735#37736#0" expanded="false" />
-                <element signature="e#37955#37956#0" expanded="false" />
-                <element signature="e#38002#38003#0" expanded="false" />
-                <element signature="e#38258#38259#0" expanded="false" />
-                <element signature="e#38304#38305#0" expanded="false" />
-                <element signature="e#38518#38519#0" expanded="false" />
-                <element signature="e#38563#38564#0" expanded="false" />
-                <element signature="e#38812#38813#0" expanded="false" />
-                <element signature="e#38869#38870#0" expanded="false" />
-                <element signature="e#39121#39122#0" expanded="false" />
-                <element signature="e#39175#39176#0" expanded="false" />
-                <element signature="e#39790#39791#0" expanded="false" />
-                <element signature="e#39862#39863#0" expanded="false" />
-                <element signature="e#39920#39921#0" expanded="false" />
-                <element signature="e#39969#39970#0" expanded="false" />
-                <element signature="e#40017#40018#0" expanded="false" />
-                <element signature="e#40065#40066#0" expanded="false" />
-                <element signature="e#41232#41233#0" expanded="false" />
-                <element signature="e#41270#41271#0" expanded="false" />
-                <element signature="e#41418#41419#0" expanded="false" />
-                <element signature="e#41485#41486#0" expanded="false" />
-                <element signature="e#42408#42409#0" expanded="false" />
-                <element signature="e#42469#42470#0" expanded="false" />
-                <element signature="e#43511#43512#0" expanded="false" />
-                <element signature="e#43576#43577#0" expanded="false" />
-                <element signature="e#43763#43764#0" expanded="false" />
-                <element signature="e#43823#43824#0" expanded="false" />
-                <element signature="e#46780#46781#0" expanded="false" />
-                <element signature="e#46833#46834#0" expanded="false" />
-                <element signature="e#47015#47016#0" expanded="false" />
-                <element signature="e#47069#47070#0" expanded="false" />
-                <element signature="e#51049#51050#0" expanded="false" />
-                <element signature="e#51100#51101#0" expanded="false" />
-                <element signature="e#51196#51197#0" expanded="false" />
-                <element signature="e#51245#51246#0" expanded="false" />
-                <element signature="e#51352#51353#0" expanded="false" />
-                <element signature="e#51401#51402#0" expanded="false" />
-                <element signature="e#51667#51668#0" expanded="false" />
-                <element signature="e#51713#51714#0" expanded="false" />
-                <element signature="e#69214#69215#0" expanded="false" />
-                <element signature="e#69253#69254#0" expanded="false" />
-                <element signature="e#69321#69322#0" expanded="false" />
-                <element signature="e#69360#69361#0" expanded="false" />
-                <element signature="e#69908#69909#0" expanded="false" />
-                <element signature="e#69960#69961#0" expanded="false" />
-                <element signature="e#72682#72683#0" expanded="false" />
-                <element signature="e#72706#72707#0" expanded="false" />
-                <element signature="e#72941#72942#0" expanded="false" />
-                <element signature="e#72994#72995#0" expanded="false" />
-                <element signature="e#83352#83353#0" expanded="false" />
-                <element signature="e#83418#83419#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -1357,10 +1292,6 @@
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="flutterDependenciesProfile" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
                 <option name="name" value="generateDebugAssets" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
@@ -1545,10 +1476,6 @@
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="flutterDependenciesDebug" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
                 <option name="name" value="bundleAppClassesDebug" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
@@ -1645,10 +1572,6 @@
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
                 <option name="name" value="copyFlutterAssetsDebug" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="flutterDependenciesRelease" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
@@ -2327,10 +2250,6 @@
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/app" />
-                <option name="name" value="flutterDependenciesProfile" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/app" />
                 <option name="name" value="generateDebugAssets" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
@@ -2485,10 +2404,6 @@
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/app" />
-                <option name="name" value="flutterDependenciesDebug" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/app" />
                 <option name="name" value="bundleAppClassesDebug" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
@@ -2567,10 +2482,6 @@
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/app" />
                 <option name="name" value="copyFlutterAssetsDebug" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/app" />
-                <option name="name" value="flutterDependenciesRelease" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/app" />
@@ -3284,9 +3195,9 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="Scratches" />
-      <pane id="Scope" />
+      <pane id="ProjectPane" />
+      <pane id="PackagesPane" />
       <pane id="AndroidView">
         <subPane>
           <PATH>
@@ -3301,7 +3212,7 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="ProjectPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -3395,7 +3306,7 @@
       <option name="ACTIVITY_CLASS" value="" />
       <method>
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1527685035455" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1528364653572" />
       </method>
     </configuration>
     <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Instrumented Tests">
@@ -3443,7 +3354,7 @@
       </Profilers>
       <method>
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1527685035455" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1528364653572" />
       </method>
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -3618,7 +3529,7 @@
       <option name="ACTIVITY_CLASS" value="" />
       <method>
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1527685035456" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1528364653574" />
       </method>
     </configuration>
     <list size="1">
@@ -3669,28 +3580,27 @@
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
     <layout>
       <window_info id="Android Profiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32932693" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3293011" sideWeight="0.5080214" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Logcat" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Device File Explorer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3293011" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.328125" sideWeight="0.4966044" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.328125" sideWeight="0.5080214" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.35576922" sideWeight="0.49197862" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32932693" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Logcat" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3293011" sideWeight="0.50339556" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18454936" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32932693" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3293718" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Device File Explorer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Flutter Inspector" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3293718" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -3700,6 +3610,7 @@
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3293718" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32932693" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="VcsContentAnnotationSettings">
@@ -3718,26 +3629,26 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#9293#10565#0" expanded="true" />
-            <element signature="e#10564#10565#0" expanded="true" />
-            <element signature="e#15962#16710#0" expanded="true" />
-            <element signature="e#16709#16710#0" expanded="true" />
+            <element signature="e#9059#10331#0" expanded="true" />
+            <element signature="e#10330#10331#0" expanded="true" />
+            <element signature="e#15715#16463#0" expanded="true" />
+            <element signature="e#16462#16463#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../../android/src/main/java/info/whitebyte/hotspotmanager/WifiApManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="37" column="20" lean-forward="false" selection-start-line="37" selection-start-column="20" selection-end-line="37" selection-end-column="20" />
+        <state relative-caret-position="2175">
+          <caret line="174" column="73" lean-forward="false" selection-start-line="174" selection-start-column="60" selection-end-line="174" selection-end-column="73" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-27/android/net/wifi/WifiManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45660">
-          <caret line="3044" column="35" lean-forward="false" selection-start-line="3044" selection-start-column="32" selection-end-line="3044" selection-end-column="35" />
+        <state relative-caret-position="14175">
+          <caret line="945" column="52" lean-forward="false" selection-start-line="945" selection-start-column="40" selection-end-line="945" selection-end-column="52" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -3749,72 +3660,7 @@
         <state relative-caret-position="26460">
           <caret line="1764" column="37" lean-forward="false" selection-start-line="1764" selection-start-column="17" selection-end-line="1764" selection-end-column="37" />
           <folding>
-            <element signature="e#0#84805#0" expanded="false" />
             <element signature="docComment;field#BACKUP_VERSION#0;class#WifiConfiguration#0" expanded="false" />
-            <element signature="e#19237#19238#0" expanded="false" />
-            <element signature="e#19272#19273#0" expanded="false" />
-            <element signature="e#21231#21232#0" expanded="false" />
-            <element signature="e#21278#21279#0" expanded="false" />
-            <element signature="e#23450#23451#0" expanded="false" />
-            <element signature="e#23480#23481#0" expanded="false" />
-            <element signature="e#36098#36099#0" expanded="false" />
-            <element signature="e#36154#36155#0" expanded="false" />
-            <element signature="e#36368#36369#0" expanded="false" />
-            <element signature="e#36414#36415#0" expanded="false" />
-            <element signature="e#37381#37382#0" expanded="false" />
-            <element signature="e#37431#37432#0" expanded="false" />
-            <element signature="e#37694#37695#0" expanded="false" />
-            <element signature="e#37735#37736#0" expanded="false" />
-            <element signature="e#37955#37956#0" expanded="false" />
-            <element signature="e#38002#38003#0" expanded="false" />
-            <element signature="e#38258#38259#0" expanded="false" />
-            <element signature="e#38304#38305#0" expanded="false" />
-            <element signature="e#38518#38519#0" expanded="false" />
-            <element signature="e#38563#38564#0" expanded="false" />
-            <element signature="e#38812#38813#0" expanded="false" />
-            <element signature="e#38869#38870#0" expanded="false" />
-            <element signature="e#39121#39122#0" expanded="false" />
-            <element signature="e#39175#39176#0" expanded="false" />
-            <element signature="e#39790#39791#0" expanded="false" />
-            <element signature="e#39862#39863#0" expanded="false" />
-            <element signature="e#39920#39921#0" expanded="false" />
-            <element signature="e#39969#39970#0" expanded="false" />
-            <element signature="e#40017#40018#0" expanded="false" />
-            <element signature="e#40065#40066#0" expanded="false" />
-            <element signature="e#41232#41233#0" expanded="false" />
-            <element signature="e#41270#41271#0" expanded="false" />
-            <element signature="e#41418#41419#0" expanded="false" />
-            <element signature="e#41485#41486#0" expanded="false" />
-            <element signature="e#42408#42409#0" expanded="false" />
-            <element signature="e#42469#42470#0" expanded="false" />
-            <element signature="e#43511#43512#0" expanded="false" />
-            <element signature="e#43576#43577#0" expanded="false" />
-            <element signature="e#43763#43764#0" expanded="false" />
-            <element signature="e#43823#43824#0" expanded="false" />
-            <element signature="e#46780#46781#0" expanded="false" />
-            <element signature="e#46833#46834#0" expanded="false" />
-            <element signature="e#47015#47016#0" expanded="false" />
-            <element signature="e#47069#47070#0" expanded="false" />
-            <element signature="e#51049#51050#0" expanded="false" />
-            <element signature="e#51100#51101#0" expanded="false" />
-            <element signature="e#51196#51197#0" expanded="false" />
-            <element signature="e#51245#51246#0" expanded="false" />
-            <element signature="e#51352#51353#0" expanded="false" />
-            <element signature="e#51401#51402#0" expanded="false" />
-            <element signature="e#51667#51668#0" expanded="false" />
-            <element signature="e#51713#51714#0" expanded="false" />
-            <element signature="e#69214#69215#0" expanded="false" />
-            <element signature="e#69253#69254#0" expanded="false" />
-            <element signature="e#69321#69322#0" expanded="false" />
-            <element signature="e#69360#69361#0" expanded="false" />
-            <element signature="e#69908#69909#0" expanded="false" />
-            <element signature="e#69960#69961#0" expanded="false" />
-            <element signature="e#72682#72683#0" expanded="false" />
-            <element signature="e#72706#72707#0" expanded="false" />
-            <element signature="e#72941#72942#0" expanded="false" />
-            <element signature="e#72994#72995#0" expanded="false" />
-            <element signature="e#83352#83353#0" expanded="false" />
-            <element signature="e#83418#83419#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -3833,10 +3679,10 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#9293#10565#0" expanded="true" />
-            <element signature="e#10564#10565#0" expanded="true" />
-            <element signature="e#15962#16710#0" expanded="true" />
-            <element signature="e#16709#16710#0" expanded="true" />
+            <element signature="e#9059#10331#0" expanded="true" />
+            <element signature="e#10330#10331#0" expanded="true" />
+            <element signature="e#15715#16463#0" expanded="true" />
+            <element signature="e#16462#16463#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -3864,72 +3710,57 @@
         <state relative-caret-position="26460">
           <caret line="1764" column="37" lean-forward="false" selection-start-line="1764" selection-start-column="17" selection-end-line="1764" selection-end-column="37" />
           <folding>
-            <element signature="e#0#84805#0" expanded="false" />
             <element signature="docComment;field#BACKUP_VERSION#0;class#WifiConfiguration#0" expanded="false" />
-            <element signature="e#19237#19238#0" expanded="false" />
-            <element signature="e#19272#19273#0" expanded="false" />
-            <element signature="e#21231#21232#0" expanded="false" />
-            <element signature="e#21278#21279#0" expanded="false" />
-            <element signature="e#23450#23451#0" expanded="false" />
-            <element signature="e#23480#23481#0" expanded="false" />
-            <element signature="e#36098#36099#0" expanded="false" />
-            <element signature="e#36154#36155#0" expanded="false" />
-            <element signature="e#36368#36369#0" expanded="false" />
-            <element signature="e#36414#36415#0" expanded="false" />
-            <element signature="e#37381#37382#0" expanded="false" />
-            <element signature="e#37431#37432#0" expanded="false" />
-            <element signature="e#37694#37695#0" expanded="false" />
-            <element signature="e#37735#37736#0" expanded="false" />
-            <element signature="e#37955#37956#0" expanded="false" />
-            <element signature="e#38002#38003#0" expanded="false" />
-            <element signature="e#38258#38259#0" expanded="false" />
-            <element signature="e#38304#38305#0" expanded="false" />
-            <element signature="e#38518#38519#0" expanded="false" />
-            <element signature="e#38563#38564#0" expanded="false" />
-            <element signature="e#38812#38813#0" expanded="false" />
-            <element signature="e#38869#38870#0" expanded="false" />
-            <element signature="e#39121#39122#0" expanded="false" />
-            <element signature="e#39175#39176#0" expanded="false" />
-            <element signature="e#39790#39791#0" expanded="false" />
-            <element signature="e#39862#39863#0" expanded="false" />
-            <element signature="e#39920#39921#0" expanded="false" />
-            <element signature="e#39969#39970#0" expanded="false" />
-            <element signature="e#40017#40018#0" expanded="false" />
-            <element signature="e#40065#40066#0" expanded="false" />
-            <element signature="e#41232#41233#0" expanded="false" />
-            <element signature="e#41270#41271#0" expanded="false" />
-            <element signature="e#41418#41419#0" expanded="false" />
-            <element signature="e#41485#41486#0" expanded="false" />
-            <element signature="e#42408#42409#0" expanded="false" />
-            <element signature="e#42469#42470#0" expanded="false" />
-            <element signature="e#43511#43512#0" expanded="false" />
-            <element signature="e#43576#43577#0" expanded="false" />
-            <element signature="e#43763#43764#0" expanded="false" />
-            <element signature="e#43823#43824#0" expanded="false" />
-            <element signature="e#46780#46781#0" expanded="false" />
-            <element signature="e#46833#46834#0" expanded="false" />
-            <element signature="e#47015#47016#0" expanded="false" />
-            <element signature="e#47069#47070#0" expanded="false" />
-            <element signature="e#51049#51050#0" expanded="false" />
-            <element signature="e#51100#51101#0" expanded="false" />
-            <element signature="e#51196#51197#0" expanded="false" />
-            <element signature="e#51245#51246#0" expanded="false" />
-            <element signature="e#51352#51353#0" expanded="false" />
-            <element signature="e#51401#51402#0" expanded="false" />
-            <element signature="e#51667#51668#0" expanded="false" />
-            <element signature="e#51713#51714#0" expanded="false" />
-            <element signature="e#69214#69215#0" expanded="false" />
-            <element signature="e#69253#69254#0" expanded="false" />
-            <element signature="e#69321#69322#0" expanded="false" />
-            <element signature="e#69360#69361#0" expanded="false" />
-            <element signature="e#69908#69909#0" expanded="false" />
-            <element signature="e#69960#69961#0" expanded="false" />
-            <element signature="e#72682#72683#0" expanded="false" />
-            <element signature="e#72706#72707#0" expanded="false" />
-            <element signature="e#72941#72942#0" expanded="false" />
-            <element signature="e#72994#72995#0" expanded="false" />
-            <element signature="e#83352#83353#0" expanded="false" />
-            <element signature="e#83418#83419#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../android/src/main/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" column="0" lean-forward="false" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../android/src/main/java/com/alternadom/wifiiot/WifiIotPlugin.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#9059#10331#0" expanded="true" />
+            <element signature="e#10330#10331#0" expanded="true" />
+            <element signature="e#15715#16463#0" expanded="true" />
+            <element signature="e#16462#16463#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../android/src/main/java/info/whitebyte/hotspotmanager/WifiApManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="37" column="20" lean-forward="false" selection-start-line="37" selection-start-column="20" selection-end-line="37" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-27/android/net/wifi/WifiManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45660">
+          <caret line="3044" column="35" lean-forward="false" selection-start-line="3044" selection-start-column="32" selection-end-line="3044" selection-end-column="35" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-27/android/net/wifi/WifiConfiguration.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="26460">
+          <caret line="1764" column="37" lean-forward="false" selection-start-line="1764" selection-start-column="17" selection-end-line="1764" selection-end-column="37" />
+          <folding>
+            <element signature="docComment;field#BACKUP_VERSION#0;class#WifiConfiguration#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -3948,10 +3779,10 @@
           <caret line="463" column="34" lean-forward="false" selection-start-line="463" selection-start-column="34" selection-end-line="463" selection-end-column="34" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#9293#10565#0" expanded="true" />
-            <element signature="e#10564#10565#0" expanded="true" />
-            <element signature="e#15962#16710#0" expanded="true" />
-            <element signature="e#16709#16710#0" expanded="true" />
+            <element signature="e#9059#10331#0" expanded="true" />
+            <element signature="e#10330#10331#0" expanded="true" />
+            <element signature="e#15715#16463#0" expanded="true" />
+            <element signature="e#16462#16463#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -3962,10 +3793,10 @@
           <caret line="34" column="3" lean-forward="true" selection-start-line="34" selection-start-column="3" selection-end-line="34" selection-end-column="3" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#9293#10565#0" expanded="true" />
-            <element signature="e#10564#10565#0" expanded="true" />
-            <element signature="e#15962#16710#0" expanded="true" />
-            <element signature="e#16709#16710#0" expanded="true" />
+            <element signature="e#9059#10331#0" expanded="true" />
+            <element signature="e#10330#10331#0" expanded="true" />
+            <element signature="e#15715#16463#0" expanded="true" />
+            <element signature="e#16462#16463#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -3984,10 +3815,10 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#9293#10565#0" expanded="true" />
-            <element signature="e#10564#10565#0" expanded="true" />
-            <element signature="e#15962#16710#0" expanded="true" />
-            <element signature="e#16709#16710#0" expanded="true" />
+            <element signature="e#9059#10331#0" expanded="true" />
+            <element signature="e#10330#10331#0" expanded="true" />
+            <element signature="e#15715#16463#0" expanded="true" />
+            <element signature="e#16462#16463#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -4006,10 +3837,10 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#9293#10565#0" expanded="true" />
-            <element signature="e#10564#10565#0" expanded="true" />
-            <element signature="e#15962#16710#0" expanded="true" />
-            <element signature="e#16709#16710#0" expanded="true" />
+            <element signature="e#9059#10331#0" expanded="true" />
+            <element signature="e#10330#10331#0" expanded="true" />
+            <element signature="e#15715#16463#0" expanded="true" />
+            <element signature="e#16462#16463#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -4028,10 +3859,10 @@
           <caret line="61" column="80" lean-forward="false" selection-start-line="61" selection-start-column="80" selection-end-line="61" selection-end-column="80" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#9293#10565#0" expanded="true" />
-            <element signature="e#10564#10565#0" expanded="true" />
-            <element signature="e#15962#16710#0" expanded="true" />
-            <element signature="e#16709#16710#0" expanded="true" />
+            <element signature="e#9059#10331#0" expanded="true" />
+            <element signature="e#10330#10331#0" expanded="true" />
+            <element signature="e#15715#16463#0" expanded="true" />
+            <element signature="e#16462#16463#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -4050,10 +3881,10 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#9293#10565#0" expanded="true" />
-            <element signature="e#10564#10565#0" expanded="true" />
-            <element signature="e#15962#16710#0" expanded="true" />
-            <element signature="e#16709#16710#0" expanded="true" />
+            <element signature="e#9059#10331#0" expanded="true" />
+            <element signature="e#10330#10331#0" expanded="true" />
+            <element signature="e#15715#16463#0" expanded="true" />
+            <element signature="e#16462#16463#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -4176,82 +4007,17 @@
     </entry>
     <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-27/android/net/wifi/WifiConfiguration.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="25185">
+        <state relative-caret-position="25155">
           <caret line="1764" column="37" lean-forward="false" selection-start-line="1764" selection-start-column="17" selection-end-line="1764" selection-end-column="37" />
           <folding>
-            <element signature="e#0#84805#0" expanded="false" />
             <element signature="docComment;field#BACKUP_VERSION#0;class#WifiConfiguration#0" expanded="false" />
-            <element signature="e#19237#19238#0" expanded="false" />
-            <element signature="e#19272#19273#0" expanded="false" />
-            <element signature="e#21231#21232#0" expanded="false" />
-            <element signature="e#21278#21279#0" expanded="false" />
-            <element signature="e#23450#23451#0" expanded="false" />
-            <element signature="e#23480#23481#0" expanded="false" />
-            <element signature="e#36098#36099#0" expanded="false" />
-            <element signature="e#36154#36155#0" expanded="false" />
-            <element signature="e#36368#36369#0" expanded="false" />
-            <element signature="e#36414#36415#0" expanded="false" />
-            <element signature="e#37381#37382#0" expanded="false" />
-            <element signature="e#37431#37432#0" expanded="false" />
-            <element signature="e#37694#37695#0" expanded="false" />
-            <element signature="e#37735#37736#0" expanded="false" />
-            <element signature="e#37955#37956#0" expanded="false" />
-            <element signature="e#38002#38003#0" expanded="false" />
-            <element signature="e#38258#38259#0" expanded="false" />
-            <element signature="e#38304#38305#0" expanded="false" />
-            <element signature="e#38518#38519#0" expanded="false" />
-            <element signature="e#38563#38564#0" expanded="false" />
-            <element signature="e#38812#38813#0" expanded="false" />
-            <element signature="e#38869#38870#0" expanded="false" />
-            <element signature="e#39121#39122#0" expanded="false" />
-            <element signature="e#39175#39176#0" expanded="false" />
-            <element signature="e#39790#39791#0" expanded="false" />
-            <element signature="e#39862#39863#0" expanded="false" />
-            <element signature="e#39920#39921#0" expanded="false" />
-            <element signature="e#39969#39970#0" expanded="false" />
-            <element signature="e#40017#40018#0" expanded="false" />
-            <element signature="e#40065#40066#0" expanded="false" />
-            <element signature="e#41232#41233#0" expanded="false" />
-            <element signature="e#41270#41271#0" expanded="false" />
-            <element signature="e#41418#41419#0" expanded="false" />
-            <element signature="e#41485#41486#0" expanded="false" />
-            <element signature="e#42408#42409#0" expanded="false" />
-            <element signature="e#42469#42470#0" expanded="false" />
-            <element signature="e#43511#43512#0" expanded="false" />
-            <element signature="e#43576#43577#0" expanded="false" />
-            <element signature="e#43763#43764#0" expanded="false" />
-            <element signature="e#43823#43824#0" expanded="false" />
-            <element signature="e#46780#46781#0" expanded="false" />
-            <element signature="e#46833#46834#0" expanded="false" />
-            <element signature="e#47015#47016#0" expanded="false" />
-            <element signature="e#47069#47070#0" expanded="false" />
-            <element signature="e#51049#51050#0" expanded="false" />
-            <element signature="e#51100#51101#0" expanded="false" />
-            <element signature="e#51196#51197#0" expanded="false" />
-            <element signature="e#51245#51246#0" expanded="false" />
-            <element signature="e#51352#51353#0" expanded="false" />
-            <element signature="e#51401#51402#0" expanded="false" />
-            <element signature="e#51667#51668#0" expanded="false" />
-            <element signature="e#51713#51714#0" expanded="false" />
-            <element signature="e#69214#69215#0" expanded="false" />
-            <element signature="e#69253#69254#0" expanded="false" />
-            <element signature="e#69321#69322#0" expanded="false" />
-            <element signature="e#69360#69361#0" expanded="false" />
-            <element signature="e#69908#69909#0" expanded="false" />
-            <element signature="e#69960#69961#0" expanded="false" />
-            <element signature="e#72682#72683#0" expanded="false" />
-            <element signature="e#72706#72707#0" expanded="false" />
-            <element signature="e#72941#72942#0" expanded="false" />
-            <element signature="e#72994#72995#0" expanded="false" />
-            <element signature="e#83352#83353#0" expanded="false" />
-            <element signature="e#83418#83419#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-27/android/net/wifi/WifiManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
+        <state relative-caret-position="13365">
           <caret line="945" column="52" lean-forward="false" selection-start-line="945" selection-start-column="40" selection-end-line="945" selection-end-column="52" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -4261,7 +4027,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/../../android/src/main/java/info/whitebyte/hotspotmanager/WifiApManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-215">
+        <state relative-caret-position="2175">
           <caret line="174" column="73" lean-forward="false" selection-start-line="174" selection-start-column="60" selection-end-line="174" selection-end-column="73" />
           <folding />
         </state>
@@ -4271,20 +4037,19 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="326">
           <caret line="585" column="22" lean-forward="false" selection-start-line="585" selection-start-column="22" selection-end-line="585" selection-end-column="22" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../../android/src/main/java/com/alternadom/wifiiot/WifiIotPlugin.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-74">
-          <caret line="254" column="17" lean-forward="false" selection-start-line="254" selection-start-column="17" selection-end-line="254" selection-end-column="17" />
+        <state relative-caret-position="162">
+          <caret line="108" column="16" lean-forward="false" selection-start-line="108" selection-start-column="16" selection-end-line="108" selection-end-column="16" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#9293#10565#0" expanded="true" />
-            <element signature="e#10564#10565#0" expanded="true" />
-            <element signature="e#15962#16710#0" expanded="true" />
-            <element signature="e#16709#16710#0" expanded="true" />
+            <element signature="e#9059#10331#0" expanded="true" />
+            <element signature="e#10330#10331#0" expanded="true" />
+            <element signature="e#15715#16463#0" expanded="true" />
+            <element signature="e#16462#16463#0" expanded="true" />
           </folding>
         </state>
       </provider>

@@ -110,6 +110,7 @@
       <excludeFolder url="file://$MODULE_DIR$/../../build/app/intermediates/split-apk" />
       <excludeFolder url="file://$MODULE_DIR$/../../build/app/intermediates/splits-support" />
       <excludeFolder url="file://$MODULE_DIR$/../../build/app/intermediates/symbols" />
+      <excludeFolder url="file://$MODULE_DIR$/../../build/app/intermediates/tmp" />
       <excludeFolder url="file://$MODULE_DIR$/../../build/app/intermediates/transforms" />
       <excludeFolder url="file://$MODULE_DIR$/../../build/app/outputs" />
       <excludeFolder url="file://$MODULE_DIR$/../../build/app/tmp" />
