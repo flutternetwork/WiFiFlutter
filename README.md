@@ -6,7 +6,7 @@ Plugin Flutter which can handle WiFi connections (AP, STA)
 
 Becareful, some commands as no effect on iOS because Apple don't let us to do whatever we want...
 
-## WiFi connections :
+## WiFi connections
 |                      Description                      |      Android       |         iOS          |
 | :---------------------------------------------------- | :----------------: | :------------------: |
 | Enabling / Disabling WiFi module                      | :white_check_mark: |  :x:  |
@@ -29,7 +29,7 @@ Becareful, some commands as no effect on iOS because Apple don't let us to do wh
 
 :question:(4) : I think there is a way to get the IP address but for now, this is not implemented..
 
-## Access Point :
+## Access Point
 |                                       Description                                     |      Android       |         iOS          |
 | :------------------------------------------------------------------------------------ | :----------------: | :------------------: |
 | Getting the status of the Access Point (Disable, disabling, enable, enabling, failed) | :white_check_mark: |  :x:  |
