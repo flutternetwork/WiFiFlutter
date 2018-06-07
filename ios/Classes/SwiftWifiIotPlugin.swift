@@ -11,7 +11,6 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
     }
     
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-        print("WiFi Plugin iOS calling : '\(call.method)'")
         switch (call.method) {
     /// Stand Alone
             case "loadWifiList":
@@ -112,19 +111,24 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
     }
 
     private func findAndConnect(call: FlutterMethodCall, result: @escaping FlutterResult) {
-        // https://stackoverflow.com/questions/30065660/get-value-from-anyobject-response-swift
-        let arguments = call.arguments
-        let sSSID = (arguments as? [String : String])?["ssid"] ?? ""
-        let sPassword = (arguments as? [String : String])?["password"] ?? ""
-        let bJoinOnce = (arguments as? [String : Bool])?["join_once"] ?? true
-        let bIsWep = (arguments as? [String : Bool])?["is_wep"] ?? false
+        let sSSID = (call.arguments as? [String : AnyObject])?["ssid"] as! String
+        let sPassword = (call.arguments as? [String : AnyObject])?["password"] as! String
+        let bJoinOnce = (call.arguments as? [String : AnyObject])?["join_once"] as! Bool
+        let bIsWep = (call.arguments as? [String : AnyObject])?["is_wep"] as! Bool
 
-        print("SSID : '\(sSSID)'")
-        print("PASSWORD : '\(sPassword)'")
-        print("JOIN_ONCE : '\(bJoinOnce)'")
-        print("IS_WEP : '\(bIsWep)'")
+//        print("SSID : '\(sSSID)'")
+//        print("PASSWORD : '\(sPassword)'")
+//        print("JOIN_ONCE : '\(bJoinOnce)'")
+//        if (bJoinOnce) {
+//            print("The network will be forgotten!")
+//        }
+//        print("IS_WEP : '\(bIsWep)'")
+//        if (bIsWep) {
+//            print("The key is WEP type!")
+//        } else {
+//            print("The key is WPA type!")
+//        }
 
-        // https://stackoverflow.com/questions/48390221/how-to-fix-safearealayoutguide-is-only-available-on-ios-11-0-or-newer
         if #available(iOS 11.0, *) {
             let configuration = NEHotspotConfiguration.init(ssid: sSSID, passphrase: sPassword, isWEP: bIsWep)
             configuration.joinOnce = bJoinOnce
@@ -134,18 +138,22 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
                     if (error?.localizedDescription == "already associated.") {
                         print("Connected")
                         result(true)
+                        return
                     } else {
                         print("Not Connected")
                         result(false)
+                        return
                     }
                 } else {
                     print("Connected")
                     result(true)
+                    return
                 }
             }
         } else {
             print("Not Connected")
             result(nil)
+            return
         }
     }
 
@@ -233,7 +241,7 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
             print("No prefix SSID was given!")
             result(nil)
         }
-        // https://stackoverflow.com/questions/48390221/how-to-fix-safearealayoutguide-is-only-available-on-ios-11-0-or-newer
+
         if #available(iOS 11.0, *) {
             NEHotspotConfigurationManager.shared.getConfiguredSSIDs { (htSSID) in
                 for sIncSSID in htSSID {
