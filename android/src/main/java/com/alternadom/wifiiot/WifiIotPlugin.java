@@ -1,8 +1,12 @@
 package com.alternadom.wifiiot;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
@@ -34,6 +38,7 @@ import java.util.List;
 import info.whitebyte.hotspotmanager.ClientScanResult;
 import info.whitebyte.hotspotmanager.FinishScanListener;
 import info.whitebyte.hotspotmanager.WifiApManager;
+import io.flutter.plugin.common.EventChannel;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
@@ -43,15 +48,19 @@ import io.flutter.plugin.common.PluginRegistry.Registrar;
 /**
  * WifiIotPlugin
  */
-public class WifiIotPlugin implements MethodCallHandler {
+public class WifiIotPlugin implements MethodCallHandler, EventChannel.StreamHandler {
     private WifiManager moWiFi;
     private Context moContext;
     private WifiApManager moWiFiAPManager;
+    private Activity moActivity;
+    private BroadcastReceiver receiver;
 
     private WifiIotPlugin(Activity poActivity) {
+        this.moActivity = poActivity;
         this.moContext = poActivity.getApplicationContext();
         this.moWiFi = (WifiManager) moContext.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         this.moWiFiAPManager = new WifiApManager(moContext.getApplicationContext());
+
     }
 
     /**
@@ -59,6 +68,9 @@ public class WifiIotPlugin implements MethodCallHandler {
      */
     public static void registerWith(Registrar registrar) {
         final MethodChannel channel = new MethodChannel(registrar.messenger(), "wifi_iot");
+        final EventChannel eventChannel = new EventChannel(registrar.messenger(), "plugins.wififlutter.io/wifi_scan");
+        WifiIotPlugin wifiIotPlugin = new WifiIotPlugin(registrar.activity());
+        eventChannel.setStreamHandler(wifiIotPlugin);
         channel.setMethodCallHandler(new WifiIotPlugin(registrar.activity()));
 
     }
@@ -329,43 +341,91 @@ public class WifiIotPlugin implements MethodCallHandler {
         poResult.success(moWiFiAPManager.getWifiApState().ordinal());
     }
 
-    /// Method to load wifi list into string via Callback. Returns a stringified JSONArray
-    private void loadWifiList(Result poResult) {
-        try {
-            List<ScanResult> results = moWiFi.getScanResults();
-            JSONArray wifiArray = new JSONArray();
+    @Override
+    public void onListen(Object o, EventChannel.EventSink eventSink) {
 
+        int PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION = 65655434;
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && moContext.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+            moActivity.requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION);
+        }
+        receiver = createReceiver(eventSink);
+
+        moContext.registerReceiver(receiver, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
+    }
+
+    @Override
+    public void onCancel(Object o) {
+        if(receiver != null){
+            moContext.unregisterReceiver(receiver);
+            receiver = null;
+        }
+
+    }
+
+    private BroadcastReceiver createReceiver(final EventChannel.EventSink eventSink){
+        return new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                eventSink.success(handleNetworkScanResult().toString());
+            }
+        };
+    }
+    JSONArray handleNetworkScanResult(){
+        List<ScanResult> results = moWiFi.getScanResults();
+        JSONArray wifiArray = new JSONArray();
+
+        Log.d("got wifiIotPlugin", "result number of SSID: "+ results.size());
+        try {
             for (ScanResult result : results) {
                 JSONObject wifiObject = new JSONObject();
                 if (!result.SSID.equals("")) {
-                    try {
-                        wifiObject.put("SSID", result.SSID);
-                        wifiObject.put("BSSID", result.BSSID);
-                        wifiObject.put("capabilities", result.capabilities);
-                        wifiObject.put("frequency", result.frequency);
-                        wifiObject.put("level", result.level);
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                            wifiObject.put("timestamp", result.timestamp);
-                        } else {
-                            wifiObject.put("timestamp", 0);
-                        }
-                        /// Other fields not added
-                        //wifiObject.put("operatorFriendlyName", result.operatorFriendlyName);
-                        //wifiObject.put("venueName", result.venueName);
-                        //wifiObject.put("centerFreq0", result.centerFreq0);
-                        //wifiObject.put("centerFreq1", result.centerFreq1);
-                        //wifiObject.put("channelWidth", result.channelWidth);
-                    } catch (JSONException e) {
-                        poResult.error("Exception", e.getMessage(), null);
+
+                    wifiObject.put("SSID", result.SSID);
+                    wifiObject.put("BSSID", result.BSSID);
+                    wifiObject.put("capabilities", result.capabilities);
+                    wifiObject.put("frequency", result.frequency);
+                    wifiObject.put("level", result.level);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                        wifiObject.put("timestamp", result.timestamp);
+                    } else {
+                        wifiObject.put("timestamp", 0);
                     }
+                    /// Other fields not added
+                    //wifiObject.put("operatorFriendlyName", result.operatorFriendlyName);
+                    //wifiObject.put("venueName", result.venueName);
+                    //wifiObject.put("centerFreq0", result.centerFreq0);
+                    //wifiObject.put("centerFreq1", result.centerFreq1);
+                    //wifiObject.put("channelWidth", result.channelWidth);
+
                     wifiArray.put(wifiObject);
                 }
             }
-            poResult.success(wifiArray.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } finally {
+            Log.d("got wifiIotPlugin", "final result: "+ results.toString());
+            return wifiArray;
+        }
+    }
+
+    /// Method to load wifi list into string via Callback. Returns a stringified JSONArray
+    private void loadWifiList(final Result poResult) {
+        try {
+
+            int PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION = 65655434;
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && moContext.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+                moActivity.requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION);
+            }
+
+            moWiFi.startScan();
+
+            poResult.success(handleNetworkScanResult().toString());
+
         } catch (Exception e) {
             poResult.error("Exception", e.getMessage(), null);
         }
     }
+
 
     /// Method to force wifi usage if the user needs to send requests via wifi
     /// if it does not have internet connection. Useful for IoT applications, when
