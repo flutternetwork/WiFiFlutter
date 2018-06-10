@@ -5,8 +5,10 @@ import 'package:flutter/services.dart';
 
 enum WIFI_AP_STATE { WIFI_AP_STATE_DISABLING, WIFI_AP_STATE_DISABLED, WIFI_AP_STATE_ENABLING, WIFI_AP_STATE_ENABLED, WIFI_AP_STATE_FAILED }
 
+const MethodChannel _channel = const MethodChannel('wifi_iot');
+const EventChannel _eventChannel = const EventChannel('plugins.wififlutter.io/wifi_scan');
+
 class WiFiForIoTPlugin {
-  static const MethodChannel _channel = const MethodChannel('wifi_iot');
 
   static Future<bool> isWiFiAPEnabled() async {
     Map<String, String> htArguments = new Map();
@@ -124,7 +126,18 @@ class WiFiForIoTPlugin {
     }
   }
 
-  static Future<List<WifiNetwork>> loadWifiList() async {
+  static Stream<List<WifiNetwork>> _onWifiScanResultReady;
+
+  static Stream<List<WifiNetwork>> get onWifiScanResultReady{
+    if(_onWifiScanResultReady == null){
+      _onWifiScanResultReady = _eventChannel
+          .receiveBroadcastStream()
+          .map((dynamic event) => WifiNetwork.parse(event));
+    }
+    return _onWifiScanResultReady;
+  }
+
+  static Future<List<WifiNetwork>> _loadWifiList() async {
     Map<String, String> htArguments = new Map();
     String sResult;
     List<WifiNetwork> htResult = new List();
@@ -136,6 +149,15 @@ class WiFiForIoTPlugin {
     }
     return htResult;
   }
+
+  static Future<List<WifiNetwork>> loadWifiList() async {
+    List<WifiNetwork> result = (await _loadWifiList() ?? new List<WifiNetwork>());
+    if(result.length >= 1) return result;
+
+    result.clear();
+    return await WiFiForIoTPlugin.onWifiScanResultReady.first;
+  }
+
 
   static void forceWifiUsage(bool useWifi) async {
     Map<String, bool> htArguments = new Map();
