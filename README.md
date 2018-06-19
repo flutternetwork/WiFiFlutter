@@ -1,4 +1,4 @@
-# <img src="https://dev.alternadom.com/wp-content-alter/uploads/2018/06/Logomark-Color-01.png" alt="WiFiFlutter" width="40" height="40" /> WiFi Flutter
+<img src="https://dev.alternadom.com/wp-content-alter/uploads/2018/06/Original-1-Color-01-e1529392962991.png" alt="WiFiFlutter" width="128" height="52" />
 
 ## Introduction
 
