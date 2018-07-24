@@ -4,6 +4,7 @@ import 'package:wifi_iot/wifi_iot.dart';
 
 const String STA_DEFAULT_SSID = "STA_SSID";
 const String STA_DEFAULT_PASSWORD = "STA_PASSWORD";
+const NetworkSecurity STA_DEFAULT_SECURITY = NetworkSecurity.WPA;
 
 const String AP_DEFAULT_SSID = "AP_SSID";
 const String AP_DEFAULT_PASSWORD = "AP_PASSWORD";
@@ -451,7 +452,7 @@ class _MyAppState extends State<MyApp> {
                 onSelected: (PopupCommand poCommand) {
                   switch (poCommand.command) {
                     case "Connect":
-                      WiFiForIoTPlugin.findAndConnect(STA_DEFAULT_SSID, STA_DEFAULT_PASSWORD);
+                      WiFiForIoTPlugin.connect(STA_DEFAULT_SSID, password: STA_DEFAULT_PASSWORD, joinOnce: true, security: STA_DEFAULT_SECURITY);
                       break;
                     case "Remove":
                       WiFiForIoTPlugin.removeWifiNetwork(poCommand.argument);
@@ -809,7 +810,7 @@ class _MyAppState extends State<MyApp> {
             new RaisedButton(
               child: new Text("Connect to '$AP_DEFAULT_SSID'"),
               onPressed: () {
-                WiFiForIoTPlugin.findAndConnect(STA_DEFAULT_SSID, STA_DEFAULT_PASSWORD, joinOnce: true, isWep: false);
+                WiFiForIoTPlugin.connect(STA_DEFAULT_SSID, password: STA_DEFAULT_PASSWORD, joinOnce: true, security: NetworkSecurity.WPA);
               },
             ),
           ]);
@@ -820,7 +821,7 @@ class _MyAppState extends State<MyApp> {
           new RaisedButton(
             child: new Text("Connect to '$AP_DEFAULT_SSID'"),
             onPressed: () {
-              WiFiForIoTPlugin.findAndConnect(STA_DEFAULT_SSID, STA_DEFAULT_PASSWORD, joinOnce: true, isWep: false);
+              WiFiForIoTPlugin.connect(STA_DEFAULT_SSID, password: STA_DEFAULT_PASSWORD, joinOnce: true, security: NetworkSecurity.WPA);
             },
           ),
         ]);
@@ -837,7 +838,7 @@ class _MyAppState extends State<MyApp> {
         new RaisedButton(
           child: new Text("Connect to '$AP_DEFAULT_SSID'"),
           onPressed: () {
-            WiFiForIoTPlugin.findAndConnect(STA_DEFAULT_SSID, STA_DEFAULT_PASSWORD, joinOnce: true, isWep: false);
+            WiFiForIoTPlugin.connect(STA_DEFAULT_SSID, password: STA_DEFAULT_PASSWORD, joinOnce: true, security: NetworkSecurity.WPA);
           },
         ),
       ]);
