@@ -190,7 +190,23 @@ class WiFiForIoTPlugin {
     }
   }
 
-  static Future<bool> findAndConnect(String ssid, String password, {bool joinOnce = true, bool isWep = false}) async {
+  static Future<bool> connect(String ssid, {String password, NetworkSecurity security = NetworkSecurity.NONE, bool joinOnce = true}) async {
+    if (!await isEnabled()) await setEnabled(true);
+    bool bResult;
+    try {
+      bResult = await _channel.invokeMethod('connect', {
+        "ssid": ssid.toString(),
+        "password": password.toString(),
+        "join_once": joinOnce,
+        "security": security?.toString()?.substring('$NetworkSecurity'.length + 1),
+      });
+    } on MissingPluginException catch (e) {
+      print("MissingPluginException : ${e.toString()}");
+    }
+    return (bResult != null && bResult);
+  }
+
+  static Future<bool> findAndConnect(String ssid, {String password, bool joinOnce = true}) async {
     if (!await isEnabled()) {
       await setEnabled(true);
     }
@@ -207,7 +223,6 @@ class WiFiForIoTPlugin {
       "ssid": ssid.toString(),
       "password": password.toString(),
       "join_once": joinOnce,
-      "is_wep": isWep,
       });
     } on MissingPluginException catch (e) {
       print("MissingPluginException : ${e.toString()}");
@@ -400,4 +415,8 @@ class WifiNetwork {
     }
     return htList;
   }
+}
+
+enum NetworkSecurity {
+  WPA, WEP, NONE
 }
