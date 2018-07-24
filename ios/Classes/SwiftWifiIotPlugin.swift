@@ -28,6 +28,9 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
             case "findAndConnect": // OK
                 findAndConnect(call: call, result: result)
                 break;
+            case "connect": // OK
+                connect(call: call, result: result)
+                break;
             case "isConnected": // OK
                 isConnected(result: result)
                 break;
@@ -110,11 +113,11 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
         }
     }
 
-    private func findAndConnect(call: FlutterMethodCall, result: @escaping FlutterResult) {
+    private func connect(call: FlutterMethodCall, result: @escaping FlutterResult) {
         let sSSID = (call.arguments as? [String : AnyObject])?["ssid"] as! String
-        let sPassword = (call.arguments as? [String : AnyObject])?["password"] as! String
-        let bJoinOnce = (call.arguments as? [String : AnyObject])?["join_once"] as! Bool
-        let bIsWep = (call.arguments as? [String : AnyObject])?["is_wep"] as! Bool
+        let sPassword = (call.arguments as? [String : AnyObject])?["password"] as! String?
+        let bJoinOnce = (call.arguments as? [String : AnyObject])?["join_once"] as! Bool?
+        let sSecurity = (call.arguments as? [String : AnyObject])?["security"] as! String?
 
 //        print("SSID : '\(sSSID)'")
 //        print("PASSWORD : '\(sPassword)'")
@@ -122,21 +125,16 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
 //        if (bJoinOnce) {
 //            print("The network will be forgotten!")
 //        }
-//        print("IS_WEP : '\(bIsWep)'")
-//        if (bIsWep) {
-//            print("The key is WEP type!")
-//        } else {
-//            print("The key is WPA type!")
-//        }
+//        print("SECURITY : '\(sSecurity)'")
 
         if #available(iOS 11.0, *) {
-            let configuration = NEHotspotConfiguration.init(ssid: sSSID, passphrase: sPassword, isWEP: bIsWep)
-            configuration.joinOnce = bJoinOnce
+            let configuration = initHotspotConfiguration(ssid: sSSID, passphrase: sPassword, security: sSecurity)
+            configuration.joinOnce = bJoinOnce ?? false
 
             NEHotspotConfigurationManager.shared.apply(configuration) { (error) in
                 if (error != nil) {
                     if (error?.localizedDescription == "already associated.") {
-                        print("Connected")
+                        print("Connected to " + self.getSSID()!)
                         result(true)
                         return
                     } else {
@@ -145,8 +143,9 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
                         return
                     }
                 } else {
-                    print("Connected")
-                    result(true)
+                    print("Connected to " + self.getSSID()!)
+                    // ssid check is required because if wifi not found (could not connect) there seems to be no error given
+                    result(self.getSSID()! == sSSID)
                     return
                 }
             }
@@ -154,6 +153,22 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
             print("Not Connected")
             result(nil)
             return
+        }
+    }
+
+    private func findAndConnect(call: FlutterMethodCall, result: @escaping FlutterResult) {
+        result(FlutterMethodNotImplemented)
+    }
+
+    @available(iOS 11.0, *)
+    private func initHotspotConfiguration(ssid: String, passphrase: String?, security: String? = nil) -> NEHotspotConfiguration {
+        switch security?.uppercased() {
+            case "WPA":
+                return NEHotspotConfiguration.init(ssid: ssid, passphrase: passphrase!, isWEP: false)
+            case "WEP":
+                return NEHotspotConfiguration.init(ssid: ssid, passphrase: passphrase!, isWEP: true)
+            default:
+                return NEHotspotConfiguration.init(ssid: ssid)
         }
     }
 
