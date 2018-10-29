@@ -648,15 +648,15 @@ public class WifiIotPlugin implements MethodCallHandler, EventChannel.StreamHand
 
     /// This method will remove the WiFi network as per the passed SSID from the device list
     private void removeWifiNetwork(MethodCall poCall, Result poResult) {
-        String prefix_ssid = poCall.argument("prefix_ssid");
-        if (prefix_ssid.equals("")) {
-            poResult.error("Error", "No prefix SSID was given!", null);
+        String ssid = poCall.argument("ssid");
+        if (ssid.equals("")) {
+            poResult.error("Error", "No SSID was given!", null);
         }
 
         List<WifiConfiguration> mWifiConfigList = moWiFi.getConfiguredNetworks();
         for (WifiConfiguration wifiConfig : mWifiConfigList) {
-            String comparableSSID = ('"' + prefix_ssid); //Add quotes because wifiConfig.SSID has them
-            if (wifiConfig.SSID.startsWith(comparableSSID)) {
+            String comparableSSID = ('"' + ssid + '"'); //Add quotes because wifiConfig.SSID has them
+            if (wifiConfig.SSID.equals(comparableSSID)) {
                 moWiFi.removeNetwork(wifiConfig.networkId);
                 moWiFi.saveConfiguration();
                 poResult.success(true);

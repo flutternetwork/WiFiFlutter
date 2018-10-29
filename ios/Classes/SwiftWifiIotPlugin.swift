@@ -251,16 +251,16 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
 
     private func removeWifiNetwork(call: FlutterMethodCall, result: @escaping FlutterResult) {
         let arguments = call.arguments
-        let sPrefixSSID = (arguments as! [String : String])["prefix_ssid"] ?? ""
-        if (sPrefixSSID == "") {
-            print("No prefix SSID was given!")
+        let sSSID = (arguments as! [String : String])["ssid"] ?? ""
+        if (sSSID == "") {
+            print("No SSID was given!")
             result(nil)
         }
 
         if #available(iOS 11.0, *) {
             NEHotspotConfigurationManager.shared.getConfiguredSSIDs { (htSSID) in
                 for sIncSSID in htSSID {
-                    if (sPrefixSSID != "" && sIncSSID.hasPrefix(sPrefixSSID)) {
+                    if (sSSID != "" && sIncSSID == sSSID) {
                         NEHotspotConfigurationManager.shared.removeConfiguration(forSSID: sIncSSID)
                     }
                 }
