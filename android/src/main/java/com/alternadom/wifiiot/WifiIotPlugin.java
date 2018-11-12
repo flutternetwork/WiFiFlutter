@@ -783,7 +783,7 @@ public class WifiIotPlugin implements MethodCallHandler, EventChannel.StreamHand
         for (int i = 0; i < 30; i++) {
             int networkId = moWiFi.getConnectionInfo().getNetworkId();
             if (networkId != -1) {
-                connected = networkId == conf.networkId;
+                connected = networkId == updateNetwork;
                 break;
             }
             try {
