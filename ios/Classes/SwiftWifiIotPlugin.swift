@@ -234,7 +234,16 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
     }
 
     private func getBSSID(result: FlutterResult) {
-        result(FlutterMethodNotImplemented)
+        var bssid: String?
+        if let interfaces = CNCopySupportedInterfaces() as NSArray? {
+            for interface in interfaces {
+                if let interfaceInfo = CNCopyCurrentNetworkInfo(interface as! CFString) as NSDictionary? {
+                    ssid = interfaceInfo[kCNNetworkInfoKeyBSSID as String] as? String
+                    break
+                }
+            }
+        }
+        return bssid
     }
 
     private func getCurrentSignalStrength(result: FlutterResult) {
