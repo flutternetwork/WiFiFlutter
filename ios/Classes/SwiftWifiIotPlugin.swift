@@ -12,96 +12,96 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
     
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         switch (call.method) {
-        /// Stand Alone
-        case "loadWifiList":
-            loadWifiList(result: result)
-            break;
-        case "forceWifiUsage":
-            forceWifiUsage(call: call, result: result)
-            break;
-        case "isEnabled":
-            isEnabled(result: result)
-            break;
-        case "setEnabled":
-            setEnabled(call: call, result: result)
-            break;
-        case "findAndConnect": // OK
-            findAndConnect(call: call, result: result)
-            break;
-        case "connect": // OK
-            connect(call: call, result: result)
-            break;
-        case "isConnected": // OK
-            isConnected(result: result)
-            break;
-        case "disconnect": // OK
-            disconnect(result: result)
-            break;
-        case "getSSID":
-            result(getSSID())
-            break;
-        case "getBSSID":
-            result(getBSSID())
-            break;
-        case "getCurrentSignalStrength":
-            getCurrentSignalStrength(result: result)
-            break;
-        case "getFrequency":
-            getFrequency(result: result)
-            break;
-        case "getIP":
-            getIP(result: result)
-            break;
-        case "removeWifiNetwork": // OK
-            removeWifiNetwork(call: call, result: result)
-            break;
-        case "isRegisteredWifiNetwork":
-            isRegisteredWifiNetwork(call: call, result: result)
-            break;
-        /// Access Point
-        case "isWiFiAPEnabled":
-            isWiFiAPEnabled(result: result)
-            break;
-        case "setWiFiAPEnabled":
-            setWiFiAPEnabled(call: call, result: result)
-            break;
-        case "getWiFiAPState":
-            getWiFiAPState(result: result)
-            break;
-        case "getClientList":
-            getClientList(result: result)
-            break;
-        case "getWiFiAPSSID":
-            getWiFiAPSSID(result: result)
-            break;
-        case "setWiFiAPSSID":
-            setWiFiAPSSID(call: call, result: result)
-            break;
-        case "isSSIDHidden":
-            isSSIDHidden(result: result)
-            break;
-        case "setSSIDHidden":
-            setSSIDHidden(call: call, result: result)
-            break;
-        case "getWiFiAPPreSharedKey":
-            getWiFiAPPreSharedKey(result: result)
-            break;
-        case "setWiFiAPPreSharedKey":
-            setWiFiAPPreSharedKey(call: call, result: result)
-            break;
-        case "setMACFiltering":
-            setMACFiltering(call: call, result: result)
-            break;
-        default:
-            result(FlutterMethodNotImplemented);
-            break;
+            /// Stand Alone
+            case "loadWifiList":
+                loadWifiList(result: result)
+                break;
+            case "forceWifiUsage":
+                forceWifiUsage(call: call, result: result)
+                break;
+            case "isEnabled":
+                isEnabled(result: result)
+                break;
+            case "setEnabled":
+                setEnabled(call: call, result: result)
+                break;
+            case "findAndConnect": // OK
+                findAndConnect(call: call, result: result)
+                break;
+            case "connect": // OK
+                connect(call: call, result: result)
+                break;
+            case "isConnected": // OK
+                isConnected(result: result)
+                break;
+            case "disconnect": // OK
+                disconnect(result: result)
+                break;
+            case "getSSID":
+                result(getSSID())
+                break;
+            case "getBSSID":
+                result(getBSSID())
+                break;
+            case "getCurrentSignalStrength":
+                getCurrentSignalStrength(result: result)
+                break;
+            case "getFrequency":
+                getFrequency(result: result)
+                break;
+            case "getIP":
+                getIP(result: result)
+                break;
+            case "removeWifiNetwork": // OK
+                removeWifiNetwork(call: call, result: result)
+                break;
+            case "isRegisteredWifiNetwork":
+                isRegisteredWifiNetwork(call: call, result: result)
+                break;
+            /// Access Point
+            case "isWiFiAPEnabled":
+                isWiFiAPEnabled(result: result)
+                break;
+            case "setWiFiAPEnabled":
+                setWiFiAPEnabled(call: call, result: result)
+                break;
+            case "getWiFiAPState":
+                getWiFiAPState(result: result)
+                break;
+            case "getClientList":
+                getClientList(result: result)
+                break;
+            case "getWiFiAPSSID":
+                getWiFiAPSSID(result: result)
+                break;
+            case "setWiFiAPSSID":
+                setWiFiAPSSID(call: call, result: result)
+                break;
+            case "isSSIDHidden":
+                isSSIDHidden(result: result)
+                break;
+            case "setSSIDHidden":
+                setSSIDHidden(call: call, result: result)
+                break;
+            case "getWiFiAPPreSharedKey":
+                getWiFiAPPreSharedKey(result: result)
+                break;
+            case "setWiFiAPPreSharedKey":
+                setWiFiAPPreSharedKey(call: call, result: result)
+                break;
+            case "setMACFiltering":
+                setMACFiltering(call: call, result: result)
+                break;
+            default:
+                result(FlutterMethodNotImplemented);
+                break;
         }
     }
-    
+
     private func loadWifiList(result: FlutterResult) {
         result(FlutterMethodNotImplemented)
     }
-    
+
     private func forceWifiUsage(call: FlutterMethodCall, result: FlutterResult) {
         let arguments = call.arguments
         let useWifi = (arguments as! [String : Bool])["useWifi"]
@@ -112,7 +112,7 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
             result(nil)
         }
     }
-    
+
     private func connect(call: FlutterMethodCall, result: @escaping FlutterResult) {
         let sSSID = (call.arguments as? [String : AnyObject])?["ssid"] as! String
         let sPassword = (call.arguments as? [String : AnyObject])?["password"] as! String?
@@ -155,11 +155,11 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
             return
         }
     }
-    
+
     private func findAndConnect(call: FlutterMethodCall, result: @escaping FlutterResult) {
         result(FlutterMethodNotImplemented)
     }
-    
+
     @available(iOS 11.0, *)
     private func initHotspotConfiguration(ssid: String, passphrase: String?, security: String? = nil) -> NEHotspotConfiguration {
         switch security?.uppercased() {
@@ -171,7 +171,7 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
             return NEHotspotConfiguration.init(ssid: ssid)
         }
     }
-    
+
     private func isEnabled(result: FlutterResult) {
         // For now..
         let sSSID: String? = getSSID()
@@ -181,7 +181,7 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
             result(nil)
         }
     }
-    
+
     private func setEnabled(call: FlutterMethodCall, result: FlutterResult) {
         let arguments = call.arguments
         let state = (arguments as! [String : Bool])["state"]
@@ -192,7 +192,7 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
             result(nil)
         }
     }
-    
+
     private func isConnected(result: FlutterResult) {
         // For now..
         let sSSID: String? = getSSID()
@@ -202,7 +202,7 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
             result(false)
         }
     }
-    
+
     private func disconnect(result: FlutterResult) {
         if #available(iOS 11.0, *) {
             let sSSID: String? = getSSID()
@@ -219,7 +219,7 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
             result(nil)
         }
     }
-    
+
     private func getSSID() -> String? {
         var ssid: String?
         if let interfaces = CNCopySupportedInterfaces() as NSArray? {
@@ -232,7 +232,7 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
         }
         return ssid
     }
-    
+
     private func getBSSID() -> String? {
         var bssid: String?
         if let interfaces = CNCopySupportedInterfaces() as NSArray? {
@@ -245,19 +245,19 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
         }
         return bssid
     }
-    
+
     private func getCurrentSignalStrength(result: FlutterResult) {
         result(FlutterMethodNotImplemented)
     }
-    
+
     private func getFrequency(result: FlutterResult) {
         result(FlutterMethodNotImplemented)
     }
-    
+
     private func getIP(result: FlutterResult) {
         result(FlutterMethodNotImplemented)
     }
-    
+
     private func removeWifiNetwork(call: FlutterMethodCall, result: @escaping FlutterResult) {
         let arguments = call.arguments
         let sPrefixSSID = (arguments as! [String : String])["prefix_ssid"] ?? ""
@@ -280,15 +280,15 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
             result(nil)
         }
     }
-    
+
     private func isRegisteredWifiNetwork(call: FlutterMethodCall, result: FlutterResult) {
         result(FlutterMethodNotImplemented)
     }
-    
+
     private func isWiFiAPEnabled(result: FlutterResult) {
         result(FlutterMethodNotImplemented)
     }
-    
+
     private func setWiFiAPEnabled(call: FlutterMethodCall, result: FlutterResult) {
         let arguments = call.arguments
         let state = (arguments as! [String : Bool])["state"]
@@ -299,19 +299,19 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
             result(nil)
         }
     }
-    
+
     private func getWiFiAPState(result: FlutterResult) {
         result(FlutterMethodNotImplemented)
     }
-    
+
     private func getClientList(result: FlutterResult) {
         result(FlutterMethodNotImplemented)
     }
-    
+
     private func getWiFiAPSSID(result: FlutterResult) {
         result(FlutterMethodNotImplemented)
     }
-    
+
     private func setWiFiAPSSID(call: FlutterMethodCall, result: FlutterResult) {
         let arguments = call.arguments
         let ssid = (arguments as! [String : String])["ssid"]
@@ -322,11 +322,11 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
             result(nil)
         }
     }
-    
+
     private func isSSIDHidden(result: FlutterResult) {
         result(FlutterMethodNotImplemented)
     }
-    
+
     private func setSSIDHidden(call: FlutterMethodCall, result: FlutterResult) {
         let arguments = call.arguments
         let hidden = (arguments as! [String : Bool])["hidden"]
@@ -337,11 +337,11 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
             result(nil)
         }
     }
-    
+
     private func getWiFiAPPreSharedKey(result: FlutterResult) {
         result(FlutterMethodNotImplemented)
     }
-    
+
     private func setWiFiAPPreSharedKey(call: FlutterMethodCall, result: FlutterResult) {
         let arguments = call.arguments
         let preSharedKey = (arguments as! [String : String])["preSharedKey"]
@@ -352,7 +352,7 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
             result(nil)
         }
     }
-    
+
     private func setMACFiltering(call: FlutterMethodCall, result: FlutterResult) {
         result(FlutterMethodNotImplemented)
     }
