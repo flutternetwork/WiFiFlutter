@@ -12,7 +12,7 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
     
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         switch (call.method) {
-    /// Stand Alone
+            /// Stand Alone
             case "loadWifiList":
                 loadWifiList(result: result)
                 break;
@@ -41,7 +41,7 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
                 result(getSSID())
                 break;
             case "getBSSID":
-                getBSSID(result: result)
+                result(getBSSID())
                 break;
             case "getCurrentSignalStrength":
                 getCurrentSignalStrength(result: result)
@@ -58,7 +58,7 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
             case "isRegisteredWifiNetwork":
                 isRegisteredWifiNetwork(call: call, result: result)
                 break;
-    /// Access Point
+            /// Access Point
             case "isWiFiAPEnabled":
                 isWiFiAPEnabled(result: result)
                 break;
@@ -118,14 +118,14 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
         let sPassword = (call.arguments as? [String : AnyObject])?["password"] as! String?
         let bJoinOnce = (call.arguments as? [String : AnyObject])?["join_once"] as! Bool?
         let sSecurity = (call.arguments as? [String : AnyObject])?["security"] as! String?
-
-//        print("SSID : '\(sSSID)'")
-//        print("PASSWORD : '\(sPassword)'")
-//        print("JOIN_ONCE : '\(bJoinOnce)'")
-//        if (bJoinOnce) {
-//            print("The network will be forgotten!")
-//        }
-//        print("SECURITY : '\(sSecurity)'")
+        
+        //        print("SSID : '\(sSSID)'")
+        //        print("PASSWORD : '\(sPassword)'")
+        //        print("JOIN_ONCE : '\(bJoinOnce)'")
+        //        if (bJoinOnce) {
+        //            print("The network will be forgotten!")
+        //        }
+        //        print("SECURITY : '\(sSecurity)'")
 
         if #available(iOS 11.0, *) {
             let configuration = initHotspotConfiguration(ssid: sSSID, passphrase: sPassword, security: sSecurity)
@@ -233,12 +233,12 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
         return ssid
     }
 
-    private func getBSSID(result: FlutterResult) {
+    private func getBSSID() -> String? {
         var bssid: String?
         if let interfaces = CNCopySupportedInterfaces() as NSArray? {
             for interface in interfaces {
                 if let interfaceInfo = CNCopyCurrentNetworkInfo(interface as! CFString) as NSDictionary? {
-                    ssid = interfaceInfo[kCNNetworkInfoKeyBSSID as String] as? String
+                    bssid = interfaceInfo[kCNNetworkInfoKeyBSSID as String] as? String
                     break
                 }
             }
@@ -265,7 +265,7 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
             print("No prefix SSID was given!")
             result(nil)
         }
-
+        
         if #available(iOS 11.0, *) {
             NEHotspotConfigurationManager.shared.getConfiguredSSIDs { (htSSID) in
                 for sIncSSID in htSSID {
