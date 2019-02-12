@@ -126,11 +126,11 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
         //            print("The network will be forgotten!")
         //        }
         //        print("SECURITY : '\(sSecurity)'")
-        
+
         if #available(iOS 11.0, *) {
             let configuration = initHotspotConfiguration(ssid: sSSID, passphrase: sPassword, security: sSecurity)
             configuration.joinOnce = bJoinOnce ?? false
-            
+
             NEHotspotConfigurationManager.shared.apply(configuration) { (error) in
                 if (error != nil) {
                     if (error?.localizedDescription == "already associated.") {
@@ -163,12 +163,12 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
     @available(iOS 11.0, *)
     private func initHotspotConfiguration(ssid: String, passphrase: String?, security: String? = nil) -> NEHotspotConfiguration {
         switch security?.uppercased() {
-        case "WPA":
-            return NEHotspotConfiguration.init(ssid: ssid, passphrase: passphrase!, isWEP: false)
-        case "WEP":
-            return NEHotspotConfiguration.init(ssid: ssid, passphrase: passphrase!, isWEP: true)
-        default:
-            return NEHotspotConfiguration.init(ssid: ssid)
+            case "WPA":
+                return NEHotspotConfiguration.init(ssid: ssid, passphrase: passphrase!, isWEP: false)
+            case "WEP":
+                return NEHotspotConfiguration.init(ssid: ssid, passphrase: passphrase!, isWEP: true)
+            default:
+                return NEHotspotConfiguration.init(ssid: ssid)
         }
     }
 
