@@ -545,6 +545,10 @@ public class WifiIotPlugin implements MethodCallHandler, EventChannel.StreamHand
     /// After 10 seconds, a post telling you whether you are connected will pop up.
     /// Callback returns true if ssid is in the range
     private void findAndConnect(final MethodCall poCall, final Result poResult) {
+        int PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION = 65655434;
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && moContext.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+            moActivity.requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION);
+        }
         new Thread() {
             public void run() {
                 String ssid = poCall.argument("ssid");
