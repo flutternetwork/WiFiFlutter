@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.os.Handler;
+import android.os.Looper;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
@@ -534,8 +536,15 @@ public class WifiIotPlugin implements MethodCallHandler, EventChannel.StreamHand
                 String security = poCall.argument("security");
                 Boolean joinOnce = poCall.argument("join_once");
 
-                boolean connected = connectTo(ssid, password, security, joinOnce);
-                poResult.success(connected);
+                final boolean connected = connectTo(ssid, password, security, joinOnce);
+                
+				final Handler handler = new Handler(Looper.getMainLooper());
+                handler.post(new Runnable() {
+                    @Override
+                    public void run () {
+                        poResult.success(connected);
+                    }
+                });
             }
         }.start();
     }
