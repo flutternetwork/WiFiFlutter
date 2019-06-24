@@ -305,7 +305,14 @@ public class WifiIotPlugin implements MethodCallHandler, EventChannel.StreamHand
                     for (ClientScanResult client : clients) {
                         JSONObject clientObject = new JSONObject();
 
-                        if (client.isReachable() == finalOnlyReachables) {
+                        Boolean clientIsReachable = client.isReachable();
+                        Boolean shouldReturnCurrentClient = true;
+                        if ( finalOnlyReachables.booleanValue()) {
+                            if (!clientIsReachable.booleanValue()){
+                                shouldReturnCurrentClient = Boolean.valueOf(false);
+                            }
+                        }
+                        if (shouldReturnCurrentClient.booleanValue()) {
                             try {
                                 clientObject.put("IPAddr", client.getIpAddr());
                                 clientObject.put("HWAddr", client.getHWAddr());
