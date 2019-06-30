@@ -580,8 +580,15 @@ public class WifiIotPlugin implements MethodCallHandler, EventChannel.StreamHand
                     }
                 }
 
-                boolean connected = connectTo(ssid, password, security, joinOnce);
-                poResult.success(connected);
+                final boolean connected = connectTo(ssid, password, security, joinOnce);
+
+				final Handler handler = new Handler(Looper.getMainLooper());
+                handler.post(new Runnable() {
+                    @Override
+                    public void run () {
+                        poResult.success(connected);
+                    }
+                });
             }
         }.start();
     }
