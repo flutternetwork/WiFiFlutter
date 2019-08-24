@@ -41,6 +41,10 @@ Becareful, some commands as no effect on iOS because Apple don't let us to do wh
 
 For now, there is no way to set the access point on iOS... 
 
+## Xcode build (iOS >= 8.0)
+
+To be able to build with Xcode, you must specify `use_frameworks!` in your Podfile to allow building Swift into static libraries.
+
 ## Troubleshooting
 
 Don't hesitate and come [here](https://github.com/alternadom/WiFiFlutter/issues), we will be happy to help you!
