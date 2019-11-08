@@ -71,6 +71,11 @@ public class WifiIotPlugin implements MethodCallHandler, EventChannel.StreamHand
      * Plugin registration.
      */
     public static void registerWith(Registrar registrar) {
+        if (registrar.activity() == null) {
+            // When a background flutter view tries to register the plugin, the registrar has no activity.
+            // We stop the registration process as this plugin is foreground only.
+            return;
+        }
         final MethodChannel channel = new MethodChannel(registrar.messenger(), "wifi_iot");
         final EventChannel eventChannel = new EventChannel(registrar.messenger(), "plugins.wififlutter.io/wifi_scan");
         final WifiIotPlugin wifiIotPlugin = new WifiIotPlugin(registrar.activity());
