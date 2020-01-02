@@ -1,4 +1,4 @@
-<img src="https://www.alternadom.com/wp-content/uploads/2019/05/Logo-WiFi_Flutter.png" alt="WiFiFlutter" width="256" height="104" />
+<img src="logo/logo+name_color.png" alt="WiFiFlutter" width="255" height="155" />
 
 ## Introduction
 
