@@ -1,18 +1,23 @@
 name: wifi_iot
 description: Flutter plugin which can handle WiFi connections (AP, STA)
-version: 0.0.1
-author: Florian
+version: 0.1.0
 homepage: https://github.com/alternadom/WiFiFlutter
+
+flutter:
+  plugin:
+    androidX: true
+    platforms:
+      android:
+        package: com.alternadom.wifiiot
+        pluginClass: WifiIotPlugin
+      ios:
+        pluginClass: WifiIotPlugin
 
 environment:
   sdk: '>=2.0.0 <3.0.0'
+  # Flutter versions prior to 1.10 did not support the flutter.plugin.platforms map.
+  flutter: ">=1.10.0 <2.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-
-flutter:
-  plugin:
-    androidPackage: com.alternadom.wifiiot
-    pluginClass: WifiIotPlugin
-    androidX: true
