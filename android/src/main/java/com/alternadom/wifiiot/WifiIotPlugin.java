@@ -198,9 +198,6 @@ public class WifiIotPlugin implements MethodCallHandler, EventChannel.StreamHand
 //        Log.d(this.getClass().toString(), sResult);
         boolean bEnable = poCall.argument("state");
 
-
-        /// cat /data/misc/wifi_hostapd/hostapd.accept
-
         Log.e(this.getClass().toString(), "TODO : Develop function to enable/disable MAC filtering...");
 
         poResult.error("TODO", "Develop function to enable/disable MAC filtering...", null);
@@ -216,8 +213,11 @@ public class WifiIotPlugin implements MethodCallHandler, EventChannel.StreamHand
      */
     private void getWiFiAPSSID(Result poResult) {
         WifiConfiguration oWiFiConfig = moWiFiAPManager.getWifiApConfiguration();
-        String sAPSSID = oWiFiConfig.SSID;
-        poResult.success(sAPSSID);
+        if (oWiFiConfig != null && oWiFiConfig.SSID != null) {
+            poResult.success(oWiFiConfig.SSID);
+            return;
+        }
+        poResult.error("Exception", "SSID not found", null);
     }
 
     private void setWiFiAPSSID(MethodCall poCall, Result poResult) {
@@ -238,8 +238,11 @@ public class WifiIotPlugin implements MethodCallHandler, EventChannel.StreamHand
      */
     private void isSSIDHidden(Result poResult) {
         WifiConfiguration oWiFiConfig = moWiFiAPManager.getWifiApConfiguration();
-        boolean isSSIDHidden = oWiFiConfig.hiddenSSID;
-        poResult.success(isSSIDHidden);
+        if (oWiFiConfig != null && oWiFiConfig.hiddenSSID) {
+            poResult.success(oWiFiConfig.hiddenSSID);
+            return;
+        }
+        poResult.error("Exception", "Hidden SSID not found", null);
     }
 
     private void setSSIDHidden(MethodCall poCall, Result poResult) {
@@ -266,8 +269,11 @@ public class WifiIotPlugin implements MethodCallHandler, EventChannel.StreamHand
      */
     private void getWiFiAPPreSharedKey(Result poResult) {
         WifiConfiguration oWiFiConfig = moWiFiAPManager.getWifiApConfiguration();
-        String sPreSharedKey = oWiFiConfig.preSharedKey;
-        poResult.success(sPreSharedKey);
+        if (oWiFiConfig != null && oWiFiConfig.preSharedKey != null) {
+            poResult.success(oWiFiConfig.preSharedKey);
+            return;
+        }
+        poResult.error("Exception", "Hidden SSID not found", null);
     }
 
     private void setWiFiAPPreSharedKey(MethodCall poCall, Result poResult) {
