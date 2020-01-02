@@ -3,7 +3,12 @@
 //
 
 #import "GeneratedPluginRegistrant.h"
+
+#if __has_include(<wifi_iot/WifiIotPlugin.h>)
 #import <wifi_iot/WifiIotPlugin.h>
+#else
+@import wifi_iot;
+#endif
 
 @implementation GeneratedPluginRegistrant
 
