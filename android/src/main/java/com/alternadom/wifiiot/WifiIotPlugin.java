@@ -242,7 +242,7 @@ public class WifiIotPlugin implements MethodCallHandler, EventChannel.StreamHand
             poResult.success(oWiFiConfig.hiddenSSID);
             return;
         }
-        poResult.error("Exception", "Hidden SSID not found", null);
+        poResult.error("Exception", "Wifi AP not Supported", null);
     }
 
     private void setSSIDHidden(MethodCall poCall, Result poResult) {
@@ -273,7 +273,7 @@ public class WifiIotPlugin implements MethodCallHandler, EventChannel.StreamHand
             poResult.success(oWiFiConfig.preSharedKey);
             return;
         }
-        poResult.error("Exception", "Hidden SSID not found", null);
+        poResult.error("Exception", "Wifi AP not Supported", null);
     }
 
     private void setWiFiAPPreSharedKey(MethodCall poCall, Result poResult) {

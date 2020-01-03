@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:wifi_iot/wifi_iot.dart';
+import 'dart:io' show Platform;
 
 const String STA_DEFAULT_SSID = "STA_SSID";
 const String STA_DEFAULT_PASSWORD = "STA_PASSWORD";
@@ -9,40 +10,52 @@ const NetworkSecurity STA_DEFAULT_SECURITY = NetworkSecurity.WPA;
 const String AP_DEFAULT_SSID = "AP_SSID";
 const String AP_DEFAULT_PASSWORD = "AP_PASSWORD";
 
-void main() => runApp(MyApp());
+void main() => runApp(FlutterWifiIoT());
 
-enum ClientDialogAction {
-  cancel,
-  ok,
-}
-
-class MyApp extends StatefulWidget {
+class FlutterWifiIoT extends StatefulWidget {
   @override
-  _MyAppState createState() => _MyAppState();
+  _FlutterWifiIoTState createState() => _FlutterWifiIoTState();
 }
 
-class _MyAppState extends State<MyApp> {
-  bool _isWiFiAPEnabled = false;
-  WIFI_AP_STATE _iWiFiState = WIFI_AP_STATE.WIFI_AP_STATE_DISABLED;
-  List<APClient> _htResultClient;
-  bool _isWiFiAPSSIDHidden = false;
-  String _sAPSSID = "";
-  String _sPreSharedKey = "";
+class _FlutterWifiIoTState extends State<FlutterWifiIoT> {
   String _sPreviousAPSSID = "";
   String _sPreviousPreSharedKey = "";
 
   List<WifiNetwork> _htResultNetwork;
+  Map<String, bool> _htIsNetworkRegistered = Map();
+
   bool _isEnabled = false;
   bool _isConnected = false;
-  Map<String, bool> _htIsNetworkRegistered = Map();
-  String _sSSID = "";
-  String _sBSSID = "";
-  int _iCurrentSignalStrength = 0;
-  int _iFrequency = 0;
-  String _sIP = "";
+  bool _isWiFiAPEnabled = false;
+  bool _isWiFiAPSSIDHidden = false;
+  bool _isWifiAPSupported = true;
 
   @override
   initState() {
+    WiFiForIoTPlugin.isEnabled().then((val) {
+      if (val != null) {
+        _isEnabled = val;
+      }
+    });
+
+    WiFiForIoTPlugin.isConnected().then((val) {
+      if (val != null) {
+        _isConnected = val;
+      }
+    });
+
+    WiFiForIoTPlugin.isWiFiAPEnabled().then((val) {
+      if (val != null) {
+        _isWiFiAPEnabled = val;
+      }
+    }).catchError((val) => _isWifiAPSupported = false);
+
+    WiFiForIoTPlugin.isWiFiAPSSIDHidden().then((val) {
+      if (val != null) {
+        _isWiFiAPSSIDHidden = val;
+      }
+    }).catchError((val) => _isWifiAPSupported = false);
+
     super.initState();
   }
 
@@ -67,11 +80,6 @@ class _MyAppState extends State<MyApp> {
       sPreSharedKey = "";
     }
 
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
     setState(() {
       _sPreviousAPSSID = sAPSSID;
       _sPreviousPreSharedKey = sPreSharedKey;
@@ -83,115 +91,63 @@ class _MyAppState extends State<MyApp> {
     WiFiForIoTPlugin.setWiFiAPPreSharedKey(_sPreviousPreSharedKey);
   }
 
-  getWiFiAPInfos() async {
+  // [sAPSSID, sPreSharedKey]
+  Future<List<String>> getWiFiAPInfos() async {
     String sAPSSID;
     String sPreSharedKey;
     try {
       sAPSSID = await WiFiForIoTPlugin.getWiFiAPSSID();
-    } on PlatformException {
+    } on Exception {
       sAPSSID = "";
     }
 
     try {
       sPreSharedKey = await WiFiForIoTPlugin.getWiFiAPPreSharedKey();
-    } on PlatformException {
+    } on Exception {
       sPreSharedKey = "";
     }
 
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
-    setState(() {
-      _sAPSSID = sAPSSID;
-      _sPreSharedKey = sPreSharedKey;
-    });
+    return [sAPSSID, sPreSharedKey];
   }
 
-  isWiFiAPSSIDHidden() async {
-    bool isWiFiAPSSIDHidden;
-    try {
-      isWiFiAPSSIDHidden = await WiFiForIoTPlugin.isWiFiAPSSIDHidden();
-    } on PlatformException {
-      isWiFiAPSSIDHidden = false;
-    }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
-    setState(() {
-      _isWiFiAPSSIDHidden = isWiFiAPSSIDHidden;
-    });
-  }
-
-  isWiFiAPEnabled() async {
-    bool isWiFiAPEnabled;
-    try {
-      isWiFiAPEnabled = await WiFiForIoTPlugin.isWiFiAPEnabled();
-    } on PlatformException {
-      isWiFiAPEnabled = false;
-    }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
-    setState(() {
-      _isWiFiAPEnabled = isWiFiAPEnabled;
-    });
-  }
-
-  getWiFiAPState() async {
+  Future<WIFI_AP_STATE> getWiFiAPState() async {
     int iWiFiState;
+    WIFI_AP_STATE wifiAPState;
     try {
       iWiFiState = await WiFiForIoTPlugin.getWiFiAPState();
-    } on PlatformException {
+    } on Exception {
       iWiFiState = WIFI_AP_STATE.WIFI_AP_STATE_FAILED.index;
     }
 
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
+    if (iWiFiState == WIFI_AP_STATE.WIFI_AP_STATE_DISABLING.index) {
+      wifiAPState = WIFI_AP_STATE.WIFI_AP_STATE_DISABLING;
+    } else if (iWiFiState == WIFI_AP_STATE.WIFI_AP_STATE_DISABLED.index) {
+      wifiAPState = WIFI_AP_STATE.WIFI_AP_STATE_DISABLED;
+    } else if (iWiFiState == WIFI_AP_STATE.WIFI_AP_STATE_ENABLING.index) {
+      wifiAPState = WIFI_AP_STATE.WIFI_AP_STATE_ENABLING;
+    } else if (iWiFiState == WIFI_AP_STATE.WIFI_AP_STATE_ENABLED.index) {
+      wifiAPState = WIFI_AP_STATE.WIFI_AP_STATE_ENABLED;
+    } else if (iWiFiState == WIFI_AP_STATE.WIFI_AP_STATE_FAILED.index) {
+      wifiAPState = WIFI_AP_STATE.WIFI_AP_STATE_FAILED;
+    }
 
-    setState(() {
-      if (iWiFiState == WIFI_AP_STATE.WIFI_AP_STATE_DISABLING.index) {
-        _iWiFiState = WIFI_AP_STATE.WIFI_AP_STATE_DISABLING;
-      } else if (iWiFiState == WIFI_AP_STATE.WIFI_AP_STATE_DISABLED.index) {
-        _iWiFiState = WIFI_AP_STATE.WIFI_AP_STATE_DISABLED;
-      } else if (iWiFiState == WIFI_AP_STATE.WIFI_AP_STATE_ENABLING.index) {
-        _iWiFiState = WIFI_AP_STATE.WIFI_AP_STATE_ENABLING;
-      } else if (iWiFiState == WIFI_AP_STATE.WIFI_AP_STATE_ENABLED.index) {
-        _iWiFiState = WIFI_AP_STATE.WIFI_AP_STATE_ENABLED;
-      } else if (iWiFiState == WIFI_AP_STATE.WIFI_AP_STATE_FAILED.index) {
-        _iWiFiState = WIFI_AP_STATE.WIFI_AP_STATE_FAILED;
-      }
-    });
+    return wifiAPState;
   }
 
-  getClientList(bool onlyReachables, int reachableTimeout) async {
+  Future<List<APClient>> getClientList(
+      bool onlyReachables, int reachableTimeout) async {
     List<APClient> htResultClient;
     try {
-      htResultClient = await WiFiForIoTPlugin.getClientList(onlyReachables, reachableTimeout);
+      htResultClient = await WiFiForIoTPlugin.getClientList(
+          onlyReachables, reachableTimeout);
     } on PlatformException {
       htResultClient = List<APClient>();
     }
 
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
-    setState(() {
-      _htResultClient = htResultClient;
-    });
+    return htResultClient;
   }
 
-  loadWifiList() async {
+  Future<List<WifiNetwork>> loadWifiList() async {
     List<WifiNetwork> htResultNetwork;
     try {
       htResultNetwork = await WiFiForIoTPlugin.loadWifiList();
@@ -199,140 +155,7 @@ class _MyAppState extends State<MyApp> {
       htResultNetwork = List<WifiNetwork>();
     }
 
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
-    setState(() {
-      _htResultNetwork = htResultNetwork;
-    });
-  }
-
-  isEnabled() async {
-    bool isEnabled;
-    try {
-      isEnabled = await WiFiForIoTPlugin.isEnabled();
-    } on PlatformException {
-      isEnabled = false;
-    }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
-    setState(() {
-      _isEnabled = isEnabled;
-    });
-  }
-
-  isConnected() async {
-    bool isConnected;
-    try {
-      isConnected = await WiFiForIoTPlugin.isConnected();
-    } on PlatformException {
-      isConnected = false;
-    }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
-    setState(() {
-      _isConnected = isConnected;
-    });
-  }
-
-  getSSID() async {
-    String ssid;
-    try {
-      ssid = await WiFiForIoTPlugin.getSSID();
-    } on PlatformException {
-      ssid = "";
-    }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
-    setState(() {
-      _sSSID = ssid;
-    });
-  }
-
-  getBSSID() async {
-    String bssid;
-    try {
-      bssid = await WiFiForIoTPlugin.getBSSID();
-    } on PlatformException {
-      bssid = "";
-    }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
-    setState(() {
-      _sBSSID = bssid;
-    });
-  }
-
-  getCurrentSignalStrength() async {
-    int iCurrentSignalStrength;
-    try {
-      iCurrentSignalStrength = await WiFiForIoTPlugin.getCurrentSignalStrength();
-    } on PlatformException {
-      iCurrentSignalStrength = 0;
-    }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
-    setState(() {
-      _iCurrentSignalStrength = iCurrentSignalStrength;
-    });
-  }
-
-  getFrequency() async {
-    int iFrequency;
-    try {
-      iFrequency = await WiFiForIoTPlugin.getFrequency();
-    } on PlatformException {
-      iFrequency = 0;
-    }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
-    setState(() {
-      _iFrequency = iFrequency;
-    });
-  }
-
-  getIP() async {
-    String sIP;
-    try {
-      sIP = await WiFiForIoTPlugin.getIP();
-    } on PlatformException {
-      sIP = "";
-    }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
-    setState(() {
-      _sIP = sIP;
-    });
+    return htResultNetwork;
   }
 
   isRegisteredWifiNetwork(String ssid) async {
@@ -343,77 +166,31 @@ class _MyAppState extends State<MyApp> {
       bIsRegistered = false;
     }
 
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
     setState(() {
       _htIsNetworkRegistered[ssid] = bIsRegistered;
     });
   }
 
   void showClientList() async {
-    /// Refresh the list
-    await getClientList(false, 300);
-
-    /// Show in console
-    if (_htResultClient != null && _htResultClient.length > 0) {
-      _htResultClient.forEach((oClient) {
-        print("************************");
-        print("Client :");
-        print("ipAddr = '${oClient.ipAddr}'");
-        print("hwAddr = '${oClient.hwAddr}'");
-        print("device = '${oClient.device}'");
-        print("isReachable = '${oClient.isReachable}'");
-      });
-      print("************************");
-    }
+    /// Refresh the list and show in console
+    getClientList(false, 300).then((val) => val.forEach((oClient) {
+          print("************************");
+          print("Client :");
+          print("ipAddr = '${oClient.ipAddr}'");
+          print("hwAddr = '${oClient.hwAddr}'");
+          print("device = '${oClient.device}'");
+          print("isReachable = '${oClient.isReachable}'");
+          print("************************");
+        }));
   }
 
-  List<Widget> getActionsForAndroid() {
-    List<Widget> htActions = List();
-    if (_isConnected) {
-      PopupCommand oCmdDisconnect = PopupCommand("Disconnect", "");
-      PopupCommand oCmdRemove = PopupCommand("Remove", _sSSID);
+  Widget getWidgets() {
+    WiFiForIoTPlugin.isConnected().then((val) => setState(() {
+          _isConnected = val;
+        }));
 
-      htActions.add(
-        PopupMenuButton<PopupCommand>(
-          onSelected: (PopupCommand poCommand) {
-            switch (poCommand.command) {
-              case "Disconnect":
-                WiFiForIoTPlugin.disconnect();
-                break;
-              case "Remove":
-                WiFiForIoTPlugin.removeWifiNetwork(_sSSID);
-                break;
-              default:
-                break;
-            }
-          },
-          itemBuilder: (BuildContext context) => <PopupMenuItem<PopupCommand>>[
-                PopupMenuItem<PopupCommand>(
-                  value: oCmdDisconnect,
-                  child: const Text('Disconnect'),
-                ),
-                PopupMenuItem<PopupCommand>(
-                  value: oCmdRemove,
-                  child: const Text('Dissocier'),
-                ),
-                PopupMenuItem<PopupCommand>(
-                  enabled: false,
-                  child: Text(_sIP),
-                ),
-              ],
-        ),
-      );
-    }
-    return htActions;
-  }
-
-  Widget getWidgetsForAndroid() {
-    isConnected();
-    if (_isConnected != null && _isConnected) {
+    // disable scanning for ios as not supported
+    if (_isConnected || Platform.isIOS) {
       _htResultNetwork = null;
     }
 
@@ -429,30 +206,39 @@ class _MyAppState extends State<MyApp> {
         htPopupMenuItems.add(
           PopupMenuItem<PopupCommand>(
             value: oCmdConnect,
-            child: const Text('Connecter'),
+            child: const Text('Connect'),
           ),
         );
 
         setState(() {
           isRegisteredWifiNetwork(oNetwork.ssid);
-          if (_htIsNetworkRegistered.containsKey(oNetwork.ssid) && _htIsNetworkRegistered[oNetwork.ssid]) {
+          if (_htIsNetworkRegistered.containsKey(oNetwork.ssid) &&
+              _htIsNetworkRegistered[oNetwork.ssid]) {
             htPopupMenuItems.add(
               PopupMenuItem<PopupCommand>(
                 value: oCmdRemove,
-                child: const Text('Dissocier'),
+                child: const Text('Remove'),
               ),
             );
           }
 
           htNetworks.add(
             ListTile(
-              title: Text("" + oNetwork.ssid + ((_htIsNetworkRegistered.containsKey(oNetwork.ssid) && _htIsNetworkRegistered[oNetwork.ssid]) ? " *" : "")),
+              title: Text("" +
+                  oNetwork.ssid +
+                  ((_htIsNetworkRegistered.containsKey(oNetwork.ssid) &&
+                          _htIsNetworkRegistered[oNetwork.ssid])
+                      ? " *"
+                      : "")),
               trailing: PopupMenuButton<PopupCommand>(
                 padding: EdgeInsets.zero,
                 onSelected: (PopupCommand poCommand) {
                   switch (poCommand.command) {
                     case "Connect":
-                      WiFiForIoTPlugin.connect(STA_DEFAULT_SSID, password: STA_DEFAULT_PASSWORD, joinOnce: true, security: STA_DEFAULT_SECURITY);
+                      WiFiForIoTPlugin.connect(STA_DEFAULT_SSID,
+                          password: STA_DEFAULT_PASSWORD,
+                          joinOnce: true,
+                          security: STA_DEFAULT_SECURITY);
                       break;
                     case "Remove":
                       WiFiForIoTPlugin.removeWifiNetwork(poCommand.argument);
@@ -475,10 +261,10 @@ class _MyAppState extends State<MyApp> {
     } else {
       return SingleChildScrollView(
         child: SafeArea(
-          top: false,
-          bottom: false,
           child: Column(
-            children: getButtonWidgetsForAndroid(),
+            children: Platform.isIOS
+                ? getButtonWidgetsForiOS()
+                : getButtonWidgetsForAndroid(),
           ),
         ),
       );
@@ -488,35 +274,63 @@ class _MyAppState extends State<MyApp> {
   List<Widget> getButtonWidgetsForAndroid() {
     List<Widget> htPrimaryWidgets = List();
 
-    ///
-    isEnabled();
-    if (_isEnabled != null && _isEnabled) {
-      htPrimaryWidgets.add(Text("Wifi Enabled"));
-      htPrimaryWidgets.add(
+    WiFiForIoTPlugin.isEnabled().then((val) => setState(() {
+          _isEnabled = val;
+        }));
+
+    if (_isEnabled) {
+      htPrimaryWidgets.addAll([
+        SizedBox(height: 10),
+        Text("Wifi Enabled"),
         RaisedButton(
           child: Text("Disable"),
           onPressed: () {
             WiFiForIoTPlugin.setEnabled(false);
           },
         ),
-      );
+      ]);
 
-      ///
-      isConnected();
-      if (_isConnected != null && _isConnected) {
-        getSSID();
-        getBSSID();
-        getCurrentSignalStrength();
-        getFrequency();
-        getIP();
+      WiFiForIoTPlugin.isConnected().then((val) {
+        if (val != null) {
+          setState(() {
+            _isConnected = val;
+          });
+        }
+      });
 
+      if (_isConnected) {
         htPrimaryWidgets.addAll(<Widget>[
           Text("Connected"),
-          Text("SSID : $_sSSID"),
-          Text("BSSID : $_sBSSID"),
-          Text("Signal : $_iCurrentSignalStrength"),
-          Text("Frequency : $_iFrequency"),
-          Text("IP : $_sIP"),
+          FutureBuilder(
+              future: WiFiForIoTPlugin.getSSID(),
+              initialData: "Loading..",
+              builder: (BuildContext context, AsyncSnapshot<String> ssid) {
+                return Text("SSID: ${ssid.data}");
+              }),
+          FutureBuilder(
+              future: WiFiForIoTPlugin.getBSSID(),
+              initialData: "Loading..",
+              builder: (BuildContext context, AsyncSnapshot<String> bssid) {
+                return Text("BSSID: ${bssid.data}");
+              }),
+          FutureBuilder(
+              future: WiFiForIoTPlugin.getCurrentSignalStrength(),
+              initialData: 0,
+              builder: (BuildContext context, AsyncSnapshot<int> signal) {
+                return Text("Signal: ${signal.data}");
+              }),
+          FutureBuilder(
+              future: WiFiForIoTPlugin.getFrequency(),
+              initialData: 0,
+              builder: (BuildContext context, AsyncSnapshot<int> freq) {
+                return Text("Frequency : ${freq.data}");
+              }),
+          FutureBuilder(
+              future: WiFiForIoTPlugin.getIP(),
+              initialData: "Loading..",
+              builder: (BuildContext context, AsyncSnapshot<String> ip) {
+                return Text("IP : ${ip.data}");
+              }),
           RaisedButton(
             child: Text("Disconnect"),
             onPressed: () {
@@ -528,9 +342,10 @@ class _MyAppState extends State<MyApp> {
         htPrimaryWidgets.addAll(<Widget>[
           Text("Disconnected"),
           RaisedButton(
-            child: Text("SCAN"),
-            onPressed: () {
-              loadWifiList();
+            child: Text("Scan"),
+            onPressed: () async {
+              _htResultNetwork = await loadWifiList();
+              setState(() {});
             },
           ),
           Row(
@@ -554,246 +369,160 @@ class _MyAppState extends State<MyApp> {
       }
     } else {
       htPrimaryWidgets.addAll(<Widget>[
+        SizedBox(height: 10),
         Text("Wifi Disabled"),
         RaisedButton(
           child: Text("Enable"),
           onPressed: () {
-            WiFiForIoTPlugin.setEnabled(true);
+            setState(() {
+              WiFiForIoTPlugin.setEnabled(true);
+            });
           },
         ),
       ]);
     }
 
-    ///
     htPrimaryWidgets.add(Divider(
       height: 32.0,
     ));
 
-    ///
-    getWiFiAPState();
-    htPrimaryWidgets.addAll(<Widget>[
-      Text("WiFi AP State"),
-      Text("$_iWiFiState"),
-    ]);
-
-    ///
-    isWiFiAPEnabled();
-    if (_isWiFiAPEnabled != null && _isWiFiAPEnabled) {
+    if (_isWifiAPSupported) {
       htPrimaryWidgets.addAll(<Widget>[
-        Text("Wifi AP Enabled"),
-        RaisedButton(
-          child: Text("Disable"),
-          onPressed: () {
-            WiFiForIoTPlugin.setWiFiAPEnabled(false);
-          },
-        ),
+        Text("WiFi AP State"),
+        FutureBuilder(
+            future: getWiFiAPState(),
+            initialData: WIFI_AP_STATE.WIFI_AP_STATE_DISABLED,
+            builder:
+                (BuildContext context, AsyncSnapshot<WIFI_AP_STATE> wifiState) {
+              if (wifiState.data == WIFI_AP_STATE.WIFI_AP_STATE_ENABLED) {
+                RaisedButton(
+                  child: Text("Get Client List"),
+                  onPressed: () {
+                    showClientList();
+                  },
+                );
+              }
+              return Text(wifiState.data.toString());
+            }),
       ]);
 
-      isWiFiAPSSIDHidden();
-      if (_isWiFiAPSSIDHidden != null && _isWiFiAPSSIDHidden) {
+      WiFiForIoTPlugin.isWiFiAPEnabled()
+          .then((val) => setState(() {
+                _isWiFiAPEnabled = val;
+              }))
+          .catchError((val) => _isWiFiAPEnabled = false);
+      if (_isWiFiAPEnabled) {
+        htPrimaryWidgets.addAll(<Widget>[
+          Text("Wifi AP Enabled"),
+          RaisedButton(
+            child: Text("Disable"),
+            onPressed: () {
+              WiFiForIoTPlugin.setWiFiAPEnabled(false);
+            },
+          ),
+        ]);
+      } else {
+        htPrimaryWidgets.addAll(<Widget>[
+          Text("Wifi AP Disabled"),
+          RaisedButton(
+            child: Text("Enable"),
+            onPressed: () {
+              WiFiForIoTPlugin.setWiFiAPEnabled(true);
+            },
+          ),
+        ]);
+      }
+
+      WiFiForIoTPlugin.isWiFiAPSSIDHidden()
+          .then((val) => setState(() {
+                _isWiFiAPSSIDHidden = val;
+              }))
+          .catchError((val) => _isWiFiAPSSIDHidden = false);
+      if (_isWiFiAPSSIDHidden) {
         htPrimaryWidgets.add(Text("SSID is hidden"));
+        !_isWiFiAPEnabled
+            ? RaisedButton(
+                child: Text("Show"),
+                onPressed: () {
+                  WiFiForIoTPlugin.setWiFiAPSSIDHidden(false);
+                },
+              )
+            : Container(width: 0, height: 0);
       } else {
         htPrimaryWidgets.add(Text("SSID is visible"));
+        !_isWiFiAPEnabled
+            ? RaisedButton(
+                child: Text("Hide"),
+                onPressed: () {
+                  WiFiForIoTPlugin.setWiFiAPSSIDHidden(true);
+                },
+              )
+            : Container(width: 0, height: 0);
       }
 
-      ///
-      getWiFiAPInfos();
-      htPrimaryWidgets.addAll(<Widget>[
-        Text("SSID : $_sAPSSID"),
-        Text("KEY  : $_sPreSharedKey"),
-      ]);
+      FutureBuilder(
+          future: getWiFiAPInfos(),
+          initialData: List<String>(),
+          builder: (BuildContext context, AsyncSnapshot<List<String>> info) {
+            htPrimaryWidgets.addAll(<Widget>[
+              Text("SSID : ${info.data[0]}"),
+              Text("KEY  : ${info.data[1]}"),
+              RaisedButton(
+                child:
+                    Text("Set AP info ($AP_DEFAULT_SSID/$AP_DEFAULT_PASSWORD)"),
+                onPressed: () {
+                  storeAndConnect(AP_DEFAULT_SSID, AP_DEFAULT_PASSWORD);
+                },
+              ),
+              Text("AP SSID stored : $_sPreviousAPSSID"),
+              Text("KEY stored : $_sPreviousPreSharedKey"),
+              RaisedButton(
+                child: Text("Store AP infos"),
+                onPressed: () {
+                  storeAPInfos();
+                },
+              ),
+              RaisedButton(
+                child: Text("Restore AP infos"),
+                onPressed: () {
+                  restoreAPInfos();
+                },
+              ),
+            ]);
+            return;
+          });
     } else {
-      htPrimaryWidgets.addAll(<Widget>[
-        Text("Wifi AP Disabled"),
-        RaisedButton(
-          child: Text("Enable"),
-          onPressed: () {
-            WiFiForIoTPlugin.setWiFiAPEnabled(true);
-          },
-        ),
-      ]);
-
-      isWiFiAPSSIDHidden();
-      if (_isWiFiAPSSIDHidden != null && _isWiFiAPSSIDHidden) {
-        htPrimaryWidgets.addAll(<Widget>[
-          Text("SSID is hidden"),
-          RaisedButton(
-            child: Text("Show"),
-            onPressed: () {
-              WiFiForIoTPlugin.setWiFiAPSSIDHidden(false);
-            },
-          ),
-        ]);
-      } else {
-        htPrimaryWidgets.addAll(<Widget>[
-          Text("SSID is visible"),
-          RaisedButton(
-            child: Text("Hide"),
-            onPressed: () {
-              WiFiForIoTPlugin.setWiFiAPSSIDHidden(true);
-            },
-          ),
-        ]);
-      }
-
-      ///
-      getWiFiAPInfos();
-      htPrimaryWidgets.addAll(<Widget>[
-        Text("SSID : $_sAPSSID"),
-        Text("KEY  : $_sPreSharedKey"),
-        RaisedButton(
-          child: Text("Set AP info ($AP_DEFAULT_SSID/$AP_DEFAULT_PASSWORD)"),
-          onPressed: () {
-            storeAndConnect(AP_DEFAULT_SSID, AP_DEFAULT_PASSWORD);
-          },
-        ),
-        Text("AP SSID stored : $_sPreviousAPSSID"),
-        Text("KEY stored : $_sPreviousPreSharedKey"),
-        RaisedButton(
-          child: Text("Store AP infos"),
-          onPressed: () {
-            storeAPInfos();
-          },
-        ),
-        RaisedButton(
-          child: Text("Restore AP infos"),
-          onPressed: () {
-            restoreAPInfos();
-          },
-        ),
-      ]);
-    }
-
-    if (_iWiFiState == WIFI_AP_STATE.WIFI_AP_STATE_ENABLED) {
       htPrimaryWidgets.add(
-        RaisedButton(
-          child: Text("Get Client List"),
-          onPressed: () {
-            showClientList();
-          },
-        ),
-      );
+          Center(child: Text("Wifi AP probably not supported by your device")));
     }
 
     return htPrimaryWidgets;
   }
 
-  List<Widget> getActionsForiOS() {
-    List<Widget> htActions = List();
-    if (_isConnected) {
-//      PopupCommand oCmdDisconnect = PopupCommand("Disconnect", "");
-//      PopupCommand oCmdRemove = PopupCommand("Remove", _sSSID);
-//
-//      htActions.add(
-//        PopupMenuButton<PopupCommand>(
-//          onSelected: (PopupCommand poCommand) {
-//            switch (poCommand.command) {
-//              case "Disconnect":
-//                WiFiForIoTPlugin.disconnect();
-//                break;
-//              case "Remove":
-//                WiFiForIoTPlugin.removeWifiNetwork(_sSSID);
-//                break;
-//              default:
-//                break;
-//            }
-//          },
-//          itemBuilder: (BuildContext context) => <PopupMenuItem<PopupCommand>>[
-//            PopupMenuItem<PopupCommand>(
-//              value: oCmdDisconnect,
-//              child: const Text('Disconnect'),
-//            ),
-//            PopupMenuItem<PopupCommand>(
-//              value: oCmdRemove,
-//              child: const Text('Dissocier'),
-//            ),
-//            PopupMenuItem<PopupCommand>(
-//              enabled: false,
-//              child: Text(_sIP),
-//            ),
-//          ],
-//        ),
-//      );
-    }
-    return htActions;
-  }
-
-  Widget getWidgetsForiOS() {
-    isConnected();
-
-    return SingleChildScrollView(
-      child: SafeArea(
-        top: false,
-        bottom: false,
-        child: Column(
-          children: getButtonWidgetsForiOS(),
-        ),
-      ),
-    );
-  }
-
   List<Widget> getButtonWidgetsForiOS() {
     List<Widget> htPrimaryWidgets = List();
 
-    ///
-    isEnabled();
-    if (_isEnabled != null && _isEnabled) {
+    WiFiForIoTPlugin.isEnabled().then((val) => setState(() {
+          _isEnabled = val;
+        }));
+
+    if (_isEnabled) {
       htPrimaryWidgets.add(Text("Wifi Enabled"));
-//      htPrimaryWidgets.add(
-//        RaisedButton(
-//          child: Text("Disable"),
-//          onPressed: () {
-//            WiFiForIoTPlugin.setEnabled(false);
-//          },
-//        ),
-//      );
+      WiFiForIoTPlugin.isConnected().then((val) => setState(() {
+            _isConnected = val;
+          }));
 
-//      ///
-//      htPrimaryWidgets.add(
-//        RaisedButton(
-//          child: Text("SCAN"),
-//          onPressed: () {
-//            loadWifiList();
-//          },
-//        ),
-//      );
-
-//      ///
-//      htPrimaryWidgets.addAll(<Widget>[
-//        Row(
-//          mainAxisAlignment: MainAxisAlignment.center,
-//          children: <Widget>[
-//            RaisedButton(
-//              child: Text("Use WiFi"),
-//              onPressed: () {
-//                WiFiForIoTPlugin.forceWifiUsage(true);
-//              },
-//            ),
-//            RaisedButton(
-//              child: Text("Use 3G/4G"),
-//              onPressed: () {
-//                WiFiForIoTPlugin.forceWifiUsage(false);
-//              },
-//            ),
-//          ],
-//        )
-//      ]);
-      ///
-      isConnected();
-      if (_isConnected != null && _isConnected) {
-        getSSID();
-//      getBSSID();
-//      getCurrentSignalStrength();
-//      getFrequency();
-//      getIP();
-
+      String _sSSID;
+      if (_isConnected) {
         htPrimaryWidgets.addAll(<Widget>[
           Text("Connected"),
-          Text("SSID : $_sSSID"),
-//        Text("BSSID : $_sBSSID"),
-//        Text("Signal : $_iCurrentSignalStrength"),
-//        Text("Frequency : $_iFrequency"),
-//        Text("IP : $_sIP"),
+          FutureBuilder(
+              future: WiFiForIoTPlugin.getSSID(),
+              initialData: "Loading..",
+              builder: (BuildContext context, AsyncSnapshot<String> ssid) {
+                _sSSID = ssid.data;
+                return Text("SSID: ${ssid.data}");
+              }),
         ]);
 
         if (_sSSID == STA_DEFAULT_SSID) {
@@ -810,7 +539,10 @@ class _MyAppState extends State<MyApp> {
             RaisedButton(
               child: Text("Connect to '$AP_DEFAULT_SSID'"),
               onPressed: () {
-                WiFiForIoTPlugin.connect(STA_DEFAULT_SSID, password: STA_DEFAULT_PASSWORD, joinOnce: true, security: NetworkSecurity.WPA);
+                WiFiForIoTPlugin.connect(STA_DEFAULT_SSID,
+                    password: STA_DEFAULT_PASSWORD,
+                    joinOnce: true,
+                    security: NetworkSecurity.WPA);
               },
             ),
           ]);
@@ -821,172 +553,72 @@ class _MyAppState extends State<MyApp> {
           RaisedButton(
             child: Text("Connect to '$AP_DEFAULT_SSID'"),
             onPressed: () {
-              WiFiForIoTPlugin.connect(STA_DEFAULT_SSID, password: STA_DEFAULT_PASSWORD, joinOnce: true, security: NetworkSecurity.WPA);
+              WiFiForIoTPlugin.connect(STA_DEFAULT_SSID,
+                  password: STA_DEFAULT_PASSWORD,
+                  joinOnce: true,
+                  security: NetworkSecurity.WPA);
             },
           ),
         ]);
       }
     } else {
       htPrimaryWidgets.addAll(<Widget>[
-        Text("Wifi Disabled ?"),
-//        RaisedButton(
-//          child: Text("Enable"),
-//          onPressed: () {
-//            WiFiForIoTPlugin.setEnabled(true);
-//          },
-//        ),
+        Text("Wifi Disabled?"),
         RaisedButton(
           child: Text("Connect to '$AP_DEFAULT_SSID'"),
           onPressed: () {
-            WiFiForIoTPlugin.connect(STA_DEFAULT_SSID, password: STA_DEFAULT_PASSWORD, joinOnce: true, security: NetworkSecurity.WPA);
+            WiFiForIoTPlugin.connect(STA_DEFAULT_SSID,
+                password: STA_DEFAULT_PASSWORD,
+                joinOnce: true,
+                security: NetworkSecurity.WPA);
           },
         ),
       ]);
     }
-
-    ///
-    htPrimaryWidgets.add(Divider(
-      height: 32.0,
-    ));
-
-//    ///
-//    getWiFiAPState();
-//    htPrimaryWidgets.addAll(<Widget>[
-//      Text("WiFi AP State"),
-//      Text("$_iWiFiState"),
-//    ]);
-//
-//    ///
-//    isWiFiAPEnabled();
-//    if (_isWiFiAPEnabled != null && _isWiFiAPEnabled) {
-//      htPrimaryWidgets.addAll(<Widget>[
-//        Text("Wifi AP Enabled"),
-//        RaisedButton(
-//          child: Text("Disable"),
-//          onPressed: () {
-//            WiFiForIoTPlugin.setWiFiAPEnabled(false);
-//          },
-//        ),
-//      ]);
-//
-//      isWiFiAPSSIDHidden();
-//      if (_isWiFiAPSSIDHidden != null && _isWiFiAPSSIDHidden) {
-//        htPrimaryWidgets.add(Text("SSID is hidden"));
-//      } else {
-//        htPrimaryWidgets.add(Text("SSID is visible"));
-//      }
-//
-//      ///
-//      getWiFiAPInfos();
-//      htPrimaryWidgets.addAll(<Widget>[
-//        Text("SSID : $_sAPSSID"),
-//        Text("KEY  : $_sPreSharedKey"),
-//      ]);
-//    } else {
-//      htPrimaryWidgets.addAll(<Widget>[
-//        Text("Wifi AP Disabled"),
-//        RaisedButton(
-//          child: Text("Enable"),
-//          onPressed: () {
-//            WiFiForIoTPlugin.setWiFiAPEnabled(true);
-//          },
-//        ),
-//      ]);
-//
-//      isWiFiAPSSIDHidden();
-//      if (_isWiFiAPSSIDHidden != null && _isWiFiAPSSIDHidden) {
-//        htPrimaryWidgets.addAll(<Widget>[
-//          Text("SSID is hidden"),
-//          RaisedButton(
-//            child: Text("Show"),
-//            onPressed: () {
-//              WiFiForIoTPlugin.setWiFiAPSSIDHidden(false);
-//            },
-//          ),
-//        ]);
-//      } else {
-//        htPrimaryWidgets.addAll(<Widget>[
-//          Text("SSID is visible"),
-//          RaisedButton(
-//            child: Text("Hide"),
-//            onPressed: () {
-//              WiFiForIoTPlugin.setWiFiAPSSIDHidden(true);
-//            },
-//          ),
-//        ]);
-//      }
-//
-//      ///
-//      getWiFiAPInfos();
-//      htPrimaryWidgets.addAll(<Widget>[
-//        Text("SSID : $_sAPSSID"),
-//        Text("KEY  : $_sPreSharedKey"),
-//        RaisedButton(
-//          child: Text("Set AP info ($AP_DEFAULT_SSID/$AP_DEFAULT_PASSWORD)"),
-//          onPressed: () {
-//            storeAndConnect(AP_DEFAULT_SSID, AP_DEFAULT_PASSWORD);
-//          },
-//        ),
-//        Text("AP SSID stored : $_sPreviousAPSSID"),
-//        Text("KEY stored : $_sPreviousPreSharedKey"),
-//        RaisedButton(
-//          child: Text("Store AP infos"),
-//          onPressed: () {
-//            storeAPInfos();
-//          },
-//        ),
-//        RaisedButton(
-//          child: Text("Restore AP infos"),
-//          onPressed: () {
-//            restoreAPInfos();
-//          },
-//        ),
-//      ]);
-//    }
-//
-//    if (_iWiFiState == WIFI_AP_STATE.WIFI_AP_STATE_ENABLED) {
-//      htPrimaryWidgets.add(
-//        RaisedButton(
-//          child: Text("Get Client List"),
-//          onPressed: () {
-//            showClientList();
-//          },
-//        ),
-//      );
-//    }
 
     return htPrimaryWidgets;
   }
 
   @override
   Widget build(BuildContext poContext) {
-    final defaultTheme = Theme.of(context);
-    if (defaultTheme.platform == TargetPlatform.iOS) {
-      return MaterialApp(
-        home: Scaffold(
-          appBar: AppBar(
-            title: Text('Plugin IoT Wifi app for iOS'),
-            actions: getActionsForiOS(),
-          ),
-          body: getWidgetsForiOS(),
-        ),
-      );
-    } else if (defaultTheme.platform == TargetPlatform.android) {
-      return MaterialApp(
-        home: Scaffold(
-          appBar: AppBar(
-            title: Text('Plugin IoT Wifi app for Android'),
-            actions: getActionsForAndroid(),
-          ),
-          body: getWidgetsForAndroid(),
-        ),
-      );
-    }
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Plugin IoT Wifi app for ???'),
+          title: Platform.isIOS
+              ? Text('WifiFlutter Example iOS')
+              : Text('WifiFlutter Example Android'),
+          actions: _isConnected
+              ? <Widget>[
+                  PopupMenuButton<String>(
+                    onSelected: (value) {
+                      switch (value) {
+                        case "disconnect":
+                          WiFiForIoTPlugin.disconnect();
+                          break;
+                        case "remove":
+                          WiFiForIoTPlugin.getSSID().then(
+                              (val) => WiFiForIoTPlugin.removeWifiNetwork(val));
+                          break;
+                        default:
+                          break;
+                      }
+                    },
+                    itemBuilder: (BuildContext context) =>
+                        <PopupMenuItem<String>>[
+                      PopupMenuItem<String>(
+                        value: "disconnect",
+                        child: const Text('Disconnect'),
+                      ),
+                      PopupMenuItem<String>(
+                        value: "remove",
+                        child: const Text('Remove'),
+                      ),
+                    ],
+                  ),
+                ]
+              : null,
         ),
+        body: getWidgets(),
       ),
     );
   }
@@ -996,7 +628,5 @@ class PopupCommand {
   String command;
   String argument;
 
-  PopupCommand(this.command, this.argument) {
-    ///
-  }
+  PopupCommand(this.command, this.argument);
 }
