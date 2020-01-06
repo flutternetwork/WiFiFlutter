@@ -1,4 +1,6 @@
-<img src="logo/logo+name_color.png" alt="WiFiFlutter" width="255" height="155" />
+<img src="https://raw.githubusercontent.com/alternadom/WiFiFlutter/master/logo/logo%2Bname_color.png" alt="WiFiFlutter" width="255" height="160" />
+
+[![pub](https://img.shields.io/pub/v/wifi_iot.svg?style=flat-square)](https://pub.dartlang.org/packages/wifi_iot)
 
 ## Introduction
 
