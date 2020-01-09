@@ -143,9 +143,14 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
                         return
                     }
                 } else {
-                    print("Connected to " + self.getSSID()!)
-                    // ssid check is required because if wifi not found (could not connect) there seems to be no error given
-                    result(self.getSSID()! == sSSID)
+                    if (self.getSSID() == nil) {
+                        print("WiFi network not found")
+                        result(false)
+                    } else {
+                        print("Connected to " + self.getSSID()!)
+                        // ssid check is required because if wifi not found (could not connect) there seems to be no error given
+                        result(self.getSSID()! == sSSID)
+                    }
                     return
                 }
             }
