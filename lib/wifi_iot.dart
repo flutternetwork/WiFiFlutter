@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/services.dart';
 
@@ -203,7 +204,7 @@ class WiFiForIoTPlugin {
       {String password,
       NetworkSecurity security = NetworkSecurity.NONE,
       bool joinOnce = true}) async {
-    if (!await isEnabled()) await setEnabled(true);
+    if (!Platform.isIOS && !await isEnabled()) await setEnabled(true);
     bool bResult;
     try {
       bResult = await _channel.invokeMethod('connect', {
