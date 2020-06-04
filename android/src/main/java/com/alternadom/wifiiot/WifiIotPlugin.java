@@ -14,14 +14,11 @@ import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.net.NetworkRequest;
-import android.net.Uri;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
-import android.provider.Settings;
-import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -194,11 +191,9 @@ public class WifiIotPlugin implements MethodCallHandler, EventChannel.StreamHand
      * @param poResult
      */
     private void setMACFiltering(MethodCall poCall, Result poResult) {
-//        String sResult = sudoForResult("iptables --list");
-//        Log.d(this.getClass().toString(), sResult);
         boolean bEnable = poCall.argument("state");
 
-        Log.e(this.getClass().toString(), "TODO : Develop function to enable/disable MAC filtering...");
+        // Log.e(this.getClass().toString(), "TODO : Develop function to enable/disable MAC filtering...");
 
         poResult.error("TODO", "Develop function to enable/disable MAC filtering...", null);
     }
@@ -250,7 +245,6 @@ public class WifiIotPlugin implements MethodCallHandler, EventChannel.StreamHand
 
         WifiConfiguration oWiFiConfig = moWiFiAPManager.getWifiApConfiguration();
 
-        Log.d(this.getClass().toString(), "isSSIDHidden : " + isSSIDHidden);
         oWiFiConfig.hiddenSSID = isSSIDHidden;
 
         moWiFiAPManager.setWifiApConfiguration(oWiFiConfig);
@@ -415,7 +409,6 @@ public class WifiIotPlugin implements MethodCallHandler, EventChannel.StreamHand
         List<ScanResult> results = moWiFi.getScanResults();
         JSONArray wifiArray = new JSONArray();
 
-        Log.d("got wifiIotPlugin", "result number of SSID: "+ results.size());
         try {
             for (ScanResult result : results) {
                 JSONObject wifiObject = new JSONObject();
@@ -444,7 +437,6 @@ public class WifiIotPlugin implements MethodCallHandler, EventChannel.StreamHand
         } catch (JSONException e) {
             e.printStackTrace();
         } finally {
-            Log.d("got wifiIotPlugin", "final result: "+ results.toString());
             return wifiArray;
         }
     }
@@ -476,47 +468,56 @@ public class WifiIotPlugin implements MethodCallHandler, EventChannel.StreamHand
     /// Receives a boolean to enable forceWifiUsage if true, and disable if false.
     /// Is important to enable only when communicating with the device via wifi
     /// and remember to disable it when disconnecting from device.
-    private void forceWifiUsage(MethodCall poCall, Result poResult) {
+    private void forceWifiUsage(final MethodCall poCall, final Result poResult) {
         boolean useWifi = poCall.argument("useWifi");
 
-        if (useWifi) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        final ConnectivityManager manager = (ConnectivityManager) moContext
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
 
-                if (((Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)) || ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) && !(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M))) {
-                    final ConnectivityManager manager = (ConnectivityManager) moContext
-                            .getSystemService(Context.CONNECTIVITY_SERVICE);
-                    NetworkRequest.Builder builder;
-                    builder = new NetworkRequest.Builder();
-                    /// set the transport type do WIFI
-                    builder.addTransportType(NetworkCapabilities.TRANSPORT_WIFI);
+        boolean success = true;
+        boolean shouldReply = true;
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP && manager != null) {
+            if (useWifi) {
+                NetworkRequest.Builder builder;
+                builder = new NetworkRequest.Builder();
+                /// set the transport type do WIFI
+                builder.addTransportType(NetworkCapabilities.TRANSPORT_WIFI);
+                shouldReply = false;
+                manager.requestNetwork(builder.build(), new ConnectivityManager.NetworkCallback() {
+                    @Override
+                    public void onAvailable(Network network) {
+                        super.onAvailable(network);
+                        boolean success = false;
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            success = manager.bindProcessToNetwork(network);
 
-                    if (manager != null) {
-                        manager.requestNetwork(builder.build(), new ConnectivityManager.NetworkCallback() {
+                        } else {
+                            success = ConnectivityManager.setProcessDefaultNetwork(network);
+                        }
+                        manager.unregisterNetworkCallback(this);
+                        final boolean result = success;
+                        final Handler handler = new Handler(Looper.getMainLooper());
+                        handler.post(new Runnable() {
                             @Override
-                            public void onAvailable(Network network) {
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                    manager.bindProcessToNetwork(network);
-                                    manager.unregisterNetworkCallback(this);
-                                } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                    ConnectivityManager.setProcessDefaultNetwork(network);
-                                    manager.unregisterNetworkCallback(this);
-                                }
+                            public void run () {
+                                poResult.success(result);
                             }
                         });
                     }
+                });
+
+            } else {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    success = manager.bindProcessToNetwork(null);
+                } else {
+                    success = ConnectivityManager.setProcessDefaultNetwork(null);
                 }
             }
-        } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                ConnectivityManager manager = (ConnectivityManager) moContext
-                        .getSystemService(Context.CONNECTIVITY_SERVICE);
-                assert manager != null;
-                manager.bindProcessToNetwork(null);
-            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                ConnectivityManager.setProcessDefaultNetwork(null);
-            }
+
         }
-        poResult.success(null);
+        if (shouldReply) {
+            poResult.success(success);
+        }
     }
 
     /// Method to check if wifi is enabled
@@ -797,8 +798,6 @@ public class WifiIotPlugin implements MethodCallHandler, EventChannel.StreamHand
             return false;
         }
 
-        Log.i("ASDF", Thread.currentThread().getName());
-
         boolean enabled = moWiFi.enableNetwork(updateNetwork, true);
         if (!enabled) return false;
 
@@ -866,7 +865,6 @@ public class WifiIotPlugin implements MethodCallHandler, EventChannel.StreamHand
             for (Object x : xs) {
                 if (x != null) {
                     try {
-                        Log.d(Closer.class.toString(), "closing: " + x);
                         if (x instanceof Closeable) {
                             ((Closeable) x).close();
                         } else if (x instanceof Socket) {
@@ -874,11 +872,10 @@ public class WifiIotPlugin implements MethodCallHandler, EventChannel.StreamHand
                         } else if (x instanceof DatagramSocket) {
                             ((DatagramSocket) x).close();
                         } else {
-                            Log.d(Closer.class.toString(), "cannot close: " + x);
                             throw new RuntimeException("cannot close " + x);
                         }
                     } catch (Throwable e) {
-                        Log.e(Closer.class.toString(), e.getMessage());
+                        // TODO : do something ?
                     }
                 }
             }
