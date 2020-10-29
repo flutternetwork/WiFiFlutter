@@ -14,7 +14,7 @@ Becareful, some commands as no effect on iOS because Apple don't let us to do wh
 | Enabling / Disabling WiFi module                      | :warning:(5) |  :x:  |
 | Getting WiFi status                                   | :white_check_mark: |  :x:  |
 | Scanning for networks, with "already-associated" flag | :white_check_mark: |  :x:  |
-| Connecting / Disconnecting on a network in WPA / WEP  | :white_check_mark: |  :white_check_mark:(1)  |
+| Connecting / Disconnecting on a network in WPA / WEP  | :warning:(6) |  :white_check_mark:(1)  |
 | Registering / Unregistering a WiFi network            | :white_check_mark: |  :warning:(2)  |
 | Getting informations like :                           | :white_check_mark: |  :warning:(3)  |
 | - SSID                                                | :white_check_mark: |  :white_check_mark:  |
@@ -31,7 +31,9 @@ Becareful, some commands as no effect on iOS because Apple don't let us to do wh
 
 :question:(4) : I think there is a way to get the IP address but for now, this is not implemented..
 
-:question:(5): On Android SDK > 29, this is deprecated and will always fail (except DO, PO and system apps). [[docs](https://developer.android.com/reference/android/net/wifi/WifiManager#setWifiEnabled(boolean))]
+:question:(5): On Android SDK >= 29, this is deprecated and will always fail (except DO, PO and system apps). [[docs](https://developer.android.com/reference/android/net/wifi/WifiManager#setWifiEnabled(boolean))]
+
+:question:(6): On Android SDK >= 29, WEP security is deprecated and will always fail.
 
 ## Access Point
 |                                       Description                                     |      Android       |         iOS          |

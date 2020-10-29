@@ -15,6 +15,7 @@ import android.net.NetworkRequest;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.net.wifi.WifiNetworkSpecifier;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
@@ -610,15 +611,8 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
                 String security = poCall.argument("security");
                 Boolean joinOnce = poCall.argument("join_once");
 
-                final boolean connected = connectTo(ssid, password, security, joinOnce);
+                connectTo(poResult, ssid, password, security, joinOnce);
 
-                final Handler handler = new Handler(Looper.getMainLooper());
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        poResult.success(connected);
-                    }
-                });
             }
         }.start();
     }
@@ -647,15 +641,7 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
                     }
                 }
 
-                final boolean connected = connectTo(ssid, password, security, joinOnce);
-
-                final Handler handler = new Handler(Looper.getMainLooper());
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        poResult.success(connected);
-                    }
-                });
+                connectTo(poResult, ssid, password, security, joinOnce);
             }
         }.start();
     }
@@ -796,7 +782,56 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
     }
 
     /// Method to connect to WIFI Network
-    private Boolean connectTo(String ssid, String password, String security, Boolean joinOnce) {
+    private void connectTo(final Result poResult, final String ssid, final String password, final String security, final Boolean joinOnce) {
+        final Handler handler = new Handler(Looper.getMainLooper());
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            final boolean connected = connectToDeprecated(ssid, password, security, joinOnce);
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    poResult.success(connected);
+                }
+            });
+        } else {
+            // Make new network specifier
+            final WifiNetworkSpecifier.Builder builder = new WifiNetworkSpecifier.Builder();
+            // set ssid
+            builder.setSsid(ssid);
+            // set security
+            if (security != null && security.toUpperCase().equals("WPA")) {
+                builder.setWpa2Passphrase(password);
+            } else if (security != null && security.toUpperCase().equals("WEP")) {
+                // WEP is not supported
+                poResult.error("Error", "WEP is not supported for Android SDK " + Build.VERSION.SDK_INT, "");
+            }
+
+            final NetworkRequest networkRequest = new NetworkRequest.Builder()
+                    .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
+                    .removeCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+                    .setNetworkSpecifier(builder.build())
+                    .build();
+
+            final ConnectivityManager connectivityManager = (ConnectivityManager) moContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+            connectivityManager.requestNetwork(networkRequest, new ConnectivityManager.NetworkCallback() {
+                @Override
+                public void onAvailable(@NonNull Network network) {
+                    super.onAvailable(network);
+                    poResult.success(true);
+                    connectivityManager.unregisterNetworkCallback(this);
+                }
+
+                @Override
+                public void onUnavailable() {
+                    super.onUnavailable();
+                    poResult.success(false);
+                }
+            }, handler, 30 * 1000);
+        }
+    }
+
+    @SuppressWarnings("deprecation")
+    private Boolean connectToDeprecated(String ssid, String password, String security, Boolean joinOnce) {
         /// Make new configuration
         android.net.wifi.WifiConfiguration conf = new android.net.wifi.WifiConfiguration();
         conf.SSID = "\"" + ssid + "\"";
