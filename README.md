@@ -11,7 +11,7 @@ Becareful, some commands as no effect on iOS because Apple don't let us to do wh
 ## WiFi connections
 |                      Description                      |      Android       |         iOS          |
 | :---------------------------------------------------- | :----------------: | :------------------: |
-| Enabling / Disabling WiFi module                      | :white_check_mark: |  :x:  |
+| Enabling / Disabling WiFi module                      | :warning:(5) |  :x:  |
 | Getting WiFi status                                   | :white_check_mark: |  :x:  |
 | Scanning for networks, with "already-associated" flag | :white_check_mark: |  :x:  |
 | Connecting / Disconnecting on a network in WPA / WEP  | :white_check_mark: |  :white_check_mark:(1)  |
@@ -30,6 +30,8 @@ Becareful, some commands as no effect on iOS because Apple don't let us to do wh
 :warning:(3) : On iOS, you can just getting the SSID, or maybe(probably) I'm missing something! 
 
 :question:(4) : I think there is a way to get the IP address but for now, this is not implemented..
+
+:question:(5): On Android SDK > 29, this is deprecated and will always fail (except DO, PO and system apps). [[docs](https://developer.android.com/reference/android/net/wifi/WifiManager#setWifiEnabled(boolean))]
 
 ## Access Point
 |                                       Description                                     |      Android       |         iOS          |

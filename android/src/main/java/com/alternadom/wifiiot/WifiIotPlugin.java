@@ -7,18 +7,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.os.Handler;
-import android.os.Looper;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.net.NetworkRequest;
 import android.net.wifi.ScanResult;
-import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -81,10 +80,10 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
     // cleanup
     private void cleanup() {
         if (!ssidsToBeRemovedOnExit.isEmpty()) {
-            List<WifiConfiguration> wifiConfigList =
+            List<android.net.wifi.WifiConfiguration> wifiConfigList =
                     moWiFi.getConfiguredNetworks();
             for (String ssid : ssidsToBeRemovedOnExit) {
-                for (WifiConfiguration wifiConfig : wifiConfigList) {
+                for (android.net.wifi.WifiConfiguration wifiConfig : wifiConfigList) {
                     if (wifiConfig.SSID.equals(ssid)) {
                         moWiFi.removeNetwork(wifiConfig.networkId);
                     }
@@ -256,7 +255,6 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
     }
 
     /**
-     *
      * @param poCall
      * @param poResult
      */
@@ -277,7 +275,7 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
      * (e.g., {@code 01a243f405}).
      */
     private void getWiFiAPSSID(Result poResult) {
-        WifiConfiguration oWiFiConfig = moWiFiAPManager.getWifiApConfiguration();
+        android.net.wifi.WifiConfiguration oWiFiConfig = moWiFiAPManager.getWifiApConfiguration();
         if (oWiFiConfig != null && oWiFiConfig.SSID != null) {
             poResult.success(oWiFiConfig.SSID);
             return;
@@ -288,7 +286,7 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
     private void setWiFiAPSSID(MethodCall poCall, Result poResult) {
         String sAPSSID = poCall.argument("ssid");
 
-        WifiConfiguration oWiFiConfig = moWiFiAPManager.getWifiApConfiguration();
+        android.net.wifi.WifiConfiguration oWiFiConfig = moWiFiAPManager.getWifiApConfiguration();
 
         oWiFiConfig.SSID = sAPSSID;
 
@@ -302,7 +300,7 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
      * SSID-specific probe request must be used for scans.
      */
     private void isSSIDHidden(Result poResult) {
-        WifiConfiguration oWiFiConfig = moWiFiAPManager.getWifiApConfiguration();
+        android.net.wifi.WifiConfiguration oWiFiConfig = moWiFiAPManager.getWifiApConfiguration();
         if (oWiFiConfig != null && oWiFiConfig.hiddenSSID) {
             poResult.success(oWiFiConfig.hiddenSSID);
             return;
@@ -313,7 +311,7 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
     private void setSSIDHidden(MethodCall poCall, Result poResult) {
         boolean isSSIDHidden = poCall.argument("hidden");
 
-        WifiConfiguration oWiFiConfig = moWiFiAPManager.getWifiApConfiguration();
+        android.net.wifi.WifiConfiguration oWiFiConfig = moWiFiAPManager.getWifiApConfiguration();
 
         oWiFiConfig.hiddenSSID = isSSIDHidden;
 
@@ -332,7 +330,7 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
      * string otherwise.
      */
     private void getWiFiAPPreSharedKey(Result poResult) {
-        WifiConfiguration oWiFiConfig = moWiFiAPManager.getWifiApConfiguration();
+        android.net.wifi.WifiConfiguration oWiFiConfig = moWiFiAPManager.getWifiApConfiguration();
         if (oWiFiConfig != null && oWiFiConfig.preSharedKey != null) {
             poResult.success(oWiFiConfig.preSharedKey);
             return;
@@ -343,7 +341,7 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
     private void setWiFiAPPreSharedKey(MethodCall poCall, Result poResult) {
         String sPreSharedKey = poCall.argument("preSharedKey");
 
-        WifiConfiguration oWiFiConfig = moWiFiAPManager.getWifiApConfiguration();
+        android.net.wifi.WifiConfiguration oWiFiConfig = moWiFiAPManager.getWifiApConfiguration();
 
         oWiFiConfig.preSharedKey = sPreSharedKey;
 
@@ -382,8 +380,8 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
 
                         Boolean clientIsReachable = client.isReachable();
                         Boolean shouldReturnCurrentClient = true;
-                        if ( finalOnlyReachables.booleanValue()) {
-                            if (!clientIsReachable.booleanValue()){
+                        if (finalOnlyReachables.booleanValue()) {
+                            if (!clientIsReachable.booleanValue()) {
                                 shouldReturnCurrentClient = Boolean.valueOf(false);
                             }
                         }
@@ -450,7 +448,7 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
     @Override
     public void onListen(Object o, EventChannel.EventSink eventSink) {
         int PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION = 65655434;
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && moContext.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && moContext.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             moActivity.requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION);
         }
         receiver = createReceiver(eventSink);
@@ -460,14 +458,14 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
 
     @Override
     public void onCancel(Object o) {
-        if(receiver != null){
+        if (receiver != null) {
             moContext.unregisterReceiver(receiver);
             receiver = null;
         }
 
     }
 
-    private BroadcastReceiver createReceiver(final EventChannel.EventSink eventSink){
+    private BroadcastReceiver createReceiver(final EventChannel.EventSink eventSink) {
         return new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -475,7 +473,8 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
             }
         };
     }
-    JSONArray handleNetworkScanResult(){
+
+    JSONArray handleNetworkScanResult() {
         List<ScanResult> results = moWiFi.getScanResults();
         JSONArray wifiArray = new JSONArray();
 
@@ -516,11 +515,12 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
         try {
 
             int PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION = 65655434;
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && moContext.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && moContext.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 moActivity.requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION);
             }
 
-            moWiFi.startScan();
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P)
+                moWiFi.startScan();
 
             poResult.success(handleNetworkScanResult().toString());
 
@@ -569,7 +569,7 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
                         final Handler handler = new Handler(Looper.getMainLooper());
                         handler.post(new Runnable() {
                             @Override
-                            public void run () {
+                            public void run() {
                                 poResult.success(result);
                             }
                         });
@@ -612,10 +612,10 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
 
                 final boolean connected = connectTo(ssid, password, security, joinOnce);
 
-				final Handler handler = new Handler(Looper.getMainLooper());
+                final Handler handler = new Handler(Looper.getMainLooper());
                 handler.post(new Runnable() {
                     @Override
-                    public void run () {
+                    public void run() {
                         poResult.success(connected);
                     }
                 });
@@ -629,7 +629,7 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
     /// Callback returns true if ssid is in the range
     private void findAndConnect(final MethodCall poCall, final Result poResult) {
         int PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION = 65655434;
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && moContext.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && moContext.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             moActivity.requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION);
         }
         new Thread() {
@@ -649,10 +649,10 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
 
                 final boolean connected = connectTo(ssid, password, security, joinOnce);
 
-				final Handler handler = new Handler(Looper.getMainLooper());
+                final Handler handler = new Handler(Looper.getMainLooper());
                 handler.post(new Runnable() {
                     @Override
-                    public void run () {
+                    public void run() {
                         poResult.success(connected);
                     }
                 });
@@ -747,8 +747,8 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
             poResult.error("Error", "No prefix SSID was given!", null);
         }
 
-        List<WifiConfiguration> mWifiConfigList = moWiFi.getConfiguredNetworks();
-        for (WifiConfiguration wifiConfig : mWifiConfigList) {
+        List<android.net.wifi.WifiConfiguration> mWifiConfigList = moWiFi.getConfiguredNetworks();
+        for (android.net.wifi.WifiConfiguration wifiConfig : mWifiConfigList) {
             String comparableSSID = ('"' + prefix_ssid); //Add quotes because wifiConfig.SSID has them
             if (wifiConfig.SSID.startsWith(comparableSSID)) {
                 moWiFi.removeNetwork(wifiConfig.networkId);
@@ -765,10 +765,10 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
 
         String ssid = poCall.argument("ssid");
 
-        List<WifiConfiguration> mWifiConfigList = moWiFi.getConfiguredNetworks();
+        List<android.net.wifi.WifiConfiguration> mWifiConfigList = moWiFi.getConfiguredNetworks();
         String comparableSSID = ('"' + ssid + '"'); //Add quotes because wifiConfig.SSID has them
         if (mWifiConfigList != null) {
-            for (WifiConfiguration wifiConfig : mWifiConfigList) {
+            for (android.net.wifi.WifiConfiguration wifiConfig : mWifiConfigList) {
                 if (wifiConfig.SSID.equals(comparableSSID)) {
                     poResult.success(true);
                     return;
@@ -798,7 +798,7 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
     /// Method to connect to WIFI Network
     private Boolean connectTo(String ssid, String password, String security, Boolean joinOnce) {
         /// Make new configuration
-        WifiConfiguration conf = new WifiConfiguration();
+        android.net.wifi.WifiConfiguration conf = new android.net.wifi.WifiConfiguration();
         conf.SSID = "\"" + ssid + "\"";
 
         if (security != null) security = security.toUpperCase();
@@ -810,38 +810,38 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
             /// ifcase of not added it will not be able to connect
             conf.preSharedKey = "\"" + password + "\"";
 
-            conf.allowedProtocols.set(WifiConfiguration.Protocol.RSN);
+            conf.allowedProtocols.set(android.net.wifi.WifiConfiguration.Protocol.RSN);
 
-            conf.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_PSK);
+            conf.allowedKeyManagement.set(android.net.wifi.WifiConfiguration.KeyMgmt.WPA_PSK);
 
-            conf.status = WifiConfiguration.Status.ENABLED;
+            conf.status = android.net.wifi.WifiConfiguration.Status.ENABLED;
 
-            conf.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.TKIP);
-            conf.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.CCMP);
+            conf.allowedGroupCiphers.set(android.net.wifi.WifiConfiguration.GroupCipher.TKIP);
+            conf.allowedGroupCiphers.set(android.net.wifi.WifiConfiguration.GroupCipher.CCMP);
 
-            conf.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_PSK);
+            conf.allowedKeyManagement.set(android.net.wifi.WifiConfiguration.KeyMgmt.WPA_PSK);
 
-            conf.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.TKIP);
-            conf.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.CCMP);
+            conf.allowedPairwiseCiphers.set(android.net.wifi.WifiConfiguration.PairwiseCipher.TKIP);
+            conf.allowedPairwiseCiphers.set(android.net.wifi.WifiConfiguration.PairwiseCipher.CCMP);
 
-            conf.allowedProtocols.set(WifiConfiguration.Protocol.RSN);
-            conf.allowedProtocols.set(WifiConfiguration.Protocol.WPA);
+            conf.allowedProtocols.set(android.net.wifi.WifiConfiguration.Protocol.RSN);
+            conf.allowedProtocols.set(android.net.wifi.WifiConfiguration.Protocol.WPA);
         } else if (security.equals("WEP")) {
             conf.wepKeys[0] = "\"" + password + "\"";
             conf.wepTxKeyIndex = 0;
-            conf.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
-            conf.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.WEP40);
+            conf.allowedKeyManagement.set(android.net.wifi.WifiConfiguration.KeyMgmt.NONE);
+            conf.allowedGroupCiphers.set(android.net.wifi.WifiConfiguration.GroupCipher.WEP40);
         } else {
-            conf.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
+            conf.allowedKeyManagement.set(android.net.wifi.WifiConfiguration.KeyMgmt.NONE);
         }
 
         /// Remove the existing configuration for this netwrok
-        List<WifiConfiguration> mWifiConfigList = moWiFi.getConfiguredNetworks();
+        List<android.net.wifi.WifiConfiguration> mWifiConfigList = moWiFi.getConfiguredNetworks();
 
         int updateNetwork = -1;
 
         if (mWifiConfigList != null) {
-            for (WifiConfiguration wifiConfig : mWifiConfigList) {
+            for (android.net.wifi.WifiConfiguration wifiConfig : mWifiConfigList) {
                 if (wifiConfig.SSID.equals(conf.SSID)) {
                     conf.networkId = wifiConfig.networkId;
                     updateNetwork = moWiFi.updateNetwork(conf);
