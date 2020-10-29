@@ -10,7 +10,6 @@ import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
-import android.net.NetworkInfo;
 import android.net.NetworkRequest;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiInfo;
@@ -679,7 +678,7 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
     @SuppressWarnings("deprecation")
     private void isConnectedDeprecated(Result poResult) {
         ConnectivityManager connManager = (ConnectivityManager) moContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo mWifi = connManager != null
+        android.net.NetworkInfo mWifi = connManager != null
                 ? connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI)
                 : null;
 
