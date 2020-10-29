@@ -662,13 +662,28 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
 
     /// Use this method to check if the device is currently connected to Wifi.
     private void isConnected(Result poResult) {
-        ConnectivityManager connManager = (ConnectivityManager) moContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo mWifi = connManager != null ? connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI) : null;
-        if (mWifi != null && mWifi.isConnected()) {
-            poResult.success(true);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            isConnectedDeprecated(poResult);
         } else {
-            poResult.success(false);
+            ConnectivityManager connManager = (ConnectivityManager) moContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+            final Network network = connManager != null
+                    ? connManager.getActiveNetwork()
+                    : null;
+            final NetworkCapabilities capabilities = network != null
+                    ? connManager.getNetworkCapabilities(network)
+                    : null;
+            poResult.success(capabilities != null && capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI));
         }
+    }
+
+    @SuppressWarnings("deprecation")
+    private void isConnectedDeprecated(Result poResult) {
+        ConnectivityManager connManager = (ConnectivityManager) moContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo mWifi = connManager != null
+                ? connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI)
+                : null;
+
+        poResult.success(mWifi != null && mWifi.isConnected());
     }
 
     /// Disconnect current Wifi.
