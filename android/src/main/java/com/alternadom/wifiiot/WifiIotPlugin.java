@@ -204,10 +204,16 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
                 getIP(poResult);
                 break;
             case "removeWifiNetwork":
-                removeWifiNetwork(poCall, poResult);
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q)
+                    removeWifiNetwork(poCall, poResult);
+                else
+                    poResult.error("Error", "removeWifiNetwork not supported for Android SDK " + Build.VERSION.SDK_INT, null);
                 break;
             case "isRegisteredWifiNetwork":
-                isRegisteredWifiNetwork(poCall, poResult);
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q)
+                    isRegisteredWifiNetwork(poCall, poResult);
+                else
+                    poResult.error("Error", "isRegisteredWifiNetwork not supported for Android SDK " + Build.VERSION.SDK_INT, null);
                 break;
             case "isWiFiAPEnabled":
                 isWiFiAPEnabled(poResult);
