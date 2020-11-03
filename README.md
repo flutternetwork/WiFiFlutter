@@ -31,11 +31,11 @@ Becareful, some commands as no effect on iOS because Apple don't let us to do wh
 
 :question:(4) : I think there is a way to get the IP address but for now, this is not implemented..
 
-:question:(5): On Android SDK >= 29, this is deprecated and will always fail (except DO, PO and system apps). [[docs](https://developer.android.com/reference/android/net/wifi/WifiManager#setWifiEnabled(boolean))]
+:warning:(5): On Android SDK >= 29, this is deprecated and will always fail (except DO, PO and system apps). [[docs](https://developer.android.com/reference/android/net/wifi/WifiManager#setWifiEnabled(boolean))]
 
-:question:(6): On Android SDK >= 29, WEP security is deprecated and will always fail, also the network will be disconnected when the app is closed. [[docs](https://developer.android.com/reference/android/net/ConnectivityManager?hl=en#requestNetwork(android.net.NetworkRequest,%20android.net.ConnectivityManager.NetworkCallback))]. If permanent network is required(Check :warning:(7)), there is a way but that network will not be controlled by the app, it will be as if user is adding the network manually, not supported as of now, open issue if you want this feature.
+:warning:(6): On Android SDK >= 29, WEP security is deprecated and will always fail, also the network will be disconnected when the app is closed. [[docs](https://developer.android.com/reference/android/net/ConnectivityManager?hl=en#requestNetwork(android.net.NetworkRequest,%20android.net.ConnectivityManager.NetworkCallback))]. If permanent network is required(Check :warning:(7)), there is a way but that network will not be controlled by the app, it will be as if user is adding the network manually, not supported as of now, open issue if you want this feature.
 
-:question:(7) On Android SDK >=29, this is deprecated. Although there could be ways for user to be sent to Settings App for registering(pre-filled) and unregistering manually, but not supported as of now.
+:warning:(7) On Android SDK >=29, this is deprecated. Although there could be ways for user to be sent to Settings App for registering(pre-filled) and unregistering manually, but not supported as of now.
 
 ## Access Point
 |                                       Description                                     |      Android       |         iOS          |
