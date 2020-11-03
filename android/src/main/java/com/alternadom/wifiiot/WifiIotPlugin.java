@@ -56,6 +56,7 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
     private WifiApManager moWiFiAPManager;
     private Activity moActivity;
     private BroadcastReceiver receiver;
+    private ConnectivityManager.NetworkCallback networkCallback;
     private List<String> ssidsToBeRemovedOnExit = new ArrayList<String>();
 
     // initialize members of this class with Context
@@ -680,7 +681,15 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
 
     /// Disconnect current Wifi.
     private void disconnect(Result poResult) {
-        moWiFi.disconnect();
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            //noinspection deprecation
+            moWiFi.disconnect();
+        } else {
+            if (networkCallback != null) {
+                final ConnectivityManager connectivityManager = (ConnectivityManager) moContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+                connectivityManager.unregisterNetworkCallback(networkCallback);
+            }
+        }
         poResult.success(null);
     }
 
@@ -820,12 +829,15 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
 
             final ConnectivityManager connectivityManager = (ConnectivityManager) moContext.getSystemService(Context.CONNECTIVITY_SERVICE);
 
-            connectivityManager.requestNetwork(networkRequest, new ConnectivityManager.NetworkCallback() {
+
+            if (networkCallback != null)
+                connectivityManager.unregisterNetworkCallback(networkCallback);
+
+            networkCallback = new ConnectivityManager.NetworkCallback() {
                 @Override
                 public void onAvailable(@NonNull Network network) {
                     super.onAvailable(network);
                     poResult.success(true);
-                    connectivityManager.unregisterNetworkCallback(this);
                 }
 
                 @Override
@@ -833,7 +845,10 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
                     super.onUnavailable();
                     poResult.success(false);
                 }
-            }, handler, 30 * 1000);
+            };
+
+
+            connectivityManager.requestNetwork(networkRequest, networkCallback, handler, 30 * 1000);
 
             // TODO remove network in cleanup, if joinOnce
         }
