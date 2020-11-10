@@ -664,14 +664,29 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             isConnectedDeprecated(poResult);
         } else {
+            int PERMISSIONS_REQUEST_CODE_ACCESS_NETWORK_STATE = 656889657;
+            if (moContext.checkSelfPermission(Manifest.permission.ACCESS_NETWORK_STATE) != PackageManager.PERMISSION_GRANTED) {
+                moActivity.requestPermissions(new String[]{Manifest.permission.ACCESS_NETWORK_STATE}, PERMISSIONS_REQUEST_CODE_ACCESS_NETWORK_STATE);
+            }
+
             ConnectivityManager connManager = (ConnectivityManager) moContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-            final Network network = connManager != null
-                    ? connManager.getActiveNetwork()
-                    : null;
-            final NetworkCapabilities capabilities = network != null
-                    ? connManager.getNetworkCapabilities(network)
-                    : null;
-            poResult.success(capabilities != null && capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI));
+            boolean result = false;
+            if (connManager != null) {
+                // `connManager.getActiveNetwork` only return if the network has internet
+                // therefore using `connManager.getAllNetworks()` to check all networks
+                for (final Network network : connManager.getAllNetworks()) {
+                    final NetworkCapabilities capabilities = network != null
+                            ? connManager.getNetworkCapabilities(network)
+                            : null;
+                    final boolean isConnected = capabilities != null && capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI);
+                    if (isConnected) {
+                        result = true;
+                        break;
+                    }
+                }
+            }
+
+            poResult.success(result);
         }
     }
 
