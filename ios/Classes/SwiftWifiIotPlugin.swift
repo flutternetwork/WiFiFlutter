@@ -126,30 +126,35 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
         //            print("The network will be forgotten!")
         //        }
         //        print("SECURITY : '\(sSecurity)'")
-
         if #available(iOS 11.0, *) {
             let configuration = initHotspotConfiguration(ssid: sSSID, passphrase: sPassword, security: sSecurity)
             configuration.joinOnce = bJoinOnce ?? false
 
-            NEHotspotConfigurationManager.shared.apply(configuration) { (error) in
+            NEHotspotConfigurationManager.shared.apply(configuration) { [weak self] (error) in
                 if (error != nil) {
                     if (error?.localizedDescription == "already associated.") {
-                        print("Connected to " + self.getSSID()!)
+                        if let this = self, let ssid = this.getSSID() {
+                            print("Connected to " + ssid)
+                        }
                         result(true)
-                        return
                     } else {
                         print("Not Connected")
                         result(false)
-                        return
                     }
+                    return
                 } else {
-                    if (self.getSSID() == nil) {
+                    guard let this = self else {
                         print("WiFi network not found")
                         result(false)
-                    } else {
-                        print("Connected to " + self.getSSID()!)
+                        return
+                    }
+                    if let ssid = this.getSSID() {
+                        print("Connected to " + ssid)
                         // ssid check is required because if wifi not found (could not connect) there seems to be no error given
-                        result(self.getSSID()! == sSSID)
+                        result(ssid == sSSID)
+                    } else {
+                        print("WiFi network not found")
+                        result(false)
                     }
                     return
                 }
