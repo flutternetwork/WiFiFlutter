@@ -203,7 +203,8 @@ class WiFiForIoTPlugin {
   static Future<bool> connect(String ssid,
       {String password,
       NetworkSecurity security = NetworkSecurity.NONE,
-      bool joinOnce = true}) async {
+      bool joinOnce = true,
+      bool withInternet = false}) async {
     if (!Platform.isIOS && !await isEnabled()) await setEnabled(true);
     bool bResult;
     try {
@@ -211,6 +212,7 @@ class WiFiForIoTPlugin {
         "ssid": ssid.toString(),
         "password": password.toString(),
         "join_once": joinOnce,
+        "with_internet": withInternet,
         "security":
             security?.toString()?.substring('$NetworkSecurity'.length + 1),
       });
@@ -221,7 +223,7 @@ class WiFiForIoTPlugin {
   }
 
   static Future<bool> findAndConnect(String ssid,
-      {String password, bool joinOnce = true}) async {
+      {String password, bool joinOnce = true, bool withInternet = false}) async {
     if (!await isEnabled()) {
       await setEnabled(true);
     }
@@ -238,6 +240,7 @@ class WiFiForIoTPlugin {
         "ssid": ssid.toString(),
         "password": password.toString(),
         "join_once": joinOnce,
+        "with_internet": withInternet,
       });
     } on MissingPluginException catch (e) {
       print("MissingPluginException : ${e.toString()}");
