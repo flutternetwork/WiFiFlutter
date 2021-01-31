@@ -248,6 +248,9 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
             case "setMACFiltering":
                 setMACFiltering(poCall, poResult);
                 break;
+            case "showWritePermissionSettings":
+                showWritePermissionSettings(poCall, poResult);
+                break;
             default:
                 poResult.notImplemented();
                 break;
@@ -433,6 +436,20 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
     private void setWiFiAPEnabled(MethodCall poCall, Result poResult) {
         boolean enabled = poCall.argument("state");
         moWiFiAPManager.setWifiApEnabled(null, enabled);
+        poResult.success(null);
+    }
+
+    /**
+     * Show write permission settings page to user
+     * Depending on Android version and application these may be needed
+     * to perform certain WiFi configurations that require WRITE_SETTINGS
+     * which require a double opt-in, not just presence in manifest.
+     * *** showWritePermissionSettings :
+     * param boolean force, if true shows always, if false only if permissions are not already granted
+     */
+    private void showWritePermissionSettings(MethodCall poCall, Result poResult) {
+        boolean force = poCall.argument("force");
+        moWiFiAPManager.showWritePermissionSettings(force);
         poResult.success(null);
     }
 
