@@ -220,6 +220,26 @@ class WiFiForIoTPlugin {
     return bResult != null && bResult;
   }
 
+  static Future<bool> registerWifiNetwork(String ssid,
+      {String password,
+      NetworkSecurity security = NetworkSecurity.NONE,
+      bool permanentAdd = false}) async {
+    if (!Platform.isIOS && !await isEnabled()) await setEnabled(true);
+    bool bResult;
+    try {
+      await _channel.invokeMethod('registerWifiNetwork', {
+        "ssid": ssid.toString(),
+        "password": password.toString(),
+        "security":
+            security?.toString()?.substring('$NetworkSecurity'.length + 1),
+        "permanent_add": permanentAdd,
+      });
+    } on MissingPluginException catch (e) {
+      print("MissingPluginException : ${e.toString()}");
+    }
+    return bResult != null && bResult;
+  }
+
   static Future<bool> findAndConnect(String ssid,
       {String password, bool joinOnce = true}) async {
     if (!await isEnabled()) {
