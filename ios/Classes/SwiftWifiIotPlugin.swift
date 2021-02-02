@@ -109,6 +109,7 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
             print("Forcing WiFi usage : %s", ((useWifi ?? false) ? "Use WiFi" : "Use 3G/4G Data"))
             if #available(iOS 14.0, *) {
                 if(useWifi ?? false){
+                    // trigger access for local network
                     triggerLocalNetworkPrivacyAlert();
                 }
             }
