@@ -622,24 +622,21 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
     }
 
     /**
-     * Registers a wifi network in suggested networks of the application,
-     * so connections can then be made preferentially to this. For API >= 30
-     * also the intent to permanently store such network in user configuration
-     * can be executed.
+     * Registers a wifi network in the device wireless networks
+     * For API >= 30 uses intent to permanently store such network in user configuration
+     * For API <= 29 uses deprecated functions that manipulate directly
      * *** registerWifiNetwork :
      * param ssid, SSID to register
      * param password, passphrase to use
      * param security, security mode (WPA or null) to use
-     * param permanent_add, (default {@code false}) call also intent to save to system (>=30 only)
      * return {@code true} if the operation succeeds, {@code false} otherwise
      */
     private void registerWifiNetwork(final MethodCall poCall, final Result poResult) {
         String ssid = poCall.argument("ssid");
         String password = poCall.argument("password");
         String security = poCall.argument("security");
-        Boolean permanentAdd = poCall.argument("permanent_add");
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             final WifiNetworkSuggestion.Builder suggestedNet = new WifiNetworkSuggestion.Builder();
             suggestedNet.setSsid(ssid);
 
@@ -653,24 +650,25 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
             final ArrayList<WifiNetworkSuggestion> suggestionsList = new ArrayList<WifiNetworkSuggestion>();
             suggestionsList.add(suggestedNet.build());
 
-            moWiFi.addNetworkSuggestions(suggestionsList);
-
-            if (moWiFi.addNetworkSuggestions(suggestionsList) != WifiManager.STATUS_NETWORK_SUGGESTIONS_SUCCESS) {
-                poResult.error("Error", "Network suggestion not accepted", "");
-            } else {
-                if (permanentAdd && (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)) { // Intent just available on >= 30
-                    Bundle bundle = new Bundle();
-                    bundle.putParcelableArrayList(android.provider.Settings.EXTRA_WIFI_NETWORK_LIST, suggestionsList);
-                    Intent intent = new Intent(android.provider.Settings.ACTION_WIFI_ADD_NETWORKS);
-                    intent.putExtras(bundle);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    moContext.startActivity(intent);
-                }
-            }
+            Bundle bundle = new Bundle();
+            bundle.putParcelableArrayList(android.provider.Settings.EXTRA_WIFI_NETWORK_LIST, suggestionsList);
+            Intent intent = new Intent(android.provider.Settings.ACTION_WIFI_ADD_NETWORKS);
+            intent.putExtras(bundle);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            moContext.startActivity(intent);
 
             poResult.success(null);
         } else {
-            poResult.error("Error", "WifiNetworkSuggestion is not supported for Android SDK " + Build.VERSION.SDK_INT, "");
+            // Deprecated version
+            android.net.wifi.WifiConfiguration conf = generateConfiguration(ssid, password, security);
+
+            int updateNetwork = registerWifiNetworkDeprecated(conf);
+
+            if (updateNetwork == -1) {
+                poResult.error("Error", "Error updating network configuration", "");
+            } else {
+                poResult.success(null);
+            }
         }
     }
 
@@ -934,8 +932,31 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
     }
 
     @SuppressWarnings("deprecation")
-    private Boolean connectToDeprecated(String ssid, String password, String security, Boolean joinOnce) {
-        /// Make new configuration
+    private int registerWifiNetworkDeprecated(android.net.wifi.WifiConfiguration conf) {
+        int updateNetwork = -1;
+
+        /// Remove the existing configuration for this netwrok
+        List<android.net.wifi.WifiConfiguration> mWifiConfigList = moWiFi.getConfiguredNetworks();
+
+        if (mWifiConfigList != null) {
+            for (android.net.wifi.WifiConfiguration wifiConfig : mWifiConfigList) {
+                if (wifiConfig.SSID.equals(conf.SSID)) {
+                    conf.networkId = wifiConfig.networkId;
+                    updateNetwork = moWiFi.updateNetwork(conf);
+                }
+            }
+        }
+
+        /// If network not already in configured networks add new network
+        if (updateNetwork == -1) {
+            updateNetwork = moWiFi.addNetwork(conf);
+            moWiFi.saveConfiguration();
+        }
+
+        return updateNetwork;
+    }
+
+    private android.net.wifi.WifiConfiguration generateConfiguration(String ssid, String password, String security) {
         android.net.wifi.WifiConfiguration conf = new android.net.wifi.WifiConfiguration();
         conf.SSID = "\"" + ssid + "\"";
 
@@ -973,25 +994,15 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
             conf.allowedKeyManagement.set(android.net.wifi.WifiConfiguration.KeyMgmt.NONE);
         }
 
-        /// Remove the existing configuration for this netwrok
-        List<android.net.wifi.WifiConfiguration> mWifiConfigList = moWiFi.getConfiguredNetworks();
+        return conf;
+    }
 
-        int updateNetwork = -1;
+    @SuppressWarnings("deprecation")
+    private Boolean connectToDeprecated(String ssid, String password, String security, Boolean joinOnce) {
+        /// Make new configuration
+        android.net.wifi.WifiConfiguration conf = generateConfiguration(ssid, password, security);
 
-        if (mWifiConfigList != null) {
-            for (android.net.wifi.WifiConfiguration wifiConfig : mWifiConfigList) {
-                if (wifiConfig.SSID.equals(conf.SSID)) {
-                    conf.networkId = wifiConfig.networkId;
-                    updateNetwork = moWiFi.updateNetwork(conf);
-                }
-            }
-        }
-
-        /// If network not already in configured networks add new network
-        if (updateNetwork == -1) {
-            updateNetwork = moWiFi.addNetwork(conf);
-            moWiFi.saveConfiguration();
-        }
+        int updateNetwork = registerWifiNetworkDeprecated(conf);
 
         if (updateNetwork == -1) {
             return false;

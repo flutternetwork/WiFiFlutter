@@ -222,8 +222,7 @@ class WiFiForIoTPlugin {
 
   static Future<bool> registerWifiNetwork(String ssid,
       {String password,
-      NetworkSecurity security = NetworkSecurity.NONE,
-      bool permanentAdd = false}) async {
+      NetworkSecurity security = NetworkSecurity.NONE}) async {
     if (!Platform.isIOS && !await isEnabled()) await setEnabled(true);
     bool bResult;
     try {
@@ -232,7 +231,6 @@ class WiFiForIoTPlugin {
         "password": password.toString(),
         "security":
             security?.toString()?.substring('$NetworkSecurity'.length + 1),
-        "permanent_add": permanentAdd,
       });
     } on MissingPluginException catch (e) {
       print("MissingPluginException : ${e.toString()}");
