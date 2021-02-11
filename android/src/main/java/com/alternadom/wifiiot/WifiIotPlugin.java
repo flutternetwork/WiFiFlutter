@@ -645,6 +645,7 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
             } else if (security != null && security.toUpperCase().equals("WEP")) {
                 // WEP is not supported
                 poResult.error("Error", "WEP is not supported for Android SDK " + Build.VERSION.SDK_INT, "");
+                return;
             }
 
             final ArrayList<WifiNetworkSuggestion> suggestionsList = new ArrayList<WifiNetworkSuggestion>();
@@ -896,6 +897,7 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
             } else if (security != null && security.toUpperCase().equals("WEP")) {
                 // WEP is not supported
                 poResult.error("Error", "WEP is not supported for Android SDK " + Build.VERSION.SDK_INT, "");
+                return;
             }
 
             final NetworkRequest networkRequest = new NetworkRequest.Builder()
