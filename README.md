@@ -15,7 +15,7 @@ Becareful, some commands as no effect on iOS because Apple don't let us to do wh
 | Getting WiFi status                                   | :white_check_mark: |  :x:  |
 | Scanning for networks, with "already-associated" flag | :white_check_mark: |  :x:  |
 | Connecting / Disconnecting on a network in WPA / WEP  | :white_check_mark:(6) |  :white_check_mark:(1)  |
-| Registering / Unregistering a WiFi network            | :warning:(7) |  :warning:(2)  |
+| Registering / Unregistering a WiFi network            | :white_check_mark:(7) |  :warning:(2)  |
 | Getting informations like :                           | :white_check_mark: |  :warning:(3)  |
 | - SSID                                                | :white_check_mark: |  :white_check_mark:  |
 | - BSSID                                               | :white_check_mark: |  :x:  |
@@ -33,9 +33,9 @@ Becareful, some commands as no effect on iOS because Apple don't let us to do wh
 
 :warning:(5): On Android SDK >= 29, this is deprecated and will always fail (except DO, PO and system apps). [[docs](https://developer.android.com/reference/android/net/wifi/WifiManager#setWifiEnabled(boolean))]
 
-:white_check_mark:(6): On Android SDK >= 29, WEP security is deprecated and will always fail, also the network will be disconnected when the app is closed. [[docs](https://developer.android.com/reference/android/net/ConnectivityManager?hl=en#requestNetwork(android.net.NetworkRequest,%20android.net.ConnectivityManager.NetworkCallback))]. If permanent network is required(Check :warning:(7)), there is a way but that network will not be controlled by the app, it will be as if user is adding the network manually, not supported as of now, open issue if you want this feature.
+:white_check_mark:(6): On Android SDK >= 29, WEP security is deprecated and will always fail, also the network will be disconnected when the app is closed. [[docs](https://developer.android.com/reference/android/net/ConnectivityManager?hl=en#requestNetwork(android.net.NetworkRequest,%20android.net.ConnectivityManager.NetworkCallback))]. If connecting to network with internet connection use `withInternet` flag.
 
-:warning:(7) On Android SDK >=29, this is deprecated. Although there could be ways for user to be sent to Settings App for registering only(pre-filled) but not supported as of now.
+:white_check_mark:(7) On Android SDK >=29, user needs to approve it and it will be as if user added the network (not the app)
 
 ## Access Point
 |                                       Description                                     |      Android       |         iOS          |

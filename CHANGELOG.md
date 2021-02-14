@@ -1,3 +1,9 @@
+## 0.2.1 2021-02-14
+
+* added `showWritePermissionSettings` on Android [#112]
+* added `registerWifiNetwork` on Android [#113]
+* implemented `forceWifiUsage` on iOS to trigger LocalNetwork permission [#115]
+
 ## 0.2.0 2020-11-26
 
 * Fix the force_wifi method on Android
