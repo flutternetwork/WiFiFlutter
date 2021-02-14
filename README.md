@@ -15,7 +15,7 @@ Becareful, some commands as no effect on iOS because Apple don't let us to do wh
 | Getting WiFi status                                   | :white_check_mark: |  :x:  |
 | Scanning for networks, with "already-associated" flag | :white_check_mark: |  :x:  |
 | Connecting / Disconnecting on a network in WPA / WEP  | :white_check_mark:(5b) |  :white_check_mark:(1)  |
-| Registering / Unregistering a WiFi network            | :sos:(5c) |  :warning:(2)  |
+| Registering / Unregistering a WiFi network            | :white_check_mark:(5c) |  :warning:(2)  |
 | Getting informations like :                           | :white_check_mark: |  :warning:(3)  |
 | - SSID                                                | :white_check_mark: |  :white_check_mark:  |
 | - BSSID                                               | :white_check_mark: |  :x:  |
@@ -34,7 +34,7 @@ Becareful, some commands as no effect on iOS because Apple don't let us to do wh
 :warning:(5): Wifi API changes in Android SDK >= 29, restricts certain behaviour:
   a. Enable/Disable Wifi Module is deprecated and will always fail (except DO, PO and system apps) [[docs](https://developer.android.com/reference/android/net/wifi/WifiManager#setWifiEnabled(boolean))].
   b. For Connecting to Wifi, WEP security is deprecated and will always fail, also the network will be disconnected when the app is closed (if permanent network is required(Check :warning:(5c)), use "Register Network" feature) [[docs](https://developer.android.com/guide/topics/connectivity/wifi-bootstrap))]. By default the connection would not have internet access, to connect to network with internet user `withInternet` which is a different API underneath (this API will not disconnect to network after app closes) [[docs](https://developer.android.com/guide/topics/connectivity/wifi-suggest)].
-  c. [TODO:](https://github.com/alternadom/WiFiFlutter/issues/98) Registering Wifi Network, will require user approval - and the network saved would not be controlled by the app (for deletion, updation, etc) [[docs](https://developer.android.com/guide/topics/connectivity/wifi-save-network-passpoint-config)];
+  c. Registering Wifi Network, will require user approval - and the network saved would not be controlled by the app (for deletion, updation, etc) [[docs](https://developer.android.com/guide/topics/connectivity/wifi-save-network-passpoint-config)];
 
 ## Access Point
 |                                       Description                                     |      Android       |         iOS          |

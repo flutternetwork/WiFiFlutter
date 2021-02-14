@@ -40,6 +40,16 @@ class WiFiForIoTPlugin {
     }
   }
 
+  static void showWritePermissionSettings(bool force) async {
+    Map<String, bool> htArguments = Map();
+    htArguments["force"] = force;
+    try {
+      await _channel.invokeMethod('showWritePermissionSettings', htArguments);
+    } on MissingPluginException catch (e) {
+      print("MissingPluginException : ${e.toString()}");
+    }
+  }
+
   static Future<bool> isWiFiAPSSIDHidden() async {
     Map<String, String> htArguments = Map();
     bool bResult;
@@ -222,8 +232,28 @@ class WiFiForIoTPlugin {
     return bResult != null && bResult;
   }
 
+  static Future<bool> registerWifiNetwork(String ssid,
+      {String password,
+      NetworkSecurity security = NetworkSecurity.NONE}) async {
+    if (!Platform.isIOS && !await isEnabled()) await setEnabled(true);
+    bool bResult;
+    try {
+      await _channel.invokeMethod('registerWifiNetwork', {
+        "ssid": ssid.toString(),
+        "password": password.toString(),
+        "security":
+            security?.toString()?.substring('$NetworkSecurity'.length + 1),
+      });
+    } on MissingPluginException catch (e) {
+      print("MissingPluginException : ${e.toString()}");
+    }
+    return bResult != null && bResult;
+  }
+
   static Future<bool> findAndConnect(String ssid,
-      {String password, bool joinOnce = true, bool withInternet = false}) async {
+      {String password,
+      bool joinOnce = true,
+      bool withInternet = false}) async {
     if (!await isEnabled()) {
       await setEnabled(true);
     }

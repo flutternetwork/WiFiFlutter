@@ -70,6 +70,9 @@ public class WifiApManager {
      */
     public boolean setWifiApEnabled(WifiConfiguration wifiConfig, boolean enabled) {
         try {
+            // Calling setWifiApEnabled requires MANAGE_WRITE_SETTINGS permissions, so check and request if needed
+            showWritePermissionSettings(false);
+
             if (enabled) { // disable WiFi in any case
                 mWifiManager.setWifiEnabled(false);
             }
