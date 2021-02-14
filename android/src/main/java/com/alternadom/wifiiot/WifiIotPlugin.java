@@ -792,12 +792,8 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
                 final ConnectivityManager connectivityManager = (ConnectivityManager) moContext.getSystemService(Context.CONNECTIVITY_SERVICE);
                 connectivityManager.unregisterNetworkCallback(networkCallback);
             }
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
-                if (networkSuggestions != null) {
-                    moWiFi.removeNetworkSuggestions(networkSuggestions);
-                }
-            } else {
-                moWiFi.removeNetworkSuggestions(moWiFi.getNetworkSuggestions());
+            if (networkSuggestions != null) {
+                moWiFi.removeNetworkSuggestions(networkSuggestions);
             }
         }
         poResult.success(null);
