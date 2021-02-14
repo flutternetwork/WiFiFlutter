@@ -935,6 +935,12 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
                 if (security != null && security.toUpperCase().equals("WPA")) {
                     builder.setWpa2Passphrase(password);
                 }
+
+                // remove suggestions if already existing
+                if(networkSuggestions != null){
+                    moWiFi.removeNetworkSuggestions(networkSuggestions);
+                }
+
                 //builder.setIsAppInteractionRequired(true);
                 final WifiNetworkSuggestion suggestion = builder.build();
 
