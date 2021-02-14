@@ -40,6 +40,16 @@ class WiFiForIoTPlugin {
     }
   }
 
+  static void showWritePermissionSettings(bool force) async {
+    Map<String, bool> htArguments = Map();
+    htArguments["force"] = force;
+    try {
+      await _channel.invokeMethod('showWritePermissionSettings', htArguments);
+    } on MissingPluginException catch (e) {
+      print("MissingPluginException : ${e.toString()}");
+    }
+  }
+
   static Future<bool> isWiFiAPSSIDHidden() async {
     Map<String, String> htArguments = Map();
     bool bResult;
