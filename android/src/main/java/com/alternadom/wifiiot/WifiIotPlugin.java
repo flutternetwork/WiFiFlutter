@@ -15,7 +15,9 @@ import android.net.wifi.ScanResult;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.net.wifi.WifiNetworkSpecifier;
+import android.net.wifi.WifiNetworkSuggestion;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 
@@ -178,6 +180,9 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
                 break;
             case "connect":
                 connect(poCall, poResult);
+                break;
+            case "registerWifiNetwork":
+                registerWifiNetwork(poCall, poResult);
                 break;
             case "findAndConnect":
                 findAndConnect(poCall, poResult);
@@ -616,6 +621,58 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
         }.start();
     }
 
+    /**
+     * Registers a wifi network in the device wireless networks
+     * For API >= 30 uses intent to permanently store such network in user configuration
+     * For API <= 29 uses deprecated functions that manipulate directly
+     * *** registerWifiNetwork :
+     * param ssid, SSID to register
+     * param password, passphrase to use
+     * param security, security mode (WPA or null) to use
+     * return {@code true} if the operation succeeds, {@code false} otherwise
+     */
+    private void registerWifiNetwork(final MethodCall poCall, final Result poResult) {
+        String ssid = poCall.argument("ssid");
+        String password = poCall.argument("password");
+        String security = poCall.argument("security");
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            final WifiNetworkSuggestion.Builder suggestedNet = new WifiNetworkSuggestion.Builder();
+            suggestedNet.setSsid(ssid);
+
+            if (security != null && security.toUpperCase().equals("WPA")) {
+                suggestedNet.setWpa2Passphrase(password);
+            } else if (security != null && security.toUpperCase().equals("WEP")) {
+                // WEP is not supported
+                poResult.error("Error", "WEP is not supported for Android SDK " + Build.VERSION.SDK_INT, "");
+                return;
+            }
+
+            final ArrayList<WifiNetworkSuggestion> suggestionsList = new ArrayList<WifiNetworkSuggestion>();
+            suggestionsList.add(suggestedNet.build());
+
+            Bundle bundle = new Bundle();
+            bundle.putParcelableArrayList(android.provider.Settings.EXTRA_WIFI_NETWORK_LIST, suggestionsList);
+            Intent intent = new Intent(android.provider.Settings.ACTION_WIFI_ADD_NETWORKS);
+            intent.putExtras(bundle);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            moContext.startActivity(intent);
+
+            poResult.success(null);
+        } else {
+            // Deprecated version
+            android.net.wifi.WifiConfiguration conf = generateConfiguration(ssid, password, security);
+
+            int updateNetwork = registerWifiNetworkDeprecated(conf);
+
+            if (updateNetwork == -1) {
+                poResult.error("Error", "Error updating network configuration", "");
+            } else {
+                poResult.success(null);
+            }
+        }
+    }
+
     /// Send the ssid and password of a Wifi network into this to connect to the network.
     /// Example:  wifi.findAndConnect(ssid, password);
     /// After 10 seconds, a post telling you whether you are connected will pop up.
@@ -840,6 +897,7 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
             } else if (security != null && security.toUpperCase().equals("WEP")) {
                 // WEP is not supported
                 poResult.error("Error", "WEP is not supported for Android SDK " + Build.VERSION.SDK_INT, "");
+                return;
             }
 
             final NetworkRequest networkRequest = new NetworkRequest.Builder()
@@ -876,8 +934,31 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
     }
 
     @SuppressWarnings("deprecation")
-    private Boolean connectToDeprecated(String ssid, String password, String security, Boolean joinOnce) {
-        /// Make new configuration
+    private int registerWifiNetworkDeprecated(android.net.wifi.WifiConfiguration conf) {
+        int updateNetwork = -1;
+
+        /// Remove the existing configuration for this netwrok
+        List<android.net.wifi.WifiConfiguration> mWifiConfigList = moWiFi.getConfiguredNetworks();
+
+        if (mWifiConfigList != null) {
+            for (android.net.wifi.WifiConfiguration wifiConfig : mWifiConfigList) {
+                if (wifiConfig.SSID.equals(conf.SSID)) {
+                    conf.networkId = wifiConfig.networkId;
+                    updateNetwork = moWiFi.updateNetwork(conf);
+                }
+            }
+        }
+
+        /// If network not already in configured networks add new network
+        if (updateNetwork == -1) {
+            updateNetwork = moWiFi.addNetwork(conf);
+            moWiFi.saveConfiguration();
+        }
+
+        return updateNetwork;
+    }
+
+    private android.net.wifi.WifiConfiguration generateConfiguration(String ssid, String password, String security) {
         android.net.wifi.WifiConfiguration conf = new android.net.wifi.WifiConfiguration();
         conf.SSID = "\"" + ssid + "\"";
 
@@ -915,25 +996,15 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
             conf.allowedKeyManagement.set(android.net.wifi.WifiConfiguration.KeyMgmt.NONE);
         }
 
-        /// Remove the existing configuration for this netwrok
-        List<android.net.wifi.WifiConfiguration> mWifiConfigList = moWiFi.getConfiguredNetworks();
+        return conf;
+    }
 
-        int updateNetwork = -1;
+    @SuppressWarnings("deprecation")
+    private Boolean connectToDeprecated(String ssid, String password, String security, Boolean joinOnce) {
+        /// Make new configuration
+        android.net.wifi.WifiConfiguration conf = generateConfiguration(ssid, password, security);
 
-        if (mWifiConfigList != null) {
-            for (android.net.wifi.WifiConfiguration wifiConfig : mWifiConfigList) {
-                if (wifiConfig.SSID.equals(conf.SSID)) {
-                    conf.networkId = wifiConfig.networkId;
-                    updateNetwork = moWiFi.updateNetwork(conf);
-                }
-            }
-        }
-
-        /// If network not already in configured networks add new network
-        if (updateNetwork == -1) {
-            updateNetwork = moWiFi.addNetwork(conf);
-            moWiFi.saveConfiguration();
-        }
+        int updateNetwork = registerWifiNetworkDeprecated(conf);
 
         if (updateNetwork == -1) {
             return false;
