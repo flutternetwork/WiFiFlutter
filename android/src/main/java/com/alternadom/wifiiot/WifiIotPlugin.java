@@ -930,16 +930,24 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
                 connectivityManager.unregisterNetworkCallback(networkCallback);
 
             networkCallback = new ConnectivityManager.NetworkCallback() {
+                boolean resultSent = false;
+
                 @Override
                 public void onAvailable(@NonNull Network network) {
                     super.onAvailable(network);
-                    poResult.success(true);
+                    if(!resultSent) {
+                        poResult.success(true);
+                        resultSent = true;
+                    }
                 }
 
                 @Override
                 public void onUnavailable() {
                     super.onUnavailable();
-                    poResult.success(false);
+                    if(!resultSent) {
+                        poResult.success(false);
+                        resultSent = true;
+                    }
                 }
             };
 
