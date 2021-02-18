@@ -1,6 +1,6 @@
 name: wifi_iot
 description: Flutter plugin which can handle WiFi connections and hotspot (AP, STA)
-version: 0.2.1
+version: 0.2.2
 homepage: https://github.com/alternadom/WiFiFlutter
 
 flutter:
