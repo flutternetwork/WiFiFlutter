@@ -1,3 +1,8 @@
+## 0.2.2 2021-02-18
+
+* minor fix in `connect` and `findAndConnect` on Android [#118]
+* added `withInternet` argument to `connect` and `findAndConnect` on Android [#99]
+
 ## 0.2.1 2021-02-14
 
 * added `showWritePermissionSettings` on Android [#112]
