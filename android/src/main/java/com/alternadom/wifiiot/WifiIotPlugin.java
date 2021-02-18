@@ -22,6 +22,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,7 +31,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.NonNull;
 import info.whitebyte.hotspotmanager.ClientScanResult;
 import info.whitebyte.hotspotmanager.FinishScanListener;
 import info.whitebyte.hotspotmanager.WifiApManager;
@@ -937,7 +938,7 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
                 }
 
                 // remove suggestions if already existing
-                if(networkSuggestions != null){
+                if (networkSuggestions != null) {
                     moWiFi.removeNetworkSuggestions(networkSuggestions);
                 }
 
@@ -987,7 +988,7 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
                     @Override
                     public void onAvailable(@NonNull Network network) {
                         super.onAvailable(network);
-                        if(!resultSent) {
+                        if (!resultSent) {
                             poResult.success(true);
                             resultSent = true;
                         }
@@ -996,7 +997,7 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
                     @Override
                     public void onUnavailable() {
                         super.onUnavailable();
-                        if(!resultSent) {
+                        if (!resultSent) {
                             poResult.success(false);
                             resultSent = true;
                         }
