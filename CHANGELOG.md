@@ -1,3 +1,7 @@
+## 0.3.0 [Upcoming]
+
+* dart null saftey [#124]
+
 ## 0.2.2 2021-02-18
 
 * minor fix in `connect` and `findAndConnect` on Android [#118]
