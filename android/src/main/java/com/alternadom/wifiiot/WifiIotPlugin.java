@@ -20,6 +20,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.provider.Settings;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -60,6 +61,7 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
     private WifiApManager moWiFiAPManager;
     private Activity moActivity;
     private BroadcastReceiver receiver;
+    private WifiManager.LocalOnlyHotspotReservation apReservation;
     private ConnectivityManager.NetworkCallback networkCallback;
     private List<WifiNetworkSuggestion> networkSuggestions;
     private List<String> ssidsToBeRemovedOnExit = new ArrayList<String>();
@@ -433,6 +435,14 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
      */
     private void isWiFiAPEnabled(Result poResult) {
         poResult.success(moWiFiAPManager.isWifiApEnabled());
+
+        /**
+         * Develop 'isWiFiApEnabled' method to get AP state on android Q and later.
+         *
+         * if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+         *    // Code for getting AP state on android Q and later
+         * }
+         */
     }
 
     /**
@@ -447,7 +457,45 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
      */
     private void setWiFiAPEnabled(MethodCall poCall, Result poResult) {
         boolean enabled = poCall.argument("state");
-        moWiFiAPManager.setWifiApEnabled(null, enabled);
+
+        /**
+         * Using LocalOnlyHotspotCallback when setting WiFi AP state on android Q and later
+         */
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            moWiFiAPManager.setWifiApEnabled(null, enabled);
+        }
+            else {
+                if (enabled) {
+                    moWiFi.startLocalOnlyHotspot(new WifiManager.LocalOnlyHotspotCallback() {
+                        @Override
+                        public void onStarted(WifiManager.LocalOnlyHotspotReservation reservation) {
+                            super.onStarted(reservation);
+                            apReservation = reservation;
+                        }
+
+                        @Override
+                        public void onStopped() {
+                            super.onStopped();
+                            Log.d(WifiIotPlugin.class.getSimpleName(), "LocalHostpot Stopped.");
+                        }
+
+                        @Override
+                        public void onFailed(int reason) {
+                            super.onFailed(reason);
+                            Log.d(WifiIotPlugin.class.getSimpleName(), "LocalHotspot failed with code: " + String.valueOf(reason));
+                        }
+                    }, new Handler());
+                }
+                    else {
+                        if (apReservation != null) {
+                            apReservation.close();
+                        }
+                            else {
+                                Log.e(WifiIotPlugin.class.getSimpleName(), "Can't disable WiFi AP, apReservation is null.");
+                            }
+                    }
+            }
+
         poResult.success(null);
     }
 
@@ -627,7 +675,19 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
     /// Method to connect/disconnect wifi service
     private void setEnabled(MethodCall poCall, Result poResult) {
         Boolean enabled = poCall.argument("state");
-        moWiFi.setWifiEnabled(enabled);
+
+        /**
+         * Open native Android WiFi settings on android Q and later
+         */
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            moWiFi.setWifiEnabled(enabled);
+        }
+            else {
+                Intent wifiStateIntent = new Intent(Settings.Panel.ACTION_WIFI);
+                wifiStateIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                this.moContext.startActivity(wifiStateIntent);
+            }
+
         poResult.success(null);
     }
 
@@ -793,6 +853,10 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
                 final ConnectivityManager connectivityManager = (ConnectivityManager) moContext.getSystemService(Context.CONNECTIVITY_SERVICE);
                 connectivityManager.unregisterNetworkCallback(networkCallback);
             }
+                else {
+                    Log.e(WifiIotPlugin.class.getSimpleName(), "Can't disconnect to WiFi, networkCallback is null.");
+                }
+
             if (networkSuggestions != null) {
                 moWiFi.removeNetworkSuggestions(networkSuggestions);
             }

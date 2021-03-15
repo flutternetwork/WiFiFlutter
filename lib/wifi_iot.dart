@@ -224,7 +224,7 @@ class WiFiForIoTPlugin {
         "join_once": joinOnce,
         "with_internet": withInternet,
         "security":
-            security?.toString()?.substring('$NetworkSecurity'.length + 1),
+            security.toString().substring('$NetworkSecurity'.length + 1),
       });
     } on MissingPluginException catch (e) {
       print("MissingPluginException : ${e.toString()}");
@@ -242,7 +242,7 @@ class WiFiForIoTPlugin {
         "ssid": ssid.toString(),
         "password": password.toString(),
         "security":
-            security?.toString()?.substring('$NetworkSecurity'.length + 1),
+            security.toString().substring('$NetworkSecurity'.length + 1),
       });
     } on MissingPluginException catch (e) {
       print("MissingPluginException : ${e.toString()}");
@@ -362,7 +362,10 @@ class WiFiForIoTPlugin {
       bResult = await _channel.invokeMethod('removeWifiNetwork', htArguments);
     } on MissingPluginException catch (e) {
       print("MissingPluginException : ${e.toString()}");
+    } on PlatformException catch (e) {
+      print(e.message);
     }
+
     return bResult != null && bResult;
   }
 
