@@ -1,4 +1,4 @@
-## 0.3.0 [Upcoming]
+## 0.3.0 2021-03-15
 
 * dart null saftey [#124]
 
