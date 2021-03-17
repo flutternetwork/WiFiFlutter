@@ -29,6 +29,8 @@ class _FlutterWifiIoTState extends State<FlutterWifiIoT> {
   bool _isWiFiAPEnabled = false;
   bool _isWiFiAPSSIDHidden = false;
   bool _isWifiAPSupported = true;
+  bool _isWifiEnableOpenSettings = false;
+  bool _isWifiDisableOpenSettings = false;
 
   final TextStyle textStyle = TextStyle(color: Colors.white);
 
@@ -278,9 +280,11 @@ class _FlutterWifiIoTState extends State<FlutterWifiIoT> {
   List<Widget> getButtonWidgetsForAndroid() {
     List<Widget> htPrimaryWidgets = <Widget>[];
 
-    WiFiForIoTPlugin.isEnabled().then((val) => setState(() {
-          _isEnabled = val;
-        }));
+    WiFiForIoTPlugin.isEnabled().then((val) {
+      setState(() {
+        _isEnabled = val;
+      });
+    });
 
     if (_isEnabled) {
       htPrimaryWidgets.addAll([
@@ -290,7 +294,9 @@ class _FlutterWifiIoTState extends State<FlutterWifiIoT> {
           color: Colors.blue,
           child: Text("Disable", style: textStyle),
           onPressed: () {
-            WiFiForIoTPlugin.setEnabled(false);
+            WiFiForIoTPlugin.setEnabled(false,
+              shouldOpenSettings: _isWifiDisableOpenSettings
+            );
           },
         ),
       ]);
@@ -341,6 +347,17 @@ class _FlutterWifiIoTState extends State<FlutterWifiIoT> {
               WiFiForIoTPlugin.disconnect();
             },
           ),
+          CheckboxListTile(
+            title: const Text("Disable WiFi on settings"),
+            value: _isWifiDisableOpenSettings,
+            onChanged: (bool? setting) {
+              if (setting != null) {
+                setState(() {
+                  _isWifiDisableOpenSettings = setting;                
+                });
+              }
+            }
+          )
         ]);
       } else {
         htPrimaryWidgets.addAll(<Widget>[
@@ -363,6 +380,7 @@ class _FlutterWifiIoTState extends State<FlutterWifiIoT> {
                   WiFiForIoTPlugin.forceWifiUsage(true);
                 },
               ),
+              SizedBox(width: 50),
               MaterialButton(
                 color: Colors.blue,
                 child: Text("Use 3G/4G", style: textStyle),
@@ -371,6 +389,17 @@ class _FlutterWifiIoTState extends State<FlutterWifiIoT> {
                 },
               ),
             ],
+          ),
+          CheckboxListTile(
+            title: const Text("Disable WiFi on settings"),
+            value: _isWifiDisableOpenSettings,
+            onChanged: (bool? setting) {
+              if (setting != null) {
+                setState(() {
+                  _isWifiDisableOpenSettings = setting;                
+                });
+              }
+            }
           )
         ]);
       }
@@ -383,10 +412,23 @@ class _FlutterWifiIoTState extends State<FlutterWifiIoT> {
           child: Text("Enable", style: textStyle),
           onPressed: () {
             setState(() {
-              WiFiForIoTPlugin.setEnabled(true);
+              WiFiForIoTPlugin.setEnabled(true,
+                shouldOpenSettings: _isWifiEnableOpenSettings
+              );
             });
           },
         ),
+        CheckboxListTile(
+          title: const Text("Enable WiFi on settings"),
+          value: _isWifiEnableOpenSettings,
+          onChanged: (bool? setting) {
+            if (setting != null) {
+              setState(() {
+                _isWifiEnableOpenSettings = setting;                
+              });
+            }
+          }
+        )
       ]);
     }
 

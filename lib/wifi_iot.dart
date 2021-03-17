@@ -200,9 +200,11 @@ class WiFiForIoTPlugin {
     return bResult != null && bResult;
   }
 
-  static setEnabled(bool state) async {
+  static setEnabled(bool state, { bool shouldOpenSettings = false }) async {
     Map<String, bool> htArguments = Map();
     htArguments["state"] = state;
+    htArguments["shouldOpenSettings"] = shouldOpenSettings;
+    
     try {
       await _channel.invokeMethod('setEnabled', htArguments);
     } on MissingPluginException catch (e) {
