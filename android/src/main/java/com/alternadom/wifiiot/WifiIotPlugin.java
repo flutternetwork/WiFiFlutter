@@ -675,17 +675,17 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
     /// Method to connect/disconnect wifi service
     private void setEnabled(MethodCall poCall, Result poResult) {
         Boolean enabled = poCall.argument("state");
+        Boolean shouldOpenSettings = poCall.argument("shouldOpenSettings");
 
-        /**
-         * Open native Android WiFi settings on android Q and later
-         */
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+        // Enable or Disable WiFi programmatically
+        if (!shouldOpenSettings) {
             moWiFi.setWifiEnabled(enabled);
-        }
+        }  
+            // Open WiFI settings
             else {
-                Intent wifiStateIntent = new Intent(Settings.Panel.ACTION_WIFI);
-                wifiStateIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                this.moContext.startActivity(wifiStateIntent);
+                Intent wifiIntent = new Intent(Settings.ACTION_WIFI_SETTINGS);
+                wifiIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                this.moContext.startActivity(wifiIntent);
             }
 
         poResult.success(null);
@@ -1179,4 +1179,3 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
         return connected;
     }
 }
-
