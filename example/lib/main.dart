@@ -191,9 +191,11 @@ class _FlutterWifiIoTState extends State<FlutterWifiIoT> {
   }
 
   Widget getWidgets() {
-    WiFiForIoTPlugin.isConnected().then((val) => setState(() {
-          _isConnected = val;
-        }));
+    WiFiForIoTPlugin.isConnected().then((val) {
+      setState(() {
+        _isConnected = val;
+      });
+    });
 
     // disable scanning for ios as not supported
     if (_isConnected || Platform.isIOS) {
@@ -349,6 +351,7 @@ class _FlutterWifiIoTState extends State<FlutterWifiIoT> {
           ),
           CheckboxListTile(
             title: const Text("Disable WiFi on settings"),
+            subtitle: const Text("Available only on android API level >= 29"),
             value: _isWifiDisableOpenSettings,
             onChanged: (bool? setting) {
               if (setting != null) {
@@ -392,6 +395,7 @@ class _FlutterWifiIoTState extends State<FlutterWifiIoT> {
           ),
           CheckboxListTile(
             title: const Text("Disable WiFi on settings"),
+            subtitle: const Text("Available only on android API level >= 29"),
             value: _isWifiDisableOpenSettings,
             onChanged: (bool? setting) {
               if (setting != null) {
@@ -420,6 +424,7 @@ class _FlutterWifiIoTState extends State<FlutterWifiIoT> {
         ),
         CheckboxListTile(
           title: const Text("Enable WiFi on settings"),
+          subtitle: const Text("Available only on android API level >= 29"),
           value: _isWifiEnableOpenSettings,
           onChanged: (bool? setting) {
             if (setting != null) {
@@ -650,6 +655,8 @@ class _FlutterWifiIoTState extends State<FlutterWifiIoT> {
   @override
   Widget build(BuildContext poContext) {
     return MaterialApp(
+      title: Platform.isIOS ?
+        "WifiFlutter Example iOS" : "WifiFlutter Example Android",
       home: Scaffold(
         appBar: AppBar(
           title: Platform.isIOS
