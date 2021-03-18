@@ -678,14 +678,24 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
         Boolean shouldOpenSettings = poCall.argument("shouldOpenSettings");
 
         // Enable or Disable WiFi programmatically
-        if (!shouldOpenSettings) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
             moWiFi.setWifiEnabled(enabled);
-        }  
-            // Open WiFI settings
+        }
+            // Whether to open native WiFi settings or not
             else {
-                Intent wifiIntent = new Intent(Settings.ACTION_WIFI_SETTINGS);
-                wifiIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                this.moContext.startActivity(wifiIntent);
+                if (shouldOpenSettings != null) {
+                    if (shouldOpenSettings) {
+                        Intent intent = new Intent(Settings.ACTION_WIFI_SETTINGS);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        this.moContext.startActivity(intent);
+                    }
+                        else {
+                            moWiFi.setWifiEnabled(enabled);
+                        }
+                }
+                    else {
+                        Log.e(WifiIotPlugin.class.getSimpleName(), "Error `setEnabled`: shouldOpenSettings is null.");
+                    }
             }
 
         poResult.success(null);

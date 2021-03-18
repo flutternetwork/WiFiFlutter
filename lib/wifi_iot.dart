@@ -200,6 +200,9 @@ class WiFiForIoTPlugin {
     return bResult != null && bResult;
   }
 
+  /// Enable or Disable WiFi
+  /// 
+  /// @param [shouldOpenSettings] only works on android API level >= 29
   static setEnabled(bool state, { bool shouldOpenSettings = false }) async {
     Map<String, bool> htArguments = Map();
     htArguments["state"] = state;
