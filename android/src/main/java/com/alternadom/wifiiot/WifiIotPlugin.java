@@ -283,7 +283,6 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
         poResult.error("TODO", "Develop function to enable/disable MAC filtering...", null);
     }
 
-
     /**
      * The network's SSID. Can either be an ASCII string,
      * which must be enclosed in double quotation marks
@@ -292,24 +291,36 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
      * (e.g., {@code 01a243f405}).
      */
     private void getWiFiAPSSID(Result poResult) {
-        android.net.wifi.WifiConfiguration oWiFiConfig = moWiFiAPManager.getWifiApConfiguration();
-        if (oWiFiConfig != null && oWiFiConfig.SSID != null) {
-            poResult.success(oWiFiConfig.SSID);
-            return;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            android.net.wifi.WifiConfiguration oWiFiConfig = moWiFiAPManager.getWifiApConfiguration();
+
+            if (oWiFiConfig != null && oWiFiConfig.SSID != null) {
+                poResult.success(oWiFiConfig.SSID);
+                return;
+            }
+
+            poResult.error("Exception", "SSID not found", null);
         }
-        poResult.error("Exception", "SSID not found", null);
+            else {
+                poResult.error("Exception [getWiFiAPSSID]", "Getting SSID name doesn't work on API level >= 29", null);
+            }
     }
 
     private void setWiFiAPSSID(MethodCall poCall, Result poResult) {
         String sAPSSID = poCall.argument("ssid");
 
-        android.net.wifi.WifiConfiguration oWiFiConfig = moWiFiAPManager.getWifiApConfiguration();
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            android.net.wifi.WifiConfiguration oWiFiConfig = moWiFiAPManager.getWifiApConfiguration();
 
-        oWiFiConfig.SSID = sAPSSID;
+            oWiFiConfig.SSID = sAPSSID;
 
-        moWiFiAPManager.setWifiApConfiguration(oWiFiConfig);
+            moWiFiAPManager.setWifiApConfiguration(oWiFiConfig);
 
-        poResult.success(null);
+            poResult.success(null);
+        }
+            else {
+                poResult.error("Exception [setWiFiAPSSID]", "Setting SSID name doesn't work on API level >= 29", null);
+            }
     }
 
     /**
@@ -317,24 +328,36 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
      * SSID-specific probe request must be used for scans.
      */
     private void isSSIDHidden(Result poResult) {
-        android.net.wifi.WifiConfiguration oWiFiConfig = moWiFiAPManager.getWifiApConfiguration();
-        if (oWiFiConfig != null && oWiFiConfig.hiddenSSID) {
-            poResult.success(oWiFiConfig.hiddenSSID);
-            return;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            android.net.wifi.WifiConfiguration oWiFiConfig = moWiFiAPManager.getWifiApConfiguration();
+
+            if (oWiFiConfig != null && oWiFiConfig.hiddenSSID) {
+                poResult.success(oWiFiConfig.hiddenSSID);
+                return;
+            }
+
+            poResult.error("Exception [isSSIDHidden]", "Wifi AP not Supported", null);
         }
-        poResult.error("Exception", "Wifi AP not Supported", null);
+            else {
+                poResult.error("Exception [isSSIDHidden]", "Getting SSID visibility doesn't work on API level >= 29", null);
+            }
     }
 
     private void setSSIDHidden(MethodCall poCall, Result poResult) {
-        boolean isSSIDHidden = poCall.argument("hidden");
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            boolean isSSIDHidden = poCall.argument("hidden");
 
-        android.net.wifi.WifiConfiguration oWiFiConfig = moWiFiAPManager.getWifiApConfiguration();
+            android.net.wifi.WifiConfiguration oWiFiConfig = moWiFiAPManager.getWifiApConfiguration();
 
-        oWiFiConfig.hiddenSSID = isSSIDHidden;
+            oWiFiConfig.hiddenSSID = isSSIDHidden;
 
-        moWiFiAPManager.setWifiApConfiguration(oWiFiConfig);
+            moWiFiAPManager.setWifiApConfiguration(oWiFiConfig);
 
-        poResult.success(null);
+            poResult.success(null);
+        }
+            else {
+                poResult.error("Exception [setSSIDHidden]", "Setting SSID visibility doesn't work on API level >= 29", null);
+            }
     }
 
     /**
@@ -347,24 +370,36 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
      * string otherwise.
      */
     private void getWiFiAPPreSharedKey(Result poResult) {
-        android.net.wifi.WifiConfiguration oWiFiConfig = moWiFiAPManager.getWifiApConfiguration();
-        if (oWiFiConfig != null && oWiFiConfig.preSharedKey != null) {
-            poResult.success(oWiFiConfig.preSharedKey);
-            return;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            android.net.wifi.WifiConfiguration oWiFiConfig = moWiFiAPManager.getWifiApConfiguration();
+
+            if (oWiFiConfig != null && oWiFiConfig.preSharedKey != null) {
+                poResult.success(oWiFiConfig.preSharedKey);
+                return;
+            }
+
+            poResult.error("Exception", "Wifi AP not Supported", null);
         }
-        poResult.error("Exception", "Wifi AP not Supported", null);
+            else {
+                poResult.error("Exception [getWiFIAPPreSharedKey]", "Getting WiFi AP password doesn't work on API level >= 29", null);
+            }
     }
 
     private void setWiFiAPPreSharedKey(MethodCall poCall, Result poResult) {
-        String sPreSharedKey = poCall.argument("preSharedKey");
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            String sPreSharedKey = poCall.argument("preSharedKey");
 
-        android.net.wifi.WifiConfiguration oWiFiConfig = moWiFiAPManager.getWifiApConfiguration();
+            android.net.wifi.WifiConfiguration oWiFiConfig = moWiFiAPManager.getWifiApConfiguration();
 
-        oWiFiConfig.preSharedKey = sPreSharedKey;
+            oWiFiConfig.preSharedKey = sPreSharedKey;
 
-        moWiFiAPManager.setWifiApConfiguration(oWiFiConfig);
+            moWiFiAPManager.setWifiApConfiguration(oWiFiConfig);
 
-        poResult.success(null);
+            poResult.success(null);
+        }
+            else {
+                poResult.error("Exception [setWiFiAPPreSharedKey]", "Setting WiFi password doesn't work on API level >= 29", null);
+            }
     }
 
     /**
@@ -434,15 +469,12 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
      * return {@code true} if Wi-Fi AP is enabled
      */
     private void isWiFiAPEnabled(Result poResult) {
-        poResult.success(moWiFiAPManager.isWifiApEnabled());
-
-        /**
-         * Develop 'isWiFiApEnabled' method to get AP state on android Q and later.
-         *
-         * if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-         *    // Code for getting AP state on android Q and later
-         * }
-         */
+        try {
+            poResult.success(moWiFiAPManager.isWifiApEnabled());
+        }
+            catch (SecurityException e) {
+                Log.e(WifiIotPlugin.class.getSimpleName(), e.getMessage(), null);
+            }
     }
 
     /**
@@ -459,7 +491,7 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
         boolean enabled = poCall.argument("state");
 
         /**
-         * Using LocalOnlyHotspotCallback when setting WiFi AP state on android Q and later
+         * Using LocalOnlyHotspotCallback when setting WiFi AP state on API level >= 29
          */
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
             moWiFiAPManager.setWifiApEnabled(null, enabled);
@@ -476,7 +508,7 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
                         @Override
                         public void onStopped() {
                             super.onStopped();
-                            Log.d(WifiIotPlugin.class.getSimpleName(), "LocalHostpot Stopped.");
+                            Log.d(WifiIotPlugin.class.getSimpleName(), "LocalHotspot Stopped.");
                         }
 
                         @Override
