@@ -49,13 +49,7 @@ class _FlutterWifiIoTState extends State<FlutterWifiIoT> {
     }).catchError((val) {
       _isWifiAPSupported = false;
     });
-
-    WiFiForIoTPlugin.isWiFiAPSSIDHidden().then((val) {
-      _isWiFiAPSSIDHidden = val;
-    }).catchError((val) {
-      _isWifiAPSupported = false;
-    });
-
+  
     super.initState();
   }
 
@@ -462,11 +456,12 @@ class _FlutterWifiIoTState extends State<FlutterWifiIoT> {
             }),
       ]);
 
-      WiFiForIoTPlugin.isWiFiAPEnabled()
-          .then((val) => setState(() {
-                _isWiFiAPEnabled = val;
-              }))
-          .catchError((val) => _isWiFiAPEnabled = false);
+      WiFiForIoTPlugin.isWiFiAPEnabled().then((val) => setState(() {
+        _isWiFiAPEnabled = val;
+      })).catchError((val) {
+        _isWiFiAPEnabled = false;
+      });
+
       if (_isWiFiAPEnabled) {
         htPrimaryWidgets.addAll(<Widget>[
           Text("Wifi AP Enabled"),

@@ -50,6 +50,9 @@ class WiFiForIoTPlugin {
     }
   }
 
+  /// Returns whether the WiFi AP is hidden or not
+  /// 
+  /// Note: Doesn't work on android API level >= 29
   static Future<bool> isWiFiAPSSIDHidden() async {
     Map<String, String> htArguments = Map();
     bool? bResult;
@@ -61,6 +64,9 @@ class WiFiForIoTPlugin {
     return bResult != null && bResult;
   }
 
+  /// Set whether the WiFi AP is hidden or not
+  /// 
+  /// Note: Doesn't work on android API level >= 29
   static setWiFiAPSSIDHidden(bool hidden) async {
     Map<String, bool> htArguments = Map();
     htArguments["hidden"] = hidden;
