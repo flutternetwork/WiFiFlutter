@@ -8,6 +8,20 @@ Plugin Flutter which can handle WiFi connections (AP, STA)
 
 Becareful, some commands as no effect on iOS because Apple don't let us to do whatever we want...
 
+## Android Permissions
+The plugin requires the following permissions to work properly.
+```xml
+<uses-permission android:name="android.permission.INTERNET" />
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+<uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+<uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+<uses-permission android:name="android.permission.WRITE_SETTINGS" />
+<uses-feature android:name="android.hardware.wifi" />
+```
+
 ## WiFi connections
 |                      Description                      |      Android       |         iOS          |
 | :---------------------------------------------------- | :----------------: | :------------------: |
@@ -47,6 +61,30 @@ Becareful, some commands as no effect on iOS because Apple don't let us to do wh
 | Handling the MAC filtering                                                            | :sos: |  :x:  |
 
 For now, there is no way to set the access point on iOS... 
+
+## For android (API >= 29)
+
+According to [WifiManager#setWifiEnabled(boolean)](https://developer.android.com/reference/android/net/wifi/WifiManager#setWifiEnabled(boolean)):
+> Starting with Build.VERSION_CODES#Q, applications are not allowed to enable/disable Wi-Fi.
+
+In order to enable or disable WiFi, an additional `shouldOpenSettings` parameter is added to `setEnabled` method. This will open the native WiFi settings.
+
+```dart
+WiFiForIoTPlugin.setEnabled(true, shouldOpenSettings: true);
+```
+
+Note:
+* `shouldOpenSettings` parameter takes effect on API level >= 29.
+* When `shouldOpenSettings` is present, the boolean `state` is ignored.
+
+### Enabling and Disabling WiFi AP
+
+By using `startLocalOnlyHotspot`, we can enable or disable WiFi AP. According to the [docs](https://developer.android.com/reference/android/net/wifi/WifiManager#startLocalOnlyHotspot(android.net.wifi.WifiManager.LocalOnlyHotspotCallback,%20android.os.Handler)), This can only be used to communicate between co-located devices connected to the created WiFi Hotspot.
+
+Note:
+* Enabling and Disabling WiFi AP needs to request location permission.
+* The network created by this method will not have Internet access.
+* There's no other way to set WiFi AP's SSID and Passphrase.
 
 ## Xcode build (iOS >= 8.0)
 
