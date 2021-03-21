@@ -291,7 +291,7 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
      * (e.g., {@code 01a243f405}).
      */
     private void getWiFiAPSSID(Result poResult) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
             android.net.wifi.WifiConfiguration oWiFiConfig = moWiFiAPManager.getWifiApConfiguration();
 
             if (oWiFiConfig != null && oWiFiConfig.SSID != null) {
@@ -302,14 +302,14 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
             poResult.error("Exception", "SSID not found", null);
         }
             else {
-                poResult.error("Exception [getWiFiAPSSID]", "Getting SSID name doesn't work on API level >= 29", null);
+                poResult.error("Exception [getWiFiAPSSID]", "Getting SSID name is not supported on API level >= 26", null);
             }
     }
 
     private void setWiFiAPSSID(MethodCall poCall, Result poResult) {
         String sAPSSID = poCall.argument("ssid");
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
             android.net.wifi.WifiConfiguration oWiFiConfig = moWiFiAPManager.getWifiApConfiguration();
 
             oWiFiConfig.SSID = sAPSSID;
@@ -319,7 +319,7 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
             poResult.success(null);
         }
             else {
-                poResult.error("Exception [setWiFiAPSSID]", "Setting SSID name doesn't work on API level >= 29", null);
+                poResult.error("Exception [setWiFiAPSSID]", "Setting SSID name is not supported on API level >= 26", null);
             }
     }
 
@@ -328,7 +328,7 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
      * SSID-specific probe request must be used for scans.
      */
     private void isSSIDHidden(Result poResult) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
             android.net.wifi.WifiConfiguration oWiFiConfig = moWiFiAPManager.getWifiApConfiguration();
 
             if (oWiFiConfig != null && oWiFiConfig.hiddenSSID) {
@@ -339,12 +339,12 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
             poResult.error("Exception [isSSIDHidden]", "Wifi AP not Supported", null);
         }
             else {
-                poResult.error("Exception [isSSIDHidden]", "Getting SSID visibility doesn't work on API level >= 29", null);
+                poResult.error("Exception [isSSIDHidden]", "Getting SSID visibility is not supported on API level >= 26", null);
             }
     }
 
     private void setSSIDHidden(MethodCall poCall, Result poResult) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
             boolean isSSIDHidden = poCall.argument("hidden");
 
             android.net.wifi.WifiConfiguration oWiFiConfig = moWiFiAPManager.getWifiApConfiguration();
@@ -356,7 +356,7 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
             poResult.success(null);
         }
             else {
-                poResult.error("Exception [setSSIDHidden]", "Setting SSID visibility doesn't work on API level >= 29", null);
+                poResult.error("Exception [setSSIDHidden]", "Setting SSID visibility is not supported on API level >= 26", null);
             }
     }
 
@@ -370,7 +370,7 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
      * string otherwise.
      */
     private void getWiFiAPPreSharedKey(Result poResult) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
             android.net.wifi.WifiConfiguration oWiFiConfig = moWiFiAPManager.getWifiApConfiguration();
 
             if (oWiFiConfig != null && oWiFiConfig.preSharedKey != null) {
@@ -381,12 +381,12 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
             poResult.error("Exception", "Wifi AP not Supported", null);
         }
             else {
-                poResult.error("Exception [getWiFIAPPreSharedKey]", "Getting WiFi AP password doesn't work on API level >= 29", null);
+                poResult.error("Exception [getWiFIAPPreSharedKey]", "Getting WiFi AP password is not supported on API level >= 26", null);
             }
     }
 
     private void setWiFiAPPreSharedKey(MethodCall poCall, Result poResult) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
             String sPreSharedKey = poCall.argument("preSharedKey");
 
             android.net.wifi.WifiConfiguration oWiFiConfig = moWiFiAPManager.getWifiApConfiguration();
@@ -398,7 +398,7 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
             poResult.success(null);
         }
             else {
-                poResult.error("Exception [setWiFiAPPreSharedKey]", "Setting WiFi password doesn't work on API level >= 29", null);
+                poResult.error("Exception [setWiFiAPPreSharedKey]", "Setting WiFi password is not supported on API level >= 26", null);
             }
     }
 
