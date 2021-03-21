@@ -443,16 +443,21 @@ class _FlutterWifiIoTState extends State<FlutterWifiIoT> {
             initialData: WIFI_AP_STATE.WIFI_AP_STATE_DISABLED,
             builder:
                 (BuildContext context, AsyncSnapshot<WIFI_AP_STATE?> wifiState) {
+                  List<Widget> widgets = [];
+
               if (wifiState.data == WIFI_AP_STATE.WIFI_AP_STATE_ENABLED) {
-                MaterialButton(
-                color: Colors.blue,
-                  child: Text("Get Client List", style: textStyle),
-                  onPressed: () {
-                    showClientList();
-                  },
-                );
+                widgets.add(MaterialButton(
+                  color: Colors.blue,
+                    child: Text("Get Client List", style: textStyle),
+                    onPressed: () {
+                      showClientList();
+                    },
+                ));
               }
-              return Text(wifiState.data.toString());
+
+              widgets.add(Text(wifiState.data.toString()));
+
+              return Column(children: widgets);
             }),
       ]);
 
