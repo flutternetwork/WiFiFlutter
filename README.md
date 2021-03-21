@@ -9,19 +9,46 @@ Plugin Flutter which can handle WiFi connections (AP, STA)
 Becareful, some commands as no effect on iOS because Apple don't let us to do whatever we want...
 
 ## Android Permissions
-The plugin requires the following permissions to work properly.
+The following permissions are listed according to their intended use:
+
+### Required permissions added from the plugin:
+The physical WiFi module can be used with this feature.
 ```xml
-<uses-permission android:name="android.permission.INTERNET" />
-<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-<uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
-<uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-<uses-permission android:name="android.permission.WRITE_SETTINGS" />
 <uses-feature android:name="android.hardware.wifi" />
 ```
-
+Permission to use internet:
+```xml
+<uses-permission android:name="android.permission.INTERNET" />
+```
+Permission to access `WifiManager` API:
+```xml
+<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+```
+Permission to access `ConnectivityManager` API. Useful for managing network state:
+```xml
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+<uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+```
+Permission to use location as required to enable or disable WiFi AP:
+```xml
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+```
+There's no need to add the permissions mentioned above to your project, since it's already been added to the plugin.
+### Using WiFi only
+Permission to enable or Disable WiFi:
+```xml
+<uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+```
+Permission to add WiFi networks:
+```xml
+<uses-permission android:name="android.permission.WRITE_SETTINGS" />
+```
+### Using WiFi AP only
+Permission to configure WiFi AP SSID and password:
+```xml
+<uses-permission android:name="android.permission.WRITE_SETTINGS" />
+```
 ## WiFi connections
 |                      Description                      |      Android       |         iOS          |
 | :---------------------------------------------------- | :----------------: | :------------------: |
