@@ -53,23 +53,18 @@ The plugin requires the following permissions to work properly.
 ## Access Point
 |                                       Description                                     |      Android       |         iOS          |
 | :------------------------------------------------------------------------------------ | :----------------: | :------------------: |
-| Getting the status of the Access Point (Disable, disabling, enable, enabling, failed) | :white_check_mark: |  :x:  |
-| Enabling / Disabling Access Point                                                     | :white_check_mark: |  :x:  |
-| Getting / Setting new credentials (SSID / Password)                                   | :white_check_mark: |  :x:  |
-| Enabling / Disabling the visibility of the SSID Access Point                          | :white_check_mark: |  :x:  |
+| Getting the status of the Access Point (Disable, disabling, enable, enabling, failed) | :warning:(1a) |  :x:  |
+| Enabling / Disabling Access Point                                                     | :white_check_mark:(1b) |  :x:  |
+| Getting / Setting new credentials (SSID / Password)                                   | :warning:(1a) |  :x:  |
+| Enabling / Disabling the visibility of the SSID Access Point                          | :warning:(1a) |  :x:  |
 | Getting the clients list (IP, BSSID, Device, Reachable)                               | :white_check_mark: |  :x:  |
 | Handling the MAC filtering                                                            | :sos: |  :x:  |
 
+:warning:(1): Wifi API changes in Android SDK >= 29, restricts certain behaviour:
+  * a. This has been deprecated and will always fail for >= 29 Android SDK.
+  * b. Uses [`startLocalOnlyHotspot` API](https://developer.android.com/reference/android/net/wifi/WifiManager#startLocalOnlyHotspot(android.net.wifi.WifiManager.LocalOnlyHotspotCallback,%20android.os.Handler)) to enable or disable WiFi AP. This can only be used to communicate between co-located devices connected to the created WiFi Hotspot. Note - (i) Enabling and Disabling WiFi AP needs to request location permission; (ii) The network created by this method will not have Internet access; (iii) There's no other way to set WiFi AP's SSID and Passphrase.
+
 For now, there is no way to set the access point on iOS... 
-
-### Enabling and Disabling WiFi AP
-
-By using `startLocalOnlyHotspot`, we can enable or disable WiFi AP. According to the [docs](https://developer.android.com/reference/android/net/wifi/WifiManager#startLocalOnlyHotspot(android.net.wifi.WifiManager.LocalOnlyHotspotCallback,%20android.os.Handler)), This can only be used to communicate between co-located devices connected to the created WiFi Hotspot.
-
-Note:
-* Enabling and Disabling WiFi AP needs to request location permission.
-* The network created by this method will not have Internet access.
-* There's no other way to set WiFi AP's SSID and Passphrase.
 
 ## Xcode build (iOS >= 8.0)
 
