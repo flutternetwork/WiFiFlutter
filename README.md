@@ -46,7 +46,7 @@ The plugin requires the following permissions to work properly.
 :question:(4) : I think there is a way to get the IP address but for now, this is not implemented..
 
 :warning:(5): Wifi API changes in Android SDK >= 29, restricts certain behaviour:
-  * a. Enable/Disable Wifi Module is deprecated and will always fail (except DO, PO and system apps) [[docs](https://developer.android.com/reference/android/net/wifi/WifiManager#setWifiEnabled(boolean))].
+  * a. Enable/Disable Wifi Module is deprecated and will always fail [[docs](https://developer.android.com/reference/android/net/wifi/WifiManager#setWifiEnabled(boolean))]. If you  want to open "Wifi Setting" in that case then, set the `shouldOpenSettings: true` when calling `setEnabled`.
   * b. For Connecting to Wifi, WEP security is deprecated and will always fail, also the network will be disconnected when the app is closed (if permanent network is required(Check :warning:(5c)), use "Register Network" feature) [[docs](https://developer.android.com/guide/topics/connectivity/wifi-bootstrap))]. By default the connection would not have internet access, to connect to network with internet user `withInternet` which is a different API underneath (this API will not disconnect to network after app closes) [[docs](https://developer.android.com/guide/topics/connectivity/wifi-suggest)].
   * c. Registering Wifi Network, will require user approval - and the network saved would not be controlled by the app (for deletion, updation, etc) [[docs](https://developer.android.com/guide/topics/connectivity/wifi-save-network-passpoint-config)];
 
@@ -61,21 +61,6 @@ The plugin requires the following permissions to work properly.
 | Handling the MAC filtering                                                            | :sos: |  :x:  |
 
 For now, there is no way to set the access point on iOS... 
-
-## For android (API >= 29)
-
-According to [WifiManager#setWifiEnabled(boolean)](https://developer.android.com/reference/android/net/wifi/WifiManager#setWifiEnabled(boolean)):
-> Starting with Build.VERSION_CODES#Q, applications are not allowed to enable/disable Wi-Fi.
-
-In order to enable or disable WiFi, an additional `shouldOpenSettings` parameter is added to `setEnabled` method. This will open the native WiFi settings.
-
-```dart
-WiFiForIoTPlugin.setEnabled(true, shouldOpenSettings: true);
-```
-
-Note:
-* `shouldOpenSettings` parameter takes effect on API level >= 29.
-* When `shouldOpenSettings` is present, the boolean `state` is ignored.
 
 ### Enabling and Disabling WiFi AP
 
