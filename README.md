@@ -43,7 +43,7 @@ Becareful, some commands as no effect on iOS because Apple don't let us to do wh
 | Enabling / Disabling Access Point                                                     | :white_check_mark:(1b) |  :x:  |
 | Getting / Setting new credentials (SSID / Password)                                   | :warning:(1a) |  :x:  |
 | Enabling / Disabling the visibility of the SSID Access Point                          | :warning:(1a) |  :x:  |
-| Getting the clients list (IP, BSSID, Device, Reachable)                               | :white_check_mark: |  :x:  |
+| Getting the clients list (IP, BSSID, Device, Reachable)                               | :warning:(1a) |  :x:  |
 | Handling the MAC filtering                                                            | :sos: |  :x:  |
 
 :warning:(1): Wifi API changes in Android SDK >= 29, restricts certain behaviour:
