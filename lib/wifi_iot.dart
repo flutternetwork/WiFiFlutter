@@ -20,8 +20,8 @@ const EventChannel _eventChannel =
 
 class WiFiForIoTPlugin {
   /// Returns whether the WiFi AP is enabled or not
-  ///
-  /// * *Note: Doesn't support on android API level > 29*
+  @Deprecated(
+      "This is will only work with < Android SDK 26. It could be make to work for >= Android SDK 29, request at https://github.com/alternadom/WiFiFlutter/issues/134.")
   static Future<bool> isWiFiAPEnabled() async {
     Map<String, String> htArguments = Map();
     bool? bResult;
@@ -62,8 +62,8 @@ class WiFiForIoTPlugin {
   }
 
   /// Returns whether the WiFi AP is hidden or not
-  ///
-  /// * *Only supports android < O*
+  @Deprecated(
+      "This is will only work with < Android SDK 26. It could be make to work for >= Android SDK 29, request at https://github.com/alternadom/WiFiFlutter/issues/134.")
   static Future<bool> isWiFiAPSSIDHidden() async {
     Map<String, String> htArguments = Map();
     bool? bResult;
@@ -76,8 +76,7 @@ class WiFiForIoTPlugin {
   }
 
   /// Set whether the WiFi AP is hidden or not
-  ///
-  /// * *Only supports android < O*
+  @Deprecated("This is will only work with < Android SDK 26.")
   static setWiFiAPSSIDHidden(bool hidden) async {
     Map<String, bool> htArguments = Map();
     htArguments["hidden"] = hidden;
@@ -97,8 +96,7 @@ class WiFiForIoTPlugin {
   /// 3 = WIFI_AP_STATE_ENABLED
   /// 4 = WIFI_AP_STATE_FAILED
   /// ```
-  ///
-  /// * *Only supports android < O*
+  @Deprecated("This is will only work with < Android SDK 26.")
   static Future<int?> getWiFiAPState() async {
     Map<String, String> htArguments = Map();
     int? iResult;
@@ -111,8 +109,7 @@ class WiFiForIoTPlugin {
   }
 
   /// Get WiFi AP clients
-  ///
-  /// * *Only supports android < O*
+  @Deprecated("This is will only work with < Android SDK 26.")
   static Future<List<APClient>> getClientList(
       bool onlyReachables, int reachableTimeout) async {
     Map<String, Object> htArguments = Map();
@@ -130,14 +127,16 @@ class WiFiForIoTPlugin {
   }
 
   /// Set WiFi AP Configuaration
-  ///
-  /// * *Only supports android < O*
+  @Deprecated("This is will only work with < Android SDK 26.")
   static void setWiFiAPConfiguration(Object poWiFiConfig) async {
     Map<String, bool> htArguments = Map();
     htArguments["wifi_config"] = poWiFiConfig as bool;
     await _channel.invokeMethod('setWiFiAPConfiguration', htArguments);
   }
 
+  /// Get WiFi AP SSID
+  @Deprecated(
+      "This is will only work with < Android SDK 26. It could be make to work for >= Android SDK 29, request at https://github.com/alternadom/WiFiFlutter/issues/134.")
   static Future<String?> getWiFiAPSSID() async {
     Map<String, String> htArguments = Map();
     String? sResult;
@@ -149,9 +148,8 @@ class WiFiForIoTPlugin {
     return sResult;
   }
 
-  /// Set WiFi SSID
-  ///
-  /// * *Only supports android < O*
+  /// Set WiFi AP SSID
+  @Deprecated("This is will only work with < Android SDK 26.")
   static setWiFiAPSSID(String psSSID) async {
     Map<String, String> htArguments = Map();
     htArguments["ssid"] = psSSID;
@@ -163,6 +161,8 @@ class WiFiForIoTPlugin {
   }
 
   /// Get WiFi AP's password
+  @Deprecated(
+      "This is will only work with < Android SDK 26. It could be make to work for >= Android SDK 29, request at https://github.com/alternadom/WiFiFlutter/issues/134.")
   static Future<String?> getWiFiAPPreSharedKey() async {
     Map<String, String> htArguments = Map();
     String? sResult;
@@ -176,8 +176,7 @@ class WiFiForIoTPlugin {
   }
 
   /// Set WiFi AP password
-  ///
-  /// * *Only supports android < O*
+  @Deprecated("This is will only work with < Android SDK 26.")
   static setWiFiAPPreSharedKey(String psPreSharedKey) async {
     Map<String, String> htArguments = Map();
     htArguments["preSharedKey"] = psPreSharedKey;
