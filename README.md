@@ -60,7 +60,7 @@ To be able to build with Xcode, you must specify `use_frameworks!` in your Podfi
 ## Android Permissions
 The following permissions are listed according to their intended use:
 
-### Required permissions added by the plugin (not need add this explicitly in your project):
+### Required permissions added by the plugin (not need to add this explicitly in your project):
 The physical WiFi module can be used with this feature.
 ```xml
 <uses-feature android:name="android.hardware.wifi" />
@@ -84,7 +84,7 @@ Permission to use location as required to enable or disable WiFi AP:
 <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 ```
 There's no need to add the permissions mentioned above to your project, since it's already been added to the plugin.
-### Using WiFi only
+### Using WiFi only (need to add this explicitly in your project, if you use this functions)
 Permission to enable or Disable WiFi:
 ```xml
 <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
@@ -93,7 +93,7 @@ Permission to add WiFi networks:
 ```xml
 <uses-permission android:name="android.permission.WRITE_SETTINGS" />
 ```
-### Using WiFi AP only
+### Using WiFi AP only (need to add this explicitly in your project, if you use this functions)
 Permission to configure WiFi AP SSID and password:
 ```xml
 <uses-permission android:name="android.permission.WRITE_SETTINGS" />
