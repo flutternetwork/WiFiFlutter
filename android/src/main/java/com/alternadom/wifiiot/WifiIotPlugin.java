@@ -474,6 +474,7 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
         }
             catch (SecurityException e) {
                 Log.e(WifiIotPlugin.class.getSimpleName(), e.getMessage(), null);
+                poResult.error("Exception [isWiFiAPEnabled]", e.getMessage(), null);
             }
     }
 
