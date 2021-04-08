@@ -47,7 +47,7 @@ Becareful, some commands as no effect on iOS because Apple don't let us to do wh
 | Handling the MAC filtering                                                            | :sos: |  :x:  |
 
 :warning:(1): Wifi API changes in Android SDK 26 and 29, restricts certain behaviour:
-  * a. This has been deprecated and will always fail for >= 26 Android SDK. There is a way to make "get" methods work for it for >= 29 Android SDK, but is currently not developed, request these feature if you need at [[#134](https://github.com/alternadom/WiFiFlutter/issues/134)].
+  * a. This has been deprecated and will always fail for >= 26 Android SDK. There is a way to make "get" methods work for >= 29 Android SDK, but is currently not developed, request these feature if you need at [[#134](https://github.com/alternadom/WiFiFlutter/issues/134)].
   * b. This has been deprecated and will always fail for >= 26 Android SDK.
   * c. Uses [`startLocalOnlyHotspot` API](https://developer.android.com/reference/android/net/wifi/WifiManager#startLocalOnlyHotspot(android.net.wifi.WifiManager.LocalOnlyHotspotCallback,%20android.os.Handler)) to enable or disable WiFi AP for >= 29 Android SDK. This can only be used to communicate between co-located devices connected to the created WiFi Hotspot. Note - (i) Enabling and Disabling WiFi AP needs to request location permission; (ii) The network created by this method will not have Internet access; (iii) There's no other way to set WiFi AP's SSID and Passphrase; (iv) This is actully a "request" and not a "command", as the `LocalOnlyHotspot` is shared (potentially) across applications and therefore a request to enable/disable may not not necessarily trigger the execution of it. 
 
