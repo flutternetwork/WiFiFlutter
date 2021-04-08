@@ -21,7 +21,7 @@ const EventChannel _eventChannel =
 class WiFiForIoTPlugin {
   /// Returns whether the WiFi AP is enabled or not
   @Deprecated(
-      "This is will only work with < Android SDK 26. It could be make to work for >= Android SDK 29, request at https://github.com/alternadom/WiFiFlutter/issues/134.")
+      "This is will only work with < Android SDK 26. It could be made to work for >= Android SDK 29, request at https://github.com/alternadom/WiFiFlutter/issues/134.")
   static Future<bool> isWiFiAPEnabled() async {
     Map<String, String> htArguments = Map();
     bool? bResult;
@@ -63,7 +63,7 @@ class WiFiForIoTPlugin {
 
   /// Returns whether the WiFi AP is hidden or not
   @Deprecated(
-      "This is will only work with < Android SDK 26. It could be make to work for >= Android SDK 29, request at https://github.com/alternadom/WiFiFlutter/issues/134.")
+      "This is will only work with < Android SDK 26. It could be made to work for >= Android SDK 29, request at https://github.com/alternadom/WiFiFlutter/issues/134.")
   static Future<bool> isWiFiAPSSIDHidden() async {
     Map<String, String> htArguments = Map();
     bool? bResult;
@@ -136,7 +136,7 @@ class WiFiForIoTPlugin {
 
   /// Get WiFi AP SSID
   @Deprecated(
-      "This is will only work with < Android SDK 26. It could be make to work for >= Android SDK 29, request at https://github.com/alternadom/WiFiFlutter/issues/134.")
+      "This is will only work with < Android SDK 26. It could be made to work for >= Android SDK 29, request at https://github.com/alternadom/WiFiFlutter/issues/134.")
   static Future<String?> getWiFiAPSSID() async {
     Map<String, String> htArguments = Map();
     String? sResult;
@@ -162,7 +162,7 @@ class WiFiForIoTPlugin {
 
   /// Get WiFi AP's password
   @Deprecated(
-      "This is will only work with < Android SDK 26. It could be make to work for >= Android SDK 29, request at https://github.com/alternadom/WiFiFlutter/issues/134.")
+      "This is will only work with < Android SDK 26. It could be made to work for >= Android SDK 29, request at https://github.com/alternadom/WiFiFlutter/issues/134.")
   static Future<String?> getWiFiAPPreSharedKey() async {
     Map<String, String> htArguments = Map();
     String? sResult;
