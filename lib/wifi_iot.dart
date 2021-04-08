@@ -20,7 +20,7 @@ const EventChannel _eventChannel =
 
 class WiFiForIoTPlugin {
   /// Returns whether the WiFi AP is enabled or not
-  /// 
+  ///
   /// * *Note: Doesn't support on android API level > 29*
   static Future<bool> isWiFiAPEnabled() async {
     Map<String, String> htArguments = Map();
@@ -34,9 +34,9 @@ class WiFiForIoTPlugin {
   }
 
   /// Enable or Disable WiFi
-  /// 
+  ///
   /// Wifi API changes for Android SDK >= 29, restricts certain behaviour:
-  /// 
+  ///
   /// * Uses `startLocalOnlyHotspot` API to enable or disable WiFi AP.
   /// * This can only be used to communicate between co-located devices connected to the created WiFi Hotspot
   /// * The network created by this method will not have Internet access
@@ -62,7 +62,7 @@ class WiFiForIoTPlugin {
   }
 
   /// Returns whether the WiFi AP is hidden or not
-  /// 
+  ///
   /// * *Only supports android < O*
   static Future<bool> isWiFiAPSSIDHidden() async {
     Map<String, String> htArguments = Map();
@@ -76,7 +76,7 @@ class WiFiForIoTPlugin {
   }
 
   /// Set whether the WiFi AP is hidden or not
-  /// 
+  ///
   /// * *Only supports android < O*
   static setWiFiAPSSIDHidden(bool hidden) async {
     Map<String, bool> htArguments = Map();
@@ -89,7 +89,7 @@ class WiFiForIoTPlugin {
   }
 
   /// Returns the WiFi AP State
-  /// 
+  ///
   /// ```
   /// 0 = WIFI_AP_STATE_DISABLING
   /// 1 = WIFI_AP_STATE_DISABLED
@@ -97,7 +97,7 @@ class WiFiForIoTPlugin {
   /// 3 = WIFI_AP_STATE_ENABLED
   /// 4 = WIFI_AP_STATE_FAILED
   /// ```
-  /// 
+  ///
   /// * *Only supports android < O*
   static Future<int?> getWiFiAPState() async {
     Map<String, String> htArguments = Map();
@@ -111,7 +111,7 @@ class WiFiForIoTPlugin {
   }
 
   /// Get WiFi AP clients
-  /// 
+  ///
   /// * *Only supports android < O*
   static Future<List<APClient>> getClientList(
       bool onlyReachables, int reachableTimeout) async {
@@ -130,7 +130,7 @@ class WiFiForIoTPlugin {
   }
 
   /// Set WiFi AP Configuaration
-  /// 
+  ///
   /// * *Only supports android < O*
   static void setWiFiAPConfiguration(Object poWiFiConfig) async {
     Map<String, bool> htArguments = Map();
@@ -150,7 +150,7 @@ class WiFiForIoTPlugin {
   }
 
   /// Set WiFi SSID
-  /// 
+  ///
   /// * *Only supports android < O*
   static setWiFiAPSSID(String psSSID) async {
     Map<String, String> htArguments = Map();
@@ -176,7 +176,7 @@ class WiFiForIoTPlugin {
   }
 
   /// Set WiFi AP password
-  /// 
+  ///
   /// * *Only supports android < O*
   static setWiFiAPPreSharedKey(String psPreSharedKey) async {
     Map<String, String> htArguments = Map();
@@ -188,7 +188,7 @@ class WiFiForIoTPlugin {
     }
   }
 
-   static  Stream<List<WifiNetwork>>? _onWifiScanResultReady;
+  static Stream<List<WifiNetwork>>? _onWifiScanResultReady;
 
   static Stream<List<WifiNetwork>> get onWifiScanResultReady {
     if (_onWifiScanResultReady == null) {
@@ -243,13 +243,13 @@ class WiFiForIoTPlugin {
   }
 
   /// Enable or Disable WiFi
-  /// 
+  ///
   /// @param [shouldOpenSettings] only supports on android API level >= 29
-  static setEnabled(bool state, { bool shouldOpenSettings = false }) async {
+  static setEnabled(bool state, {bool shouldOpenSettings = false}) async {
     Map<String, bool> htArguments = Map();
     htArguments["state"] = state;
     htArguments["shouldOpenSettings"] = shouldOpenSettings;
-    
+
     try {
       await _channel.invokeMethod('setEnabled', htArguments);
     } on MissingPluginException catch (e) {
@@ -433,10 +433,13 @@ class WiFiForIoTPlugin {
 class APClient {
   /// Returns the IP Address
   String? ipAddr;
+
   /// Returns the MAC Address
   String? hwAddr;
+
   /// Returns the device name
   String? device;
+
   /// Returns whether the AP client is reachable or not
   bool? isReachable;
 
