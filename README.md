@@ -57,6 +57,7 @@ For now, there is no way to set the access point on iOS...
 
 To be able to build with Xcode, you must specify `use_frameworks!` in your Podfile to allow building Swift into static libraries.
 
+<!---TODO: This a planned breaking change to happen in v1.0.0
 ## Android Permissions
 The following permissions are listed according to their intended use:
 
@@ -98,6 +99,7 @@ Permission to configure WiFi AP SSID and password:
 ```xml
 <uses-permission android:name="android.permission.WRITE_SETTINGS" />
 ```
+--->
 
 ## Troubleshooting
 
