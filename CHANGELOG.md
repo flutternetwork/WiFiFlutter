@@ -1,3 +1,7 @@
+## 0.3.1 2021-04-22
+
+* revamp - example app, wifi ap functions (android only) [#126]
+
 ## 0.3.0 2021-03-15
 
 * dart null saftey [#124]
