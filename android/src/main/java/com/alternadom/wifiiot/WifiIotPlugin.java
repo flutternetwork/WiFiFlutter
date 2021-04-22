@@ -20,9 +20,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.provider.Settings;
 import android.util.Log;
-
-import androidx.annotation.NonNull;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,6 +30,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import info.whitebyte.hotspotmanager.ClientScanResult;
 import info.whitebyte.hotspotmanager.FinishScanListener;
 import info.whitebyte.hotspotmanager.WifiApManager;
@@ -60,6 +60,7 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
     private WifiApManager moWiFiAPManager;
     private Activity moActivity;
     private BroadcastReceiver receiver;
+    private WifiManager.LocalOnlyHotspotReservation apReservation;
     private ConnectivityManager.NetworkCallback networkCallback;
     private List<WifiNetworkSuggestion> networkSuggestions;
     private List<String> ssidsToBeRemovedOnExit = new ArrayList<String>();
@@ -281,7 +282,6 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
         poResult.error("TODO", "Develop function to enable/disable MAC filtering...", null);
     }
 
-
     /**
      * The network's SSID. Can either be an ASCII string,
      * which must be enclosed in double quotation marks
@@ -290,24 +290,34 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
      * (e.g., {@code 01a243f405}).
      */
     private void getWiFiAPSSID(Result poResult) {
-        android.net.wifi.WifiConfiguration oWiFiConfig = moWiFiAPManager.getWifiApConfiguration();
-        if (oWiFiConfig != null && oWiFiConfig.SSID != null) {
-            poResult.success(oWiFiConfig.SSID);
-            return;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            android.net.wifi.WifiConfiguration oWiFiConfig = moWiFiAPManager.getWifiApConfiguration();
+
+            if (oWiFiConfig != null && oWiFiConfig.SSID != null) {
+                poResult.success(oWiFiConfig.SSID);
+                return;
+            }
+
+            poResult.error("Exception", "SSID not found", null);
+        } else {
+            poResult.error("Exception [getWiFiAPSSID]", "Getting SSID name is not supported on API level >= 26", null);
         }
-        poResult.error("Exception", "SSID not found", null);
     }
 
     private void setWiFiAPSSID(MethodCall poCall, Result poResult) {
         String sAPSSID = poCall.argument("ssid");
 
-        android.net.wifi.WifiConfiguration oWiFiConfig = moWiFiAPManager.getWifiApConfiguration();
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            android.net.wifi.WifiConfiguration oWiFiConfig = moWiFiAPManager.getWifiApConfiguration();
 
-        oWiFiConfig.SSID = sAPSSID;
+            oWiFiConfig.SSID = sAPSSID;
 
-        moWiFiAPManager.setWifiApConfiguration(oWiFiConfig);
+            moWiFiAPManager.setWifiApConfiguration(oWiFiConfig);
 
-        poResult.success(null);
+            poResult.success(null);
+        } else {
+            poResult.error("Exception [setWiFiAPSSID]", "Setting SSID name is not supported on API level >= 26", null);
+        }
     }
 
     /**
@@ -315,24 +325,34 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
      * SSID-specific probe request must be used for scans.
      */
     private void isSSIDHidden(Result poResult) {
-        android.net.wifi.WifiConfiguration oWiFiConfig = moWiFiAPManager.getWifiApConfiguration();
-        if (oWiFiConfig != null && oWiFiConfig.hiddenSSID) {
-            poResult.success(oWiFiConfig.hiddenSSID);
-            return;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            android.net.wifi.WifiConfiguration oWiFiConfig = moWiFiAPManager.getWifiApConfiguration();
+
+            if (oWiFiConfig != null && oWiFiConfig.hiddenSSID) {
+                poResult.success(oWiFiConfig.hiddenSSID);
+                return;
+            }
+
+            poResult.error("Exception [isSSIDHidden]", "Wifi AP not Supported", null);
+        } else {
+            poResult.error("Exception [isSSIDHidden]", "Getting SSID visibility is not supported on API level >= 26", null);
         }
-        poResult.error("Exception", "Wifi AP not Supported", null);
     }
 
     private void setSSIDHidden(MethodCall poCall, Result poResult) {
-        boolean isSSIDHidden = poCall.argument("hidden");
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            boolean isSSIDHidden = poCall.argument("hidden");
 
-        android.net.wifi.WifiConfiguration oWiFiConfig = moWiFiAPManager.getWifiApConfiguration();
+            android.net.wifi.WifiConfiguration oWiFiConfig = moWiFiAPManager.getWifiApConfiguration();
 
-        oWiFiConfig.hiddenSSID = isSSIDHidden;
+            oWiFiConfig.hiddenSSID = isSSIDHidden;
 
-        moWiFiAPManager.setWifiApConfiguration(oWiFiConfig);
+            moWiFiAPManager.setWifiApConfiguration(oWiFiConfig);
 
-        poResult.success(null);
+            poResult.success(null);
+        } else {
+            poResult.error("Exception [setSSIDHidden]", "Setting SSID visibility is not supported on API level >= 26", null);
+        }
     }
 
     /**
@@ -345,24 +365,34 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
      * string otherwise.
      */
     private void getWiFiAPPreSharedKey(Result poResult) {
-        android.net.wifi.WifiConfiguration oWiFiConfig = moWiFiAPManager.getWifiApConfiguration();
-        if (oWiFiConfig != null && oWiFiConfig.preSharedKey != null) {
-            poResult.success(oWiFiConfig.preSharedKey);
-            return;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            android.net.wifi.WifiConfiguration oWiFiConfig = moWiFiAPManager.getWifiApConfiguration();
+
+            if (oWiFiConfig != null && oWiFiConfig.preSharedKey != null) {
+                poResult.success(oWiFiConfig.preSharedKey);
+                return;
+            }
+
+            poResult.error("Exception", "Wifi AP not Supported", null);
+        } else {
+            poResult.error("Exception [getWiFIAPPreSharedKey]", "Getting WiFi AP password is not supported on API level >= 26", null);
         }
-        poResult.error("Exception", "Wifi AP not Supported", null);
     }
 
     private void setWiFiAPPreSharedKey(MethodCall poCall, Result poResult) {
-        String sPreSharedKey = poCall.argument("preSharedKey");
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            String sPreSharedKey = poCall.argument("preSharedKey");
 
-        android.net.wifi.WifiConfiguration oWiFiConfig = moWiFiAPManager.getWifiApConfiguration();
+            android.net.wifi.WifiConfiguration oWiFiConfig = moWiFiAPManager.getWifiApConfiguration();
 
-        oWiFiConfig.preSharedKey = sPreSharedKey;
+            oWiFiConfig.preSharedKey = sPreSharedKey;
 
-        moWiFiAPManager.setWifiApConfiguration(oWiFiConfig);
+            moWiFiAPManager.setWifiApConfiguration(oWiFiConfig);
 
-        poResult.success(null);
+            poResult.success(null);
+        } else {
+            poResult.error("Exception [setWiFiAPPreSharedKey]", "Setting WiFi password is not supported on API level >= 26", null);
+        }
     }
 
     /**
@@ -432,7 +462,12 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
      * return {@code true} if Wi-Fi AP is enabled
      */
     private void isWiFiAPEnabled(Result poResult) {
-        poResult.success(moWiFiAPManager.isWifiApEnabled());
+        try {
+            poResult.success(moWiFiAPManager.isWifiApEnabled());
+        } catch (SecurityException e) {
+            Log.e(WifiIotPlugin.class.getSimpleName(), e.getMessage(), null);
+            poResult.error("Exception [isWiFiAPEnabled]", e.getMessage(), null);
+        }
     }
 
     /**
@@ -447,7 +482,42 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
      */
     private void setWiFiAPEnabled(MethodCall poCall, Result poResult) {
         boolean enabled = poCall.argument("state");
-        moWiFiAPManager.setWifiApEnabled(null, enabled);
+
+        /**
+         * Using LocalOnlyHotspotCallback when setting WiFi AP state on API level >= 29
+         */
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            moWiFiAPManager.setWifiApEnabled(null, enabled);
+        } else {
+            if (enabled) {
+                moWiFi.startLocalOnlyHotspot(new WifiManager.LocalOnlyHotspotCallback() {
+                    @Override
+                    public void onStarted(WifiManager.LocalOnlyHotspotReservation reservation) {
+                        super.onStarted(reservation);
+                        apReservation = reservation;
+                    }
+
+                    @Override
+                    public void onStopped() {
+                        super.onStopped();
+                        Log.d(WifiIotPlugin.class.getSimpleName(), "LocalHotspot Stopped.");
+                    }
+
+                    @Override
+                    public void onFailed(int reason) {
+                        super.onFailed(reason);
+                        Log.d(WifiIotPlugin.class.getSimpleName(), "LocalHotspot failed with code: " + String.valueOf(reason));
+                    }
+                }, new Handler());
+            } else {
+                if (apReservation != null) {
+                    apReservation.close();
+                } else {
+                    Log.e(WifiIotPlugin.class.getSimpleName(), "Can't disable WiFi AP, apReservation is null.");
+                }
+            }
+        }
+
         poResult.success(null);
     }
 
@@ -627,7 +697,27 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
     /// Method to connect/disconnect wifi service
     private void setEnabled(MethodCall poCall, Result poResult) {
         Boolean enabled = poCall.argument("state");
-        moWiFi.setWifiEnabled(enabled);
+        Boolean shouldOpenSettings = poCall.argument("shouldOpenSettings");
+
+        // Enable or Disable WiFi programmatically
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            moWiFi.setWifiEnabled(enabled);
+        }
+        // Whether to open native WiFi settings or not
+        else {
+            if (shouldOpenSettings != null) {
+                if (shouldOpenSettings) {
+                    Intent intent = new Intent(Settings.ACTION_WIFI_SETTINGS);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    this.moContext.startActivity(intent);
+                } else {
+                    moWiFi.setWifiEnabled(enabled);
+                }
+            } else {
+                Log.e(WifiIotPlugin.class.getSimpleName(), "Error `setEnabled`: shouldOpenSettings is null.");
+            }
+        }
+
         poResult.success(null);
     }
 
@@ -792,7 +882,10 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
             if (networkCallback != null) {
                 final ConnectivityManager connectivityManager = (ConnectivityManager) moContext.getSystemService(Context.CONNECTIVITY_SERVICE);
                 connectivityManager.unregisterNetworkCallback(networkCallback);
+            } else {
+                Log.e(WifiIotPlugin.class.getSimpleName(), "Can't disconnect to WiFi, networkCallback is null.");
             }
+
             if (networkSuggestions != null) {
                 moWiFi.removeNetworkSuggestions(networkSuggestions);
             }
@@ -1115,4 +1208,3 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
         return connected;
     }
 }
-
