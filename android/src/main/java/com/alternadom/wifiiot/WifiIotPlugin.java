@@ -258,9 +258,6 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
             case "setWiFiAPPreSharedKey":
                 setWiFiAPPreSharedKey(poCall, poResult);
                 break;
-            case "setMACFiltering":
-                setMACFiltering(poCall, poResult);
-                break;
             case "showWritePermissionSettings":
                 showWritePermissionSettings(poCall, poResult);
                 break;
@@ -268,18 +265,6 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
                 poResult.notImplemented();
                 break;
         }
-    }
-
-    /**
-     * @param poCall
-     * @param poResult
-     */
-    private void setMACFiltering(MethodCall poCall, Result poResult) {
-        boolean bEnable = poCall.argument("state");
-
-        // Log.e(this.getClass().toString(), "TODO : Develop function to enable/disable MAC filtering...");
-
-        poResult.error("TODO", "Develop function to enable/disable MAC filtering...", null);
     }
 
     /**
