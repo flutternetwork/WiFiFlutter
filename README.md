@@ -50,7 +50,7 @@ Additional Wifi protocols on Android side like - Wifi Direct, Wifi Aware, etc ar
 
 :warning:(1): Wifi API changes in Android SDK 26 and 29, restricts certain behaviour:
   * a. This has been deprecated and will always fail for >= 26 Android SDK.
-  * b. This has been deprecated and will always fail for >= 26 Android SDK. There is a way to make "get" methods work for >= 29 Android SDK, but is currently not implemented, request these features if you need them at [[#134](https://github.com/alternadom/WiFiFlutter/issues/134)].
+  * b. This has been deprecated and will always fail for >= 26 Android SDK. There is a way to make "get" methods work for >= 29 Android SDK, but is currently not implemented, request these features if you need them at [#134](https://github.com/alternadom/WiFiFlutter/issues/134).
   * c. Uses [`startLocalOnlyHotspot` API](https://developer.android.com/reference/android/net/wifi/WifiManager#startLocalOnlyHotspot(android.net.wifi.WifiManager.LocalOnlyHotspotCallback,%20android.os.Handler)) to request enabling or disabling WiFi AP for >= 29 Android SDK. This can only be used to communicate between co-located devices connected to the created WiFi Hotspot. Note - 
     * (i) Enabling and Disabling WiFi AP needs to request location permission.
     * (ii) The network created by this method will not have Internet access.
