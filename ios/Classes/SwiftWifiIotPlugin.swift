@@ -89,9 +89,6 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
             case "setWiFiAPPreSharedKey":
                 setWiFiAPPreSharedKey(call: call, result: result)
                 break;
-            case "setMACFiltering":
-                setMACFiltering(call: call, result: result)
-                break;
             default:
                 result(FlutterMethodNotImplemented);
                 break;
@@ -367,10 +364,6 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
         } else {
             result(nil)
         }
-    }
-
-    private func setMACFiltering(call: FlutterMethodCall, result: FlutterResult) {
-        result(FlutterMethodNotImplemented)
     }
 }
 

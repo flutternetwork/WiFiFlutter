@@ -46,7 +46,6 @@ Additional Wifi protocols on Android side like - Wifi Direct, Wifi Aware, etc ar
 | Getting / Setting new credentials (SSID / Password)                                   | :warning:(1b) |  :x:  |
 | Enabling / Disabling the visibility of the SSID Access Point                          | :warning:(1a) |  :x:  |
 | Getting the clients list (IP, BSSID, Device, Reachable)                               | :warning:(1a) |  :x:  |
-| Handling the MAC filtering                                                            | :sos: |  :x:  |
 
 :warning:(1): Wifi API changes in Android SDK 26 and 29, restricts certain behaviour:
   * a. This has been deprecated and will always fail for >= 26 Android SDK.
