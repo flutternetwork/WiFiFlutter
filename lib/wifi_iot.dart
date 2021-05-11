@@ -256,11 +256,14 @@ class WiFiForIoTPlugin {
     }
   }
 
-  static Future<bool> connect(String ssid,
-      {String? password,
-      NetworkSecurity security = NetworkSecurity.NONE,
-      bool joinOnce = true,
-      bool withInternet = false}) async {
+  static Future<bool> connect(
+    String ssid, {
+    String? password,
+    NetworkSecurity security = NetworkSecurity.NONE,
+    bool joinOnce = true,
+    bool withInternet = false,
+    bool isHidden = false,
+  }) async {
     if (!Platform.isIOS && !await isEnabled()) await setEnabled(true);
     bool? bResult;
     try {
@@ -269,6 +272,7 @@ class WiFiForIoTPlugin {
         "password": password.toString(),
         "join_once": joinOnce,
         "with_internet": withInternet,
+        "is_hidden": isHidden,
         "security":
             security.toString().substring('$NetworkSecurity'.length + 1),
       });
@@ -278,9 +282,12 @@ class WiFiForIoTPlugin {
     return bResult != null && bResult;
   }
 
-  static Future<bool> registerWifiNetwork(String ssid,
-      {String? password,
-      NetworkSecurity security = NetworkSecurity.NONE}) async {
+  static Future<bool> registerWifiNetwork(
+    String ssid, {
+    String? password,
+    NetworkSecurity security = NetworkSecurity.NONE,
+    bool isHidden = false,
+  }) async {
     if (!Platform.isIOS && !await isEnabled()) await setEnabled(true);
     bool? bResult;
     try {
@@ -289,6 +296,7 @@ class WiFiForIoTPlugin {
         "password": password.toString(),
         "security":
             security.toString().substring('$NetworkSecurity'.length + 1),
+        "is_hidden": isHidden,
       });
     } on MissingPluginException catch (e) {
       print("MissingPluginException : ${e.toString()}");
