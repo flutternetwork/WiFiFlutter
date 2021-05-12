@@ -1,3 +1,9 @@
+## 0.3.3 2021-05-12
+
+* removed mac filtering (unimplemented methods) [#141]
+* feat(android) hidden SSID support added [#145]
+* call startScan on Android P [#146]
+
 ## 0.3.2 2021-05-07
 
 * readme - mentioned #140 and other minor
