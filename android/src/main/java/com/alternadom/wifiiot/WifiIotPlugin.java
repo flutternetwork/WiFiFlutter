@@ -605,8 +605,7 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
                 moActivity.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_CODE_ACCESS_FINE_LOCATION);
             }
 
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P)
-                moWiFi.startScan();
+            moWiFi.startScan();
 
             poResult.success(handleNetworkScanResult().toString());
 
