@@ -10,7 +10,12 @@
   "commit": false,
   "commitConvention": "none",
   "types": {
-  "example": {
+    "design": {
+      "symbol": "🎨",
+      "description": "Design",
+      "link": "https://dribbble.com/shots/10203130-WiFi-Flutter-Logo-Design"
+    },
+    "example": {
       "symbol": "💡",
       "description": "Examples",
       "link": "https://github.com/alternadom/WiFiFlutter/tree/all-contributors/example"
