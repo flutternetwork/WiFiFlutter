@@ -9,6 +9,13 @@
   "imageSize": 100,
   "commit": false,
   "commitConvention": "none",
+  "types": {
+  "example": {
+      "symbol": "💡",
+      "description": "Examples",
+      "link": "https://github.com/alternadom/WiFiFlutter/tree/all-contributors/example"
+    }
+  },
   "contributors": [
     {
       "login": "alternadom",
