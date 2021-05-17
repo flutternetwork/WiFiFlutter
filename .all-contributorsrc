@@ -34,7 +34,7 @@
     "example": {
       "symbol": "💡",
       "description": "Examples",
-      "link": "https://github.com/alternadom/WiFiFlutter/tree/all-contributors/example"
+      "link": "https://github.com/alternadom/WiFiFlutter/commits/master/example?author=<%= contributor.login %>"
     }
   },
   "contributorsPerLine": 9,
