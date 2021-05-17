@@ -16,6 +16,11 @@
       "description": "Code",
       "link": "https://github.com/alternadom/WiFiFlutter/pulls?q=is%3Apr+author%3A<%= contributor.login %>"
     },
+    "code_coauthor": {
+      "symbol": "💻",
+      "description": "Code",
+      "link": "https://github.com/alternadom/WiFiFlutter/search?q=<%= contributor.login %>&type=commits"
+    },
     "design": {
       "symbol": "🎨",
       "description": "Design",
@@ -355,7 +360,7 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/54811073?v=4",
       "profile": "https://github.com/IskanderA1",
       "contributions": [
-        "code"
+        "code_coauthor"
       ]
     },
     {
