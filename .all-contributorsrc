@@ -22,6 +22,7 @@
       "link": "https://github.com/alternadom/WiFiFlutter/tree/all-contributors/example"
     }
   },
+  "contributorsPerLine": 8,
   "contributors": [
     {
       "login": "alternadom",
@@ -391,6 +392,5 @@
         "code"
       ]
     }
-  ],
-  "contributorsPerLine": 8
+  ]
 }
