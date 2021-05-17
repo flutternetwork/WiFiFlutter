@@ -83,7 +83,7 @@
       "login": "pboos",
       "name": "Patrick Boos",
       "avatar_url": "https://avatars.githubusercontent.com/u/398400?v=4",
-      "profile": "http://pboos.ch/",
+      "profile": "https://pboos.ch/",
       "contributions": [
         "code",
         "example"
@@ -93,7 +93,7 @@
       "login": "sfaye",
       "name": "Sébastien Faye",
       "avatar_url": "https://avatars.githubusercontent.com/u/14291522?v=4",
-      "profile": "http://www.sfaye.com/",
+      "profile": "https://www.sfaye.com/",
       "contributions": [
         "code"
       ]
@@ -112,7 +112,7 @@
       "login": "minhvn",
       "name": "Võ Ngọc Minh",
       "avatar_url": "https://avatars.githubusercontent.com/u/187747?v=4",
-      "profile": "http://minhvn.net/",
+      "profile": "https://github.com/minhvn",
       "contributions": [
         "bug"
       ]
@@ -168,7 +168,7 @@
       "login": "crifan",
       "name": "Crifan Li",
       "avatar_url": "https://avatars.githubusercontent.com/u/2750682?v=4",
-      "profile": "http://www.crifan.com/",
+      "profile": "https://www.crifan.com/",
       "contributions": [
         "bug",
         "code_pr"
@@ -278,7 +278,7 @@
       "login": "JAICHANGPARK",
       "name": "Dreamwalker",
       "avatar_url": "https://avatars.githubusercontent.com/u/19484515?v=4",
-      "profile": "http://qiita.com/Dreamwalker",
+      "profile": "https://qiita.com/Dreamwalker",
       "contributions": [
         "bug"
       ]
@@ -296,7 +296,7 @@
       "login": "mvn-binhdo-dn",
       "name": "Binh Do D.",
       "avatar_url": "https://avatars.githubusercontent.com/u/14215709?v=4",
-      "profile": "http://asiantech.vn/",
+      "profile": "https://asiantech.vn/",
       "contributions": [
         "bug"
       ]
