@@ -21,6 +21,11 @@
       "description": "Code",
       "link": "https://github.com/alternadom/WiFiFlutter/search?q=<%= contributor.login %>&type=commits"
     },
+    "doc": {
+      "symbol": "📖",
+      "description": "Documentation",
+      "link": "https://github.com/alternadom/WiFiFlutter/commits/master/README.md?author=<%= contributor.login %>"
+    },
     "design": {
       "symbol": "🎨",
       "description": "Design",
