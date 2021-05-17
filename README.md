@@ -1,8 +1,16 @@
 <img src="https://raw.githubusercontent.com/alternadom/WiFiFlutter/master/logo/logo%2Bname_color.png" alt="WiFiFlutter" width="255" height="160" />
 
-[![pub](https://img.shields.io/pub/v/wifi_iot.svg?style=flat-square)](https://pub.dartlang.org/packages/wifi_iot)<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-38-orange.svg?style=flat-square)](#contributors-)
+<p>
+<a href="https://pub.dev/packages/wifi_iot"><img src="https://img.shields.io/pub/v/wifi_iot?logo=dart" alt="pub.dev"></a><!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+<a href="#contributors-"><img src="https://img.shields.io/badge/all_contributors-38-orange.svg" alt="All Contributors" /></a>
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
+<a href="https://pub.dev/packages/wifi_iot/score"><img src="https://badges.bar/wifi_iot/pub%20points" alt="pub points"></a>
+<a href="https://pub.dev/packages/wifi_iot/score"><img src="https://badges.bar/wifi_iot/popularity" alt="popularity"></a>
+<a href="https://pub.dev/packages/wifi_iot/score"><img src="https://badges.bar/wifi_iot/likes" alt="likes"></a>
+<a href="https://github.com/alternadom/WiFiFlutter/issues"><img src="https://img.shields.io/github/issues/alternadom/WiFiFlutter?logo=github" alt="GitHub issues"></a>
+<a href="https://github.com/alternadom/WiFiFlutter/stargazers"><img src="https://img.shields.io/github/stars/alternadom/WiFiFlutter?logo=github" alt="GitHub stars"></a>
+<a href="https://github.com/alternadom/WiFiFlutter/network"><img src="https://img.shields.io/github/forks/alternadom/WiFiFlutter?logo=github" alt="GitHub forks"></a>
+</p>
 
 ## Introduction
 
