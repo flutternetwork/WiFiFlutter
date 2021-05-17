@@ -11,6 +11,11 @@
   "commitConvention": "none",
   "badgeTemplate": "<a href=\"#contributors-\"><img src=\"https://img.shields.io/badge/all_contributors-<%= contributors.length %>-orange.svg\" alt=\"All Contributors\" /></a>",
   "types": {
+    "code_pr": {
+      "symbol": "💻",
+      "description": "Code",
+      "link": "https://github.com/alternadom/WiFiFlutter/pulls?q=is%3Apr+author%3A<%= contributor.login %>"
+    },
     "design": {
       "symbol": "🎨",
       "description": "Design",
@@ -109,7 +114,7 @@
       "profile": "https://cesarsanz.dev/",
       "contributions": [
         "bug",
-        "code"
+        "code_pr"
       ]
     },
     {
@@ -118,7 +123,7 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/4430316?v=4",
       "profile": "https://github.com/TheKvikk",
       "contributions": [
-        "code"
+        "code_pr"
       ]
     },
     {
@@ -128,7 +133,7 @@
       "profile": "https://github.com/Bmooij",
       "contributions": [
         "bug",
-        "code"
+        "code_pr"
       ]
     },
     {
@@ -156,7 +161,7 @@
       "profile": "http://www.crifan.com/",
       "contributions": [
         "bug",
-        "code"
+        "code_pr"
       ]
     },
     {
@@ -238,7 +243,7 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/6748573?v=4",
       "profile": "https://github.com/RossinesP",
       "contributions": [
-        "code"
+        "code_pr"
       ]
     },
     {
