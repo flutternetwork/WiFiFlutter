@@ -235,11 +235,17 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
 
     private func getSSID() -> String? {
         var ssid: String?
-        if let interfaces = CNCopySupportedInterfaces() as NSArray? {
-            for interface in interfaces {
-                if let interfaceInfo = CNCopyCurrentNetworkInfo(interface as! CFString) as NSDictionary? {
-                    ssid = interfaceInfo[kCNNetworkInfoKeySSID as String] as? String
-                    break
+        if #available(iOS 14.0, *) {
+            NEHotspotNetwork.fetchCurrent(completionHandler: { currentNetwork in
+                ssid = currentNetwork?.ssid
+            })
+        } else {
+            if let interfaces = CNCopySupportedInterfaces() as NSArray? {
+                for interface in interfaces {
+                    if let interfaceInfo = CNCopyCurrentNetworkInfo(interface as! CFString) as NSDictionary? {
+                        ssid = interfaceInfo[kCNNetworkInfoKeySSID as String] as? String
+                        break
+                    }
                 }
             }
         }
@@ -248,11 +254,17 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
 
     private func getBSSID() -> String? {
         var bssid: String?
-        if let interfaces = CNCopySupportedInterfaces() as NSArray? {
-            for interface in interfaces {
-                if let interfaceInfo = CNCopyCurrentNetworkInfo(interface as! CFString) as NSDictionary? {
-                    bssid = interfaceInfo[kCNNetworkInfoKeyBSSID as String] as? String
-                    break
+        if #available(iOS 14.0, *) {
+            NEHotspotNetwork.fetchCurrent(completionHandler: { currentNetwork in
+                bssid = currentNetwork?.bssid
+            })
+        } else {
+            if let interfaces = CNCopySupportedInterfaces() as NSArray? {
+                for interface in interfaces {
+                    if let interfaceInfo = CNCopyCurrentNetworkInfo(interface as! CFString) as NSDictionary? {
+                        bssid = interfaceInfo[kCNNetworkInfoKeyBSSID as String] as? String
+                        break
+                    }
                 }
             }
         }

@@ -29,7 +29,7 @@ Becareful, some commands as no effect on iOS because Apple don't let us to do wh
 | Registering / Unregistering a WiFi network            | :white_check_mark:(5c) |  :warning:(2)  |
 | Getting informations like :                           | :white_check_mark: |  :warning:(3)  |
 | - SSID                                                | :white_check_mark: |  :white_check_mark:  |
-| - BSSID                                               | :white_check_mark: |  :x:  |
+| - BSSID                                               | :white_check_mark: |  :white_check_mark:  |
 | - Current signal strength                             | :white_check_mark: |  :x:  |
 | - Frequency                                           | :white_check_mark: |  :x:  |
 | - IP                                                  | :white_check_mark: |  :question:(4)  |
