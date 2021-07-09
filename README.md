@@ -2,7 +2,7 @@
 
 <p>
 <a href="https://pub.dev/packages/wifi_iot"><img src="https://img.shields.io/pub/v/wifi_iot?logo=dart" alt="pub.dev"></a><!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-<a href="#contributors-"><img src="https://img.shields.io/badge/all_contributors-38-orange.svg" alt="All Contributors" /></a>
+<a href="#contributors-"><img src="https://img.shields.io/badge/all_contributors-41-orange.svg" alt="All Contributors" /></a>
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 <a href="https://pub.dev/packages/wifi_iot/score"><img src="https://badges.bar/wifi_iot/pub%20points" alt="pub points"></a>
 <a href="https://pub.dev/packages/wifi_iot/score"><img src="https://badges.bar/wifi_iot/popularity" alt="popularity"></a>
@@ -176,6 +176,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   <tr>
     <td align="center"><a href="https://github.com/BenoitDuffez"><img src="https://avatars.githubusercontent.com/u/802209?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Benoit Duffez</b></sub></a><br /><a href="https://github.com/alternadom/WiFiFlutter/issues?q=author%3ABenoitDuffez" title="Bug reports">🐛</a></td>
     <td align="center"><a href="https://jscd.pw/"><img src="https://avatars.githubusercontent.com/u/30761811?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Justin DeSimpliciis</b></sub></a><br /><a href="https://github.com/alternadom/WiFiFlutter/commits?author=jscd" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/DominikStarke"><img src="https://avatars.githubusercontent.com/u/5812061?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Dominik Starke</b></sub></a><br /><a href="https://github.com/alternadom/WiFiFlutter/issues?q=author%3ADominikStarke" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://github.com/felixsmart"><img src="https://avatars.githubusercontent.com/u/48223844?v=4?s=100" width="100px;" alt=""/><br /><sub><b>FelixSmart</b></sub></a><br /><a href="https://github.com/alternadom/WiFiFlutter/issues?q=author%3Afelixsmart" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://github.com/briansemrau"><img src="https://avatars.githubusercontent.com/u/6376721?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Brian Semrau</b></sub></a><br /><a href="https://github.com/alternadom/WiFiFlutter/issues?q=author%3Abriansemrau" title="Bug reports">🐛</a></td>
   </tr>
 </table>
 

@@ -406,6 +406,33 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "DominikStarke",
+      "name": "Dominik Starke",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5812061?v=4",
+      "profile": "https://github.com/DominikStarke",
+      "contributions": [
+        "bug"
+      ]
+    },
+    {
+      "login": "felixsmart",
+      "name": "FelixSmart",
+      "avatar_url": "https://avatars.githubusercontent.com/u/48223844?v=4",
+      "profile": "https://github.com/felixsmart",
+      "contributions": [
+        "bug"
+      ]
+    },
+    {
+      "login": "briansemrau",
+      "name": "Brian Semrau",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6376721?v=4",
+      "profile": "https://github.com/briansemrau",
+      "contributions": [
+        "bug"
+      ]
     }
   ]
 }
