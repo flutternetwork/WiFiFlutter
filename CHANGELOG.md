@@ -1,3 +1,7 @@
+## 0.3.4 2021-07-09
+
+* refactor(ios): handle deprecation of `CNCopyCurrentNetworkInfo` (#150)
+
 ## 0.3.3 2021-05-12
 
 * removed mac filtering (unimplemented methods) [#141]
