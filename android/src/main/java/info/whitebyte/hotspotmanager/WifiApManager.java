@@ -35,13 +35,13 @@ import java.util.ArrayList;
 
 public class WifiApManager {
     private final WifiManager mWifiManager;
-    private Context context;
-
+    private final Context context;
+    
     public WifiApManager(Context context) {
         this.context = context;
         mWifiManager = (WifiManager) this.context.getSystemService(Context.WIFI_SERVICE);
     }
-
+    
     /**
      * Show write permission settings page to user if necessary or forced
      *
@@ -57,7 +57,7 @@ public class WifiApManager {
             }
         }
     }
-
+    
     /**
      * Start AccessPoint mode with the specified
      * configuration. If the radio is already running in
@@ -72,19 +72,20 @@ public class WifiApManager {
         try {
             // Calling setWifiApEnabled requires MANAGE_WRITE_SETTINGS permissions, so check and request if needed
             showWritePermissionSettings(false);
-
+            
             if (enabled) { // disable WiFi in any case
                 mWifiManager.setWifiEnabled(false);
             }
-
+            
             Method method = mWifiManager.getClass().getMethod("setWifiApEnabled", WifiConfiguration.class, boolean.class);
-            return (Boolean) method.invoke(mWifiManager, wifiConfig, enabled);
+            final Boolean result = (Boolean) method.invoke(mWifiManager, wifiConfig, enabled);
+            return result != null && result;
         } catch (Exception e) {
             Log.e(this.getClass().toString(), "", e);
             return false;
         }
     }
-
+    
     /**
      * Gets the Wi-Fi enabled state.
      *
@@ -94,32 +95,32 @@ public class WifiApManager {
     public WIFI_AP_STATE getWifiApState() {
         try {
             Method method = mWifiManager.getClass().getMethod("getWifiApState");
-
-            int tmp = ((Integer) method.invoke(mWifiManager));
-
+            
+            int tmp = (Integer) method.invoke(mWifiManager);
+            
             // Fix for Android 4
             if (tmp >= 10) {
                 tmp = tmp - 10;
             }
-
+            
             return WIFI_AP_STATE.class.getEnumConstants()[tmp];
         } catch (Exception e) {
             Log.e(this.getClass().toString(), "", e);
             return WIFI_AP_STATE.WIFI_AP_STATE_FAILED;
         }
     }
-
+    
     /**
      * Return whether Wi-Fi AP is enabled or disabled.
      *
      * @return {@code true} if Wi-Fi AP is enabled
-     * @hide Dont open yet
+     * @hide Don't open yet
      * @see #getWifiApState()
      */
     public boolean isWifiApEnabled() {
         return getWifiApState() == WIFI_AP_STATE.WIFI_AP_STATE_ENABLED;
     }
-
+    
     /**
      * Gets the Wi-Fi AP Configuration.
      *
@@ -134,7 +135,7 @@ public class WifiApManager {
             return null;
         }
     }
-
+    
     /**
      * Sets the Wi-Fi AP Configuration.
      *
@@ -143,13 +144,14 @@ public class WifiApManager {
     public boolean setWifiApConfiguration(WifiConfiguration wifiConfig) {
         try {
             Method method = mWifiManager.getClass().getMethod("setWifiApConfiguration", WifiConfiguration.class);
-            return (Boolean) method.invoke(mWifiManager, wifiConfig);
+            final Boolean result = (Boolean) method.invoke(mWifiManager, wifiConfig);
+            return result != null && result;
         } catch (Exception e) {
             Log.e(this.getClass().toString(), "", e);
             return false;
         }
     }
-
+    
     /**
      * Gets a list of the clients connected to the Hotspot, reachable timeout is 300
      *
@@ -159,7 +161,7 @@ public class WifiApManager {
     public void getClientList(boolean onlyReachables, FinishScanListener finishListener) {
         getClientList(onlyReachables, 300, finishListener);
     }
-
+    
     /**
      * Gets a list of the clients connected to the Hotspot
      *
@@ -170,23 +172,23 @@ public class WifiApManager {
     public void getClientList(final boolean onlyReachables, final int reachableTimeout, final FinishScanListener finishListener) {
         Runnable runnable = new Runnable() {
             public void run() {
-
+                
                 BufferedReader br = null;
-                final ArrayList<ClientScanResult> result = new ArrayList<ClientScanResult>();
-
+                final ArrayList<ClientScanResult> result = new ArrayList<>();
+                
                 try {
                     br = new BufferedReader(new FileReader("/proc/net/arp"));
                     String line;
                     while ((line = br.readLine()) != null) {
                         String[] splitted = line.split(" +");
-
-                        if ((splitted != null) && (splitted.length >= 4)) {
+                        
+                        if (splitted.length >= 4) {
                             // Basic sanity check
                             String mac = splitted[3];
-
+                            
                             if (mac.matches("..:..:..:..:..:..")) {
                                 boolean isReachable = InetAddress.getByName(splitted[0]).isReachable(reachableTimeout);
-
+                                
                                 if (!onlyReachables || isReachable) {
                                     result.add(new ClientScanResult(splitted[0], splitted[3], splitted[5], isReachable));
                                 }
@@ -197,12 +199,12 @@ public class WifiApManager {
                     Log.e(this.getClass().toString(), e.toString());
                 } finally {
                     try {
-                        br.close();
+                        if (br != null) br.close();
                     } catch (IOException e) {
                         Log.e(this.getClass().toString(), e.getMessage());
                     }
                 }
-
+                
                 // Get a handler that can be used to post to the main thread
                 Handler mainHandler = new Handler(context.getMainLooper());
                 Runnable myRunnable = new Runnable() {
@@ -214,7 +216,7 @@ public class WifiApManager {
                 mainHandler.post(myRunnable);
             }
         };
-
+        
         Thread mythread = new Thread(runnable);
         mythread.start();
     }
