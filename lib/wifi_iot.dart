@@ -258,6 +258,7 @@ class WiFiForIoTPlugin {
 
   static Future<bool> connect(
     String ssid, {
+    String? bssid,
     String? password,
     NetworkSecurity security = NetworkSecurity.NONE,
     bool joinOnce = true,
@@ -269,6 +270,7 @@ class WiFiForIoTPlugin {
     try {
       bResult = await _channel.invokeMethod('connect', {
         "ssid": ssid.toString(),
+        "bssid": bssid,
         "password": password.toString(),
         "join_once": joinOnce,
         "with_internet": withInternet,
@@ -284,6 +286,7 @@ class WiFiForIoTPlugin {
 
   static Future<bool> registerWifiNetwork(
     String ssid, {
+    String? bssid,
     String? password,
     NetworkSecurity security = NetworkSecurity.NONE,
     bool isHidden = false,
@@ -293,6 +296,7 @@ class WiFiForIoTPlugin {
     try {
       await _channel.invokeMethod('registerWifiNetwork', {
         "ssid": ssid.toString(),
+        "bssid": bssid,
         "password": password.toString(),
         "security":
             security.toString().substring('$NetworkSecurity'.length + 1),
@@ -304,15 +308,19 @@ class WiFiForIoTPlugin {
     return bResult != null && bResult;
   }
 
-  static Future<bool> findAndConnect(String ssid,
-      {String? password,
-      bool joinOnce = true,
-      bool withInternet = false}) async {
+  static Future<bool> findAndConnect(
+    String ssid, {
+    String? bssid,
+    String? password,
+    bool joinOnce = true,
+    bool withInternet = false,
+  }) async {
     if (!await isEnabled()) {
       await setEnabled(true);
     }
 //    Map<String, Object> htArguments = Map();
 //    htArguments["ssid"] = ssid;
+//    htArguments["bssid"] = bssid;
 //    htArguments["password"] = password;
 //    if (joinOnce != null && isWep != null) {
 //      htArguments["join_once"] = joinOnce;
@@ -322,6 +330,7 @@ class WiFiForIoTPlugin {
     try {
       bResult = await _channel.invokeMethod('findAndConnect', {
         "ssid": ssid.toString(),
+        "bssid": bssid,
         "password": password.toString(),
         "join_once": joinOnce,
         "with_internet": withInternet,
