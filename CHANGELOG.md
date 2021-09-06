@@ -1,3 +1,7 @@
+## 0.3.5 2021-09-06
+
+* feat(android): Gracefully handle permission requests (#169)
+
 ## 0.3.4 2021-07-09
 
 * refactor(ios): handle deprecation of `CNCopyCurrentNetworkInfo` (#150)
