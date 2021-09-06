@@ -433,6 +433,16 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "Hallot",
+      "name": "Hallot",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3803503?v=4",
+      "profile": "https://github.com/Hallot",
+      "contributions": [
+        "bug",
+        "code"
+      ]
     }
   ]
 }
