@@ -46,12 +46,13 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
 import io.flutter.plugin.common.PluginRegistry.ViewDestroyListener;
+import io.flutter.plugin.common.PluginRegistry.RequestPermissionsResultListener;
 import io.flutter.view.FlutterNativeView;
 
 /**
  * WifiIotPlugin
  */
-public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHandler, EventChannel.StreamHandler {
+public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHandler, EventChannel.StreamHandler, RequestPermissionsResultListener {
     /// This local reference serves to register the plugin with the Flutter Engine and unregister it
     /// when the Flutter Engine is detached from the Activity
     private MethodChannel channel;
@@ -67,6 +68,15 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
     private List<WifiNetworkSuggestion> networkSuggestions;
     private List<String> ssidsToBeRemovedOnExit = new ArrayList<String>();
     private List<WifiNetworkSuggestion> suggestionsToBeRemovedOnExit = new ArrayList<>();
+
+    // Permission request management
+    private boolean requestingPermission = false;
+    private Result permissionRequestResultCallback = null;
+    private ArrayList<Object> permissionRequestCookie = new ArrayList<>();
+    private static final int PERMISSIONS_REQUEST_CODE_ACCESS_FINE_LOCATION_LOAD_WIFI_LIST = 65655435;
+    private static final int PERMISSIONS_REQUEST_CODE_ACCESS_FINE_LOCATION_ON_LISTEN = 65655436;
+    private static final int PERMISSIONS_REQUEST_CODE_ACCESS_FINE_LOCATION_FIND_AND_CONNECT = 65655437;
+    private static final int PERMISSIONS_REQUEST_CODE_ACCESS_NETWORK_STATE_IS_CONNECTED = 65655438;
 
     // initialize members of this class with Context
     private void initWithContext(Context context) {
@@ -125,6 +135,7 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
                 return false;
             }
         });
+        registrar.addRequestPermissionsResultListener(wifiIotPlugin);
     }
 
     @Override
@@ -153,6 +164,7 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
     public void onAttachedToActivity(@NonNull ActivityPluginBinding binding) {
         // init with activity
         initWithActivity(binding.getActivity());
+        binding.addRequestPermissionsResultListener(this);
     }
 
     @Override
@@ -165,12 +177,58 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
     public void onReattachedToActivityForConfigChanges(@NonNull ActivityPluginBinding binding) {
         // init with activity
         initWithActivity(binding.getActivity());
+        binding.addRequestPermissionsResultListener(this);
     }
 
     @Override
     public void onDetachedFromActivity() {
         // set activity to null
         moActivity = null;
+    }
+
+    @Override
+    public boolean onRequestPermissionsResult(int requestCode, String[] permissions,
+                                              int[] grantResults) {
+        final bool wasPermissionGranted = grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED;
+        switch (requestCode) {
+            case PERMISSIONS_REQUEST_CODE_ACCESS_FINE_LOCATION_LOAD_WIFI_LIST:
+                if (wasPermissionGranted) {
+                    _loadWifiList(permissionRequestResultCallback);
+                }  else {
+                    permissionRequestResultCallback.error("WifiIotPlugin.Permission", "Fine location permission denied", null);
+                }
+                requestingPermission = false;
+                return true;
+
+            case PERMISSIONS_REQUEST_CODE_ACCESS_FINE_LOCATION_ON_LISTEN:
+                if (wasPermissionGranted) {
+                    final EventChannel.EventSink eventSink = (EventChannel.EventSink)permissionRequestCookie.get(0);
+                    _onListen(eventSink);
+                }
+                requestingPermission = false;
+                return true;
+
+            case PERMISSIONS_REQUEST_CODE_ACCESS_FINE_LOCATION_FIND_AND_CONNECT:
+                if (wasPermissionGranted) {
+                    final MethodCall poCall = (MethodCall)permissionRequestCookie.get(0);
+                    _findAndConnect(poCall, permissionRequestResultCallback);
+                }  else {
+                    permissionRequestResultCallback.error("WifiIotPlugin.Permission", "Fine location permission denied", null);
+                }
+                requestingPermission = false;
+                return true;
+
+            case PERMISSIONS_REQUEST_CODE_ACCESS_NETWORK_STATE_IS_CONNECTED:
+                if (wasPermissionGranted) {
+                    _isConnected(permissionRequestResultCallback);
+                }  else {
+                    permissionRequestResultCallback.error("WifiIotPlugin.Permission", "Network state permission denied", null);
+                }
+                requestingPermission = false;
+                return true;
+        }
+        requestingPermission = false;
+        return false;
     }
 
     @Override
@@ -533,12 +591,22 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
 
     @Override
     public void onListen(Object o, EventChannel.EventSink eventSink) {
-        int PERMISSIONS_REQUEST_CODE_ACCESS_FINE_LOCATION = 65655434;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && moContext.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            moActivity.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_CODE_ACCESS_FINE_LOCATION);
+            if (requestingPermission) {
+                return;
+            }
+            requestingPermission = true;
+            permissionRequestCookie.clear();
+            permissionRequestCookie.add(eventSink);
+            moActivity.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_CODE_ACCESS_FINE_LOCATION_ON_LISTEN);
+            // actual call will be handled in [onRequestPermissionsResult]
+        } else {
+            _onListen(eventSink);
         }
-        receiver = createReceiver(eventSink);
+    }
 
+    private void _onListen(EventChannel.EventSink eventSink) {
+        receiver = createReceiver(eventSink);
         moContext.registerReceiver(receiver, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
     }
 
@@ -598,17 +666,24 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
 
     /// Method to load wifi list into string via Callback. Returns a stringified JSONArray
     private void loadWifiList(final Result poResult) {
-        try {
-
-            int PERMISSIONS_REQUEST_CODE_ACCESS_FINE_LOCATION = 65655434;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && moContext.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                moActivity.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_CODE_ACCESS_FINE_LOCATION);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && moContext.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (requestingPermission) {
+                poResult.error("WifiIotPlugin.Permission", "Only one permission can be requested at a time", null);
+                return;
             }
+            requestingPermission = true;
+            permissionRequestResultCallback = poResult;
+            moActivity.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_CODE_ACCESS_FINE_LOCATION_LOAD_WIFI_LIST);
+            // actual call will be handled in [onRequestPermissionsResult]
+        } else {
+            _loadWifiList(poResult);
+        }
+    }
 
+    private void _loadWifiList(final Result poResult) {
+        try {
             moWiFi.startScan();
-
             poResult.success(handleNetworkScanResult().toString());
-
         } catch (Exception e) {
             poResult.error("Exception", e.getMessage(), null);
         }
@@ -782,10 +857,23 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
     /// After 10 seconds, a post telling you whether you are connected will pop up.
     /// Callback returns true if ssid is in the range
     private void findAndConnect(final MethodCall poCall, final Result poResult) {
-        int PERMISSIONS_REQUEST_CODE_ACCESS_FINE_LOCATION = 65655434;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && moContext.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            moActivity.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_CODE_ACCESS_FINE_LOCATION);
+            if (requestingPermission) {
+                poResult.error("WifiIotPlugin.Permission", "Only one permission can be requested at a time", null);
+                return;
+            }
+            requestingPermission = true;
+            permissionRequestResultCallback = poResult;
+            permissionRequestCookie.clear();
+            permissionRequestCookie.add(poCall);
+            moActivity.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_CODE_ACCESS_FINE_LOCATION_FIND_AND_CONNECT);
+            // actual call will be handled in [onRequestPermissionsResult]
+        } else {
+            _findAndConnect(poCall, poResult);
         }
+    }
+
+    private void _findAndConnect(final MethodCall poCall, final Result poResult) {
         new Thread() {
             public void run() {
                 String ssid = poCall.argument("ssid");
@@ -826,30 +914,40 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             isConnectedDeprecated(poResult);
         } else {
-            int PERMISSIONS_REQUEST_CODE_ACCESS_NETWORK_STATE = 656889657;
             if (moContext.checkSelfPermission(Manifest.permission.ACCESS_NETWORK_STATE) != PackageManager.PERMISSION_GRANTED) {
-                moActivity.requestPermissions(new String[]{Manifest.permission.ACCESS_NETWORK_STATE}, PERMISSIONS_REQUEST_CODE_ACCESS_NETWORK_STATE);
+                if (requestingPermission) {
+                    poResult.error("WifiIotPlugin.Permission", "Only one permission can be requested at a time", null);
+                    return;
+                }
+                requestingPermission = true;
+                permissionRequestResultCallback = poResult;
+                moActivity.requestPermissions(new String[]{Manifest.permission.ACCESS_NETWORK_STATE}, PERMISSIONS_REQUEST_CODE_ACCESS_NETWORK_STATE_IS_CONNECTED);
+                // actual call will be handled in [onRequestPermissionsResult]
+            } else {
+                _isConnected(poResult);
             }
+        }
+    }
 
-            ConnectivityManager connManager = (ConnectivityManager) moContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-            boolean result = false;
-            if (connManager != null) {
-                // `connManager.getActiveNetwork` only return if the network has internet
-                // therefore using `connManager.getAllNetworks()` to check all networks
-                for (final Network network : connManager.getAllNetworks()) {
-                    final NetworkCapabilities capabilities = network != null
-                            ? connManager.getNetworkCapabilities(network)
-                            : null;
-                    final boolean isConnected = capabilities != null && capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI);
-                    if (isConnected) {
-                        result = true;
-                        break;
-                    }
+    private void _isConnected(Result poResult) {
+        ConnectivityManager connManager = (ConnectivityManager) moContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+        boolean result = false;
+        if (connManager != null) {
+            // `connManager.getActiveNetwork` only return if the network has internet
+            // therefore using `connManager.getAllNetworks()` to check all networks
+            for (final Network network : connManager.getAllNetworks()) {
+                final NetworkCapabilities capabilities = network != null
+                        ? connManager.getNetworkCapabilities(network)
+                        : null;
+                final boolean isConnected = capabilities != null && capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI);
+                if (isConnected) {
+                    result = true;
+                    break;
                 }
             }
-
-            poResult.success(result);
         }
+
+        poResult.success(result);
     }
 
     @SuppressWarnings("deprecation")
