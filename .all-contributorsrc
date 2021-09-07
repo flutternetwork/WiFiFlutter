@@ -443,6 +443,15 @@
         "bug",
         "code"
       ]
+    },
+    {
+      "login": "pedrojalbuquerque",
+      "name": "Pedro Albuquerque",
+      "avatar_url": "https://avatars.githubusercontent.com/u/65260772?v=4",
+      "profile": "https://github.com/pedrojalbuquerque",
+      "contributions": [
+        "bug"
+      ]
     }
   ]
 }
