@@ -189,7 +189,7 @@ public class WifiIotPlugin implements FlutterPlugin, ActivityAware, MethodCallHa
     @Override
     public boolean onRequestPermissionsResult(int requestCode, String[] permissions,
                                               int[] grantResults) {
-        final bool wasPermissionGranted = grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED;
+        final boolean wasPermissionGranted = grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED;
         switch (requestCode) {
             case PERMISSIONS_REQUEST_CODE_ACCESS_FINE_LOCATION_LOAD_WIFI_LIST:
                 if (wasPermissionGranted) {
