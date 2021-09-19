@@ -43,7 +43,9 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
                 }
                 break;
             case "getBSSID":
-                result(getBSSID())
+                getBSSID { (bSSID) in
+                    result(bSSID)
+                }
                 break;
             case "getCurrentSignalStrength":
                 getCurrentSignalStrength(result: result)
@@ -234,7 +236,7 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
         }
     }
 
-    private func getSSID(result: @escaping (String?)->()) {
+    private func getSSID(result: @escaping (String?) -> ()) {
         if #available(iOS 14.0, *) {
             NEHotspotNetwork.fetchCurrent(completionHandler: { currentNetwork in
                 result(currentNetwork?.ssid);
@@ -252,23 +254,22 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
         }
     }
 
-    private func getBSSID() -> String? {
-        var bssid: String?
+    private func getBSSID(result: @escaping (String?) -> ()) {
         if #available(iOS 14.0, *) {
             NEHotspotNetwork.fetchCurrent(completionHandler: { currentNetwork in
-                bssid = currentNetwork?.bssid
+                result(currentNetwork?.bssid);
             })
         } else {
             if let interfaces = CNCopySupportedInterfaces() as NSArray? {
                 for interface in interfaces {
                     if let interfaceInfo = CNCopyCurrentNetworkInfo(interface as! CFString) as NSDictionary? {
-                        bssid = interfaceInfo[kCNNetworkInfoKeyBSSID as String] as? String
-                        break
+                        result(interfaceInfo[kCNNetworkInfoKeyBSSID as String] as? String)
+                        return
                     }
                 }
             }
+            result(nil)
         }
-        return bssid
     }
 
     private func getCurrentSignalStrength(result: FlutterResult) {
