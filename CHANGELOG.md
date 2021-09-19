@@ -1,3 +1,7 @@
+## 0.3.7 2021-09-19
+
+* fix(ios): getSSID and getBSSID always returning null (#175)
+
 ## 0.3.6 2021-09-07
 
 * fix(android): keyword typo (#173)
