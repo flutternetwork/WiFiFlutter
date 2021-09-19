@@ -38,10 +38,14 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
                 disconnect(result: result)
                 break;
             case "getSSID":
-                result(getSSID())
+                getSSID { (sSSID) in
+                    result(sSSID)
+                }
                 break;
             case "getBSSID":
-                result(getBSSID())
+                getBSSID { (bSSID) in
+                    result(bSSID)
+                }
                 break;
             case "getCurrentSignalStrength":
                 getCurrentSignalStrength(result: result)
@@ -134,24 +138,21 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
             configuration.joinOnce = bJoinOnce ?? false
 
             NEHotspotConfigurationManager.shared.apply(configuration) { [weak self] (error) in
-                if (error != nil) {
-                    if (error?.localizedDescription == "already associated.") {
-                        if let this = self, let ssid = this.getSSID() {
-                            print("Connected to " + ssid)
-                        }
-                        result(true)
-                    } else {
-                        print("Not Connected")
-                        result(false)
-                    }
+                guard let this = self else {
+                    print("WiFi network not found")
+                    result(false)
                     return
-                } else {
-                    guard let this = self else {
-                        print("WiFi network not found")
-                        result(false)
-                        return
-                    }
-                    if let ssid = this.getSSID() {
+                }
+                this.getSSID { (sSSID) -> () in
+                    if (error != nil) {
+                        if (error?.localizedDescription == "already associated.") {
+                            print("Connected to '\(sSSID ?? "<Unknown Network>")'")
+                            result(true)
+                        } else {
+                            print("Not Connected")
+                            result(false)
+                        }
+                    } else if let ssid = sSSID {
                         print("Connected to " + ssid)
                         // ssid check is required because if wifi not found (could not connect) there seems to be no error given
                         result(ssid == sSSID)
@@ -159,7 +160,6 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
                         print("WiFi network not found")
                         result(false)
                     }
-                    return
                 }
             }
         } else {
@@ -185,13 +185,14 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
         }
     }
 
-    private func isEnabled(result: FlutterResult) {
+    private func isEnabled(result: @escaping FlutterResult) {
         // For now..
-        let sSSID: String? = getSSID()
-        if (sSSID != nil) {
-            result(true)
-        } else {
-            result(nil)
+        getSSID { (sSSID) in
+            if (sSSID != nil) {
+                result(true)
+            } else {
+                result(nil)
+            }
         }
     }
 
@@ -206,26 +207,28 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
         }
     }
 
-    private func isConnected(result: FlutterResult) {
+    private func isConnected(result: @escaping FlutterResult) {
         // For now..
-        let sSSID: String? = getSSID()
-        if (sSSID != nil) {
-            result(true)
-        } else {
-            result(false)
+        getSSID { (sSSID) in
+            if (sSSID != nil) {
+                result(true)
+            } else {
+                result(false)
+            }
         }
     }
 
-    private func disconnect(result: FlutterResult) {
+    private func disconnect(result: @escaping FlutterResult) {
         if #available(iOS 11.0, *) {
-            let sSSID: String? = getSSID()
-            if (sSSID != nil) {
-                print("trying to disconnect from '\(sSSID!)'")
-                NEHotspotConfigurationManager.shared.removeConfiguration(forSSID: sSSID ?? "")
-                result(true)
-            } else {
-                print("SSID is null")
-                result(false)
+            getSSID { (sSSID) in
+                if (sSSID != nil) {
+                    print("trying to disconnect from '\(sSSID!)'")
+                    NEHotspotConfigurationManager.shared.removeConfiguration(forSSID: sSSID ?? "")
+                    result(true)
+                } else {
+                    print("SSID is null")
+                    result(false)
+                }
             }
         } else {
             print("Not disconnected")
@@ -233,42 +236,40 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
         }
     }
 
-    private func getSSID() -> String? {
-        var ssid: String?
+    private func getSSID(result: @escaping (String?) -> ()) {
         if #available(iOS 14.0, *) {
             NEHotspotNetwork.fetchCurrent(completionHandler: { currentNetwork in
-                ssid = currentNetwork?.ssid
+                result(currentNetwork?.ssid);
             })
         } else {
             if let interfaces = CNCopySupportedInterfaces() as NSArray? {
                 for interface in interfaces {
                     if let interfaceInfo = CNCopyCurrentNetworkInfo(interface as! CFString) as NSDictionary? {
-                        ssid = interfaceInfo[kCNNetworkInfoKeySSID as String] as? String
-                        break
+                        result(interfaceInfo[kCNNetworkInfoKeySSID as String] as? String)
+                        return
                     }
                 }
             }
+            result(nil)
         }
-        return ssid
     }
 
-    private func getBSSID() -> String? {
-        var bssid: String?
+    private func getBSSID(result: @escaping (String?) -> ()) {
         if #available(iOS 14.0, *) {
             NEHotspotNetwork.fetchCurrent(completionHandler: { currentNetwork in
-                bssid = currentNetwork?.bssid
+                result(currentNetwork?.bssid);
             })
         } else {
             if let interfaces = CNCopySupportedInterfaces() as NSArray? {
                 for interface in interfaces {
                     if let interfaceInfo = CNCopyCurrentNetworkInfo(interface as! CFString) as NSDictionary? {
-                        bssid = interfaceInfo[kCNNetworkInfoKeyBSSID as String] as? String
-                        break
+                        result(interfaceInfo[kCNNetworkInfoKeyBSSID as String] as? String)
+                        return
                     }
                 }
             }
+            result(nil)
         }
-        return bssid
     }
 
     private func getCurrentSignalStrength(result: FlutterResult) {
