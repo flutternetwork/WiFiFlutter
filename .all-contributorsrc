@@ -462,6 +462,15 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "troyredder",
+      "name": "troyredder",
+      "avatar_url": "https://avatars.githubusercontent.com/u/30933678?v=4",
+      "profile": "https://github.com/troyredder",
+      "contributions": [
+        "bug"
+      ]
     }
   ]
 }
