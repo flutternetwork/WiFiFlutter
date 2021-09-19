@@ -413,7 +413,8 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/5812061?v=4",
       "profile": "https://github.com/DominikStarke",
       "contributions": [
-        "bug"
+        "bug",
+        "code"
       ]
     },
     {
@@ -449,6 +450,15 @@
       "name": "Pedro Albuquerque",
       "avatar_url": "https://avatars.githubusercontent.com/u/65260772?v=4",
       "profile": "https://github.com/pedrojalbuquerque",
+      "contributions": [
+        "bug"
+      ]
+    },
+    {
+      "login": "starsoft4u",
+      "name": "Starsoft4u",
+      "avatar_url": "https://avatars.githubusercontent.com/u/64193300?v=4",
+      "profile": "https://github.com/starsoft4u",
       "contributions": [
         "bug"
       ]
