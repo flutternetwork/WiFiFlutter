@@ -22,29 +22,25 @@ Becareful, some commands as no effect on iOS because Apple don't let us to do wh
 ## WiFi connections
 |                      Description                      |      Android       |         iOS          |
 | :---------------------------------------------------- | :----------------: | :------------------: |
-| Enabling / Disabling WiFi module                      | :warning:(5a) |  :x:  |
+| Enabling / Disabling WiFi module                      | :warning:(3a) |  :x:  |
 | Getting WiFi status                                   | :white_check_mark: |  :x:  |
 | Scanning for networks, with "already-associated" flag | :white_check_mark: |  :x:  |
-| Connecting / Disconnecting on a network in WPA / WEP  | :white_check_mark:(5b) |  :white_check_mark:(1)  |
-| Registering / Unregistering a WiFi network            | :white_check_mark:(5c) |  :warning:(2)  |
-| Getting informations like :                           | :white_check_mark: |  :warning:(3)  |
+| Connecting / Disconnecting on a network in WPA / WEP  | :white_check_mark:(3b) |  :white_check_mark:(1)  |
+| Registering / Unregistering a WiFi network            | :white_check_mark:(3c) |  :warning:(2)  |
+| Getting informations like :                           | :white_check_mark: |  :white_check_mark:  |
 | - SSID                                                | :white_check_mark: |  :white_check_mark:  |
 | - BSSID                                               | :white_check_mark: |  :white_check_mark:  |
 | - Current signal strength                             | :white_check_mark: |  :x:  |
 | - Frequency                                           | :white_check_mark: |  :x:  |
-| - IP                                                  | :white_check_mark: |  :question:(4)  |
+| - IP                                                  | :white_check_mark: |  :white_check_mark:  |
 
 :white_check_mark:(1) : On iOS, you can only disconnect from a network which has been added by your app. In order to disconnect from a system network, you have to connect to an other!
 
 :warning:(2) : On iOS, you can forget a WiFi network by connecting to it with the joinOnce flag to true!
 
-:warning:(3) : On iOS, you can just getting the SSID, or maybe(probably) I'm missing something! 
-
-:question:(4) : I think there is a way to get the IP address but for now, this is not implemented..
-
-:warning:(5): Wifi API changes in Android SDK >= 29, restricts certain behaviour:
+:warning:(3): Wifi API changes in Android SDK >= 29, restricts certain behaviour:
   * a. Enable/Disable Wifi Module is deprecated and will always fail [[docs](https://developer.android.com/reference/android/net/wifi/WifiManager#setWifiEnabled(boolean))]. If you  want to open "Wifi Setting" in that case then, set the `shouldOpenSettings: true` when calling `setEnabled`.
-  * b. For Connecting to Wifi, WEP security is deprecated and will always fail, also the network will be disconnected when the app is closed (if permanent network is required(Check :warning:(5c)), use "Register Network" feature) [[docs](https://developer.android.com/guide/topics/connectivity/wifi-bootstrap))]. By default the connection would not have internet access, to connect to network with internet user `withInternet` which is a different API underneath (this API will not disconnect to network after app closes) [[docs](https://developer.android.com/guide/topics/connectivity/wifi-suggest)].
+  * b. For Connecting to Wifi, WEP security is deprecated and will always fail, also the network will be disconnected when the app is closed (if permanent network is required(Check :warning:(3c)), use "Register Network" feature) [[docs](https://developer.android.com/guide/topics/connectivity/wifi-bootstrap))]. By default the connection would not have internet access, to connect to network with internet user `withInternet` which is a different API underneath (this API will not disconnect to network after app closes) [[docs](https://developer.android.com/guide/topics/connectivity/wifi-suggest)].
   * c. Registering Wifi Network, will require user approval - and the network saved would not be controlled by the app (for deletion, updation, etc) [[docs](https://developer.android.com/guide/topics/connectivity/wifi-save-network-passpoint-config)];
 
 Additional Wifi protocols on Android side like - Wifi Direct, Wifi Aware, etc are in active discussion at [#140](https://github.com/alternadom/WiFiFlutter/issues/140). Encourage you to engage if you want this features.
