@@ -1,3 +1,7 @@
+## 0.3.8 2021-09-22
+
+* feat(ios): getIP implemented (#176)
+
 ## 0.3.7 2021-09-19
 
 * fix(ios): getSSID and getBSSID always returning null (#175)
