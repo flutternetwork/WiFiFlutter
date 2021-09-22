@@ -271,7 +271,7 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
             result(nil)
         }
     }
-
+    
     private func getCurrentSignalStrength(result: FlutterResult) {
         result(FlutterMethodNotImplemented)
     }
@@ -281,7 +281,33 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
     }
 
     private func getIP(result: FlutterResult) {
-        result(FlutterMethodNotImplemented)
+        guard let interface = getNetworkInterface(family: AF_INET) else {
+            return result(nil)
+        }
+        
+        var hostname = [CChar](repeating: 0, count: Int(NI_MAXHOST))
+        getnameinfo(interface.ifa_addr, socklen_t(interface.ifa_addr.pointee.sa_len),
+                    &hostname, socklen_t(hostname.count),
+                    nil, socklen_t(0), NI_NUMERICHOST)
+
+        result(String(cString: hostname))
+    }
+    
+    private func getNetworkInterface(family: Int32) -> ifaddrs? {
+        var ifaddr : UnsafeMutablePointer<ifaddrs>?
+        guard getifaddrs(&ifaddr) == 0 else { return nil }
+        guard let firstAddr = ifaddr else { return nil }
+
+        for ifptr in sequence(first: firstAddr, next: { $0.pointee.ifa_next }) {
+            if ifptr.pointee.ifa_addr.pointee.sa_family == UInt8(family) {
+                if String(cString: ifptr.pointee.ifa_name) == "en0" {
+                    freeifaddrs(ifaddr)
+                    return ifptr.pointee
+                }
+            }
+        }
+        freeifaddrs(ifaddr)
+        return nil
     }
 
     private func removeWifiNetwork(call: FlutterMethodCall, result: @escaping FlutterResult) {
