@@ -191,4 +191,6 @@ This repository is maintained by WiFiFlutter authors. Issues here are answered b
 [rtt_pub]: https://pub.dev/packages/wifi_rtt
 [rtt_code]: https://github.com/alternadom/WiFiFlutter/tree/master/packages/wifi_rtt
 [rtt_badge_pub]: https://img.shields.io/pub/v/wifi_rtt.svg
+[rtt_badge_pub_points]: https://badges.bar/wifi_rtt/pub%20points
+[rtt_pub_points]: https://pub.dev/packages/wifi_rtt/score
 [rtt_wikipedia]: https://en.wikipedia.org/wiki/IEEE_802.11mc
