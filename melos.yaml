@@ -1,0 +1,7 @@
+name: WiFiFlutter
+
+packages:
+  - packages/**
+
+scripts:
+  analyze: melos exec -- pub global run tuneup check
