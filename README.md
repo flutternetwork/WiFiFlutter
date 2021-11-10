@@ -37,7 +37,7 @@ WiFiFlutter is a suite of Flutter plugins that enable Flutter apps to use variou
 ---
 
 ### `wifi_iot`
-> [![wifi_iot][iot_badge_pub]][iot_pub] [![pub points][iot_badge_pub_points]][iot_pub_points]
+> [![wifi_iot][iot_workflow_badge]][iot_workflow] [![wifi_iot][iot_pub_badge]][iot_pub] [![pub points][iot_pub_points_badge]][iot_pub_points]
 
 Flutter plugin which can handle WiFi connections (AP, STA).
 > This plugin is only maintained for legacy reasons. Kindly switch to other alternate plugins from this suite.
@@ -54,7 +54,7 @@ Flutter plugin which can handle WiFi connections (AP, STA).
 ---
 
 ### `wifi_basic`
-> [![wifi_basic][basic_badge_pub]][basic_pub] [![pub points][basic_badge_pub_points]][basic_pub_points]
+> [![wifi_basic][basic_workflow_badge]][basic_workflow] [![wifi_basic][basic_pub_badge]][basic_pub] [![pub points][basic_pub_points_badge]][basic_pub_points]
 
 Flutter plugin for basic WiFi information and functionalities.
 
@@ -70,7 +70,7 @@ Flutter plugin for basic WiFi information and functionalities.
 ---
 
 ### `wifi_scan`
-> [![wifi_scan][scan_badge_pub]][scan_pub] [![pub points][scan_badge_pub_points]][scan_pub_points]
+> [![wifi_scan][scan_workflow_badge]][scan_workflow] [![wifi_scan][scan_pub_badge]][scan_pub] [![pub points][scan_pub_points_badge]][scan_pub_points]
 
 Flutter plugin to scan for WiFi networks.
 
@@ -84,7 +84,7 @@ Flutter plugin to scan for WiFi networks.
 ---
 
 ### `wifi_sta`
-> [![wifi_sta][sta_badge_pub]][sta_pub] [![pub points][sta_badge_pub_points]][sta_pub_points]
+> [![wifi_sta][sta_workflow_badge]][sta_workflow] [![wifi_sta][sta_pub_badge]][sta_pub] [![pub points][sta_pub_points_badge]][sta_pub_points]
 
 Flutter plugin to connect or disconnect device to a traditional WiFi network.
 
@@ -98,7 +98,7 @@ Flutter plugin to connect or disconnect device to a traditional WiFi network.
 ---
 
 ### `wifi_ap`
-> [![wifi_ap][ap_badge_pub]][ap_pub] [![pub points][ap_badge_pub_points]][ap_pub_points]
+> [![wifi_ap][ap_workflow_badge]][ap_workflow] [![wifi_ap][ap_pub_badge]][ap_pub] [![pub points][ap_pub_points_badge]][ap_pub_points]
 
 Flutter plugin to setup device as a WiFi access point (hotspot).
 
@@ -112,7 +112,7 @@ Flutter plugin to setup device as a WiFi access point (hotspot).
 ---
 
 ### `wifi_aware`
-> [![wifi_aware][aware_badge_pub]][aware_pub] [![pub points][aware_badge_pub_points]][aware_pub_points]
+> [![wifi_aware][aware_workflow_badge]][aware_workflow] [![wifi_aware][aware_pub_badge]][aware_pub] [![pub points][aware_pub_points_badge]][aware_pub_points]
 
 Flutter plugin to discover and connect directly to nearby devices without any other type of connectivity between them.
 > This method is [more decenteralized][aware_direct_differences] than WiFi Direct(P2P). Check [official docs][aware_official_docs] to read more about Wi-Fi Aware (Neighbor Awareness Networking or NAN).
@@ -127,7 +127,7 @@ Flutter plugin to discover and connect directly to nearby devices without any ot
 ---
 
 ### `wifi_rtt`
-> [![wifi_rtt][rtt_badge_pub]][rtt_pub] [![pub points][rtt_badge_pub_points]][rtt_pub_points]
+> [![wifi_rtt][rtt_workflow_badge]][rtt_workflow] [![wifi_rtt][rtt_pub_badge]][rtt_pub] [![pub points][rtt_pub_points_badge]][rtt_pub_points]
 
 Flutter plugin to measure the distance to nearby RTT-capable Wi-Fi access points and peer Wi-Fi Aware devices. 
 > Check [IEEE_802.11mc][rtt_wikipedia] Wikipedia page to read more about it.
@@ -158,47 +158,61 @@ and open a [pull request](https://github.com/alternadom/WiFiFlutter/pulls).
 This repository is maintained by WiFiFlutter authors. Issues here are answered by maintainers and other community members on GitHub on a best-effort basis.
 
 <!-- links -->
-[iot_pub]: https://pub.dev/packages/wifi_iot
 [iot_code]: https://github.com/alternadom/WiFiFlutter/tree/master/packages/wifi_iot
-[iot_badge_pub]: https://img.shields.io/pub/v/wifi_iot.svg
-[iot_badge_pub_points]: https://badges.bar/wifi_iot/pub%20points
+[iot_workflow]: https://github.com/alternadom/WiFiFlutter/actions/workflows/wifi_iot.yaml
+[iot_workflow_badge]: https://github.com/alternadom/WiFiFlutter/actions/workflows/wifi_iot.yaml/badge.svg
+[iot_pub]: https://pub.dev/packages/wifi_iot
+[iot_pub_badge]: https://img.shields.io/pub/v/wifi_iot.svg
 [iot_pub_points]: https://pub.dev/packages/wifi_iot/score
+[iot_pub_points_badge]: https://badges.bar/wifi_iot/pub%20points
 
-[basic_pub]: https://pub.dev/packages/wifi_basic
 [basic_code]: https://github.com/alternadom/WiFiFlutter/tree/master/packages/wifi_basic
-[basic_badge_pub]: https://img.shields.io/pub/v/wifi_basic.svg
-[basic_badge_pub_points]: https://badges.bar/wifi_basic/pub%20points
+[basic_workflow]: https://github.com/alternadom/WiFiFlutter/actions/workflows/wifi_basic.yaml
+[basic_workflow_badge]: https://github.com/alternadom/WiFiFlutter/actions/workflows/wifi_basic.yaml/badge.svg
+[basic_pub]: https://pub.dev/packages/wifi_basic
+[basic_pub_badge]: https://img.shields.io/pub/v/wifi_basic.svg
 [basic_pub_points]: https://pub.dev/packages/wifi_basic/score
+[basic_pub_points_badge]: https://badges.bar/wifi_basic/pub%20points
 
-[scan_pub]: https://pub.dev/packages/wifi_scan
 [scan_code]: https://github.com/alternadom/WiFiFlutter/tree/master/packages/wifi_scan
-[scan_badge_pub]: https://img.shields.io/pub/v/wifi_scan.svg
-[scan_badge_pub_points]: https://badges.bar/wifi_scan/pub%20points
+[basic_workflow]: https://github.com/alternadom/WiFiFlutter/actions/workflows/wifi_scan.yaml
+[basic_workflow_badge]: https://github.com/alternadom/WiFiFlutter/actions/workflows/wifi_scan.yaml/badge.svg
+[scan_pub]: https://pub.dev/packages/wifi_scan
+[scan_pub_badge]: https://img.shields.io/pub/v/wifi_scan.svg
 [scan_pub_points]: https://pub.dev/packages/wifi_scan/score
+[scan_pub_points_badge]: https://badges.bar/wifi_scan/pub%20points
 
-[sta_pub]: https://pub.dev/packages/wifi_sta
 [sta_code]: https://github.com/alternadom/WiFiFlutter/tree/master/packages/wifi_sta
-[sta_badge_pub]: https://img.shields.io/pub/v/wifi_sta.svg
-[sta_badge_pub_points]: https://badges.bar/wifi_sta/pub%20points
+[sta_workflow]: https://github.com/alternadom/WiFiFlutter/actions/workflows/wifi_sta.yaml
+[sta_workflow_badge]: https://github.com/alternadom/WiFiFlutter/actions/workflows/wifi_sta.yaml/badge.svg
+[sta_pub]: https://pub.dev/packages/wifi_sta
+[sta_pub_badge]: https://img.shields.io/pub/v/wifi_sta.svg
 [sta_pub_points]: https://pub.dev/packages/wifi_sta/score
+[sta_pub_points_badge]: https://badges.bar/wifi_sta/pub%20points
 
-[ap_pub]: https://pub.dev/packages/wifi_ap
 [ap_code]: https://github.com/alternadom/WiFiFlutter/tree/master/packages/wifi_ap
-[ap_badge_pub]: https://img.shields.io/pub/v/wifi_ap.svg
-[ap_badge_pub_points]: https://badges.bar/wifi_ap/pub%20points
+[ap_workflow]: https://github.com/alternadom/WiFiFlutter/actions/workflows/wifi_ap.yaml
+[ap_workflow_badge]: https://github.com/alternadom/WiFiFlutter/actions/workflows/wifi_ap.yaml/badge.svg
+[ap_pub]: https://pub.dev/packages/wifi_ap
+[ap_pub_badge]: https://img.shields.io/pub/v/wifi_ap.svg
 [ap_pub_points]: https://pub.dev/packages/wifi_ap/score
+[ap_pub_points_badge]: https://badges.bar/wifi_ap/pub%20points
 
-[aware_pub]: https://pub.dev/packages/wifi_aware
 [aware_code]: https://github.com/alternadom/WiFiFlutter/tree/master/packages/wifi_aware
-[aware_badge_pub]: https://img.shields.io/pub/v/wifi_aware.svg
-[aware_badge_pub_points]: https://badges.bar/wifi_aware/pub%20points
+[aware_workflow]: https://github.com/alternadom/WiFiFlutter/actions/workflows/wifi_aware.yaml
+[aware_workflow_badge]: https://github.com/alternadom/WiFiFlutter/actions/workflows/wifi_aware.yaml/badge.svg
+[aware_pub]: https://pub.dev/packages/wifi_aware
+[aware_pub_badge]: https://img.shields.io/pub/v/wifi_aware.svg
 [aware_pub_points]: https://pub.dev/packages/wifi_aware/score
+[aware_pub_points_badge]: https://badges.bar/wifi_aware/pub%20points
 [aware_official_docs]: https://www.wi-fi.org/discover-wi-fi/wi-fi-aware
 [aware_direct_differences]: https://www.wi-fi.org/knowledge-center/faq/what-is-the-relationship-between-wi-fi-aware-and-wi-fi-direct
 
-[rtt_pub]: https://pub.dev/packages/wifi_rtt
 [rtt_code]: https://github.com/alternadom/WiFiFlutter/tree/master/packages/wifi_rtt
-[rtt_badge_pub]: https://img.shields.io/pub/v/wifi_rtt.svg
-[rtt_badge_pub_points]: https://badges.bar/wifi_rtt/pub%20points
+[rtt_workflow]: https://github.com/alternadom/WiFiFlutter/actions/workflows/wifi_rtt.yaml
+[rtt_workflow_badge]: https://github.com/alternadom/WiFiFlutter/actions/workflows/wifi_rtt.yaml/badge.svg
+[rtt_pub]: https://pub.dev/packages/wifi_rtt
+[rtt_pub_badge]: https://img.shields.io/pub/v/wifi_rtt.svg
 [rtt_pub_points]: https://pub.dev/packages/wifi_rtt/score
+[rtt_pub_points_badge]: https://badges.bar/wifi_rtt/pub%20points
 [rtt_wikipedia]: https://en.wikipedia.org/wiki/IEEE_802.11mc
