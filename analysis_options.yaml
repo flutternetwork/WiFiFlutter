@@ -1,0 +1,18 @@
+# This is the default analysis_options.yaml for all packages and examples
+# If a package needs specific rules, create the analysis_options.yaml on it
+# include this file, like:
+#
+# include: ../../analysis_options.yaml
+#
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  exclude:
+    # Ignore generated files
+    - '**/*.g.dart'
+    - 'lib/src/generated/*.dart'
+
+linter:
+  rules:
+    - prefer_final_in_for_each
+    - prefer_final_locals
