@@ -9,7 +9,7 @@ on:
 
 env:
   PLUGIN_SCOPE: "*wifi_iot*"
-  PLUGIN_EXAMPLE_SCOPE: "*wifi_iot*"
+  PLUGIN_EXAMPLE_SCOPE: "*wifi_iot_example*"
 
 jobs:
   android:
