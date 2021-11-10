@@ -39,7 +39,7 @@ Flutter plugin which can handle WiFi connections (AP, STA).
 #### Platform Support
 | Android | iOS |
 | :-----: | :-: |
-|   ❌    |  ❌* |
+|    ✔️    |  ✔️* |
 
 <sub>*Only supports STA mode.</sub>
 
