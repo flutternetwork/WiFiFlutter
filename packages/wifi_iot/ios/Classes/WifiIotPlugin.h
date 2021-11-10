@@ -1,4 +1,4 @@
 #import <Flutter/Flutter.h>
 
-@interface WifiIotPlugin : NSObject<FlutterPlugin>
+@interface WifiIotPlugin : NSObject <FlutterPlugin>
 @end

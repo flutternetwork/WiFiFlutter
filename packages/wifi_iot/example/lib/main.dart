@@ -49,7 +49,7 @@ class _FlutterWifiIoTState extends State<FlutterWifiIoT> {
     }).catchError((val) {
       _isWifiAPSupported = false;
     });
-  
+
     super.initState();
   }
 
@@ -110,7 +110,7 @@ class _FlutterWifiIoTState extends State<FlutterWifiIoT> {
     int? iWiFiState;
 
     WIFI_AP_STATE? wifiAPState;
-    
+
     try {
       iWiFiState = await WiFiForIoTPlugin.getWiFiAPState();
     } on Exception {
@@ -291,8 +291,7 @@ class _FlutterWifiIoTState extends State<FlutterWifiIoT> {
           child: Text("Disable", style: textStyle),
           onPressed: () {
             WiFiForIoTPlugin.setEnabled(false,
-              shouldOpenSettings: _isWifiDisableOpenSettings
-            );
+                shouldOpenSettings: _isWifiDisableOpenSettings);
           },
         ),
       ]);
@@ -344,17 +343,16 @@ class _FlutterWifiIoTState extends State<FlutterWifiIoT> {
             },
           ),
           CheckboxListTile(
-            title: const Text("Disable WiFi on settings"),
-            subtitle: const Text("Available only on android API level >= 29"),
-            value: _isWifiDisableOpenSettings,
-            onChanged: (bool? setting) {
-              if (setting != null) {
-                setState(() {
-                  _isWifiDisableOpenSettings = setting;                
-                });
-              }
-            }
-          )
+              title: const Text("Disable WiFi on settings"),
+              subtitle: const Text("Available only on android API level >= 29"),
+              value: _isWifiDisableOpenSettings,
+              onChanged: (bool? setting) {
+                if (setting != null) {
+                  setState(() {
+                    _isWifiDisableOpenSettings = setting;
+                  });
+                }
+              })
         ]);
       } else {
         htPrimaryWidgets.addAll(<Widget>[
@@ -388,17 +386,16 @@ class _FlutterWifiIoTState extends State<FlutterWifiIoT> {
             ],
           ),
           CheckboxListTile(
-            title: const Text("Disable WiFi on settings"),
-            subtitle: const Text("Available only on android API level >= 29"),
-            value: _isWifiDisableOpenSettings,
-            onChanged: (bool? setting) {
-              if (setting != null) {
-                setState(() {
-                  _isWifiDisableOpenSettings = setting;                
-                });
-              }
-            }
-          )
+              title: const Text("Disable WiFi on settings"),
+              subtitle: const Text("Available only on android API level >= 29"),
+              value: _isWifiDisableOpenSettings,
+              onChanged: (bool? setting) {
+                if (setting != null) {
+                  setState(() {
+                    _isWifiDisableOpenSettings = setting;
+                  });
+                }
+              })
         ]);
       }
     } else {
@@ -411,23 +408,21 @@ class _FlutterWifiIoTState extends State<FlutterWifiIoT> {
           onPressed: () {
             setState(() {
               WiFiForIoTPlugin.setEnabled(true,
-                shouldOpenSettings: _isWifiEnableOpenSettings
-              );
+                  shouldOpenSettings: _isWifiEnableOpenSettings);
             });
           },
         ),
         CheckboxListTile(
-          title: const Text("Enable WiFi on settings"),
-          subtitle: const Text("Available only on android API level >= 29"),
-          value: _isWifiEnableOpenSettings,
-          onChanged: (bool? setting) {
-            if (setting != null) {
-              setState(() {
-                _isWifiEnableOpenSettings = setting;                
-              });
-            }
-          }
-        )
+            title: const Text("Enable WiFi on settings"),
+            subtitle: const Text("Available only on android API level >= 29"),
+            value: _isWifiEnableOpenSettings,
+            onChanged: (bool? setting) {
+              if (setting != null) {
+                setState(() {
+                  _isWifiEnableOpenSettings = setting;
+                });
+              }
+            })
       ]);
     }
 
@@ -441,17 +436,17 @@ class _FlutterWifiIoTState extends State<FlutterWifiIoT> {
         FutureBuilder(
             future: getWiFiAPState(),
             initialData: WIFI_AP_STATE.WIFI_AP_STATE_DISABLED,
-            builder:
-                (BuildContext context, AsyncSnapshot<WIFI_AP_STATE?> wifiState) {
-                  List<Widget> widgets = [];
+            builder: (BuildContext context,
+                AsyncSnapshot<WIFI_AP_STATE?> wifiState) {
+              List<Widget> widgets = [];
 
               if (wifiState.data == WIFI_AP_STATE.WIFI_AP_STATE_ENABLED) {
                 widgets.add(MaterialButton(
                   color: Colors.blue,
-                    child: Text("Get Client List", style: textStyle),
-                    onPressed: () {
-                      showClientList();
-                    },
+                  child: Text("Get Client List", style: textStyle),
+                  onPressed: () {
+                    showClientList();
+                  },
                 ));
               }
 
@@ -461,9 +456,11 @@ class _FlutterWifiIoTState extends State<FlutterWifiIoT> {
             }),
       ]);
 
-      WiFiForIoTPlugin.isWiFiAPEnabled().then((val) => setState(() {
-        _isWiFiAPEnabled = val;
-      })).catchError((val) {
+      WiFiForIoTPlugin.isWiFiAPEnabled()
+          .then((val) => setState(() {
+                _isWiFiAPEnabled = val;
+              }))
+          .catchError((val) {
         _isWiFiAPEnabled = false;
       });
 
@@ -529,11 +526,9 @@ class _FlutterWifiIoTState extends State<FlutterWifiIoT> {
               Text("KEY  : ${info.data![1]}"),
               MaterialButton(
                 color: Colors.blue,
-                child:
-                    Text(
-                      "Set AP info ($AP_DEFAULT_SSID/$AP_DEFAULT_PASSWORD)",
-                      style: textStyle
-                    ),
+                child: Text(
+                    "Set AP info ($AP_DEFAULT_SSID/$AP_DEFAULT_PASSWORD)",
+                    style: textStyle),
                 onPressed: () {
                   storeAndConnect(AP_DEFAULT_SSID, AP_DEFAULT_PASSWORD);
                 },
@@ -580,7 +575,7 @@ class _FlutterWifiIoTState extends State<FlutterWifiIoT> {
           }));
 
       String? _sSSID;
-      
+
       if (_isConnected) {
         htPrimaryWidgets.addAll(<Widget>[
           Text("Connected"),
@@ -655,8 +650,9 @@ class _FlutterWifiIoTState extends State<FlutterWifiIoT> {
   @override
   Widget build(BuildContext poContext) {
     return MaterialApp(
-      title: Platform.isIOS ?
-        "WifiFlutter Example iOS" : "WifiFlutter Example Android",
+      title: Platform.isIOS
+          ? "WifiFlutter Example iOS"
+          : "WifiFlutter Example Android",
       home: Scaffold(
         appBar: AppBar(
           title: Platform.isIOS
@@ -671,8 +667,8 @@ class _FlutterWifiIoTState extends State<FlutterWifiIoT> {
                           WiFiForIoTPlugin.disconnect();
                           break;
                         case "remove":
-                          WiFiForIoTPlugin.getSSID().then(
-                              (val) => WiFiForIoTPlugin.removeWifiNetwork(val!));
+                          WiFiForIoTPlugin.getSSID().then((val) =>
+                              WiFiForIoTPlugin.removeWifiNetwork(val!));
                           break;
                         default:
                           break;
