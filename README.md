@@ -24,7 +24,7 @@ WiFiFlutter is a suite of Flutter plugins that enable Flutter apps to use variou
 - [Station (`wifi_sta`)](#wifi_sta)
 - [Access Point / Hotspot (`wifi_ap`)](#wifi_ap)
 - [Aware (`wifi_aware`)](#wifi_aware)
-- [Location/RTT  (`wifi_rtt`)](#wifi_rtt)
+- [Location / RTT  (`wifi_rtt`)](#wifi_rtt)
 
 ---
 
