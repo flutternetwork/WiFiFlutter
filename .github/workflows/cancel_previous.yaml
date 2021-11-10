@@ -1,4 +1,4 @@
-# Cancel 
+# Cancel
 name: cancel_previous
 on: [push]
 jobs:
@@ -10,18 +10,6 @@ jobs:
       - uses: styfle/cancel-workflow-action@0.9.1
         with:
           workflow_id: >-
-            1771730,
-            2111945,
-            2330763,
-            2025925,
-            1771732,
-            1771733,
-            2393802,
-            1771734,
-            1771735,
-            1771736,
-            2063778,
-            2024659,
-            2057970,
-            1771737
+            all_plugins.yaml,
+            wifi_iot.yaml
           all_but_latest: true
