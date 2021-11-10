@@ -1,190 +1,196 @@
-<img src="https://raw.githubusercontent.com/alternadom/WiFiFlutter/master/logo/logo%2Bname_color.png" alt="WiFiFlutter" width="255" height="160" />
+<a href="https://wifi.flutternetwork.dev">
+  <p align="center">  
+    <img width="360px" src="logo/logo+name_color.png">
+  </p>
+</a>
 
-<p>
-<a href="https://pub.dev/packages/wifi_iot"><img src="https://img.shields.io/pub/v/wifi_iot?logo=dart" alt="pub.dev"></a><!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-<a href="#contributors-"><img src="https://img.shields.io/badge/all_contributors-45-orange.svg" alt="All Contributors" /></a>
-<!-- ALL-CONTRIBUTORS-BADGE:END -->
-<a href="https://pub.dev/packages/wifi_iot/score"><img src="https://badges.bar/wifi_iot/pub%20points" alt="pub points"></a>
-<a href="https://pub.dev/packages/wifi_iot/score"><img src="https://badges.bar/wifi_iot/popularity" alt="popularity"></a>
-<a href="https://pub.dev/packages/wifi_iot/score"><img src="https://badges.bar/wifi_iot/likes" alt="likes"></a>
-<a href="https://github.com/alternadom/WiFiFlutter/actions/workflows/analysis.yml"><img src="https://github.com/alternadom/WiFiFlutter/actions/workflows/analysis.yml/badge.svg" alt="analysis"></a>
-<a href="https://github.com/alternadom/WiFiFlutter/issues"><img src="https://img.shields.io/github/issues/alternadom/WiFiFlutter?logo=github" alt="GitHub issues"></a>
-<a href="https://github.com/alternadom/WiFiFlutter/stargazers"><img src="https://img.shields.io/github/stars/alternadom/WiFiFlutter?logo=github" alt="GitHub stars"></a>
-<a href="https://github.com/alternadom/WiFiFlutter/network"><img src="https://img.shields.io/github/forks/alternadom/WiFiFlutter?logo=github" alt="GitHub forks"></a>
+<p align="center">
+  <a href="https://github.com/invertase/melos#readme-badge"><img src="https://img.shields.io/badge/maintained%20with-melos-f700ff.svg?style=flat-square" alt="Melos" /></a>
 </p>
 
-## Introduction
+---
 
-Plugin Flutter which can handle WiFi connections (AP, STA)
+WiFiFlutter is a suite of Flutter plugins that enable Flutter apps to use various WiFi services.
 
-Becareful, some commands as no effect on iOS because Apple don't let us to do whatever we want...
+> *Note*: WiFiFlutter is going under reforms (see [reform](https://github.com/alternadom/WiFiFlutter/issues/186)), therefore some plugins might not be available yet. [Feedback](https://github.com/alternadom/WiFiFlutter/issues) and [Pull Requests](https://github.com/alternadom/WiFiFlutter/pulls) are most welcome!
 
-## WiFi connections
-|                      Description                      |      Android       |         iOS          |
-| :---------------------------------------------------- | :----------------: | :------------------: |
-| Enabling / Disabling WiFi module                      | :warning:(3a) |  :x:  |
-| Getting WiFi status                                   | :white_check_mark: |  :x:  |
-| Scanning for networks, with "already-associated" flag | :white_check_mark: |  :x:  |
-| Connecting / Disconnecting on a network in WPA / WEP  | :white_check_mark:(3b) |  :white_check_mark:(1)  |
-| Registering / Unregistering a WiFi network            | :white_check_mark:(3c) |  :warning:(2)  |
-| Getting informations like :                           | :white_check_mark: |  :white_check_mark:  |
-| - SSID                                                | :white_check_mark: |  :white_check_mark:  |
-| - BSSID                                               | :white_check_mark: |  :white_check_mark:  |
-| - Current signal strength                             | :white_check_mark: |  :x:  |
-| - Frequency                                           | :white_check_mark: |  :x:  |
-| - IP                                                  | :white_check_mark: |  :white_check_mark:  |
+## Plugins
 
-:white_check_mark:(1) : On iOS, you can only disconnect from a network which has been added by your app. In order to disconnect from a system network, you have to connect to an other!
+**Table of contents:**
 
-:warning:(2) : On iOS, you can forget a WiFi network by connecting to it with the joinOnce flag to true!
+- [IoT *(Legacy)* (`wifi_iot`)](#wifi_iot)
+- [Basic (`wifi_basic`)](#wifi_basic)
+- [Scan (`wifi_scan`)](#wifi_scan)
+- [Station (`wifi_sta`)](#wifi_sta)
+- [Access Point / Hotspot (`wifi_ap`)](#wifi_ap)
+- [Aware (`wifi_aware`)](#wifi_aware)
+- [Location / RTT  (`wifi_rtt`)](#wifi_rtt)
 
-:warning:(3): Wifi API changes in Android SDK >= 29, restricts certain behaviour:
-  * a. Enable/Disable Wifi Module is deprecated and will always fail [[docs](https://developer.android.com/reference/android/net/wifi/WifiManager#setWifiEnabled(boolean))]. If you  want to open "Wifi Setting" in that case then, set the `shouldOpenSettings: true` when calling `setEnabled`.
-  * b. For Connecting to Wifi, WEP security is deprecated and will always fail, also the network will be disconnected when the app is closed (if permanent network is required(Check :warning:(3c)), use "Register Network" feature) [[docs](https://developer.android.com/guide/topics/connectivity/wifi-bootstrap))]. By default the connection would not have internet access, to connect to network with internet user `withInternet` which is a different API underneath (this API will not disconnect to network after app closes) [[docs](https://developer.android.com/guide/topics/connectivity/wifi-suggest)].
-  * c. Registering Wifi Network, will require user approval - and the network saved would not be controlled by the app (for deletion, updation, etc) [[docs](https://developer.android.com/guide/topics/connectivity/wifi-save-network-passpoint-config)];
+---
 
-Additional Wifi protocols on Android side like - Wifi Direct, Wifi Aware, etc are in active discussion at [#140](https://github.com/alternadom/WiFiFlutter/issues/140). Encourage you to engage if you want this features.
+### `wifi_iot`
+> [![wifi_iot][iot_badge_pub]][iot_pub] [![pub points][iot_badge_pub_points]][iot_pub_points]
 
-## Access Point
-|                                       Description                                     |      Android       |         iOS          |
-| :------------------------------------------------------------------------------------ | :----------------: | :------------------: |
-| Getting the status of the Access Point (Disable, disabling, enable, enabling, failed) | :warning:(1b) |  :x:  |
-| Enabling / Disabling Access Point                                                     | :white_check_mark:(1c) |  :x:  |
-| Getting / Setting new credentials (SSID / Password)                                   | :warning:(1b) |  :x:  |
-| Enabling / Disabling the visibility of the SSID Access Point                          | :warning:(1a) |  :x:  |
-| Getting the clients list (IP, BSSID, Device, Reachable)                               | :warning:(1a) |  :x:  |
+Flutter plugin which can handle WiFi connections (AP, STA).
+> This plugin is only maintained for legacy reasons. Kindly switch to other alternate plugins from this suite.
 
-:warning:(1): Wifi API changes in Android SDK 26 and 29, restricts certain behaviour:
-  * a. This has been deprecated and will always fail for >= 26 Android SDK.
-  * b. This has been deprecated and will always fail for >= 26 Android SDK. There is a way to make "get" methods work for >= 29 Android SDK, but is currently not implemented, request these features if you need them at [#134](https://github.com/alternadom/WiFiFlutter/issues/134).
-  * c. Uses [`startLocalOnlyHotspot` API](https://developer.android.com/reference/android/net/wifi/WifiManager#startLocalOnlyHotspot(android.net.wifi.WifiManager.LocalOnlyHotspotCallback,%20android.os.Handler)) to request enabling or disabling WiFi AP for >= 29 Android SDK. This can only be used to communicate between co-located devices connected to the created WiFi Hotspot. Note - 
-    * (i) Enabling and Disabling WiFi AP needs to request location permission.
-    * (ii) The network created by this method will not have Internet access.
-    * (iii) There's no way for the user to set WiFi AP's SSID and Passphrase, they are automatically generated by the OS.
-    * (iv) This is actually a "request" and not a "command", as the `LocalOnlyHotspot` is shared (potentially) across applications and therefore a request to enable/disable may not not necessarily trigger the immediate execution of it. 
+[[View Source][iot_code]]
 
-For now, there is no way to set the access point on iOS... 
+#### Platform Support
+| Android | iOS |
+| :-----: | :-: |
+|    ✔️    |  ✔️* |
 
-## Xcode build (iOS >= 8.0)
+<sub>*Only supports STA mode.</sub>
 
-To be able to build with Xcode, you must specify `use_frameworks!` in your Podfile to allow building Swift into static libraries.
+---
 
-<!---TODO: This a planned breaking change to happen in v1.0.0
-## Android Permissions
-The following permissions are listed according to their intended use:
+### `wifi_basic`
+> [![wifi_basic][basic_badge_pub]][basic_pub] [![pub points][basic_badge_pub_points]][basic_pub_points]
 
-### Required permissions added by the plugin (not need to add this explicitly in your project):
-The physical WiFi module can be used with this feature.
-```xml
-<uses-feature android:name="android.hardware.wifi" />
-```
-Permission to use internet:
-```xml
-<uses-permission android:name="android.permission.INTERNET" />
-```
-Permission to access `WifiManager` API:
-```xml
-<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-```
-Permission to access `ConnectivityManager` API. Useful for managing network state:
-```xml
-<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-<uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
-```
-Permission to use location as required to enable or disable WiFi AP:
-```xml
-<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-```
-There's no need to add the permissions mentioned above to your project, since it's already been added to the plugin.
-### Using WiFi only (need to add these explicitly in your project, if you use these functions)
-Permission to enable or Disable WiFi:
-```xml
-<uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-```
-Permission to add WiFi networks:
-```xml
-<uses-permission android:name="android.permission.WRITE_SETTINGS" />
-```
-### Using WiFi AP only (need to add this explicitly in your project, if you use these functions)
-Permission to configure WiFi AP SSID and password:
-```xml
-<uses-permission android:name="android.permission.WRITE_SETTINGS" />
-```
---->
+Flutter plugin for basic WiFi information and functionalities.
 
-## Troubleshooting
+[[View Source][basic_code]]
 
-Don't hesitate and come [here](https://github.com/alternadom/WiFiFlutter/issues), we will be happy to help you!
+#### Platform Support
+| Android | iOS |
+| :-----: | :-: |
+|    ❌    |  ❌* |
 
-## Contributors ✨
+<sub>*Only supports getting network info.</sub>
 
-Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+---
 
-<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-<!-- prettier-ignore-start -->
-<!-- markdownlint-disable -->
-<table>
-  <tr>
-    <td align="center"><a href="https://www.alternadom.com/"><img src="https://avatars.githubusercontent.com/u/14965352?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Florian</b></sub></a><br /><a href="#ideas-alternadom" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/alternadom/WiFiFlutter/commits?author=alternadom" title="Code">💻</a> <a href="https://github.com/alternadom/WiFiFlutter/commits/master/README.md?author=alternadom" title="Documentation">📖</a> <a href="https://github.com/alternadom/WiFiFlutter/commits/master/example?author=alternadom" title="Examples">💡</a> <a href="https://github.com/alternadom/WiFiFlutter/pulls?q=is%3Apr+reviewed-by%3Aalternadom" title="Reviewed Pull Requests">👀</a></td>
-    <td align="center"><a href="https://github.com/yhua537"><img src="https://avatars.githubusercontent.com/u/21363409?v=4?s=100" width="100px;" alt=""/><br /><sub><b>yhua537</b></sub></a><br /><a href="https://github.com/alternadom/WiFiFlutter/commits?author=yhua537" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/anharismail"><img src="https://avatars.githubusercontent.com/u/37614260?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Anhar Ismail</b></sub></a><br /><a href="https://dribbble.com/shots/10203130-WiFi-Flutter-Logo-Design" title="Design">🎨</a></td>
-    <td align="center"><a href="https://github.com/tristan2468"><img src="https://avatars.githubusercontent.com/u/776717?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Tristan Linnell</b></sub></a><br /><a href="https://github.com/alternadom/WiFiFlutter/issues?q=author%3Atristan2468" title="Bug reports">🐛</a></td>
-    <td align="center"><a href="https://pboos.ch/"><img src="https://avatars.githubusercontent.com/u/398400?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Patrick Boos</b></sub></a><br /><a href="https://github.com/alternadom/WiFiFlutter/commits?author=pboos" title="Code">💻</a> <a href="https://github.com/alternadom/WiFiFlutter/commits/master/example?author=pboos" title="Examples">💡</a></td>
-    <td align="center"><a href="https://www.sfaye.com/"><img src="https://avatars.githubusercontent.com/u/14291522?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Sébastien Faye</b></sub></a><br /><a href="https://github.com/alternadom/WiFiFlutter/commits?author=sfaye" title="Code">💻</a></td>
-    <td align="center"><a href="https://ottomatic.io/"><img src="https://avatars.githubusercontent.com/u/814785?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Ben Hagen</b></sub></a><br /><a href="https://github.com/alternadom/WiFiFlutter/issues?q=author%3Acbenhagen" title="Bug reports">🐛</a> <a href="https://github.com/alternadom/WiFiFlutter/commits?author=cbenhagen" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/minhvn"><img src="https://avatars.githubusercontent.com/u/187747?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Võ Ngọc Minh</b></sub></a><br /><a href="https://github.com/alternadom/WiFiFlutter/issues?q=author%3Aminhvn" title="Bug reports">🐛</a></td>
-    <td align="center"><a href="https://cesarsanz.dev/"><img src="https://avatars.githubusercontent.com/u/9842735?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Cesar Sanz</b></sub></a><br /><a href="https://github.com/alternadom/WiFiFlutter/issues?q=author%3Acsanz91" title="Bug reports">🐛</a> <a href="https://github.com/alternadom/WiFiFlutter/pulls?q=is%3Apr+author%3Acsanz91" title="Code">💻</a></td>
-  </tr>
-  <tr>
-    <td align="center"><a href="https://github.com/TheKvikk"><img src="https://avatars.githubusercontent.com/u/4430316?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Kvikk</b></sub></a><br /><a href="https://github.com/alternadom/WiFiFlutter/pulls?q=is%3Apr+author%3ATheKvikk" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/Bmooij"><img src="https://avatars.githubusercontent.com/u/9463244?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Bob</b></sub></a><br /><a href="https://github.com/alternadom/WiFiFlutter/issues?q=author%3ABmooij" title="Bug reports">🐛</a> <a href="https://github.com/alternadom/WiFiFlutter/pulls?q=is%3Apr+author%3ABmooij" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/R1cs1KING"><img src="https://avatars.githubusercontent.com/u/22369588?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Richard Tarnoczi</b></sub></a><br /><a href="https://github.com/alternadom/WiFiFlutter/issues?q=author%3AR1cs1KING" title="Bug reports">🐛</a></td>
-    <td align="center"><a href="https://github.com/mrm"><img src="https://avatars.githubusercontent.com/u/141798?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Matthijs Meulenbrug</b></sub></a><br /><a href="https://github.com/alternadom/WiFiFlutter/issues?q=author%3Amrm" title="Bug reports">🐛</a></td>
-    <td align="center"><a href="https://www.crifan.com/"><img src="https://avatars.githubusercontent.com/u/2750682?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Crifan Li</b></sub></a><br /><a href="https://github.com/alternadom/WiFiFlutter/issues?q=author%3Acrifan" title="Bug reports">🐛</a> <a href="https://github.com/alternadom/WiFiFlutter/pulls?q=is%3Apr+author%3Acrifan" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/julienrbrt"><img src="https://avatars.githubusercontent.com/u/29894366?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Julien Robert</b></sub></a><br /><a href="https://github.com/alternadom/WiFiFlutter/commits?author=julienrbrt" title="Code">💻</a> <a href="https://github.com/alternadom/WiFiFlutter/commits/master/example?author=julienrbrt" title="Examples">💡</a> <a href="https://github.com/alternadom/WiFiFlutter/commits/master/README.md?author=julienrbrt" title="Documentation">📖</a></td>
-    <td align="center"><a href="https://github.com/Njuelle"><img src="https://avatars.githubusercontent.com/u/3192870?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Nicolas Juelle</b></sub></a><br /><a href="https://github.com/alternadom/WiFiFlutter/issues?q=author%3ANjuelle" title="Bug reports">🐛</a> <a href="https://github.com/alternadom/WiFiFlutter/commits?author=Njuelle" title="Code">💻</a> <a href="https://github.com/alternadom/WiFiFlutter/commits/master/README.md?author=Njuelle" title="Documentation">📖</a></td>
-    <td align="center"><a href="https://github.com/Niek"><img src="https://avatars.githubusercontent.com/u/213140?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Niek van der Maas</b></sub></a><br /><a href="https://github.com/alternadom/WiFiFlutter/issues?q=author%3ANiek" title="Bug reports">🐛</a> <a href="https://github.com/alternadom/WiFiFlutter/pulls?q=is%3Apr+reviewed-by%3ANiek" title="Reviewed Pull Requests">👀</a> <a href="https://github.com/alternadom/WiFiFlutter/commits?author=Niek" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/Nico04"><img src="https://avatars.githubusercontent.com/u/34476051?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Nicolas B</b></sub></a><br /><a href="https://github.com/alternadom/WiFiFlutter/issues?q=author%3ANico04" title="Bug reports">🐛</a></td>
-  </tr>
-  <tr>
-    <td align="center"><a href="https://bhikadia.com/"><img src="https://avatars.githubusercontent.com/u/4963236?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Harsh Bhikadia</b></sub></a><br /><a href="https://github.com/alternadom/WiFiFlutter/commits?author=daadu" title="Code">💻</a> <a href="https://github.com/alternadom/WiFiFlutter/pulls?q=is%3Apr+reviewed-by%3Adaadu" title="Reviewed Pull Requests">👀</a> <a href="#maintenance-daadu" title="Maintenance">🚧</a> <a href="https://github.com/alternadom/WiFiFlutter/commits/master/README.md?author=daadu" title="Documentation">📖</a> <a href="#ideas-daadu" title="Ideas, Planning, & Feedback">🤔</a></td>
-    <td align="center"><a href="https://github.com/itsJoKr"><img src="https://avatars.githubusercontent.com/u/11093480?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Josip Krnjic</b></sub></a><br /><a href="https://github.com/alternadom/WiFiFlutter/issues?q=author%3AitsJoKr" title="Bug reports">🐛</a></td>
-    <td align="center"><a href="https://github.com/ConProgramming"><img src="https://avatars.githubusercontent.com/u/20548516?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Conner Aldrich</b></sub></a><br /><a href="https://github.com/alternadom/WiFiFlutter/issues?q=author%3AConProgramming" title="Bug reports">🐛</a></td>
-    <td align="center"><a href="https://github.com/RossinesP"><img src="https://avatars.githubusercontent.com/u/6748573?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Pierre Rossinès</b></sub></a><br /><a href="https://github.com/alternadom/WiFiFlutter/pulls?q=is%3Apr+author%3ARossinesP" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/andzejsw"><img src="https://avatars.githubusercontent.com/u/7814734?v=4?s=100" width="100px;" alt=""/><br /><sub><b>andzejsw</b></sub></a><br /><a href="https://github.com/alternadom/WiFiFlutter/issues?q=author%3Aandzejsw" title="Bug reports">🐛</a></td>
-    <td align="center"><a href="https://github.com/sanjay4one"><img src="https://avatars.githubusercontent.com/u/6861594?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Sanjay Sah</b></sub></a><br /><a href="https://github.com/alternadom/WiFiFlutter/issues?q=author%3Asanjay4one" title="Bug reports">🐛</a></td>
-    <td align="center"><a href="https://qiita.com/Dreamwalker"><img src="https://avatars.githubusercontent.com/u/19484515?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Dreamwalker</b></sub></a><br /><a href="https://github.com/alternadom/WiFiFlutter/issues?q=author%3AJAICHANGPARK" title="Bug reports">🐛</a></td>
-    <td align="center"><a href="https://github.com/krishnaaro"><img src="https://avatars.githubusercontent.com/u/37663346?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Kriss_Frost</b></sub></a><br /><a href="https://github.com/alternadom/WiFiFlutter/issues?q=author%3Akrishnaaro" title="Bug reports">🐛</a></td>
-    <td align="center"><a href="https://asiantech.vn/"><img src="https://avatars.githubusercontent.com/u/14215709?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Binh Do D.</b></sub></a><br /><a href="https://github.com/alternadom/WiFiFlutter/issues?q=author%3Amvn-binhdo-dn" title="Bug reports">🐛</a></td>
-  </tr>
-  <tr>
-    <td align="center"><a href="https://github.com/mvn-quannguyen2-dn"><img src="https://avatars.githubusercontent.com/u/40161877?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Quan Nguyen H. VN.Danang</b></sub></a><br /><a href="https://github.com/alternadom/WiFiFlutter/commits?author=mvn-quannguyen2-dn" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/guyluz11"><img src="https://avatars.githubusercontent.com/u/9304740?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Guy Luz</b></sub></a><br /><a href="https://github.com/alternadom/WiFiFlutter/issues?q=author%3Aguyluz11" title="Bug reports">🐛</a></td>
-    <td align="center"><a href="https://github.com/yurir"><img src="https://avatars.githubusercontent.com/u/695168?v=4?s=100" width="100px;" alt=""/><br /><sub><b>yurir</b></sub></a><br /><a href="https://github.com/alternadom/WiFiFlutter/issues?q=author%3Ayurir" title="Bug reports">🐛</a></td>
-    <td align="center"><a href="https://github.com/BillMac4440"><img src="https://avatars.githubusercontent.com/u/77397887?v=4?s=100" width="100px;" alt=""/><br /><sub><b>BillMac4440</b></sub></a><br /><a href="https://github.com/alternadom/WiFiFlutter/issues?q=author%3ABillMac4440" title="Bug reports">🐛</a> <a href="https://github.com/alternadom/WiFiFlutter/pulls?q=is%3Apr+reviewed-by%3ABillMac4440" title="Reviewed Pull Requests">👀</a></td>
-    <td align="center"><a href="https://www.evolware.org/"><img src="https://avatars.githubusercontent.com/u/19709142?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Federico Pellegrin</b></sub></a><br /><a href="https://github.com/alternadom/WiFiFlutter/commits?author=fedepell" title="Code">💻</a> <a href="https://github.com/alternadom/WiFiFlutter/pulls?q=is%3Apr+reviewed-by%3Afedepell" title="Reviewed Pull Requests">👀</a> <a href="https://github.com/alternadom/WiFiFlutter/issues?q=author%3Afedepell" title="Bug reports">🐛</a> <a href="https://github.com/alternadom/WiFiFlutter/commits/master/README.md?author=fedepell" title="Documentation">📖</a></td>
-    <td align="center"><a href="https://github.com/diegotori"><img src="https://avatars.githubusercontent.com/u/1844568?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Diego Tori</b></sub></a><br /><a href="https://github.com/alternadom/WiFiFlutter/pulls?q=is%3Apr+reviewed-by%3Adiegotori" title="Reviewed Pull Requests">👀</a></td>
-    <td align="center"><a href="https://github.com/IskanderA1"><img src="https://avatars.githubusercontent.com/u/54811073?v=4?s=100" width="100px;" alt=""/><br /><sub><b>IskanderA1</b></sub></a><br /><a href="https://github.com/alternadom/WiFiFlutter/search?q=IskanderA1&type=commits" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/EgHubs"><img src="https://avatars.githubusercontent.com/u/73994357?v=4?s=100" width="100px;" alt=""/><br /><sub><b>EgHubs</b></sub></a><br /><a href="https://github.com/alternadom/WiFiFlutter/issues?q=author%3AEgHubs" title="Bug reports">🐛</a></td>
-    <td align="center"><a href="https://mavyfaby.ml/"><img src="https://avatars.githubusercontent.com/u/51808724?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Maverick G. Fabroa</b></sub></a><br /><a href="https://github.com/alternadom/WiFiFlutter/commits?author=mavyfaby" title="Code">💻</a> <a href="https://github.com/alternadom/WiFiFlutter/commits/master/example?author=mavyfaby" title="Examples">💡</a> <a href="https://github.com/alternadom/WiFiFlutter/commits/master/README.md?author=mavyfaby" title="Documentation">📖</a> <a href="https://github.com/alternadom/WiFiFlutter/pulls?q=is%3Apr+reviewed-by%3Amavyfaby" title="Reviewed Pull Requests">👀</a></td>
-  </tr>
-  <tr>
-    <td align="center"><a href="https://github.com/BenoitDuffez"><img src="https://avatars.githubusercontent.com/u/802209?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Benoit Duffez</b></sub></a><br /><a href="https://github.com/alternadom/WiFiFlutter/issues?q=author%3ABenoitDuffez" title="Bug reports">🐛</a></td>
-    <td align="center"><a href="https://jscd.pw/"><img src="https://avatars.githubusercontent.com/u/30761811?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Justin DeSimpliciis</b></sub></a><br /><a href="https://github.com/alternadom/WiFiFlutter/commits?author=jscd" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/DominikStarke"><img src="https://avatars.githubusercontent.com/u/5812061?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Dominik Starke</b></sub></a><br /><a href="https://github.com/alternadom/WiFiFlutter/issues?q=author%3ADominikStarke" title="Bug reports">🐛</a> <a href="https://github.com/alternadom/WiFiFlutter/commits?author=DominikStarke" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/felixsmart"><img src="https://avatars.githubusercontent.com/u/48223844?v=4?s=100" width="100px;" alt=""/><br /><sub><b>FelixSmart</b></sub></a><br /><a href="https://github.com/alternadom/WiFiFlutter/issues?q=author%3Afelixsmart" title="Bug reports">🐛</a></td>
-    <td align="center"><a href="https://github.com/briansemrau"><img src="https://avatars.githubusercontent.com/u/6376721?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Brian Semrau</b></sub></a><br /><a href="https://github.com/alternadom/WiFiFlutter/issues?q=author%3Abriansemrau" title="Bug reports">🐛</a></td>
-    <td align="center"><a href="https://github.com/Hallot"><img src="https://avatars.githubusercontent.com/u/3803503?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Hallot</b></sub></a><br /><a href="https://github.com/alternadom/WiFiFlutter/issues?q=author%3AHallot" title="Bug reports">🐛</a> <a href="https://github.com/alternadom/WiFiFlutter/commits?author=Hallot" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/pedrojalbuquerque"><img src="https://avatars.githubusercontent.com/u/65260772?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Pedro Albuquerque</b></sub></a><br /><a href="https://github.com/alternadom/WiFiFlutter/issues?q=author%3Apedrojalbuquerque" title="Bug reports">🐛</a></td>
-    <td align="center"><a href="https://github.com/starsoft4u"><img src="https://avatars.githubusercontent.com/u/64193300?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Starsoft4u</b></sub></a><br /><a href="https://github.com/alternadom/WiFiFlutter/issues?q=author%3Astarsoft4u" title="Bug reports">🐛</a></td>
-    <td align="center"><a href="https://github.com/troyredder"><img src="https://avatars.githubusercontent.com/u/30933678?v=4?s=100" width="100px;" alt=""/><br /><sub><b>troyredder</b></sub></a><br /><a href="https://github.com/alternadom/WiFiFlutter/issues?q=author%3Atroyredder" title="Bug reports">🐛</a></td>
-  </tr>
-</table>
+### `wifi_scan`
+> [![wifi_scan][scan_badge_pub]][scan_pub] [![pub points][scan_badge_pub_points]][scan_pub_points]
 
-<!-- markdownlint-restore -->
-<!-- prettier-ignore-end -->
+Flutter plugin to scan for WiFi networks.
 
-<!-- ALL-CONTRIBUTORS-LIST:END -->
+[[View Source][scan_code]]
 
-This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
+#### Platform Support
+| Android | iOS |
+| :-----: | :-: |
+|    ❌    | ➖  |
+
+---
+
+### `wifi_sta`
+> [![wifi_sta][sta_badge_pub]][sta_pub] [![pub points][sta_badge_pub_points]][sta_pub_points]
+
+Flutter plugin to connect or disconnect device to a traditional WiFi network.
+
+[[View Source][sta_code]]
+
+#### Platform Support
+| Android | iOS |
+| :-----: | :-: |
+|    ❌    |  ❌  |
+
+---
+
+### `wifi_ap`
+> [![wifi_ap][ap_badge_pub]][ap_pub] [![pub points][ap_badge_pub_points]][ap_pub_points]
+
+Flutter plugin to setup device as a WiFi access point (hotspot).
+
+[[View Source][ap_code]]
+
+#### Platform Support
+| Android | iOS |
+| :-----: | :-: |
+|    ❌    |  ➖ |
+
+---
+
+### `wifi_aware`
+> [![wifi_aware][aware_badge_pub]][aware_pub] [![pub points][aware_badge_pub_points]][aware_pub_points]
+
+Flutter plugin to discover and connect directly to nearby devices without any other type of connectivity between them.
+> This method is [more decenteralized][aware_direct_differences] than WiFi Direct(P2P). Check [official docs][aware_official_docs] to read more about Wi-Fi Aware (Neighbor Awareness Networking or NAN).
+
+[[View Source][aware_code]]
+
+#### Platform Support
+| Android | iOS |
+| :-----: | :-: |
+|    ❌    |  ➖ |
+
+---
+
+### `wifi_rtt`
+> [![wifi_rtt][rtt_badge_pub]][rtt_pub] [![pub points][rtt_badge_pub_points]][rtt_pub_points]
+
+Flutter plugin to measure the distance to nearby RTT-capable Wi-Fi access points and peer Wi-Fi Aware devices. 
+> Check [IEEE_802.11mc][rtt_wikipedia] Wikipedia page to read more about it.
+
+[[View Source][rtt_code]]
+
+#### Platform Support
+| Android | iOS |
+| :-----: | :-: |
+|    ❌    |  ➖ |
+
+---
+
+## Issues
+
+Please file WiFiFlutter specific issues, bugs, or feature requests in our [issue tracker](https://github.com/alternadom/WiFiFlutter/issues/new).
+
+Plugin issues that are not specific to WiFiFlutter can be filed in the [Flutter issue tracker](https://github.com/flutter/flutter/issues/new).
+
+## Contributing
+
+If you wish to contribute a change to any of the existing plugins in this repo,
+please review our [contribution guide](https://github.com/alternadom/WiFiFlutter/blob/master/CONTRIBUTING.md)
+and open a [pull request](https://github.com/alternadom/WiFiFlutter/pulls).
+
+## Status
+
+This repository is maintained by WiFiFlutter authors. Issues here are answered by maintainers and other community members on GitHub on a best-effort basis.
+
+<!-- links -->
+[iot_pub]: https://pub.dev/packages/wifi_iot
+[iot_code]: https://github.com/alternadom/WiFiFlutter/tree/master/packages/wifi_iot
+[iot_badge_pub]: https://img.shields.io/pub/v/wifi_iot.svg
+[iot_badge_pub_points]: https://badges.bar/wifi_iot/pub%20points
+[iot_pub_points]: https://pub.dev/packages/wifi_iot/score
+
+[basic_pub]: https://pub.dev/packages/wifi_basic
+[basic_code]: https://github.com/alternadom/WiFiFlutter/tree/master/packages/wifi_basic
+[basic_badge_pub]: https://img.shields.io/pub/v/wifi_basic.svg
+[basic_badge_pub_points]: https://badges.bar/wifi_basic/pub%20points
+[basic_pub_points]: https://pub.dev/packages/wifi_basic/score
+
+[scan_pub]: https://pub.dev/packages/wifi_scan
+[scan_code]: https://github.com/alternadom/WiFiFlutter/tree/master/packages/wifi_scan
+[scan_badge_pub]: https://img.shields.io/pub/v/wifi_scan.svg
+[scan_badge_pub_points]: https://badges.bar/wifi_scan/pub%20points
+[scan_pub_points]: https://pub.dev/packages/wifi_scan/score
+
+[sta_pub]: https://pub.dev/packages/wifi_sta
+[sta_code]: https://github.com/alternadom/WiFiFlutter/tree/master/packages/wifi_sta
+[sta_badge_pub]: https://img.shields.io/pub/v/wifi_sta.svg
+[sta_badge_pub_points]: https://badges.bar/wifi_sta/pub%20points
+[sta_pub_points]: https://pub.dev/packages/wifi_sta/score
+
+[ap_pub]: https://pub.dev/packages/wifi_ap
+[ap_code]: https://github.com/alternadom/WiFiFlutter/tree/master/packages/wifi_ap
+[ap_badge_pub]: https://img.shields.io/pub/v/wifi_ap.svg
+[ap_badge_pub_points]: https://badges.bar/wifi_ap/pub%20points
+[ap_pub_points]: https://pub.dev/packages/wifi_ap/score
+
+[aware_pub]: https://pub.dev/packages/wifi_aware
+[aware_code]: https://github.com/alternadom/WiFiFlutter/tree/master/packages/wifi_aware
+[aware_badge_pub]: https://img.shields.io/pub/v/wifi_aware.svg
+[aware_badge_pub_points]: https://badges.bar/wifi_aware/pub%20points
+[aware_pub_points]: https://pub.dev/packages/wifi_aware/score
+[aware_official_docs]: https://www.wi-fi.org/discover-wi-fi/wi-fi-aware
+[aware_direct_differences]: https://www.wi-fi.org/knowledge-center/faq/what-is-the-relationship-between-wi-fi-aware-and-wi-fi-direct
+
+[rtt_pub]: https://pub.dev/packages/wifi_rtt
+[rtt_code]: https://github.com/alternadom/WiFiFlutter/tree/master/packages/wifi_rtt
+[rtt_badge_pub]: https://img.shields.io/pub/v/wifi_rtt.svg
+[rtt_badge_pub_points]: https://badges.bar/wifi_rtt/pub%20points
+[rtt_pub_points]: https://pub.dev/packages/wifi_rtt/score
+[rtt_wikipedia]: https://en.wikipedia.org/wiki/IEEE_802.11mc

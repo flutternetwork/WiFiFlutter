@@ -1,0 +1,23 @@
+name: wifi_iot
+description: Flutter plugin which can handle WiFi connections and hotspot (AP, STA)
+version: 0.3.8
+homepage: https://github.com/alternadom/WiFiFlutter/tree/master/packages/wifi_iot
+
+flutter:
+  plugin:
+    androidX: true
+    platforms:
+      android:
+        package: com.alternadom.wifiiot
+        pluginClass: WifiIotPlugin
+      ios:
+        pluginClass: WifiIotPlugin
+
+environment:
+  sdk: '>=2.12.0 <3.0.0'
+  # Flutter versions prior to 1.10 did not support the flutter.plugin.platforms map.
+  flutter: ">=1.10.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
