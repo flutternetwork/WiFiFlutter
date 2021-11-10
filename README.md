@@ -5,7 +5,15 @@
 </a>
 
 <p align="center">
-  <a href="https://github.com/invertase/melos#readme-badge"><img src="https://img.shields.io/badge/maintained%20with-melos-f700ff.svg?style=flat-square" alt="Melos" /></a>
+  <a href="https://github.com/alternadom/WiFiFlutter/actions?query=workflow%3Aall_plugins">
+    <img src="https://github.com/alternadom/WiFiFlutter/workflows/all_plugins/badge.svg" alt="all_plugins GitHub Workflow Status"/>
+  </a>
+  <a href="https://codecov.io/gh/alternadom/WiFiFlutter/">
+    <img src="https://codecov.io/gh/alternadom/WiFiFlutter/graph/badge.svg" alt="all_plugins Coverage"/>
+  </a>
+  <a href="https://github.com/invertase/melos#readme-badge">
+    <img src="https://img.shields.io/badge/maintained%20with-melos-f700ff.svg" alt="Melos" />
+  </a>
 </p>
 
 ---
