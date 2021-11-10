@@ -175,8 +175,8 @@ This repository is maintained by WiFiFlutter authors. Issues here are answered b
 [basic_pub_points_badge]: https://badges.bar/wifi_basic/pub%20points
 
 [scan_code]: https://github.com/alternadom/WiFiFlutter/tree/master/packages/wifi_scan
-[basic_workflow]: https://github.com/alternadom/WiFiFlutter/actions/workflows/wifi_scan.yaml
-[basic_workflow_badge]: https://github.com/alternadom/WiFiFlutter/actions/workflows/wifi_scan.yaml/badge.svg
+[scan_workflow]: https://github.com/alternadom/WiFiFlutter/actions/workflows/wifi_scan.yaml
+[scan_workflow_badge]: https://github.com/alternadom/WiFiFlutter/actions/workflows/wifi_scan.yaml/badge.svg
 [scan_pub]: https://pub.dev/packages/wifi_scan
 [scan_pub_badge]: https://img.shields.io/pub/v/wifi_scan.svg
 [scan_pub_points]: https://pub.dev/packages/wifi_scan/score
