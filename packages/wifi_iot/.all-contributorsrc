@@ -24,7 +24,7 @@
     "doc": {
       "symbol": "📖",
       "description": "Documentation",
-      "link": "https://github.com/alternadom/WiFiFlutter/commits/master/README.md?author=<%= contributor.login %>"
+      "link": "https://github.com/alternadom/WiFiFlutter/commits/master/packages/wifi_iot/README.md?author=<%= contributor.login %>"
     },
     "design": {
       "symbol": "🎨",
@@ -34,7 +34,7 @@
     "example": {
       "symbol": "💡",
       "description": "Examples",
-      "link": "https://github.com/alternadom/WiFiFlutter/commits/master/example?author=<%= contributor.login %>"
+      "link": "https://github.com/alternadom/WiFiFlutter/commits/master/packages/wifi_iot/example?author=<%= contributor.login %>"
     }
   },
   "contributorsPerLine": 9,
