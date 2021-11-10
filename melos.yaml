@@ -1,6 +1,6 @@
 # Name of this workspace, this is used for display purpose on the CLI
 # and on your IDEs.
-name: wifi_flutter
+name: WiFiFlutter
 
 versioning:
   # Versioning mode, currently only independent supported.
