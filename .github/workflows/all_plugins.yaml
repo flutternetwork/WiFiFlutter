@@ -138,7 +138,7 @@ jobs:
           files: packages/*/coverage/lcov.info
 
   integration_tests:
-    if: false # currently broken, see issue 220
+    if: false # currently broken, see issue https://github.com/fluttercommunity/plus_plugins/issues/220
     runs-on: macos-latest
     timeout-minutes: 40
     steps:
