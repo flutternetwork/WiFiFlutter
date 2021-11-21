@@ -1,4 +1,4 @@
-package wifi.flutternetwork.dev.wifi_basic
+package dev.flutternetwork.wifi.wifi_basic
 
 import androidx.annotation.NonNull
 

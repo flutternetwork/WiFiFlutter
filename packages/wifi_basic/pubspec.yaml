@@ -28,7 +28,7 @@ flutter:
   plugin:
     platforms:
       android:
-        package: wifi.flutternetwork.dev.wifi_basic
+        package: dev.flutternetwork.wifi.wifi_basic
         pluginClass: WifiBasicPlugin
       ios:
         pluginClass: WifiBasicPlugin

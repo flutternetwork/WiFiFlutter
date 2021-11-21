@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="wifi.flutternetwork.dev.wifi_basic_example">
+    package="dev.flutternetwork.wifi.wifi_basic_example">
    <application
         android:label="wifi_basic_example"
         android:icon="@mipmap/ic_launcher">

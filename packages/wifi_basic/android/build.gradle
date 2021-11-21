@@ -1,4 +1,4 @@
-group 'wifi.flutternetwork.dev.wifi_basic'
+group 'dev.flutternetwork.wifi.wifi_basic'
 version '1.0-SNAPSHOT'
 
 buildscript {

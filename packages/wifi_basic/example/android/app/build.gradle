@@ -43,7 +43,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "wifi.flutternetwork.dev.wifi_basic_example"
+        applicationId "dev.flutternetwork.wifi.wifi_basic_example"
         minSdkVersion 16
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
