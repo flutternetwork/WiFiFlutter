@@ -12,7 +12,7 @@ packages:
 
 scripts:
   lint:all:
-    run: melos run analyze && melos run format
+    run: melos run analyze --no-select && melos run format
     description: |
       Run all static analysis checks
       - Analyze the project for Dart analysis issues.
