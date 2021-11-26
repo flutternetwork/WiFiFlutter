@@ -113,7 +113,7 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
                     // trigger access for local network
                     triggerLocalNetworkPrivacyAlert();
                 }
-            }else{
+            } else {
                 result(FlutterMethodNotImplemented)
             }
         } else {
