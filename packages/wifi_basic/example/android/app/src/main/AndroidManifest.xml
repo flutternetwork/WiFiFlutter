@@ -1,5 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="dev.flutternetwork.wifi.wifi_basic_example">
+
+   <!-- required for: isEnabled  -->
+   <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!-- required for: setEnabled  -->
+   <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+
    <application
         android:label="wifi_basic_example"
         android:icon="@mipmap/ic_launcher">

@@ -16,8 +16,8 @@ void main() {
         case "isEnabled":
           return isEnabled;
         case "setEnabled":
-          isEnabled = methodCall.arguments["state"];
-          break;
+          isEnabled = methodCall.arguments["enabled"];
+          return true;
         default:
           throw MissingPluginException();
       }
@@ -31,7 +31,7 @@ void main() {
   test('basic test', () async {
     expect(await WiFiBasic.hasCapability(), true);
     expect(await WiFiBasic.isEnabled(), true);
-    await WiFiBasic.setEnabled(false);
+    expect(await WiFiBasic.setEnabled(false), true);
     expect(await WiFiBasic.isEnabled(), false);
   });
 }
