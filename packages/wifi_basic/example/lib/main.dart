@@ -24,55 +24,44 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Builder(
-          builder: (context) => Scaffold(
-                appBar: AppBar(
-                  title: const Text('Plugin example app'),
+        builder: (context) => Scaffold(
+          appBar: AppBar(
+            title: const Text('Plugin example app'),
+          ),
+          body: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ElevatedButton(
+                  child: const Text("WiFiBasic.hasCapability();"),
+                  onPressed: () async => showSnackbar(context,
+                      "hasCapability: ${await WiFiBasic.hasCapability()}"),
                 ),
-                body: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Row(
-                        children: [
-                          const Text("WiFiBasic.hasCapability:"),
-                          TextButton(
-                            child: const Text("call"),
-                            onPressed: () async => showSnackbar(context,
-                                "hasCapability: ${await WiFiBasic.hasCapability()}"),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          const Text("WiFiBasic.isEnabled:"),
-                          TextButton(
-                            child: const Text("call"),
-                            onPressed: () async => showSnackbar(context,
-                                "isEnabled: ${await WiFiBasic.isEnabled()}"),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          const Text("WiFiBasic.setEnabled:"),
-                          TextButton(
-                            child: const Text("enable"),
-                            onPressed: () async => showSnackbar(context,
-                                "setEnabled(true): ${await WiFiBasic.setEnabled(true, shouldOpenSettings: true)}"),
-                          ),
-                          TextButton(
-                            child: const Text("disable"),
-                            onPressed: () async => showSnackbar(context,
-                                "setEnabled(false): ${await WiFiBasic.setEnabled(false, shouldOpenSettings: true)}"),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                ElevatedButton(
+                  child: const Text("WiFiBasic.isEnabled();"),
+                  onPressed: () async => showSnackbar(
+                      context, "isEnabled: ${await WiFiBasic.isEnabled()}"),
                 ),
-              )),
+                ElevatedButton(
+                  child: const Text("WiFiBasic.setEnabled(true);"),
+                  onPressed: () async => showSnackbar(context,
+                      "setEnabled(true): success? ${await WiFiBasic.setEnabled(true)}"),
+                ),
+                ElevatedButton(
+                  child: const Text("WiFiBasic.setEnabled(false);"),
+                  onPressed: () async => showSnackbar(context,
+                      "setEnabled(false): success? ${await WiFiBasic.setEnabled(false)}"),
+                ),
+                ElevatedButton(
+                  child: const Text("WiFiBasic.openSettings();"),
+                  onPressed: () async => await WiFiBasic.openSettings(),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

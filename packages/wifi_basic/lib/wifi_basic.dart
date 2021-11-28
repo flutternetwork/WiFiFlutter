@@ -11,10 +11,9 @@ class WiFiBasic {
   static Future<bool> isEnabled() async =>
       await _channel.invokeMethod('isEnabled');
 
-  static Future<bool> setEnabled(bool enabled,
-          {bool shouldOpenSettings = false}) async =>
-      await _channel.invokeMethod('setEnabled', {
-        "enabled": enabled,
-        "shouldOpenSettings": shouldOpenSettings,
-      });
+  static Future<bool> setEnabled(bool enabled) async =>
+      await _channel.invokeMethod('setEnabled', {"enabled": enabled});
+
+  static Future<void> openSettings() async =>
+      await _channel.invokeMethod("openSettings");
 }

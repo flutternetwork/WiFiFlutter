@@ -18,6 +18,8 @@ void main() {
         case "setEnabled":
           isEnabled = methodCall.arguments["enabled"];
           return true;
+        case "openSettings":
+          return null;
         default:
           throw MissingPluginException();
       }
@@ -33,5 +35,6 @@ void main() {
     expect(await WiFiBasic.isEnabled(), true);
     expect(await WiFiBasic.setEnabled(false), true);
     expect(await WiFiBasic.isEnabled(), false);
+    await WiFiBasic.openSettings();
   });
 }

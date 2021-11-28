@@ -42,13 +42,12 @@ class WifiBasicPlugin : FlutterPlugin, MethodCallHandler {
             }
             "setEnabled" -> {
                 val enabled = call.argument<Boolean>("enabled")
-                if (enabled != null) {
-                    val shouldOpenSettings = call.argument<Boolean>("shouldOpenSettings")
-                    val isSuccess = setEnabled(enabled, shouldOpenSettings ?: false)
-                    result.success(isSuccess)
-                } else {
-                    result.error("InvalidArg", "enabled argument is null", null)
-                }
+                    ?: return result.error("InvalidArg", "enabled argument is null", null)
+                result.success(setEnabled(enabled))
+            }
+            "openSettings" -> {
+                openSettings()
+                result.success(null)
             }
             else -> {
                 result.notImplemented()
@@ -67,16 +66,16 @@ class WifiBasicPlugin : FlutterPlugin, MethodCallHandler {
 
     private fun isEnabled(): Boolean = wifi!!.isWifiEnabled
 
-    private fun setEnabled(enabled: Boolean, shouldOpenSettings: Boolean): Boolean =
+    private fun setEnabled(enabled: Boolean): Boolean =
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
             wifi!!.setWifiEnabled(enabled)
         } else {
-            val isSuccess = wifi!!.setWifiEnabled(enabled)
-            if (!isSuccess && shouldOpenSettings) {
-                val intent = Intent(Settings.ACTION_WIFI_SETTINGS)
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                context!!.startActivity(intent)
-            }
-            isSuccess
+            false;
         }
+
+    private fun openSettings() {
+        val intent = Intent(Settings.ACTION_WIFI_SETTINGS)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        context!!.startActivity(intent)
+    }
 }
