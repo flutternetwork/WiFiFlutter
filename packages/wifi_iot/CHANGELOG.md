@@ -1,3 +1,7 @@
+## 0.3.10 2021 2021-11-28
+
+ - **DOCS**: proper banner with package name.
+
 ## 0.3.9 2021-11-28
 
  - **STYLE**: as per anaylzer (#204).
