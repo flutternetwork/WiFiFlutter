@@ -30,7 +30,7 @@ jobs:
       - name: "Bootstrap Workspace"
         run: melos bootstrap
       - name: "Run Flutter Analyze"
-        run: melos run analyze --no-select
+        run: melos run analyze
 
   pub_dev_publish_check:
     name: "Check pub.dev requirements"
