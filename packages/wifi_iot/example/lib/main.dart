@@ -1,3 +1,4 @@
+// ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:wifi_iot/wifi_iot.dart';
@@ -197,13 +198,14 @@ class _FlutterWifiIoTState extends State<FlutterWifiIoT> {
     }
 
     if (_htResultNetwork != null && _htResultNetwork!.length > 0) {
-      List<ListTile> htNetworks = <ListTile>[];
+      final List<ListTile> htNetworks = <ListTile>[];
 
       _htResultNetwork!.forEach((oNetwork) {
-        PopupCommand oCmdConnect = PopupCommand("Connect", oNetwork!.ssid!);
-        PopupCommand oCmdRemove = PopupCommand("Remove", oNetwork.ssid!);
+        final PopupCommand oCmdConnect =
+            PopupCommand("Connect", oNetwork!.ssid!);
+        final PopupCommand oCmdRemove = PopupCommand("Remove", oNetwork.ssid!);
 
-        List<PopupMenuItem<PopupCommand>> htPopupMenuItems = [];
+        final List<PopupMenuItem<PopupCommand>> htPopupMenuItems = [];
 
         htPopupMenuItems.add(
           PopupMenuItem<PopupCommand>(
@@ -274,7 +276,7 @@ class _FlutterWifiIoTState extends State<FlutterWifiIoT> {
   }
 
   List<Widget> getButtonWidgetsForAndroid() {
-    List<Widget> htPrimaryWidgets = <Widget>[];
+    final List<Widget> htPrimaryWidgets = <Widget>[];
 
     WiFiForIoTPlugin.isEnabled().then((val) {
       setState(() {
@@ -438,7 +440,7 @@ class _FlutterWifiIoTState extends State<FlutterWifiIoT> {
             initialData: WIFI_AP_STATE.WIFI_AP_STATE_DISABLED,
             builder: (BuildContext context,
                 AsyncSnapshot<WIFI_AP_STATE?> wifiState) {
-              List<Widget> widgets = [];
+              final List<Widget> widgets = [];
 
               if (wifiState.data == WIFI_AP_STATE.WIFI_AP_STATE_ENABLED) {
                 widgets.add(MaterialButton(
@@ -562,7 +564,7 @@ class _FlutterWifiIoTState extends State<FlutterWifiIoT> {
   }
 
   List<Widget> getButtonWidgetsForiOS() {
-    List<Widget> htPrimaryWidgets = <Widget>[];
+    final List<Widget> htPrimaryWidgets = <Widget>[];
 
     WiFiForIoTPlugin.isEnabled().then((val) => setState(() {
           _isEnabled = val;

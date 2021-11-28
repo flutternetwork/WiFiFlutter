@@ -23,7 +23,7 @@ class WiFiForIoTPlugin {
   @Deprecated(
       "This is will only work with < Android SDK 26. It could be made to work for >= Android SDK 29, request at https://github.com/alternadom/WiFiFlutter/issues/134.")
   static Future<bool> isWiFiAPEnabled() async {
-    Map<String, String> htArguments = Map();
+    final Map<String, String> htArguments = Map();
     bool? bResult;
     try {
       bResult = await _channel.invokeMethod('isWiFiAPEnabled', htArguments);
@@ -41,7 +41,7 @@ class WiFiForIoTPlugin {
   /// * This can only be used to communicate between co-located devices connected to the created WiFi Hotspot
   /// * The network created by this method will not have Internet access
   static void setWiFiAPEnabled(bool state) async {
-    Map<String, bool> htArguments = Map();
+    final Map<String, bool> htArguments = Map();
     htArguments["state"] = state;
     try {
       await _channel.invokeMethod('setWiFiAPEnabled', htArguments);
@@ -52,7 +52,7 @@ class WiFiForIoTPlugin {
 
   /// Request write permission
   static void showWritePermissionSettings(bool force) async {
-    Map<String, bool> htArguments = Map();
+    final Map<String, bool> htArguments = Map();
     htArguments["force"] = force;
     try {
       await _channel.invokeMethod('showWritePermissionSettings', htArguments);
@@ -65,7 +65,7 @@ class WiFiForIoTPlugin {
   @Deprecated(
       "This is will only work with < Android SDK 26. It could be made to work for >= Android SDK 29, request at https://github.com/alternadom/WiFiFlutter/issues/134.")
   static Future<bool> isWiFiAPSSIDHidden() async {
-    Map<String, String> htArguments = Map();
+    final Map<String, String> htArguments = Map();
     bool? bResult;
     try {
       bResult = await _channel.invokeMethod('isSSIDHidden', htArguments);
@@ -78,7 +78,7 @@ class WiFiForIoTPlugin {
   /// Set whether the WiFi AP is hidden or not
   @Deprecated("This is will only work with < Android SDK 26.")
   static setWiFiAPSSIDHidden(bool hidden) async {
-    Map<String, bool> htArguments = Map();
+    final Map<String, bool> htArguments = Map();
     htArguments["hidden"] = hidden;
     try {
       await _channel.invokeMethod('setSSIDHidden', htArguments);
@@ -98,7 +98,7 @@ class WiFiForIoTPlugin {
   /// ```
   @Deprecated("This is will only work with < Android SDK 26.")
   static Future<int?> getWiFiAPState() async {
-    Map<String, String> htArguments = Map();
+    final Map<String, String> htArguments = Map();
     int? iResult;
     try {
       iResult = await _channel.invokeMethod('getWiFiAPState', htArguments);
@@ -112,7 +112,7 @@ class WiFiForIoTPlugin {
   @Deprecated("This is will only work with < Android SDK 26.")
   static Future<List<APClient>> getClientList(
       bool onlyReachables, int reachableTimeout) async {
-    Map<String, Object> htArguments = Map();
+    final Map<String, Object> htArguments = Map();
     htArguments["onlyReachables"] = onlyReachables;
     htArguments["reachableTimeout"] = reachableTimeout;
     String? sResult;
@@ -129,7 +129,7 @@ class WiFiForIoTPlugin {
   /// Set WiFi AP Configuaration
   @Deprecated("This is will only work with < Android SDK 26.")
   static void setWiFiAPConfiguration(Object poWiFiConfig) async {
-    Map<String, bool> htArguments = Map();
+    final Map<String, bool> htArguments = Map();
     htArguments["wifi_config"] = poWiFiConfig as bool;
     await _channel.invokeMethod('setWiFiAPConfiguration', htArguments);
   }
@@ -138,7 +138,7 @@ class WiFiForIoTPlugin {
   @Deprecated(
       "This is will only work with < Android SDK 26. It could be made to work for >= Android SDK 29, request at https://github.com/alternadom/WiFiFlutter/issues/134.")
   static Future<String?> getWiFiAPSSID() async {
-    Map<String, String> htArguments = Map();
+    final Map<String, String> htArguments = Map();
     String? sResult;
     try {
       sResult = await _channel.invokeMethod('getWiFiAPSSID', htArguments);
@@ -151,7 +151,7 @@ class WiFiForIoTPlugin {
   /// Set WiFi AP SSID
   @Deprecated("This is will only work with < Android SDK 26.")
   static setWiFiAPSSID(String psSSID) async {
-    Map<String, String> htArguments = Map();
+    final Map<String, String> htArguments = Map();
     htArguments["ssid"] = psSSID;
     try {
       await _channel.invokeMethod('setWiFiAPSSID', htArguments);
@@ -164,7 +164,7 @@ class WiFiForIoTPlugin {
   @Deprecated(
       "This is will only work with < Android SDK 26. It could be made to work for >= Android SDK 29, request at https://github.com/alternadom/WiFiFlutter/issues/134.")
   static Future<String?> getWiFiAPPreSharedKey() async {
-    Map<String, String> htArguments = Map();
+    final Map<String, String> htArguments = Map();
     String? sResult;
     try {
       sResult =
@@ -178,7 +178,7 @@ class WiFiForIoTPlugin {
   /// Set WiFi AP password
   @Deprecated("This is will only work with < Android SDK 26.")
   static setWiFiAPPreSharedKey(String psPreSharedKey) async {
-    Map<String, String> htArguments = Map();
+    final Map<String, String> htArguments = Map();
     htArguments["preSharedKey"] = psPreSharedKey;
     try {
       await _channel.invokeMethod('setWiFiAPPreSharedKey', htArguments);
@@ -199,7 +199,7 @@ class WiFiForIoTPlugin {
   }
 
   static Future<List<WifiNetwork>>? _loadWifiList() async {
-    Map<String, String> htArguments = Map();
+    final Map<String, String> htArguments = Map();
     String? sResult;
     List<WifiNetwork> htResult = <WifiNetwork>[];
     try {
@@ -212,7 +212,7 @@ class WiFiForIoTPlugin {
   }
 
   static Future<List<WifiNetwork>> loadWifiList() async {
-    List<WifiNetwork> result = (await _loadWifiList() ?? <WifiNetwork>[]);
+    final List<WifiNetwork> result = (await _loadWifiList() ?? <WifiNetwork>[]);
     if (result.length >= 1) return result;
 
     result.clear();
@@ -220,7 +220,7 @@ class WiFiForIoTPlugin {
   }
 
   static Future<bool?> forceWifiUsage(bool useWifi) async {
-    Map<String, bool> htArguments = Map();
+    final Map<String, bool> htArguments = Map();
     htArguments["useWifi"] = useWifi;
     try {
       return await _channel.invokeMethod('forceWifiUsage', htArguments);
@@ -231,7 +231,7 @@ class WiFiForIoTPlugin {
 
   /// Returns whether the WiFi is enabled
   static Future<bool> isEnabled() async {
-    Map<String, String> htArguments = Map();
+    final Map<String, String> htArguments = Map();
     bool? bResult;
     try {
       bResult = await _channel.invokeMethod('isEnabled', htArguments);
@@ -245,7 +245,7 @@ class WiFiForIoTPlugin {
   ///
   /// @param [shouldOpenSettings] only supports on android API level >= 29
   static setEnabled(bool state, {bool shouldOpenSettings = false}) async {
-    Map<String, bool> htArguments = Map();
+    final Map<String, bool> htArguments = Map();
     htArguments["state"] = state;
     htArguments["shouldOpenSettings"] = shouldOpenSettings;
 
@@ -333,7 +333,7 @@ class WiFiForIoTPlugin {
   }
 
   static Future<bool> isConnected() async {
-    Map<String, String> htArguments = Map();
+    final Map<String, String> htArguments = Map();
     bool? bResult;
     try {
       bResult = await _channel.invokeMethod('isConnected', htArguments);
@@ -344,7 +344,7 @@ class WiFiForIoTPlugin {
   }
 
   static disconnect() async {
-    Map<String, bool> htArguments = Map();
+    final Map<String, bool> htArguments = Map();
     try {
       await _channel.invokeMethod('disconnect', htArguments);
     } on MissingPluginException catch (e) {
@@ -353,7 +353,7 @@ class WiFiForIoTPlugin {
   }
 
   static Future<String?> getSSID() async {
-    Map<String, String> htArguments = Map();
+    final Map<String, String> htArguments = Map();
     String? sResult;
     try {
       sResult = await _channel.invokeMethod('getSSID', htArguments);
@@ -364,7 +364,7 @@ class WiFiForIoTPlugin {
   }
 
   static Future<String?> getBSSID() async {
-    Map<String, String> htArguments = Map();
+    final Map<String, String> htArguments = Map();
     String? sResult;
     try {
       sResult = await _channel.invokeMethod('getBSSID', htArguments);
@@ -375,7 +375,7 @@ class WiFiForIoTPlugin {
   }
 
   static Future<int?> getCurrentSignalStrength() async {
-    Map<String, String> htArguments = Map();
+    final Map<String, String> htArguments = Map();
     int? iResult;
     try {
       iResult =
@@ -387,7 +387,7 @@ class WiFiForIoTPlugin {
   }
 
   static Future<int?> getFrequency() async {
-    Map<String, String> htArguments = Map();
+    final Map<String, String> htArguments = Map();
     int? iResult;
     try {
       iResult = await _channel.invokeMethod('getFrequency', htArguments);
@@ -398,7 +398,7 @@ class WiFiForIoTPlugin {
   }
 
   static Future<String?> getIP() async {
-    Map<String, String> htArguments = Map();
+    final Map<String, String> htArguments = Map();
     String? sResult;
     try {
       sResult = await _channel.invokeMethod('getIP', htArguments);
@@ -409,7 +409,7 @@ class WiFiForIoTPlugin {
   }
 
   static Future<bool> removeWifiNetwork(String ssid) async {
-    Map<String, String> htArguments = Map();
+    final Map<String, String> htArguments = Map();
     htArguments["ssid"] = ssid;
     bool? bResult;
     try {
@@ -424,7 +424,7 @@ class WiFiForIoTPlugin {
   }
 
   static Future<bool> isRegisteredWifiNetwork(String ssid) async {
-    Map<String, String> htArguments = Map();
+    final Map<String, String> htArguments = Map();
     htArguments["ssid"] = ssid;
     bool? bResult;
     try {
@@ -464,9 +464,9 @@ class APClient {
       };
 
   static List<APClient> parse(String psString) {
-    List<APClient> htList = <APClient>[];
+    final List<APClient> htList = <APClient>[];
 
-    List<dynamic> htMapClients = json.decode(psString);
+    final List<dynamic> htMapClients = json.decode(psString);
 
     htMapClients.forEach((htMapClient) {
       htList.add(APClient.fromJson(htMapClient));
@@ -505,10 +505,10 @@ class WifiNetwork {
   static List<WifiNetwork> parse(String psString) {
     /// [{"SSID":"Florian","BSSID":"30:7e:cb:8c:48:e4","capabilities":"[WPA-PSK-CCMP+TKIP][ESS]","frequency":2462,"level":-64,"timestamp":201307720907},{"SSID":"Pi3-AP","BSSID":"b8:27:eb:b1:fa:e1","capabilities":"[WPA2-PSK-CCMP][ESS]","frequency":2437,"level":-66,"timestamp":201307720892},{"SSID":"AlternaDom-SonOff","BSSID":"b8:27:eb:98:b4:81","capabilities":"[WPA2-PSK-CCMP][ESS]","frequency":2437,"level":-86,"timestamp":201307720897},{"SSID":"SFR_1CF0_2GEXT","BSSID":"9c:3d:cf:58:98:07","capabilities":"[WPA-PSK-CCMP+TKIP][WPA2-PSK-CCMP+TKIP][WPS][ESS]","frequency":2412,"level":-87,"timestamp":201307720887},{"SSID":"Freebox-5CC952","BSSID":"f4:ca:e5:96:71:c4","capabilities":"[WPA-PSK-CCMP][ESS]","frequency":2442,"level":-90,"timestamp":201307720902}]
 
-    List<WifiNetwork> htList = <WifiNetwork>[];
+    final List<WifiNetwork> htList = <WifiNetwork>[];
 
     try {
-      List<dynamic> htMapNetworks = json.decode(psString);
+      final List<dynamic> htMapNetworks = json.decode(psString);
 
       htMapNetworks.forEach((htMapNetwork) {
         htList.add(WifiNetwork.fromJson(htMapNetwork));
