@@ -10,7 +10,7 @@ void main() {
   setUp(() {
     bool isEnabled = true;
     channel.setMockMethodCallHandler((MethodCall methodCall) async {
-      switch(methodCall.method) {
+      switch (methodCall.method) {
         case "hasCapability":
           return true;
         case "isEnabled":
