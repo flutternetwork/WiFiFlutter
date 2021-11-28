@@ -1,4 +1,4 @@
-<h2><a href="https://wifi.flutternetwork.dev/"><img src="https://raw.githubusercontent.com/alternadom/WiFiFlutter/master/logo/logo%2Bname_vertical_color.png" alt="WiFiFlutter" height="140"/></a>| <code>wifi_iot</code></h1>
+<h3><a href="https://wifi.flutternetwork.dev/" ><img src="https://raw.githubusercontent.com/alternadom/WiFiFlutter/master/logo/logo%2Bname_vertical_color.png" alt="WiFiFlutter" height="112"/></a>| <code>wifi_iot</code></h3>
 
 <p>
 <a href="https://github.com/alternadom/WiFiFlutter/actions/workflows/wifi_iot.yaml"><img src="https://github.com/alternadom/WiFiFlutter/actions/workflows/wifi_iot.yaml/badge.svg" alt="analysis"></a>
@@ -9,6 +9,8 @@
 <a href="https://pub.dev/packages/wifi_iot/score"><img src="https://badges.bar/wifi_iot/popularity" alt="popularity"></a>
 <a href="https://pub.dev/packages/wifi_iot/score"><img src="https://badges.bar/wifi_iot/likes" alt="likes"></a>
 </p>
+
+---
 
 ## Introduction
 
