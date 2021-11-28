@@ -201,7 +201,8 @@ class _FlutterWifiIoTState extends State<FlutterWifiIoT> {
       final List<ListTile> htNetworks = <ListTile>[];
 
       _htResultNetwork!.forEach((oNetwork) {
-        final PopupCommand oCmdConnect = PopupCommand("Connect", oNetwork!.ssid!);
+        final PopupCommand oCmdConnect =
+            PopupCommand("Connect", oNetwork!.ssid!);
         final PopupCommand oCmdRemove = PopupCommand("Remove", oNetwork.ssid!);
 
         final List<PopupMenuItem<PopupCommand>> htPopupMenuItems = [];
