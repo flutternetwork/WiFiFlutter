@@ -8,8 +8,19 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   setUp(() {
+    bool isEnabled = true;
     channel.setMockMethodCallHandler((MethodCall methodCall) async {
-      return '42';
+      switch(methodCall.method) {
+        case "hasCapability":
+          return true;
+        case "isEnabled":
+          return isEnabled;
+        case "setEnabled":
+          isEnabled = methodCall.arguments["state"];
+          break;
+        default:
+          throw MissingPluginException();
+      }
     });
   });
 
@@ -17,7 +28,10 @@ void main() {
     channel.setMockMethodCallHandler(null);
   });
 
-  test('getPlatformVersion', () async {
-    expect(await WifiBasic.platformVersion, '42');
+  test('basic test', () async {
+    expect(await WiFiBasic.hasCapability(), true);
+    expect(await WiFiBasic.isEnabled(), true);
+    await WiFiBasic.setEnabled(false);
+    expect(await WiFiBasic.isEnabled(), false);
   });
 }
