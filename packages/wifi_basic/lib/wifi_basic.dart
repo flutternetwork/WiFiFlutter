@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 
 class WiFiBasic {
-  static const instance = WiFiBasic._();
-  final MethodChannel _channel;
+  const WiFiBasic._();
 
-  const WiFiBasic._() : _channel = const MethodChannel('wifi_basic');
+  static const instance = WiFiBasic._();
+  final MethodChannel _channel = const MethodChannel('wifi_basic');
 
   Future<bool> isSupported() async =>
       await _channel.invokeMethod('isSupported');
