@@ -26,7 +26,7 @@ WiFiFlutter is a suite of Flutter plugins that enable Flutter apps to use variou
 
 **Table of contents:**
 
-- [IoT *(Legacy)* (`wifi_iot`)](#wifi_iot)
+- [For IoT (`wifi_iot`)](#wifi_iot)
 - [Basic (`wifi_basic`)](#wifi_basic)
 - [Scan (`wifi_scan`)](#wifi_scan)
 - [Station (`wifi_sta`)](#wifi_sta)
