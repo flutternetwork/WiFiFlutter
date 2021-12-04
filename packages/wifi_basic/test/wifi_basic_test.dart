@@ -11,7 +11,7 @@ void main() {
     bool isEnabled = true;
     channel.setMockMethodCallHandler((MethodCall methodCall) async {
       switch (methodCall.method) {
-        case "hasCapability":
+        case "isSupported":
           return true;
         case "isEnabled":
           return isEnabled;
@@ -31,7 +31,7 @@ void main() {
   });
 
   test('basic test', () async {
-    expect(await WiFiBasic.hasCapability(), true);
+    expect(await WiFiBasic.isSupported(), true);
     expect(await WiFiBasic.isEnabled(), true);
     expect(await WiFiBasic.setEnabled(false), true);
     expect(await WiFiBasic.isEnabled(), false);

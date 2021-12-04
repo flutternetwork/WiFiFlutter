@@ -5,8 +5,8 @@ import 'package:flutter/services.dart';
 class WiFiBasic {
   static const MethodChannel _channel = MethodChannel('wifi_basic');
 
-  static Future<bool> hasCapability() async =>
-      await _channel.invokeMethod('hasCapability');
+  static Future<bool> isSupported() async =>
+      await _channel.invokeMethod('isSupported');
 
   static Future<bool> isEnabled() async =>
       await _channel.invokeMethod('isEnabled');

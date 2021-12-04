@@ -34,9 +34,9 @@ class _MyAppState extends State<MyApp> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ElevatedButton(
-                  child: const Text("WiFiBasic.hasCapability();"),
-                  onPressed: () async => showSnackbar(context,
-                      "hasCapability: ${await WiFiBasic.hasCapability()}"),
+                  child: const Text("WiFiBasic.isSupported();"),
+                  onPressed: () async => showSnackbar(
+                      context, "isSupported: ${await WiFiBasic.isSupported()}"),
                 ),
                 ElevatedButton(
                   child: const Text("WiFiBasic.isEnabled();"),

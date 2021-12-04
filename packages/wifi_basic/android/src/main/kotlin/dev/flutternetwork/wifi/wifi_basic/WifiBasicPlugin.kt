@@ -34,8 +34,8 @@ class WifiBasicPlugin : FlutterPlugin, MethodCallHandler {
 
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
         when (call.method) {
-            "hasCapability" -> {
-                result.success(hasCapability())
+            "isSupported" -> {
+                result.success(isSupported())
             }
             "isEnabled" -> {
                 result.success(isEnabled())
@@ -61,7 +61,7 @@ class WifiBasicPlugin : FlutterPlugin, MethodCallHandler {
         wifi = null
     }
 
-    private fun hasCapability(): Boolean =
+    private fun isSupported(): Boolean =
         wifi != null && context!!.packageManager.hasSystemFeature(PackageManager.FEATURE_WIFI)
 
     private fun isEnabled(): Boolean = wifi!!.isWifiEnabled

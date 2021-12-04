@@ -10,7 +10,7 @@ public class SwiftWifiBasicPlugin: NSObject, FlutterPlugin {
     
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         switch (call.method) {
-        case "hasCapability":
+        case "isSupported":
             // all iOS device is WiFi capable - except Simulator,
             // also no API to check it either
 #if targetEnvironment(simulator)
