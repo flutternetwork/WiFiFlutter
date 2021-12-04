@@ -31,10 +31,10 @@ void main() {
   });
 
   test('basic test', () async {
-    expect(await WiFiBasic.isSupported(), true);
-    expect(await WiFiBasic.isEnabled(), true);
-    expect(await WiFiBasic.setEnabled(false), true);
-    expect(await WiFiBasic.isEnabled(), false);
-    await WiFiBasic.openSettings();
+    expect(await WiFiBasic.instance.isSupported(), true);
+    expect(await WiFiBasic.instance.isEnabled(), true);
+    expect(await WiFiBasic.instance.setEnabled(false), true);
+    expect(await WiFiBasic.instance.isEnabled(), false);
+    await WiFiBasic.instance.openSettings();
   });
 }

@@ -14,7 +14,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  void showSnackbar(BuildContext context, String message) {
+  void showSnackBar(BuildContext context, String message) {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
     ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text(message)));
@@ -34,28 +34,29 @@ class _MyAppState extends State<MyApp> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ElevatedButton(
-                  child: const Text("WiFiBasic.isSupported();"),
-                  onPressed: () async => showSnackbar(
-                      context, "isSupported: ${await WiFiBasic.isSupported()}"),
+                  child: const Text("isSupported();"),
+                  onPressed: () async => showSnackBar(context,
+                      "isSupported: ${await WiFiBasic.instance.isSupported()}"),
                 ),
                 ElevatedButton(
-                  child: const Text("WiFiBasic.isEnabled();"),
-                  onPressed: () async => showSnackbar(
-                      context, "isEnabled: ${await WiFiBasic.isEnabled()}"),
+                  child: const Text("isEnabled();"),
+                  onPressed: () async => showSnackBar(context,
+                      "isEnabled: ${await WiFiBasic.instance.isEnabled()}"),
                 ),
                 ElevatedButton(
-                  child: const Text("WiFiBasic.setEnabled(true);"),
-                  onPressed: () async => showSnackbar(context,
-                      "setEnabled(true): success? ${await WiFiBasic.setEnabled(true)}"),
+                  child: const Text("setEnabled(true);"),
+                  onPressed: () async => showSnackBar(context,
+                      "setEnabled(true): success? ${await WiFiBasic.instance.setEnabled(true)}"),
                 ),
                 ElevatedButton(
-                  child: const Text("WiFiBasic.setEnabled(false);"),
-                  onPressed: () async => showSnackbar(context,
-                      "setEnabled(false): success? ${await WiFiBasic.setEnabled(false)}"),
+                  child: const Text("setEnabled(false);"),
+                  onPressed: () async => showSnackBar(context,
+                      "setEnabled(false): success? ${await WiFiBasic.instance.setEnabled(false)}"),
                 ),
                 ElevatedButton(
-                  child: const Text("WiFiBasic.openSettings();"),
-                  onPressed: () async => await WiFiBasic.openSettings(),
+                  child: const Text("openSettings();"),
+                  onPressed: () async =>
+                      await WiFiBasic.instance.openSettings(),
                 ),
               ],
             ),
