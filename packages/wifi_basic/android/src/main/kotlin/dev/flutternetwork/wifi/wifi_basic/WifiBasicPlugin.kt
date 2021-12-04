@@ -3,6 +3,7 @@ package dev.flutternetwork.wifi.wifi_basic
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.wifi.ScanResult
 import android.net.wifi.WifiManager
 import android.os.Build
 import android.provider.Settings
@@ -34,12 +35,9 @@ class WifiBasicPlugin : FlutterPlugin, MethodCallHandler {
 
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
         when (call.method) {
-            "isSupported" -> {
-                result.success(isSupported())
-            }
-            "isEnabled" -> {
-                result.success(isEnabled())
-            }
+            "isSupported" -> result.success(isSupported())
+            "getGeneration" -> result.success(getGeneration())
+            "isEnabled" -> result.success(isEnabled())
             "setEnabled" -> {
                 val enabled = call.argument<Boolean>("enabled")
                     ?: return result.error("InvalidArg", "enabled argument is null", null)
@@ -49,9 +47,7 @@ class WifiBasicPlugin : FlutterPlugin, MethodCallHandler {
                 openSettings()
                 result.success(null)
             }
-            else -> {
-                result.notImplemented()
-            }
+            else -> result.notImplemented()
         }
     }
 
@@ -63,14 +59,21 @@ class WifiBasicPlugin : FlutterPlugin, MethodCallHandler {
     private fun isSupported(): Boolean =
         wifi != null && context.packageManager.hasSystemFeature(PackageManager.FEATURE_WIFI)
 
+    private fun getGeneration(): Int = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) when {
+        wifi!!.isWifiStandardSupported(ScanResult.WIFI_STANDARD_11AX) -> 6
+        wifi!!.isWifiStandardSupported(ScanResult.WIFI_STANDARD_11AC) -> 5
+        wifi!!.isWifiStandardSupported(ScanResult.WIFI_STANDARD_11N) -> 4
+        wifi!!.isWifiStandardSupported(ScanResult.WIFI_STANDARD_LEGACY) -> 3
+        else -> -1
+    } else {
+        // TODO: figure out based on link speed - https://stackoverflow.com/a/20970073/2554745
+        -1
+    }
+
     private fun isEnabled(): Boolean = wifi!!.isWifiEnabled
 
     private fun setEnabled(enabled: Boolean): Boolean =
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-            wifi!!.setWifiEnabled(enabled)
-        } else {
-            false
-        }
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) wifi!!.setWifiEnabled(enabled) else false
 
     private fun openSettings() {
         val intent = Intent(Settings.ACTION_WIFI_SETTINGS)

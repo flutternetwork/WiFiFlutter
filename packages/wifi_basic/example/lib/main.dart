@@ -39,6 +39,11 @@ class _MyAppState extends State<MyApp> {
                       "isSupported: ${await WiFiBasic.instance.isSupported()}"),
                 ),
                 ElevatedButton(
+                  child: const Text("getGeneration();"),
+                  onPressed: () async => showSnackBar(context,
+                      "getGeneration: ${await WiFiBasic.instance.getGeneration()}"),
+                ),
+                ElevatedButton(
                   child: const Text("isEnabled();"),
                   onPressed: () async => showSnackBar(context,
                       "isEnabled: ${await WiFiBasic.instance.isEnabled()}"),

@@ -13,6 +13,8 @@ void main() {
       switch (methodCall.method) {
         case "isSupported":
           return true;
+        case "getGeneration":
+          return WiFiGenerations.legacy;
         case "isEnabled":
           return isEnabled;
         case "setEnabled":
@@ -32,6 +34,7 @@ void main() {
 
   test('basic test', () async {
     expect(await WiFiBasic.instance.isSupported(), true);
+    expect(await WiFiBasic.instance.getGeneration(), WiFiGenerations.legacy);
     expect(await WiFiBasic.instance.isEnabled(), true);
     expect(await WiFiBasic.instance.setEnabled(false), true);
     expect(await WiFiBasic.instance.isEnabled(), false);
