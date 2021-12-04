@@ -14,7 +14,7 @@ void main() {
         case "isSupported":
           return true;
         case "getGeneration":
-          return WiFiGenerations.legacy;
+          return 3;
         case "isEnabled":
           return isEnabled;
         case "setEnabled":
