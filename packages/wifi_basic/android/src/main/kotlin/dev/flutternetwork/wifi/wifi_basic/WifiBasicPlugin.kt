@@ -21,7 +21,7 @@ class WifiBasicPlugin : FlutterPlugin, MethodCallHandler {
     /// This local reference serves to register the plugin with the Flutter Engine and unregister it
     /// when the Flutter Engine is detached from the Activity
     private lateinit var channel: MethodChannel
-    private var context: Context? = null
+    private lateinit var context: Context
     private var wifi: WifiManager? = null
 
     override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
@@ -29,7 +29,7 @@ class WifiBasicPlugin : FlutterPlugin, MethodCallHandler {
         channel.setMethodCallHandler(this)
         context = flutterPluginBinding.applicationContext
         wifi =
-            context!!.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
+            context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
     }
 
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
@@ -57,12 +57,11 @@ class WifiBasicPlugin : FlutterPlugin, MethodCallHandler {
 
     override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
         channel.setMethodCallHandler(null)
-        context = null
         wifi = null
     }
 
     private fun isSupported(): Boolean =
-        wifi != null && context!!.packageManager.hasSystemFeature(PackageManager.FEATURE_WIFI)
+        wifi != null && context.packageManager.hasSystemFeature(PackageManager.FEATURE_WIFI)
 
     private fun isEnabled(): Boolean = wifi!!.isWifiEnabled
 
@@ -70,12 +69,12 @@ class WifiBasicPlugin : FlutterPlugin, MethodCallHandler {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
             wifi!!.setWifiEnabled(enabled)
         } else {
-            false;
+            false
         }
 
     private fun openSettings() {
         val intent = Intent(Settings.ACTION_WIFI_SETTINGS)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        context!!.startActivity(intent)
+        context.startActivity(intent)
     }
 }
