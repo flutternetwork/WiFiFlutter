@@ -63,6 +63,11 @@ class _MyAppState extends State<MyApp> {
                   onPressed: () async =>
                       await WiFiBasic.instance.openSettings(),
                 ),
+                ElevatedButton(
+                  child: const Text("getCurrentInfo();"),
+                  onPressed: () async => showSnackBar(context,
+                      "getCurrentInfo: ${await WiFiBasic.instance.getCurrentInfo()}"),
+                ),
               ],
             ),
           ),
