@@ -34,18 +34,18 @@ public class SwiftWifiBasicPlugin: NSObject, FlutterPlugin {
     
     private func getGeneration() -> Int{
         // This info is curated from - https://en.wikipedia.org/wiki/List_of_iOS_and_iPadOS_devices
-        if device.isPod {
+        //-- iPod
           // iPod 6,7 - Wi-Fi (802.11 a/b/g/n/ac)
           // iPod 5 - Wi-Fi (802.11 a/b/g/n)
           // iPod 4 - Wi-Fi (802.11 b/g/n)
           // iPod <3 - Wi-Fi (802.11 b/g)
-        } else if device.isPhone {
+        //-- iPhone
           // iPhone SE2,11x,12x,13x - Wi- (802.11 a/b/g/n/ac/ax)
           // iPhone 6x,SE,7x,8X,Xx - Wi-Fi (802.11 a/b/g/n/ac)
           // iPhone 5x - Wi-Fi (802.11 a/b/g/n)
           // iPhone 4x - Wi-Fi (802.11 b/g/n)
           // iPhone <3x - Wi-Fi (802.11 b/g)
-        } else if device.isPad {
+        //-- iPad
           // iPad 5,6,7,8,9 - Wi-Fi (802.11a/b/g/n/ac)
           // iPad <4 - Wi-Fi (802.11 a/b/g/n)
           // iPad Mini 6 - Wi-Fi 6 (802.11a/b/g/n/ac/ax)
@@ -55,7 +55,6 @@ public class SwiftWifiBasicPlugin: NSObject, FlutterPlugin {
           // iPad Air 2,3 - Wi-Fi 5 (802.11a/b/g/n/ac)
           // iPad Air 1 - Wi-Fi (802.11a/b/g/n)
           // iPad Pro - Wi-Fi 5 (802.11a/b/g/n/ac)
-        } 
         return -1
     }
     
