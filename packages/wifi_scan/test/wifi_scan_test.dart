@@ -23,9 +23,9 @@ void main() {
     channel.setMockMethodCallHandler(null);
   });
 
-  test('requestScan', () async {
-    mockHandlers["requestScan"] = (_) => 0;
-    expect(await WiFiScan.instance.requestScan(), CanRequestScan.yes);
+  test('startScan', () async {
+    mockHandlers["startScan"] = (_) => 0;
+    expect(await WiFiScan.instance.startScan(), CanStartScan.yes);
   });
 
   test("canGetScannedNetworks", () async {
@@ -43,12 +43,12 @@ void main() {
   // TODO: firgure out way to mock EventChannel
   // test("scannedNetworksStream", () async {});
 
-  test("ToEnumExtension.toCanScanResult", () async {
-    expect(0.toCanRequestScan(), CanRequestScan.yes);
-    expect(1.toCanRequestScan(), CanRequestScan.notSupported);
-    expect(2.toCanRequestScan(), CanRequestScan.noLocationPermissionRequired);
-    expect(3.toCanRequestScan(), CanRequestScan.noLocationPermissionDenied);
-    expect(4.toCanRequestScan(), CanRequestScan.noLocationServiceDisabled);
+  test("ToEnumExtension.toCanStartScan", () async {
+    expect(0.toCanStartScan(), CanStartScan.yes);
+    expect(1.toCanStartScan(), CanStartScan.notSupported);
+    expect(2.toCanStartScan(), CanStartScan.noLocationPermissionRequired);
+    expect(3.toCanStartScan(), CanStartScan.noLocationPermissionDenied);
+    expect(4.toCanStartScan(), CanStartScan.noLocationServiceDisabled);
   });
 
   test("ToEnumExtension.toCanGetScannedNetworks", () async {

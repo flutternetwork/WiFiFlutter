@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 import 'src/extensions.dart';
 
-enum CanRequestScan {
+enum CanStartScan {
   yes,
   notSupported,
   noLocationPermissionRequired,
@@ -32,8 +32,8 @@ class WiFiScan {
       const EventChannel('wifi_scan/scannedNetworksEvent');
   Stream<List<WiFiNetwork>>? _scannedNetworksStream;
 
-  Future<CanRequestScan> requestScan({bool askPermissions = true}) async =>
-      (await _channel.invokeMethod<int>("requestScan"))!.toCanRequestScan();
+  Future<CanStartScan> startScan({bool askPermissions = true}) async =>
+      (await _channel.invokeMethod<int>("startScan"))!.toCanStartScan();
 
   Future<CanGetScannedNetworks> canGetScannedNetworks(
           {bool askPermissions = true}) async =>
