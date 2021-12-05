@@ -18,6 +18,6 @@ void main() {
   });
 
   test('getPlatformVersion', () async {
-    expect(await WifiScan.platformVersion, '42');
+    expect(await WiFiScan.instance.platformVersion, '42');
   });
 }

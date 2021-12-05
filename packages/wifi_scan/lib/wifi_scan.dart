@@ -2,10 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 
-class WifiScan {
-  static const MethodChannel _channel = MethodChannel('wifi_scan');
+class WiFiScan {
+  WiFiScan._();
 
-  static Future<String?> get platformVersion async {
+  static final instance = WiFiScan._();
+  final MethodChannel _channel = const MethodChannel('wifi_scan');
+
+  Future<String?> get platformVersion async {
     final String? version = await _channel.invokeMethod('getPlatformVersion');
     return version;
   }
