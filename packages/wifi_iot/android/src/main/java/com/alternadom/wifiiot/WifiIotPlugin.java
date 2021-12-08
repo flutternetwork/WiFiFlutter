@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
+import android.net.MacAddress;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.NetworkRequest;
@@ -24,6 +25,8 @@ import android.os.Looper;
 import android.provider.Settings;
 import android.util.Log;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import info.whitebyte.hotspotmanager.ClientScanResult;
 import info.whitebyte.hotspotmanager.FinishScanListener;
 import info.whitebyte.hotspotmanager.WifiApManager;
@@ -867,7 +870,7 @@ public class WifiIotPlugin
     } else {
       // Deprecated version
       android.net.wifi.WifiConfiguration conf =
-          generateConfiguration(ssid, password, security, isHidden);
+          generateConfiguration(ssid, password, security, isHidden, null);
 
       int updateNetwork = registerWifiNetworkDeprecated(conf);
 
@@ -1134,8 +1137,22 @@ public class WifiIotPlugin
       final Boolean withInternet,
       final Boolean isHidden) {
     final Handler handler = new Handler(Looper.getMainLooper());
+
+    @Nullable
+    String bssid = null;
+    List<ScanResult> scanResults = moWiFi.getScanResults();
+    for (int i = 0; i < scanResults.size(); i++) {
+      final ScanResult scanResult = scanResults.get(i);
+
+      if (scanResult.SSID.equals(ssid)) {
+        bssid = scanResult.BSSID;
+        break;
+      }
+    }
+
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-      final boolean connected = connectToDeprecated(ssid, password, security, joinOnce, isHidden);
+      final boolean connected =
+          connectToDeprecated(ssid, password, security, joinOnce, isHidden, bssid);
       handler.post(
           new Runnable() {
             @Override
@@ -1157,12 +1174,16 @@ public class WifiIotPlugin
         return;
       }
 
+      @Nullable
+      MacAddress macAddress = bssid == null ? null : MacAddress.fromString(bssid);
+
       if (withInternet != null && withInternet) {
         // create network suggestion
         final WifiNetworkSuggestion.Builder builder = new WifiNetworkSuggestion.Builder();
         // set ssid
         builder.setSsid(ssid);
         builder.setIsHiddenSsid(isHidden != null ? isHidden : false);
+        builder.setBssid(macAddress);
         // set password
         if (security != null && security.toUpperCase().equals("WPA")) {
           builder.setWpa2Passphrase(password);
@@ -1198,6 +1219,7 @@ public class WifiIotPlugin
         // set ssid
         builder.setSsid(ssid);
         builder.setIsHiddenSsid(isHidden != null ? isHidden : false);
+        builder.setBssid(macAddress);
         // set security
         if (security != null && security.toUpperCase().equals("WPA")) {
           builder.setWpa2Passphrase(password);
@@ -1269,10 +1291,11 @@ public class WifiIotPlugin
   }
 
   private android.net.wifi.WifiConfiguration generateConfiguration(
-      String ssid, String password, String security, Boolean isHidden) {
+      String ssid, String password, String security, Boolean isHidden, String bssid) {
     android.net.wifi.WifiConfiguration conf = new android.net.wifi.WifiConfiguration();
     conf.SSID = "\"" + ssid + "\"";
     conf.hiddenSSID = isHidden != null ? isHidden : false;
+    conf.BSSID = bssid;
 
     if (security != null) security = security.toUpperCase();
     else security = "NONE";
@@ -1313,10 +1336,12 @@ public class WifiIotPlugin
 
   @SuppressWarnings("deprecation")
   private Boolean connectToDeprecated(
-      String ssid, String password, String security, Boolean joinOnce, Boolean isHidden) {
+      String ssid, String password, String security, Boolean joinOnce, Boolean isHidden,
+      String bssid
+  ) {
     /// Make new configuration
     android.net.wifi.WifiConfiguration conf =
-        generateConfiguration(ssid, password, security, isHidden);
+        generateConfiguration(ssid, password, security, isHidden, bssid);
 
     int updateNetwork = registerWifiNetworkDeprecated(conf);
 
