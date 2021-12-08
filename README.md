@@ -20,13 +20,13 @@
 
 WiFiFlutter is a suite of Flutter plugins that enable Flutter apps to use various WiFi services.
 
-> *Note*: WiFiFlutter is going under reforms (see [reform](https://github.com/alternadom/WiFiFlutter/issues/186)), therefore some plugins might not be available yet. [Feedback](https://github.com/alternadom/WiFiFlutter/issues) and [Pull Requests](https://github.com/alternadom/WiFiFlutter/pulls) are most welcome!
+> *Note*: WiFiFlutter is going under [reforms](https://github.com/alternadom/WiFiFlutter/issues/186), therefore some plugins might not be available yet. [Feedback](https://github.com/alternadom/WiFiFlutter/issues) and [Pull Requests](https://github.com/alternadom/WiFiFlutter/pulls) are most welcome!
 
 ## Plugins
 
 **Table of contents:**
 
-- [IoT *(Legacy)* (`wifi_iot`)](#wifi_iot)
+- [For IoT (`wifi_iot`)](#wifi_iot)
 - [Basic (`wifi_basic`)](#wifi_basic)
 - [Scan (`wifi_scan`)](#wifi_scan)
 - [Station (`wifi_sta`)](#wifi_sta)

@@ -132,9 +132,8 @@ jobs:
         run: melos run coverage
 
       - name: Upload Coverage
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v2
         with:
-          token: ${{secrets.CODECOV_TOKEN}}
           files: packages/*/coverage/lcov.info
 
   integration_tests:
