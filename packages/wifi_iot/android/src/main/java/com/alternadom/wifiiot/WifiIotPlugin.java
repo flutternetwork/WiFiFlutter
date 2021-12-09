@@ -26,7 +26,6 @@ import android.provider.Settings;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import info.whitebyte.hotspotmanager.ClientScanResult;
 import info.whitebyte.hotspotmanager.FinishScanListener;
 import info.whitebyte.hotspotmanager.WifiApManager;
@@ -1138,8 +1137,7 @@ public class WifiIotPlugin
       final Boolean isHidden) {
     final Handler handler = new Handler(Looper.getMainLooper());
 
-    @Nullable
-    String bssid = null;
+    @Nullable String bssid = null;
     List<ScanResult> scanResults = moWiFi.getScanResults();
     for (int i = 0; i < scanResults.size(); i++) {
       final ScanResult scanResult = scanResults.get(i);
@@ -1174,8 +1172,7 @@ public class WifiIotPlugin
         return;
       }
 
-      @Nullable
-      MacAddress macAddress = bssid == null ? null : MacAddress.fromString(bssid);
+      @Nullable MacAddress macAddress = bssid == null ? null : MacAddress.fromString(bssid);
 
       if (withInternet != null && withInternet) {
         // create network suggestion
@@ -1336,9 +1333,12 @@ public class WifiIotPlugin
 
   @SuppressWarnings("deprecation")
   private Boolean connectToDeprecated(
-      String ssid, String password, String security, Boolean joinOnce, Boolean isHidden,
-      String bssid
-  ) {
+      String ssid,
+      String password,
+      String security,
+      Boolean joinOnce,
+      Boolean isHidden,
+      String bssid) {
     /// Make new configuration
     android.net.wifi.WifiConfiguration conf =
         generateConfiguration(ssid, password, security, isHidden, bssid);
