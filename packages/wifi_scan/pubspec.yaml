@@ -30,6 +30,8 @@ flutter:
       android:
         package: dev.flutternetwork.wifi.wifi_scan
         pluginClass: WifiScanPlugin
+      ios:
+        pluginClass: WifiScanPlugin
 
   # To add assets to your plugin package, add an assets section, like this:
   # assets:
