@@ -23,9 +23,14 @@ void main() {
     channel.setMockMethodCallHandler(null);
   });
 
+  test('canStartScan', () async {
+    mockHandlers["canStartScan"] = (_) => 0;
+    expect(await WiFiScan.instance.canStartScan(), CanStartScan.yes);
+  });
+
   test('startScan', () async {
-    mockHandlers["startScan"] = (_) => 0;
-    expect(await WiFiScan.instance.startScan(), CanStartScan.yes);
+    mockHandlers["startScan"] = (_) => true;
+    expect(await WiFiScan.instance.startScan(), true);
   });
 
   test("canGetScannedNetworks", () async {

@@ -32,8 +32,10 @@ class WiFiScan {
       const EventChannel('wifi_scan/scannedNetworksEvent');
   Stream<List<WiFiNetwork>>? _scannedNetworksStream;
 
-  Future<CanStartScan> startScan({bool askPermissions = true}) async =>
-      (await _channel.invokeMethod<int>("startScan"))!.toCanStartScan();
+  Future<CanStartScan> canStartScan({bool askPermissions = true}) async =>
+      (await _channel.invokeMethod<int>("canStartScan"))!.toCanStartScan();
+
+  Future<bool> startScan() async => await _channel.invokeMethod("startScan");
 
   Future<CanGetScannedNetworks> canGetScannedNetworks(
           {bool askPermissions = true}) async =>
