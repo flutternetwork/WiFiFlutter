@@ -442,7 +442,8 @@
       "profile": "https://github.com/Hallot",
       "contributions": [
         "bug",
-        "code"
+        "code",
+        "review"
       ]
     },
     {
@@ -468,6 +469,15 @@
       "name": "troyredder",
       "avatar_url": "https://avatars.githubusercontent.com/u/30933678?v=4",
       "profile": "https://github.com/troyredder",
+      "contributions": [
+        "bug"
+      ]
+    },
+    {
+      "login": "nathan2day",
+      "name": "Nathan",
+      "avatar_url": "https://avatars.githubusercontent.com/u/17063283?v=4",
+      "profile": "https://github.com/nathan2day",
       "contributions": [
         "bug"
       ]
