@@ -52,7 +52,8 @@ class WiFiInfo {
       );
 
   @override
-  String toString() => "ssid; $ssid; bssid: $bssid; security: $security; "
-      "isHidden: $isHidden; rssi: $rssi; signalStrength: $signalStrength; "
-      "hasInternet: $hasInternet; generation: $generation";
+  String toString() => "WiFiInfo(ssid: $ssid, bssid: $bssid, "
+      "security: $security, isHidden: $isHidden, rssi: $rssi, "
+      "signalStrength: $signalStrength, hasInternet: $hasInternet, "
+      "generation: $generation)";
 }
