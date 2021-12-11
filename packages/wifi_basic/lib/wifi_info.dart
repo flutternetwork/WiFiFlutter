@@ -15,13 +15,13 @@ class WiFiInfo {
   bool get isNull => ssid.isEmpty;
 
   WiFiInfo._fromMap(Map map)
-      : ssid = map["ssid"],
-        bssid = map["bssid"],
+      : ssid = map["ssid"] as String,
+        bssid = map["bssid"] as String,
         security = (map["security"] as int?).toWifiNetworkSecurity(),
-        isHidden = map["isHidden"],
-        rssi = map["rssi"],
-        signalStrength = map["signalStrength"],
-        hasInternet = map["hasInternet"],
+        isHidden = map["isHidden"] as bool,
+        rssi = map["rssi"] as int,
+        signalStrength = map["signalStrength"] as double,
+        hasInternet = map["hasInternet"] as bool,
         generation = (map["generation"] as int?).toWifiGeneration();
 
   @override
