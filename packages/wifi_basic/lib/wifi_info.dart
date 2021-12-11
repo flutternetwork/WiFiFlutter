@@ -18,12 +18,14 @@ class WiFiInfo {
   WiFiInfo.fromMap(Map map)
       : ssid = map["ssid"] as String,
         bssid = map["bssid"] as String,
-        security = (map["security"] as int?).toWifiNetworkSecurity(),
+        security =
+            WiFiNetworkSecurityExtension.fromInt(map["security"] as int?),
         isHidden = map["isHidden"] as bool,
         rssi = map["rssi"] as int,
         signalStrength = map["signalStrength"] as double,
         hasInternet = map["hasInternet"] as bool,
-        generation = (map["generation"] as int?).toWifiGeneration();
+        generation =
+            WiFiGenerationsExtension.fromInt(map["generation"] as int?);
 
   @override
   bool operator ==(Object other) =>

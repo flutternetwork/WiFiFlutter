@@ -24,8 +24,8 @@ class WiFiBasic {
 
   Future<WiFiGenerations> getGeneration() {
     return _getGenerationMemo.runOnce(() async {
-      return (await _channel.invokeMethod<int?>("getGeneration"))
-          .toWifiGeneration();
+      final generation = await _channel.invokeMethod<int?>("getGeneration");
+      return WiFiGenerationsExtension.fromInt(generation);
     });
   }
 

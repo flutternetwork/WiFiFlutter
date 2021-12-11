@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:wifi_basic/src/extensions.dart' show ToEnumExtension;
+import 'package:wifi_basic/src/extensions.dart';
 import 'package:wifi_basic/wifi_basic.dart';
 
 void main() {
@@ -96,37 +96,46 @@ void main() {
       "generation": -1,
     };
     mockHandlers["getCurrentInfo"] = (_) => value;
-
     final info = await WiFiBasic.instance.getCurrentInfo();
 
     expect(info, WiFiInfo.fromMap(value));
   });
 
-  test("test ToEnumExtension.toWifiGeneration", () async {
-    // test for unknown
-    expect((-1).toWifiGeneration(), WiFiGenerations.unknown);
-    // test for legacy
-    expect(Random().nextInt(3).toWifiGeneration(), WiFiGenerations.legacy);
-    // test for wifi4, wifi5 and wifi6
-    expect(4.toWifiGeneration(), WiFiGenerations.wifi4);
-    expect(5.toWifiGeneration(), WiFiGenerations.wifi5);
-    expect(6.toWifiGeneration(), WiFiGenerations.wifi6);
-    // test for unknown again
-    expect(
-        (7 + Random().nextInt(10)).toWifiGeneration(), WiFiGenerations.unknown);
+  test("test WiFiGenerationsExtension", () {
+    final intValues = [-1, 0, 1, 2, 3, 4, 5, 6, 7, null];
+
+    final enumValues = intValues.map(WiFiGenerationsExtension.fromInt).toList();
+
+    expect(enumValues, [
+      WiFiGenerations.unknown,
+      WiFiGenerations.legacy,
+      WiFiGenerations.legacy,
+      WiFiGenerations.legacy,
+      WiFiGenerations.legacy,
+      WiFiGenerations.wifi4,
+      WiFiGenerations.wifi5,
+      WiFiGenerations.wifi6,
+      WiFiGenerations.unknown,
+      WiFiGenerations.unknown,
+    ]);
   });
 
-  test("test ToEnumExtension.toWifiNetworkSecurity", () {
-    // test for unknown
-    expect((-1).toWifiNetworkSecurity(), WiFiNetworkSecurity.unknown);
-    // test for values
-    expect(0.toWifiNetworkSecurity(), WiFiNetworkSecurity.none);
-    expect(1.toWifiNetworkSecurity(), WiFiNetworkSecurity.wep);
-    expect(2.toWifiNetworkSecurity(), WiFiNetworkSecurity.wpa);
-    expect(3.toWifiNetworkSecurity(), WiFiNetworkSecurity.wpa2);
-    expect(4.toWifiNetworkSecurity(), WiFiNetworkSecurity.wpa3);
-    // test for unknown again
-    expect((7 + Random().nextInt(10)).toWifiNetworkSecurity(),
-        WiFiNetworkSecurity.unknown);
+  test("test WiFiNetworkSecurityExtension", () {
+    final intValues = [-1, 0, 1, 2, 3, 4, 5, 6, null];
+
+    final enumValues =
+        intValues.map(WiFiNetworkSecurityExtension.fromInt).toList();
+
+    expect(enumValues, [
+      WiFiNetworkSecurity.unknown,
+      WiFiNetworkSecurity.unknown,
+      WiFiNetworkSecurity.none,
+      WiFiNetworkSecurity.wep,
+      WiFiNetworkSecurity.wpa,
+      WiFiNetworkSecurity.wpa2,
+      WiFiNetworkSecurity.wpa3,
+      WiFiNetworkSecurity.unknown,
+      WiFiNetworkSecurity.unknown,
+    ]);
   });
 }
