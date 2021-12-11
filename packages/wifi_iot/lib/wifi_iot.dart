@@ -14,6 +14,12 @@ enum WIFI_AP_STATE {
 
 enum NetworkSecurity { WPA, WEP, NONE }
 
+const serializeNetworkSecurityMap = <NetworkSecurity, String?>{
+  NetworkSecurity.WPA: "WPA",
+  NetworkSecurity.WEP: "WEP",
+  NetworkSecurity.NONE: null,
+};
+
 const MethodChannel _channel = const MethodChannel('wifi_iot');
 const EventChannel _eventChannel =
     const EventChannel('plugins.wififlutter.io/wifi_scan');
@@ -269,12 +275,11 @@ class WiFiForIoTPlugin {
     try {
       bResult = await _channel.invokeMethod('connect', {
         "ssid": ssid.toString(),
-        "password": password.toString(),
+        "password": password?.toString(),
         "join_once": joinOnce,
         "with_internet": withInternet,
         "is_hidden": isHidden,
-        "security":
-            security.toString().substring('$NetworkSecurity'.length + 1),
+        "security": serializeNetworkSecurityMap[security],
       });
     } on MissingPluginException catch (e) {
       print("MissingPluginException : ${e.toString()}");
@@ -293,9 +298,8 @@ class WiFiForIoTPlugin {
     try {
       await _channel.invokeMethod('registerWifiNetwork', {
         "ssid": ssid.toString(),
-        "password": password.toString(),
-        "security":
-            security.toString().substring('$NetworkSecurity'.length + 1),
+        "password": password?.toString(),
+        "security": serializeNetworkSecurityMap[security],
         "is_hidden": isHidden,
       });
     } on MissingPluginException catch (e) {
@@ -322,7 +326,7 @@ class WiFiForIoTPlugin {
     try {
       bResult = await _channel.invokeMethod('findAndConnect', {
         "ssid": ssid.toString(),
-        "password": password.toString(),
+        "password": password?.toString(),
         "join_once": joinOnce,
         "with_internet": withInternet,
       });

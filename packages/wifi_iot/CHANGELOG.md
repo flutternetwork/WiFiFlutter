@@ -1,4 +1,9 @@
-## 0.3.10 2021 2021-11-28
+## 0.3.11 2021-12-08
+
+ - **FIX**: proper serializing to avoid issue when obfuscated (#207).
+ - **DOCS**: smaller banner.
+
+## 0.3.10 2021-11-28
 
  - **DOCS**: proper banner with package name.
 
