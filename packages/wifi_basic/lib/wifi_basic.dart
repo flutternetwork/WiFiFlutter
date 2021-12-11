@@ -2,37 +2,9 @@ import 'package:async/async.dart';
 import 'package:flutter/services.dart';
 import 'package:wifi_basic/src/extensions.dart';
 
-enum WiFiGenerations { unknown, legacy, wifi4, wifi5, wifi6 }
-
-enum WiFiNetworkSecurity { unknown, none, wep, wpa, wpa2, wpa3 }
-
-class WiFiInfo {
-  final String ssid;
-  final String bssid;
-  final WiFiNetworkSecurity security;
-  final bool isHidden;
-  final int rssi;
-  final double signalStrength;
-  final bool hasInternet;
-  final WiFiGenerations generation;
-
-  bool get isNull => ssid.isEmpty;
-
-  WiFiInfo._fromMap(Map map)
-      : ssid = map["ssid"],
-        bssid = map["bssid"],
-        security = (map["security"] as int?).toWifiNetworkSecurity(),
-        isHidden = map["isHidden"],
-        rssi = map["rssi"],
-        signalStrength = map["signalStrength"],
-        hasInternet = map["hasInternet"],
-        generation = (map["generation"] as int?).toWifiGeneration();
-
-  @override
-  String toString() => "ssid; $ssid; bssid: $bssid; security: $security; "
-      "isHidden: $isHidden; rssi: $rssi; signalStrength: $signalStrength; "
-      "hasInternet: $hasInternet; generation: $generation";
-}
+part 'wifi_generations.dart';
+part 'wifi_info.dart';
+part 'wifi_network_security.dart';
 
 class WiFiBasic {
   WiFiBasic._();
