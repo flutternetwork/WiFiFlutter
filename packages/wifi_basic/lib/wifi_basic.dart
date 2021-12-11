@@ -15,21 +15,37 @@ class WiFiBasic {
   final _isSupportedMemo = AsyncMemoizer<bool>();
   final _getGenerationMemo = AsyncMemoizer<WiFiGenerations>();
 
-  Future<bool> isSupported() => _isSupportedMemo
-      .runOnce(() async => await _channel.invokeMethod('isSupported'));
+  Future<bool> isSupported() {
+    return _isSupportedMemo.runOnce(() async {
+      return (await _channel.invokeMethod<bool>('isSupported'))!;
+    });
+  }
 
-  Future<WiFiGenerations> getGeneration() => _getGenerationMemo.runOnce(
-      () async => (await _channel.invokeMethod("getGeneration") as int?)
-          .toWifiGeneration());
+  Future<WiFiGenerations> getGeneration() {
+    return _getGenerationMemo.runOnce(() async {
+      return (await _channel.invokeMethod<int?>("getGeneration"))
+          .toWifiGeneration();
+    });
+  }
 
-  Future<bool> isEnabled() async => await _channel.invokeMethod('isEnabled');
+  Future<bool> isEnabled() async {
+    return (await _channel.invokeMethod<bool>('isEnabled'))!;
+  }
 
-  Future<bool> setEnabled(bool enabled) async =>
-      await _channel.invokeMethod('setEnabled', {"enabled": enabled});
+  Future<bool> setEnabled(bool enabled) async {
+    return (await _channel.invokeMethod<bool>(
+      'setEnabled',
+      {"enabled": enabled},
+    ))!;
+  }
 
-  Future<void> openSettings() async =>
-      await _channel.invokeMethod("openSettings");
+  Future<void> openSettings() async {
+    await _channel.invokeMethod<void>("openSettings");
+  }
 
-  Future<WiFiInfo> getCurrentInfo() async =>
-      WiFiInfo._fromMap(await _channel.invokeMapMethod("getCurrentInfo") ?? {});
+  Future<WiFiInfo> getCurrentInfo() async {
+    return WiFiInfo._fromMap(
+      await _channel.invokeMapMethod<String, dynamic>("getCurrentInfo") ?? {},
+    );
+  }
 }
