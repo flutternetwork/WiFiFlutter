@@ -14,7 +14,8 @@ class WiFiInfo {
 
   bool get isNull => ssid.isEmpty;
 
-  WiFiInfo._fromMap(Map map)
+  @visibleForTesting
+  WiFiInfo.fromMap(Map map)
       : ssid = map["ssid"] as String,
         bssid = map["bssid"] as String,
         security = (map["security"] as int?).toWifiNetworkSecurity(),

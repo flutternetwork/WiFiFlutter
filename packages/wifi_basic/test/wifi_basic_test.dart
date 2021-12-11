@@ -2,9 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:wifi_basic/wifi_basic.dart';
-
 import 'package:wifi_basic/src/extensions.dart' show ToEnumExtension;
+import 'package:wifi_basic/wifi_basic.dart';
 
 void main() {
   const channel = MethodChannel('wifi_basic');
@@ -86,25 +85,21 @@ void main() {
   });
 
   test("test getCurrentInfo", () async {
-    mockHandlers["getCurrentInfo"] = (_) => {
-          "ssid": "my-wifi",
-          "bssid": "02:00:00:00:00:00",
-          "security": 0,
-          "isHidden": false,
-          "rssi": -100,
-          "signalStrength": 1.0,
-          "hasInternet": true,
-          "generation": -1,
-        };
+    final value = {
+      "ssid": "my-wifi",
+      "bssid": "02:00:00:00:00:00",
+      "security": 0,
+      "isHidden": false,
+      "rssi": -100,
+      "signalStrength": 1.0,
+      "hasInternet": true,
+      "generation": -1,
+    };
+    mockHandlers["getCurrentInfo"] = (_) => value;
+
     final info = await WiFiBasic.instance.getCurrentInfo();
-    expect(info.ssid, "my-wifi");
-    expect(info.bssid, "02:00:00:00:00:00");
-    expect(info.security, WiFiNetworkSecurity.none);
-    expect(info.isHidden, false);
-    expect(info.rssi, -100);
-    expect(info.signalStrength, 1.0);
-    expect(info.hasInternet, true);
-    expect(info.generation, WiFiGenerations.unknown);
+
+    expect(info, WiFiInfo.fromMap(value));
   });
 
   test("test ToEnumExtension.toWifiGeneration", () async {

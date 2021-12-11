@@ -1,5 +1,6 @@
 import 'package:async/async.dart';
 import 'package:collection/collection.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:wifi_basic/src/extensions.dart';
 
@@ -43,9 +44,12 @@ class WiFiBasic {
     await _channel.invokeMethod<void>("openSettings");
   }
 
-  Future<WiFiInfo> getCurrentInfo() async {
-    return WiFiInfo._fromMap(
-      await _channel.invokeMapMethod<String, dynamic>("getCurrentInfo") ?? {},
-    );
+  Future<WiFiInfo?> getCurrentInfo() async {
+    final result =
+        await _channel.invokeMapMethod<String, dynamic>("getCurrentInfo");
+
+    if (result == null) return null;
+
+    return WiFiInfo.fromMap(result);
   }
 }
