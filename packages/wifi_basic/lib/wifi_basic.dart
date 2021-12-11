@@ -1,4 +1,5 @@
 import 'package:async/async.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/services.dart';
 import 'package:wifi_basic/src/extensions.dart';
 
