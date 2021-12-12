@@ -11,8 +11,3 @@ analyzer:
     # Ignore generated files
     - '**/*.g.dart'
     - 'lib/src/generated/*.dart'
-
-linter:
-  rules:
-    - prefer_final_in_for_each
-    - prefer_final_locals
