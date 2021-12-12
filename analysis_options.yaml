@@ -11,3 +11,11 @@ analyzer:
     # Ignore generated files
     - '**/*.g.dart'
     - 'lib/src/generated/*.dart'
+
+linter:
+  rules:
+    # doc-style related: https://dart.dev/guides/language/effective-dart/documentation
+    - package_api_docs
+    - public_member_api_docs
+    - comment_references
+    - slash_for_doc_comments
