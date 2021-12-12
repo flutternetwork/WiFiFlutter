@@ -1,6 +1,5 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:wifi_scan/src/extensions.dart';
 import 'package:wifi_scan/wifi_scan.dart';
 
 void main() {
@@ -24,7 +23,7 @@ void main() {
   });
 
   test('canStartScan', () async {
-    mockHandlers["canStartScan"] = (_) => 0;
+    mockHandlers["canStartScan"] = (_) => 1;
     expect(await WiFiScan.instance.canStartScan(), CanStartScan.yes);
   });
 
@@ -34,7 +33,7 @@ void main() {
   });
 
   test("canGetScannedNetworks", () async {
-    mockHandlers["canGetScannedNetworks"] = (_) => 0;
+    mockHandlers["canGetScannedNetworks"] = (_) => 1;
     expect(await WiFiScan.instance.canGetScannedNetworks(),
         CanGetScannedNetworks.yes);
   });
@@ -48,22 +47,41 @@ void main() {
   // TODO: firgure out way to mock EventChannel
   // test("scannedNetworksStream", () async {});
 
-  test("ToEnumExtension.toCanStartScan", () async {
-    expect(0.toCanStartScan(), CanStartScan.yes);
-    expect(1.toCanStartScan(), CanStartScan.notSupported);
-    expect(2.toCanStartScan(), CanStartScan.noLocationPermissionRequired);
-    expect(3.toCanStartScan(), CanStartScan.noLocationPermissionDenied);
-    expect(4.toCanStartScan(), CanStartScan.noLocationServiceDisabled);
+  test("deserializeCanStartScan", () async {
+    // +ve test
+    final codes = [0, 1, 2, 3, 4];
+    final enumValues = codes.map(deserializeCanStartScan).toList();
+    expect(enumValues, [
+      CanStartScan.notSupported,
+      CanStartScan.yes,
+      CanStartScan.noLocationPermissionRequired,
+      CanStartScan.noLocationPermissionDenied,
+      CanStartScan.noLocationServiceDisabled,
+    ]);
+
+    // -ve test
+    expect(()=>deserializeCanGetScannedNetworks(-1), throwsUnsupportedError);
+    expect(()=>deserializeCanGetScannedNetworks(null), throwsUnsupportedError);
+    expect(()=>deserializeCanGetScannedNetworks(5), throwsUnsupportedError);
+    expect(()=>deserializeCanGetScannedNetworks(6), throwsUnsupportedError);
   });
 
-  test("ToEnumExtension.toCanGetScannedNetworks", () async {
-    expect(0.toCanGetScannedNetworks(), CanGetScannedNetworks.yes);
-    expect(1.toCanGetScannedNetworks(), CanGetScannedNetworks.notSupported);
-    expect(2.toCanGetScannedNetworks(),
-        CanGetScannedNetworks.noLocationPermissionRequired);
-    expect(3.toCanGetScannedNetworks(),
-        CanGetScannedNetworks.noLocationPermissionDenied);
-    expect(4.toCanGetScannedNetworks(),
-        CanGetScannedNetworks.noLocationServiceDisabled);
+  test("deserializeCanGetScannedNetworks", () async {
+    // +ve test
+    final codes = [0, 1, 2, 3, 4];
+    final enumValues = codes.map(deserializeCanGetScannedNetworks).toList();
+    expect(enumValues, [
+      CanGetScannedNetworks.notSupported,
+      CanGetScannedNetworks.yes,
+      CanGetScannedNetworks.noLocationPermissionRequired,
+      CanGetScannedNetworks.noLocationPermissionDenied,
+      CanGetScannedNetworks.noLocationServiceDisabled,
+    ]);
+
+    // -ve test
+    expect(()=>deserializeCanGetScannedNetworks(-1), throwsUnsupportedError);
+    expect(()=>deserializeCanGetScannedNetworks(null), throwsUnsupportedError);
+    expect(()=>deserializeCanGetScannedNetworks(5), throwsUnsupportedError);
+    expect(()=>deserializeCanGetScannedNetworks(6), throwsUnsupportedError);
   });
 }
