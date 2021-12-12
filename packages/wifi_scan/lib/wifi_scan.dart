@@ -19,7 +19,7 @@ class WiFiScan {
       "canStartScan",
       {"askPermissions": askPermissions},
     );
-    return deserializeCanStartScan(canCode);
+    return _deserializeCanStartScan(canCode);
   }
 
   Future<bool> startScan() async {
@@ -33,7 +33,7 @@ class WiFiScan {
       "canGetScannedNetworks",
       {"askPermissions": askPermissions},
     );
-    return deserializeCanGetScannedNetworks(canCode);
+    return _deserializeCanGetScannedNetworks(canCode);
   }
 
   Future<List<WiFiNetwork>> get scannedNetworks async {

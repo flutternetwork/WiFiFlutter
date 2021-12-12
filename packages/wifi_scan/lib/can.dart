@@ -8,7 +8,7 @@ enum CanStartScan {
   noLocationServiceDisabled,
 }
 
-CanStartScan deserializeCanStartScan(int? canCode) {
+CanStartScan _deserializeCanStartScan(int? canCode) {
   switch (canCode) {
     case 0:
       return CanStartScan.notSupported;
@@ -32,7 +32,7 @@ enum CanGetScannedNetworks {
   noLocationServiceDisabled,
 }
 
-CanGetScannedNetworks deserializeCanGetScannedNetworks(int? canCode) {
+CanGetScannedNetworks _deserializeCanGetScannedNetworks(int? canCode) {
   switch (canCode) {
     case 0:
       return CanGetScannedNetworks.notSupported;

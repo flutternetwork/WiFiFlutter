@@ -23,8 +23,26 @@ void main() {
   });
 
   test('canStartScan', () async {
-    mockHandlers["canStartScan"] = (_) => 1;
-    expect(await WiFiScan.instance.canStartScan(), CanStartScan.yes);
+    final canCodes = [0, 1, 2, 3, 4];
+    final enumValues = [
+      CanStartScan.notSupported,
+      CanStartScan.yes,
+      CanStartScan.noLocationPermissionRequired,
+      CanStartScan.noLocationPermissionDenied,
+      CanStartScan.noLocationServiceDisabled,
+    ];
+    for (int i = 0; i < canCodes.length; i++) {
+      mockHandlers["canStartScan"] = (_) => canCodes[i];
+      expect(await WiFiScan.instance.canStartScan(), enumValues[i]);
+    }
+
+    // -ve test
+    final badCanCodes = [null, -1, 5, 6];
+    for (int i = 0; i < badCanCodes.length; i++) {
+      mockHandlers["canStartScan"] = (_) => badCanCodes[i];
+      expect(() async => await WiFiScan.instance.canStartScan(),
+          throwsUnsupportedError);
+    }
   });
 
   test('startScan', () async {
@@ -33,9 +51,26 @@ void main() {
   });
 
   test("canGetScannedNetworks", () async {
-    mockHandlers["canGetScannedNetworks"] = (_) => 1;
-    expect(await WiFiScan.instance.canGetScannedNetworks(),
-        CanGetScannedNetworks.yes);
+    final canCodes = [0, 1, 2, 3, 4];
+    final enumValues = [
+      CanGetScannedNetworks.notSupported,
+      CanGetScannedNetworks.yes,
+      CanGetScannedNetworks.noLocationPermissionRequired,
+      CanGetScannedNetworks.noLocationPermissionDenied,
+      CanGetScannedNetworks.noLocationServiceDisabled,
+    ];
+    for (int i = 0; i < canCodes.length; i++) {
+      mockHandlers["canGetScannedNetworks"] = (_) => canCodes[i];
+      expect(await WiFiScan.instance.canGetScannedNetworks(), enumValues[i]);
+    }
+
+    // -ve test
+    final badCanCodes = [null, -1, 5, 6];
+    for (int i = 0; i < badCanCodes.length; i++) {
+      mockHandlers["canGetScannedNetworks"] = (_) => badCanCodes[i];
+      expect(() async => await WiFiScan.instance.canGetScannedNetworks(),
+          throwsUnsupportedError);
+    }
   });
 
   test("scannedNetworks", () async {
@@ -46,42 +81,4 @@ void main() {
 
   // TODO: firgure out way to mock EventChannel
   // test("scannedNetworksStream", () async {});
-
-  test("deserializeCanStartScan", () async {
-    // +ve test
-    final codes = [0, 1, 2, 3, 4];
-    final enumValues = codes.map(deserializeCanStartScan).toList();
-    expect(enumValues, [
-      CanStartScan.notSupported,
-      CanStartScan.yes,
-      CanStartScan.noLocationPermissionRequired,
-      CanStartScan.noLocationPermissionDenied,
-      CanStartScan.noLocationServiceDisabled,
-    ]);
-
-    // -ve test
-    expect(()=>deserializeCanGetScannedNetworks(-1), throwsUnsupportedError);
-    expect(()=>deserializeCanGetScannedNetworks(null), throwsUnsupportedError);
-    expect(()=>deserializeCanGetScannedNetworks(5), throwsUnsupportedError);
-    expect(()=>deserializeCanGetScannedNetworks(6), throwsUnsupportedError);
-  });
-
-  test("deserializeCanGetScannedNetworks", () async {
-    // +ve test
-    final codes = [0, 1, 2, 3, 4];
-    final enumValues = codes.map(deserializeCanGetScannedNetworks).toList();
-    expect(enumValues, [
-      CanGetScannedNetworks.notSupported,
-      CanGetScannedNetworks.yes,
-      CanGetScannedNetworks.noLocationPermissionRequired,
-      CanGetScannedNetworks.noLocationPermissionDenied,
-      CanGetScannedNetworks.noLocationServiceDisabled,
-    ]);
-
-    // -ve test
-    expect(()=>deserializeCanGetScannedNetworks(-1), throwsUnsupportedError);
-    expect(()=>deserializeCanGetScannedNetworks(null), throwsUnsupportedError);
-    expect(()=>deserializeCanGetScannedNetworks(5), throwsUnsupportedError);
-    expect(()=>deserializeCanGetScannedNetworks(6), throwsUnsupportedError);
-  });
 }
