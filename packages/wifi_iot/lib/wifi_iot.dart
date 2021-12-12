@@ -1,3 +1,4 @@
+// ignore_for_file: package_api_docs, public_member_api_docs
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
