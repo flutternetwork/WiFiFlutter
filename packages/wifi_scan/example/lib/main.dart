@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const MyApp._());
 }
 
-// TODO: proper example app
+/// Example app for wifi_scan plugin.
 class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp._({Key? key}) : super(key: key);
 
   @override
   State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
+  // TODO: proper example app
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

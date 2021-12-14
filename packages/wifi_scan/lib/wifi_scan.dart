@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 
-part 'can.dart';
-part 'wifi_network.dart';
+part 'src/can.dart';
+part 'src/wifi_network.dart';
 
 class WiFiScan {
   WiFiScan._();

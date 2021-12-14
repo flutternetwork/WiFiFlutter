@@ -1,4 +1,4 @@
-part of 'wifi_scan.dart';
+part of '../wifi_scan.dart';
 
 enum CanStartScan {
   notSupported,

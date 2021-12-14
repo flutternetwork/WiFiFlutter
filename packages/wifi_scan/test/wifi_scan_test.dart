@@ -74,7 +74,24 @@ void main() {
   });
 
   test("scannedNetworks", () async {
-    mockHandlers["scannedNetworks"] = (_) => [{}];
+    mockHandlers["scannedNetworks"] = (_) => [
+          {
+            "ssid": "my-ssid",
+            "bssid": "00:00:00:12",
+            "capabilities": "Unknown",
+            "frequency": 600,
+            "level": 5,
+            "timestamp": null,
+            "standard": null,
+            "centerFrequency0": null,
+            "centerFrequency1": null,
+            "channelWidth": null,
+            "isPasspoint": null,
+            "operatorFriendlyName": null,
+            "venueName": null,
+            "is80211mcResponder": null,
+          }
+        ];
     final scannedNetworks = await WiFiScan.instance.scannedNetworks;
     expect(scannedNetworks.length, 1);
   });
