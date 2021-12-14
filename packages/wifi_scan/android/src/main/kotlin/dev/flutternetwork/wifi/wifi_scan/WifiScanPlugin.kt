@@ -103,7 +103,7 @@ class WifiScanPlugin : FlutterPlugin, MethodCallHandler {
                 "isPasspoint" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) network.isPasspointNetwork else null,
                 "operatorFriendlyName" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) network.operatorFriendlyName else null,
                 "venueName" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) network.venueName else null,
-                "is80211mcResponder" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) network.is80211mcResponder else null,
+                "is80211mcResponder" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) network.is80211mcResponder else null
             )
         }
     }
