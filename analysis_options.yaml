@@ -14,5 +14,11 @@ analyzer:
 
 linter:
   rules:
-    - prefer_final_in_for_each
-    - prefer_final_locals
+    # doc-style related: https://dart.dev/guides/language/effective-dart/documentation
+    - package_api_docs
+    - public_member_api_docs
+    - comment_references
+    - slash_for_doc_comments
+    # pub related: https://dart.dev/tools/linter-rules#pub-rules
+    - depend_on_referenced_packages
+    - secure_pubspec_urls
