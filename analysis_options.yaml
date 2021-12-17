@@ -22,4 +22,3 @@ linter:
     # pub related: https://dart.dev/tools/linter-rules#pub-rules
     - depend_on_referenced_packages
     - secure_pubspec_urls
-    - secure_pubspec_urls
