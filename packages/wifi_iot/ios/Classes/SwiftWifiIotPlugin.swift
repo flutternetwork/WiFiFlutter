@@ -106,19 +106,15 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
     private func forceWifiUsage(call: FlutterMethodCall, result: FlutterResult) {
         let arguments = call.arguments
         let useWifi = (arguments as! [String : Bool])["useWifi"]
-        if (useWifi != nil) {
-            print("Forcing WiFi usage : %s", ((useWifi ?? false) ? "Use WiFi" : "Use 3G/4G Data"))
-            if #available(iOS 14.0, *) {
-                if(useWifi ?? false){
-                    // trigger access for local network
-                    triggerLocalNetworkPrivacyAlert();
-                }
-                result(true)
-            } else {
-                result(FlutterMethodNotImplemented)
+        print("Forcing WiFi usage : %s", ((useWifi ?? false) ? "Use WiFi" : "Use 3G/4G Data"))
+        if #available(iOS 14.0, *) {
+            if(useWifi ?? false){
+                // trigger access for local network
+                triggerLocalNetworkPrivacyAlert();
             }
+            result(true)
         } else {
-            result(nil)
+            result(FlutterMethodNotImplemented)
         }
     }
 
