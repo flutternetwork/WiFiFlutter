@@ -309,12 +309,19 @@ public class WifiIotPlugin
       case "getClientList":
         getClientList(poCall, poResult);
         break;
+      case "getHostpotSSID":
+        getHostpotSSID(poResult);
+        break;
+      case "getHostpotPassword":
+        getHostpotPassword(poResult);
+        break;
       case "getWiFiAPSSID":
         getWiFiAPSSID(poResult);
         break;
       case "setWiFiAPSSID":
         setWiFiAPSSID(poCall, poResult);
         break;
+        
       case "isSSIDHidden":
         isSSIDHidden(poResult);
         break;
@@ -333,6 +340,34 @@ public class WifiIotPlugin
       default:
         poResult.notImplemented();
         break;
+    }
+  }
+
+  private void getHostpotSSID(Result poResult) {
+    if (apReservation != null) {
+      WifiConfiguration wifiConfiguration = reservation.getWifiConfiguration();
+      String ssid = wifiConfiguration.SSID;
+      System.out.println("ssid is:" + ssid);
+      poResult.success(ssid);
+    } else {
+      poResult.error(
+          "Exception [getHostpotSSID]",
+          "Hotspot is not enabled.",
+          null);
+    }
+  }
+
+  private void getHostpotPassword(Result poResult) {
+    if (apReservation != null) {
+      WifiConfiguration wifiConfiguration = reservation.getWifiConfiguration();
+      String pwd = wifiConfiguration.preSharedKey;
+      System.out.println("pwd is:" + pwd);
+      poResult.success(pwd);
+    } else {
+      poResult.error(
+          "Exception [getHostpotSSID]",
+          "Hotspot is not enabled.",
+          null);
     }
   }
 
