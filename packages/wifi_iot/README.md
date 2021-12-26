@@ -3,7 +3,7 @@
 <p>
 <a href="https://github.com/alternadom/WiFiFlutter/actions/workflows/wifi_iot.yaml"><img src="https://github.com/alternadom/WiFiFlutter/actions/workflows/wifi_iot.yaml/badge.svg" alt="analysis"></a>
 <a href="https://pub.dev/packages/wifi_iot"><img src="https://img.shields.io/pub/v/wifi_iot?logo=dart" alt="pub.dev"></a><!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-<a href="#contributors-"><img src="https://img.shields.io/badge/all_contributors-46-orange.svg" alt="All Contributors" /></a>
+<a href="#contributors-"><img src="https://img.shields.io/badge/all_contributors-47-orange.svg" alt="All Contributors" /></a>
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 <a href="https://pub.dev/packages/wifi_iot/score"><img src="https://badges.bar/wifi_iot/pub%20points" alt="pub points"></a>
 <a href="https://pub.dev/packages/wifi_iot/score"><img src="https://badges.bar/wifi_iot/popularity" alt="popularity"></a>
@@ -181,6 +181,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   </tr>
   <tr>
     <td align="center"><a href="https://github.com/nathan2day"><img src="https://avatars.githubusercontent.com/u/17063283?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Nathan</b></sub></a><br /><a href="https://github.com/alternadom/WiFiFlutter/issues?q=author%3Anathan2day" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://github.com/nikolip"><img src="https://avatars.githubusercontent.com/u/44801617?v=4?s=100" width="100px;" alt=""/><br /><sub><b>nikolip</b></sub></a><br /><a href="https://github.com/alternadom/WiFiFlutter/issues?q=author%3Anikolip" title="Bug reports">🐛</a></td>
   </tr>
 </table>
 

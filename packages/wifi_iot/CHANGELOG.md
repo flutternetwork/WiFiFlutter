@@ -1,3 +1,8 @@
+## 0.3.12 2021-12-17
+
+ - **FIX**: `serializeNetworkSecurityMap` not mapping to null (#212).
+ - **CHORE**: added lint rules for docs (#209).
+
 ## 0.3.11 2021-12-08
 
  - **FIX**: proper serializing to avoid issue when obfuscated (#207).
