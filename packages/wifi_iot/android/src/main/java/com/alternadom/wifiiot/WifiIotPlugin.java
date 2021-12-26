@@ -347,7 +347,6 @@ public class WifiIotPlugin
     if (apReservation != null) {
       WifiConfiguration wifiConfiguration = apReservation.getWifiConfiguration();
       String ssid = wifiConfiguration.SSID;
-      System.out.println("ssid is:" + ssid);
       poResult.success(ssid);
     } else {
       poResult.error(
@@ -361,7 +360,6 @@ public class WifiIotPlugin
     if (apReservation != null) {
       WifiConfiguration wifiConfiguration = apReservation.getWifiConfiguration();
       String pwd = wifiConfiguration.preSharedKey;
-      System.out.println("pwd is:" + pwd);
       poResult.success(pwd);
     } else {
       poResult.error(
