@@ -345,7 +345,7 @@ public class WifiIotPlugin
 
   private void getHostpotSSID(Result poResult) {
     if (apReservation != null) {
-      WifiConfiguration wifiConfiguration = reservation.getWifiConfiguration();
+      WifiConfiguration wifiConfiguration = apReservation.getWifiConfiguration();
       String ssid = wifiConfiguration.SSID;
       System.out.println("ssid is:" + ssid);
       poResult.success(ssid);
@@ -359,7 +359,7 @@ public class WifiIotPlugin
 
   private void getHostpotPassword(Result poResult) {
     if (apReservation != null) {
-      WifiConfiguration wifiConfiguration = reservation.getWifiConfiguration();
+      WifiConfiguration wifiConfiguration = apReservation.getWifiConfiguration();
       String pwd = wifiConfiguration.preSharedKey;
       System.out.println("pwd is:" + pwd);
       poResult.success(pwd);
