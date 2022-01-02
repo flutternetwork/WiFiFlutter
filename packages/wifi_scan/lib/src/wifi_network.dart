@@ -85,6 +85,7 @@ class WiFiNetwork {
   final String bssid;
 
   /// Describes authentication and other schemes supported by the access point.
+  // TODO: parse this for proper enums for - security
   final String capabilities;
 
   /// WiFi standard supported by the access poit.
