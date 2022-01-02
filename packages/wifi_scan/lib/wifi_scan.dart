@@ -33,7 +33,11 @@ class WiFiScan {
     return _deserializeCanStartScan(canCode);
   }
 
+  /// Request a Wi-Fi scan.
   ///
+  /// Return value indicates if the "scan" is being triggered.
+  ///
+  /// Should call [canStartScan] as a check before calling this method.
   Future<bool> startScan() async {
     final isSucess = await _channel.invokeMethod<bool>("startScan");
     return isSucess!;
@@ -56,7 +60,9 @@ class WiFiScan {
 
   /// Get scanned networks.
   ///
-  /// This are cached networks from last scan performed.
+  /// This are cached networks from most recently performed scan.
+  ///
+  /// Should call [canGetScannedNetworks] as a check before calling this method.
   Future<List<WiFiNetwork>> get scannedNetworks async {
     final scannedNetworks =
         await _channel.invokeListMethod<Map>("scannedNetworks");
@@ -69,6 +75,8 @@ class WiFiScan {
   ///
   /// New results are added to stream when platform performs the scan, either by
   /// itself or trigger with [startScan].
+  ///
+  /// Should call [canGetScannedNetworks] as a check before calling this method.
   Stream<List<WiFiNetwork>> get scannedNetworksStream =>
       _scannedNetworksStream ??=
           _scannedNetworksChannel.receiveBroadcastStream().map((event) {
