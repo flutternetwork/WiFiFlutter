@@ -1,26 +1,136 @@
 part of '../../wifi_scan.dart';
 
-// TODO
-enum WiFiStandards { unkown, legacy }
+/// WiFi standards.
+enum WiFiStandards {
+  /// Unknown.
+  unkown,
 
-WiFiStandards _deserializeWiFiStandards(int? standardCode) {
-  return WiFiStandards.unkown;
+  /// Wi-Fi 802.11a/b/g.
+  legacy,
+
+  /// Wi-Fi 802.11n (Wi-Fi 4).
+  n,
+
+  /// Wi-Fi 802.11ac (Wi-Fi 5).
+  ac,
+
+  /// Wi-Fi 802.11ax (Wi-Fi 6).
+  ax,
+
+  /// Wi-Fi 802.11ad.
+  ad,
 }
 
+WiFiStandards _deserializeWiFiStandards(int? standardCode) {
+  switch (standardCode) {
+    case 1:
+      return WiFiStandards.legacy;
+    case 4:
+      return WiFiStandards.n;
+    case 5:
+      return WiFiStandards.ac;
+    case 6:
+      return WiFiStandards.ax;
+    case 7:
+      return WiFiStandards.ad;
+    default:
+      return WiFiStandards.unkown;
+  }
+}
+
+/// Channel bandwidth supported by WiFi.
+enum WiFiChannelWidth {
+  /// Unknown.
+  unkown,
+
+  /// 20 MHZ.
+  mhz20,
+
+  /// 40 MHZ.
+  mhz40,
+
+  /// 40 MHZ.
+  mhz80,
+
+  /// 160 MHZ.
+  mhz160,
+
+  /// 160 MHZ, but 80MHZ + 80MHZ.
+  mhz80Plus80,
+}
+
+WiFiChannelWidth _deserializeWiFiChannelWidth(int? channelWidthCode) {
+  switch (channelWidthCode) {
+    case 0:
+      return WiFiChannelWidth.mhz20;
+    case 1:
+      return WiFiChannelWidth.mhz40;
+    case 2:
+      return WiFiChannelWidth.mhz80;
+    case 3:
+      return WiFiChannelWidth.mhz160;
+    case 4:
+      return WiFiChannelWidth.mhz80Plus80;
+    default:
+      return WiFiChannelWidth.unkown;
+  }
+}
+
+/// Describes information about a detected access point.
 class WiFiNetwork {
+  /// The network name.
   final String ssid;
+
+  /// The address of the access point.
   final String bssid;
+
+  /// Describes authentication and other schemes supported by the access point.
   final String capabilities;
-  final int frequency;
-  final int level;
-  final int? timestamp;
+
+  /// WiFi standard supported by the access poit.
   final WiFiStandards standard;
+
+  /// The detected signal level in dBm, also known as the RSSI.
+  final int level;
+
+  /// Channel bandwidth of the access point.
+  final WiFiChannelWidth? channelWidth;
+
+  /// The primary 20MHz frequency of the channel over which the client is
+  /// communicating with the AP.
+  ///
+  /// The value is in MHz.
+  final int frequency;
+
+  /// Center frequency of the access point.
+  ///
+  /// For [WiFiChannelWidth.mhz20] bandwidth, it is null.
+  /// For [WiFiChannelWidth.mhz80Plus80] bandwidth, it is the center frequency
+  /// of the first segment.
   final int? centerFrequency0;
+
+  /// Center frequency of the access point.
+  ///
+  /// Only used for [WiFiChannelWidth.mhz80Plus80] bandwidth, it is the center
+  /// frequency of the secod segment.
   final int? centerFrequency1;
-  final int? channelWidth;
+
+  /// Timestamp in microseconds (since boot) when this result was last seen.
+  final int? timestamp;
+
+  /// Indicates if the access point is a Passpoint (Hotspot 2.0).
   final bool? isPasspoint;
+
+  /// Indicates Passpoint operator name published by access point.
   final String? operatorFriendlyName;
+
+  /// Indicates venue name published by access point.
+  ///
+  /// Only available on Passpoint network and if published by access point.
   final String? venueName;
+
+  /// Indicates if the access point can respond to IEEE 802.11mc (WiFi RTT)
+  /// ranging requests.
   final bool? is80211mcResponder;
 
   WiFiNetwork._fromMap(Map map)
@@ -33,7 +143,7 @@ class WiFiNetwork {
         standard = _deserializeWiFiStandards(map["standard"]),
         centerFrequency0 = map["centerFrequency0"],
         centerFrequency1 = map["centerFrequency1"],
-        channelWidth = map["channelWidth"],
+        channelWidth = _deserializeWiFiChannelWidth(map["channelWidth"]),
         isPasspoint = map["isPasspoint"],
         operatorFriendlyName = map["operatorFriendlyName"],
         venueName = map["venueName"],

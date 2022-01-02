@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp._());
+  runApp(const MyApp());
 }
 
 /// Example app for wifi_scan plugin.
 class MyApp extends StatefulWidget {
-  const MyApp._({Key? key}) : super(key: key);
+  /// Default constructor for [MyApp] widget.
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   State<MyApp> createState() => _MyAppState();

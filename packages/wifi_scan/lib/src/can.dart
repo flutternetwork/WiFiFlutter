@@ -1,10 +1,24 @@
 part of '../wifi_scan.dart';
 
+/// Result for [WiFiScan.canStartScan] method.
 enum CanStartScan {
+  /// Functionality is not supported.
   notSupported,
+
+  /// It is ok to call functionality.
   yes,
+
+  /// Location permission is required.
+  ///
+  /// A prompt for permission can be requested.
   noLocationPermissionRequired,
+
+  /// Location permission is denied.
+  ///
+  /// Need to ask user to manually allow from settings.
   noLocationPermissionDenied,
+
+  /// Location service needs to be enabled.
   noLocationServiceDisabled,
 }
 
@@ -24,11 +38,25 @@ CanStartScan _deserializeCanStartScan(int? canCode) {
   throw UnsupportedError("$canCode cannot be serialized to CanStartScan");
 }
 
+/// Result for [WiFiScan.canGetScannedNetworks] method.
 enum CanGetScannedNetworks {
+  /// Functionality is not supported.
   notSupported,
+
+  /// It is ok to call functionality.
   yes,
+
+  /// Location permission is required.
+  ///
+  /// A prompt for permission can be requested.
   noLocationPermissionRequired,
+
+  /// Location permission is denied.
+  ///
+  /// Need to ask user to manually allow from settings.
   noLocationPermissionDenied,
+
+  /// Location service needs to be enabled.
   noLocationServiceDisabled,
 }
 
