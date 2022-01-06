@@ -5,7 +5,13 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 
-enum WIFI_AP_STATE { WIFI_AP_STATE_DISABLING, WIFI_AP_STATE_DISABLED, WIFI_AP_STATE_ENABLING, WIFI_AP_STATE_ENABLED, WIFI_AP_STATE_FAILED }
+enum WIFI_AP_STATE {
+  WIFI_AP_STATE_DISABLING,
+  WIFI_AP_STATE_DISABLED,
+  WIFI_AP_STATE_ENABLING,
+  WIFI_AP_STATE_ENABLED,
+  WIFI_AP_STATE_FAILED
+}
 
 enum NetworkSecurity { WPA, WEP, NONE }
 
@@ -16,11 +22,13 @@ const serializeNetworkSecurityMap = <NetworkSecurity, String>{
 };
 
 const MethodChannel _channel = const MethodChannel('wifi_iot');
-const EventChannel _eventChannel = const EventChannel('plugins.wififlutter.io/wifi_scan');
+const EventChannel _eventChannel =
+    const EventChannel('plugins.wififlutter.io/wifi_scan');
 
 class WiFiForIoTPlugin {
   /// Returns whether the WiFi AP is enabled or not
-  @Deprecated("This is will only work with < Android SDK 26. It could be made to work for >= Android SDK 29, request at https://github.com/alternadom/WiFiFlutter/issues/134.")
+  @Deprecated(
+      "This is will only work with < Android SDK 26. It could be made to work for >= Android SDK 29, request at https://github.com/alternadom/WiFiFlutter/issues/134.")
   static Future<bool> isWiFiAPEnabled() async {
     final Map<String, String> htArguments = Map();
     bool? bResult;
@@ -61,7 +69,8 @@ class WiFiForIoTPlugin {
   }
 
   /// Returns whether the WiFi AP is hidden or not
-  @Deprecated("This is will only work with < Android SDK 26. It could be made to work for >= Android SDK 29, request at https://github.com/alternadom/WiFiFlutter/issues/134.")
+  @Deprecated(
+      "This is will only work with < Android SDK 26. It could be made to work for >= Android SDK 29, request at https://github.com/alternadom/WiFiFlutter/issues/134.")
   static Future<bool> isWiFiAPSSIDHidden() async {
     final Map<String, String> htArguments = Map();
     bool? bResult;
@@ -108,7 +117,8 @@ class WiFiForIoTPlugin {
 
   /// Get WiFi AP clients
   @Deprecated("This is will only work with < Android SDK 26.")
-  static Future<List<APClient>> getClientList(bool onlyReachables, int reachableTimeout) async {
+  static Future<List<APClient>> getClientList(
+      bool onlyReachables, int reachableTimeout) async {
     final Map<String, Object> htArguments = Map();
     htArguments["onlyReachables"] = onlyReachables;
     htArguments["reachableTimeout"] = reachableTimeout;
@@ -132,7 +142,8 @@ class WiFiForIoTPlugin {
   }
 
   /// Get WiFi AP SSID
-  @Deprecated("This is will only work with < Android SDK 26. It could be made to work for >= Android SDK 29, request at https://github.com/alternadom/WiFiFlutter/issues/134.")
+  @Deprecated(
+      "This is will only work with < Android SDK 26. It could be made to work for >= Android SDK 29, request at https://github.com/alternadom/WiFiFlutter/issues/134.")
   static Future<String?> getWiFiAPSSID() async {
     final Map<String, String> htArguments = Map();
     String? sResult;
@@ -157,12 +168,14 @@ class WiFiForIoTPlugin {
   }
 
   /// Get WiFi AP's password
-  @Deprecated("This is will only work with < Android SDK 26. It could be made to work for >= Android SDK 29, request at https://github.com/alternadom/WiFiFlutter/issues/134.")
+  @Deprecated(
+      "This is will only work with < Android SDK 26. It could be made to work for >= Android SDK 29, request at https://github.com/alternadom/WiFiFlutter/issues/134.")
   static Future<String?> getWiFiAPPreSharedKey() async {
     final Map<String, String> htArguments = Map();
     String? sResult;
     try {
-      sResult = await _channel.invokeMethod('getWiFiAPPreSharedKey', htArguments);
+      sResult =
+          await _channel.invokeMethod('getWiFiAPPreSharedKey', htArguments);
     } on MissingPluginException catch (e) {
       print("MissingPluginException : ${e.toString()}");
     }
@@ -185,7 +198,9 @@ class WiFiForIoTPlugin {
 
   static Stream<List<WifiNetwork>> get onWifiScanResultReady {
     if (_onWifiScanResultReady == null) {
-      _onWifiScanResultReady = _eventChannel.receiveBroadcastStream().map((dynamic event) => WifiNetwork.parse(event));
+      _onWifiScanResultReady = _eventChannel
+          .receiveBroadcastStream()
+          .map((dynamic event) => WifiNetwork.parse(event));
     }
     return _onWifiScanResultReady!;
   }
@@ -294,7 +309,10 @@ class WiFiForIoTPlugin {
     return bResult != null && bResult;
   }
 
-  static Future<bool> findAndConnect(String ssid, {String? password, bool joinOnce = true, bool withInternet = false}) async {
+  static Future<bool> findAndConnect(String ssid,
+      {String? password,
+      bool joinOnce = true,
+      bool withInternet = false}) async {
     if (!await isEnabled()) {
       await setEnabled(true);
     }
@@ -387,7 +405,8 @@ class WiFiForIoTPlugin {
     final Map<String, String> htArguments = Map();
     int? iResult;
     try {
-      iResult = await _channel.invokeMethod('getCurrentSignalStrength', htArguments);
+      iResult =
+          await _channel.invokeMethod('getCurrentSignalStrength', htArguments);
     } on MissingPluginException catch (e) {
       print("MissingPluginException : ${e.toString()}");
     }
@@ -436,7 +455,8 @@ class WiFiForIoTPlugin {
     htArguments["ssid"] = ssid;
     bool? bResult;
     try {
-      bResult = await _channel.invokeMethod('isRegisteredWifiNetwork', htArguments);
+      bResult =
+          await _channel.invokeMethod('isRegisteredWifiNetwork', htArguments);
     } on MissingPluginException catch (e) {
       print("MissingPluginException : ${e.toString()}");
     }

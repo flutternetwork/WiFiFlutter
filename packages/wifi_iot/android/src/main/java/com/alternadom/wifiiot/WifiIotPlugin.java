@@ -321,7 +321,7 @@ public class WifiIotPlugin
       case "setWiFiAPSSID":
         setWiFiAPSSID(poCall, poResult);
         break;
-        
+
       case "isSSIDHidden":
         isSSIDHidden(poResult);
         break;
@@ -349,10 +349,7 @@ public class WifiIotPlugin
       String ssid = wifiConfiguration.SSID;
       poResult.success(ssid);
     } else {
-      poResult.error(
-          "Exception [getHostpotSSID]",
-          "Hotspot is not enabled.",
-          null);
+      poResult.error("Exception [getHostpotSSID]", "Hotspot is not enabled.", null);
     }
   }
 
@@ -362,10 +359,7 @@ public class WifiIotPlugin
       String pwd = wifiConfiguration.preSharedKey;
       poResult.success(pwd);
     } else {
-      poResult.error(
-          "Exception [getHostpotSSID]",
-          "Hotspot is not enabled.",
-          null);
+      poResult.error("Exception [getHostpotSSID]", "Hotspot is not enabled.", null);
     }
   }
 
