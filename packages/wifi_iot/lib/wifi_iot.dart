@@ -265,8 +265,41 @@ class WiFiForIoTPlugin {
     }
   }
 
+  /// Connect to the requested AP Wi-Fi network.
+  ///
+  /// @param [ssid] The SSID of the network to connect to.
+  ///   In case multiple networks share the same SSID, which one is connected to
+  ///   is undefined. Use the optional [bssid] parameters if you want to specify
+  ///   the network.
+  ///
+  /// @param [bssid] The BSSID (unique id) of the network to connect to.
+  ///   This allows to specify exactly which network to connect to.
+  ///   To obtain the BSSID, use [loadWifiList] (Android only) or save the value
+  ///   from a previous connection.
+  ///   On Android, specifying the BSSID will also result in no system message
+  ///   requesting permission being shown to the user.
+  ///   Does nothing on iOS.
+  ///
+  /// @param [password] The password of the network. Should only be null in case
+  ///   [security] NetworkSecurity.NONE is used.
+  ///
+  /// @param [security] The security type of the network. [NetworkSecurity.NONE]
+  ///   means no password is required.
+  ///   On Android, from version 10 (Q) onward, [NetworkSecurity.WEP] is no
+  ///   longer supported.
+  ///
+  /// @param [joinOnce] If true, the network will be removed on exit.
+  ///
+  /// @param [withInternet] Whether the connected network has internet access.
+  ///   Android only.
+  ///
+  /// @param [isHidden] Whether the SSID is hidden (not broadcasted by the AP).
+  ///
+  /// @returns True in case the requested network could be connected to, false
+  ///   otherwise.
   static Future<bool> connect(
     String ssid, {
+    String? bssid,
     String? password,
     NetworkSecurity security = NetworkSecurity.NONE,
     bool joinOnce = true,
@@ -278,6 +311,7 @@ class WiFiForIoTPlugin {
     try {
       bResult = await _channel.invokeMethod('connect', {
         "ssid": ssid.toString(),
+        "bssid": bssid?.toString(),
         "password": password?.toString(),
         "join_once": joinOnce,
         "with_internet": withInternet,
@@ -292,6 +326,7 @@ class WiFiForIoTPlugin {
 
   static Future<bool> registerWifiNetwork(
     String ssid, {
+    String? bssid,
     String? password,
     NetworkSecurity security = NetworkSecurity.NONE,
     bool isHidden = false,
@@ -301,6 +336,7 @@ class WiFiForIoTPlugin {
     try {
       await _channel.invokeMethod('registerWifiNetwork', {
         "ssid": ssid.toString(),
+        "bssid": bssid?.toString(),
         "password": password?.toString(),
         "security": serializeNetworkSecurityMap[security],
         "is_hidden": isHidden,
@@ -312,7 +348,8 @@ class WiFiForIoTPlugin {
   }
 
   static Future<bool> findAndConnect(String ssid,
-      {String? password,
+      {String? bssid,
+      String? password,
       bool joinOnce = true,
       bool withInternet = false}) async {
     if (!await isEnabled()) {
@@ -329,6 +366,7 @@ class WiFiForIoTPlugin {
     try {
       bResult = await _channel.invokeMethod('findAndConnect', {
         "ssid": ssid.toString(),
+        "bssid": bssid?.toString(),
         "password": password?.toString(),
         "join_once": joinOnce,
         "with_internet": withInternet,
