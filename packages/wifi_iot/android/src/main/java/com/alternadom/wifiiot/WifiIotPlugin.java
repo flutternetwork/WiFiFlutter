@@ -321,7 +321,6 @@ public class WifiIotPlugin
       case "setWiFiAPSSID":
         setWiFiAPSSID(poCall, poResult);
         break;
-
       case "isSSIDHidden":
         isSSIDHidden(poResult);
         break;
