@@ -1001,7 +1001,9 @@ public class WifiIotPlugin
   private void disconnect(Result poResult) {
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
       //noinspection deprecation
-      moWiFi.disconnect();
+      final boolean disconnected = moWiFi.disconnect();
+      poResult.success(disconnected);
+      return;
     } else {
       if (networkCallback != null) {
         final ConnectivityManager connectivityManager =
@@ -1010,11 +1012,13 @@ public class WifiIotPlugin
       } else {
         Log.e(
             WifiIotPlugin.class.getSimpleName(),
-            "Can't disconnect to WiFi, networkCallback is null.");
+            "Can't disconnect from WiFi, networkCallback is null.");
       }
 
       if (networkSuggestions != null) {
-        moWiFi.removeNetworkSuggestions(networkSuggestions);
+        final int networksRemoved = moWiFi.removeNetworkSuggestions(networkSuggestions);
+        poResult.success(networksRemoved == WifiManager.STATUS_NETWORK_SUGGESTIONS_SUCCESS);
+        return;
       }
     }
     poResult.success(null);

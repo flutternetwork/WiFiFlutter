@@ -220,16 +220,16 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
         if #available(iOS 11.0, *) {
             getSSID { (sSSID) in
                 if (sSSID != nil) {
-                    print("trying to disconnect from '\(sSSID!)'")
+                    print("Trying to disconnect from '\(sSSID!)'")
                     NEHotspotConfigurationManager.shared.removeConfiguration(forSSID: sSSID ?? "")
                     result(true)
                 } else {
-                    print("SSID is null")
+                    print("Not connected to a network")
                     result(false)
                 }
             }
         } else {
-            print("Not disconnected")
+            print("disconnect not available on this iOS version")
             result(nil)
         }
     }
