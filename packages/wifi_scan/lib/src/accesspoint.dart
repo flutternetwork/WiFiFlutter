@@ -1,4 +1,4 @@
-part of '../../wifi_scan.dart';
+part of '../wifi_scan.dart';
 
 /// WiFi standards.
 enum WiFiStandards {
@@ -77,7 +77,7 @@ WiFiChannelWidth _deserializeWiFiChannelWidth(int? channelWidthCode) {
 }
 
 /// Describes information about a detected access point.
-class WiFiNetwork {
+class WiFiAccessPoint {
   /// The network name.
   final String ssid;
 
@@ -134,7 +134,7 @@ class WiFiNetwork {
   /// ranging requests.
   final bool? is80211mcResponder;
 
-  WiFiNetwork._fromMap(Map map)
+  WiFiAccessPoint._fromMap(Map map)
       : ssid = map["ssid"],
         bssid = map["bssid"],
         capabilities = map["capabilities"],

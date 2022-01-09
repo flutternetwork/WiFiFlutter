@@ -75,7 +75,7 @@ class WifiScanPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
         channel.setMethodCallHandler(this)
         context = flutterPluginBinding.applicationContext
         wifi = context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
-        // TODO: handle wifi_scan/scannedNetworksEvent eventChannel
+        // TODO: handle wifi_scan/onScannedResultsAvailable eventChannel
     }
 
     override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
@@ -124,16 +124,16 @@ class WifiScanPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
                 }
             }
             "startScan" -> result.success(startScan())
-            "canGetScannedNetworks" -> {
+            "canGetScannedResults" -> {
                 val askPermission = call.argument<Boolean>("askPermissions") ?: return result.error(
                     ERROR_INVALID_ARGS,
                     "askPermissions argument is null",
                     null
                 )
-                when (val canCode = canGetScannedNetworks(askPermission)) {
+                when (val canCode = canGetScannedResults(askPermission)) {
                     ASK_FOR_LOC_PERM -> askForLocationPermission(result) { status ->
                         when (status) {
-                            LocPermStatus.GRANTED -> canGetScannedNetworks(askPermission = false)
+                            LocPermStatus.GRANTED -> canGetScannedResults(askPermission = false)
                             LocPermStatus.UPGRADE_TO_FINE -> CAN_GET_RESULTS_NO_LOC_PERM_UPGRADE_ACCURACY
                             LocPermStatus.DENIED -> CAN_GET_RESULTS_NO_LOC_PERM_DENIED
                         }
@@ -141,7 +141,7 @@ class WifiScanPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
                     else -> result.success(canCode)
                 }
             }
-            "scannedNetworks" -> result.success(scannedNetworks())
+            "getScannedResults" -> result.success(getScannedResults())
             else -> result.notImplemented()
         }
     }
@@ -230,7 +230,7 @@ class WifiScanPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
 
     private fun startScan(): Boolean = wifi!!.startScan()
 
-    private fun canGetScannedNetworks(askPermission: Boolean): Int {
+    private fun canGetScannedResults(askPermission: Boolean): Int {
         val hasLocPerm = hasLocationPermission()
         val isLocEnabled = isLocationEnabled()
         return when {
@@ -246,23 +246,23 @@ class WifiScanPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
     }
 
 
-    private fun scannedNetworks(): List<Map<String, Any?>> {
-        return wifi!!.scanResults.map { network ->
+    private fun getScannedResults(): List<Map<String, Any?>> {
+        return wifi!!.scanResults.map { ap ->
             mapOf(
-                "ssid" to network.SSID,
-                "bssid" to network.BSSID,
-                "capabilities" to network.capabilities,
-                "frequency" to network.frequency,
-                "level" to network.level,
-                "timestamp" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) network.timestamp else null,
-                "standard" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) network.wifiStandard else null,
-                "centerFrequency0" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) network.centerFreq0 else null,
-                "centerFrequency1" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) network.centerFreq1 else null,
-                "channelWidth" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) network.channelWidth else null,
-                "isPasspoint" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) network.isPasspointNetwork else null,
-                "operatorFriendlyName" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) network.operatorFriendlyName else null,
-                "venueName" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) network.venueName else null,
-                "is80211mcResponder" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) network.is80211mcResponder else null
+                "ssid" to ap.SSID,
+                "bssid" to ap.BSSID,
+                "capabilities" to ap.capabilities,
+                "frequency" to ap.frequency,
+                "level" to ap.level,
+                "timestamp" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) ap.timestamp else null,
+                "standard" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) ap.wifiStandard else null,
+                "centerFrequency0" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) ap.centerFreq0 else null,
+                "centerFrequency1" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) ap.centerFreq1 else null,
+                "channelWidth" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) ap.channelWidth else null,
+                "isPasspoint" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) ap.isPasspointNetwork else null,
+                "operatorFriendlyName" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) ap.operatorFriendlyName else null,
+                "venueName" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) ap.venueName else null,
+                "is80211mcResponder" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) ap.is80211mcResponder else null
             )
         }
     }

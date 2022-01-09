@@ -16,9 +16,11 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  bool shouldCheck = false;
+
   // TODO: integrate streamed results
   bool shouldStream = false;
-  List<WiFiNetwork> networks = <WiFiNetwork>[];
+  List<WiFiAccessPoint> accessPoints = <WiFiAccessPoint>[];
 
   void showSnackBar(BuildContext context, String message) {
     if (kDebugMode) print(message);
@@ -28,37 +30,49 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> _startScan(BuildContext context) async {
-    // check if can-startScan
-    final can = await WiFiScan.instance.canStartScan();
-    // if can-not, then show error
-    if (can != CanStartScan.yes) {
-      showSnackBar(context, "Cannot start scan: $can");
-      return;
+    if (shouldCheck) {
+      // check if can-startScan
+      final can = await WiFiScan.instance.canStartScan();
+      // if can-not, then show error
+      if (can != CanStartScan.yes) {
+        showSnackBar(context, "Cannot start scan: $can");
+        return;
+      }
     }
     showSnackBar(context, "startScan: ${await WiFiScan.instance.startScan()}");
   }
 
   Future<void> _fetchScannedResults(BuildContext context) async {
-    // check if can-getScannedResults
-    final can = await WiFiScan.instance.canGetScannedNetworks();
-    // if can-not, then show error
-    if (can != CanGetScannedNetworks.yes) {
-      showSnackBar(context, "Cannot get scanned results: $can");
-      networks = <WiFiNetwork>[];
-      return;
+    if (shouldCheck) {
+      // check if can-getScannedResults
+      final can = await WiFiScan.instance.canGetScannedResults();
+      // if can-not, then show error
+      if (can != CanGetScannedResults.yes) {
+        showSnackBar(context, "Cannot get scanned results: $can");
+        accessPoints = <WiFiAccessPoint>[];
+        return;
+      }
     }
-    networks = await WiFiScan.instance.scannedNetworks;
+    accessPoints = await WiFiScan.instance.getScannedResults();
   }
 
-  Widget _buildWifiNetworkList(BuildContext context) => networks.isEmpty
+  Widget _buildSwitch(String label, bool value, ValueChanged<bool> onChanged) =>
+      Row(
+        children: [
+          Text(label),
+          Switch(value: value, onChanged: onChanged),
+        ],
+      );
+
+  Widget _buildWifiNetworkList(BuildContext context) => accessPoints.isEmpty
       ? const Text("NO SCANNED RESULTS")
       : ListView.builder(
-          itemCount: networks.length,
+          itemCount: accessPoints.length,
           itemBuilder: (context, i) => ListTile(
-            title: Text(networks[i].ssid),
+            title: Text(accessPoints[i].ssid),
             onTap: () => showDialog(
               context: context,
-              builder: (context) => Text(networks[i].ssid),
+              builder: (context) => Text(accessPoints[i].ssid),
             ),
           ),
         );
@@ -77,6 +91,8 @@ class _MyAppState extends State<MyApp> {
               mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                _buildSwitch("SHOULD CHECK", shouldCheck,
+                    (v) => setState(() => shouldCheck = v)),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -93,15 +109,8 @@ class _MyAppState extends State<MyApp> {
                         setState(() {});
                       },
                     ),
-                    Row(
-                      children: [
-                        const Text("STREAM"),
-                        Switch(
-                          value: shouldStream,
-                          onChanged: (v) => setState(() => shouldStream = v),
-                        ),
-                      ],
-                    )
+                    _buildSwitch("STREAM", shouldStream,
+                        (v) => setState(() => shouldStream = v)),
                   ],
                 ),
                 const Divider(),
