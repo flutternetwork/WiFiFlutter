@@ -23,12 +23,13 @@ void main() {
   });
 
   test('canStartScan', () async {
-    final canCodes = [0, 1, 2, 3, 4];
+    final canCodes = [0, 1, 2, 3, 4, 5];
     final enumValues = [
       CanStartScan.notSupported,
       CanStartScan.yes,
       CanStartScan.noLocationPermissionRequired,
       CanStartScan.noLocationPermissionDenied,
+      CanStartScan.noLocationPermissionUpgradeAccuracy,
       CanStartScan.noLocationServiceDisabled,
     ];
     for (int i = 0; i < canCodes.length; i++) {
@@ -37,7 +38,7 @@ void main() {
     }
 
     // -ve test
-    final badCanCodes = [null, -1, 5, 6];
+    final badCanCodes = [null, -1, 6, 7];
     for (int i = 0; i < badCanCodes.length; i++) {
       mockHandlers["canStartScan"] = (_) => badCanCodes[i];
       expect(() async => await WiFiScan.instance.canStartScan(),
@@ -51,12 +52,13 @@ void main() {
   });
 
   test("canGetScannedNetworks", () async {
-    final canCodes = [0, 1, 2, 3, 4];
+    final canCodes = [0, 1, 2, 3, 4, 5];
     final enumValues = [
       CanGetScannedNetworks.notSupported,
       CanGetScannedNetworks.yes,
       CanGetScannedNetworks.noLocationPermissionRequired,
       CanGetScannedNetworks.noLocationPermissionDenied,
+      CanGetScannedNetworks.noLocationPermissionUpgradeAccuracy,
       CanGetScannedNetworks.noLocationServiceDisabled,
     ];
     for (int i = 0; i < canCodes.length; i++) {
@@ -65,7 +67,7 @@ void main() {
     }
 
     // -ve test
-    final badCanCodes = [null, -1, 5, 6];
+    final badCanCodes = [null, -1, 6, 7];
     for (int i = 0; i < badCanCodes.length; i++) {
       mockHandlers["canGetScannedNetworks"] = (_) => badCanCodes[i];
       expect(() async => await WiFiScan.instance.canGetScannedNetworks(),

@@ -18,6 +18,11 @@ enum CanStartScan {
   /// Need to ask user to manually allow from settings.
   noLocationPermissionDenied,
 
+  /// Location permission accuracy needs to be upgraded.
+  ///
+  /// Need to ask user to manually allow from settings.
+  noLocationPermissionUpgradeAccuracy,
+
   /// Location service needs to be enabled.
   noLocationServiceDisabled,
 }
@@ -33,6 +38,8 @@ CanStartScan _deserializeCanStartScan(int? canCode) {
     case 3:
       return CanStartScan.noLocationPermissionDenied;
     case 4:
+      return CanStartScan.noLocationPermissionUpgradeAccuracy;
+    case 5:
       return CanStartScan.noLocationServiceDisabled;
   }
   throw UnsupportedError("$canCode cannot be serialized to CanStartScan");
@@ -56,6 +63,11 @@ enum CanGetScannedNetworks {
   /// Need to ask user to manually allow from settings.
   noLocationPermissionDenied,
 
+  /// Location permission accuracy needs to be upgraded.
+  ///
+  /// Need to ask user to manually allow from settings.
+  noLocationPermissionUpgradeAccuracy,
+
   /// Location service needs to be enabled.
   noLocationServiceDisabled,
 }
@@ -71,6 +83,8 @@ CanGetScannedNetworks _deserializeCanGetScannedNetworks(int? canCode) {
     case 3:
       return CanGetScannedNetworks.noLocationPermissionDenied;
     case 4:
+      return CanGetScannedNetworks.noLocationPermissionUpgradeAccuracy;
+    case 5:
       return CanGetScannedNetworks.noLocationServiceDisabled;
   }
   throw UnsupportedError(
