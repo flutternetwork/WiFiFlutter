@@ -180,9 +180,9 @@ class _MyAppState extends State<MyApp> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     _buildSwitch("SHOULD CHECK", shouldCheck,
-                            (v) => setState(() => shouldCheck = v)),
+                        (v) => setState(() => shouldCheck = v)),
                     _buildSwitch("STREAM", shouldStream,
-                            (v) => setState(() => shouldStream = v)),
+                        (v) => setState(() => shouldStream = v)),
                   ],
                 ),
                 const Divider(),
