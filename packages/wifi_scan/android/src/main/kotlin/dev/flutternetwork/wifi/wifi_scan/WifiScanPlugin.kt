@@ -2,7 +2,10 @@ package dev.flutternetwork.wifi.wifi_scan
 
 import android.Manifest
 import android.app.Activity
+import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.net.wifi.WifiManager
@@ -14,6 +17,8 @@ import androidx.core.location.LocationManagerCompat
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
+import io.flutter.plugin.common.EventChannel
+import io.flutter.plugin.common.EventChannel.EventSink
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
@@ -60,26 +65,48 @@ enum class LocPermStatus {
  * - https://developer.android.com/training/location/permissions
  * */
 class WifiScanPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
-    PluginRegistry.RequestPermissionsResultListener {
-    private lateinit var channel: MethodChannel
+    PluginRegistry.RequestPermissionsResultListener, EventChannel.StreamHandler {
     private lateinit var context: Context
     private var activity: Activity? = null
     private var wifi: WifiManager? = null
+    private var wifiScanReceiver: BroadcastReceiver? = null
     private val requestPermissionCookie = mutableMapOf<Int, PermissionResultCallback>()
     private val locationPermissionCoarse = arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION)
     private val locationPermissionFine = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
     private val locationPermissionBoth = locationPermissionCoarse + locationPermissionFine
 
+    // plugin interfaces
+    private lateinit var channel: MethodChannel
+    private lateinit var eventChannel: EventChannel
+    // single sink - to send
+    private var eventSink: EventSink? = null
+
     override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-        channel = MethodChannel(flutterPluginBinding.binaryMessenger, "wifi_scan")
-        channel.setMethodCallHandler(this)
         context = flutterPluginBinding.applicationContext
         wifi = context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
-        // TODO: handle wifi_scan/onScannedResultsAvailable eventChannel
+        // set broadcast receiver - listening for new scannedResults
+        wifiScanReceiver =  object : BroadcastReceiver() {
+            override fun onReceive(context: Context, intent: Intent) {
+                if (intent.getBooleanExtra(WifiManager.EXTRA_RESULTS_UPDATED, false)) {
+                    eventSink?.success(getScannedResults())
+                }
+            }
+        }
+        val intentFilter = IntentFilter()
+        intentFilter.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)
+        context.registerReceiver(wifiScanReceiver, intentFilter)
+
+        // set Flutter channels - 1 for method, 1 for event
+        channel = MethodChannel(flutterPluginBinding.binaryMessenger, "wifi_scan")
+        channel.setMethodCallHandler(this)
+        eventChannel = EventChannel(flutterPluginBinding.binaryMessenger,
+            "wifi_scan/onScannedResultsAvailable")
+        eventChannel.setStreamHandler(this)
     }
 
     override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
         channel.setMethodCallHandler(null)
+        eventChannel.setStreamHandler(null)
         wifi = null
     }
 
@@ -100,6 +127,17 @@ class WifiScanPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
 
     override fun onDetachedFromActivity() {
         activity = null
+    }
+
+    override fun onListen(arguments: Any?, events: EventChannel.EventSink?) {
+        eventSink = events
+        // put getScannedResults in sink - to start with
+        eventSink?.success(getScannedResults())
+    }
+
+    override fun onCancel(arguments: Any?) {
+        eventSink?.endOfStream()
+        eventSink = null
     }
 
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
@@ -157,7 +195,7 @@ class WifiScanPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
     }
 
     /**
-     * ACCESS_FINE_LOCATION required for: SDK >= Q[29] or tSDK >= Q[29]
+     * ACCESS_FINE_LOCATION required for: SDK >= Q[29] and tSDK >= Q[29]
      */
     private fun requiresFineLocation(): Boolean =
         Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && context.applicationInfo.targetSdkVersion >= Build.VERSION_CODES.Q
@@ -231,13 +269,10 @@ class WifiScanPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
     private fun startScan(): Boolean = wifi!!.startScan()
 
     private fun canGetScannedResults(askPermission: Boolean): Int {
+        // ACCESS_WIFI_STATE & ACCESS_x_LOCATION & "Location enabled"
         val hasLocPerm = hasLocationPermission()
         val isLocEnabled = isLocationEnabled()
         return when {
-            // for SDK <= O_MR1[27]: CHANGE_WIFI_STATE is enough
-            // for SDK == P[28]: Not in guide, should be same as P[27]
-            Build.VERSION.SDK_INT <= Build.VERSION_CODES.P -> CAN_GET_RESULTS_YES
-            // for SDK >= Q[29]: ACCESS_WIFI_STATE & ACCESS_x_LOCATION & "Location enabled"
             hasLocPerm && isLocEnabled -> CAN_GET_RESULTS_YES
             hasLocPerm -> CAN_GET_RESULTS_NO_LOC_DISABLED
             askPermission -> ASK_FOR_LOC_PERM
@@ -246,24 +281,22 @@ class WifiScanPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
     }
 
 
-    private fun getScannedResults(): List<Map<String, Any?>> {
-        return wifi!!.scanResults.map { ap ->
-            mapOf(
-                "ssid" to ap.SSID,
-                "bssid" to ap.BSSID,
-                "capabilities" to ap.capabilities,
-                "frequency" to ap.frequency,
-                "level" to ap.level,
-                "timestamp" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) ap.timestamp else null,
-                "standard" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) ap.wifiStandard else null,
-                "centerFrequency0" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) ap.centerFreq0 else null,
-                "centerFrequency1" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) ap.centerFreq1 else null,
-                "channelWidth" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) ap.channelWidth else null,
-                "isPasspoint" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) ap.isPasspointNetwork else null,
-                "operatorFriendlyName" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) ap.operatorFriendlyName else null,
-                "venueName" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) ap.venueName else null,
-                "is80211mcResponder" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) ap.is80211mcResponder else null
-            )
-        }
+    private fun getScannedResults(): List<Map<String, Any?>> = wifi!!.scanResults.map { ap ->
+        mapOf(
+            "ssid" to ap.SSID,
+            "bssid" to ap.BSSID,
+            "capabilities" to ap.capabilities,
+            "frequency" to ap.frequency,
+            "level" to ap.level,
+            "timestamp" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) ap.timestamp else null,
+            "standard" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) ap.wifiStandard else null,
+            "centerFrequency0" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) ap.centerFreq0 else null,
+            "centerFrequency1" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) ap.centerFreq1 else null,
+            "channelWidth" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) ap.channelWidth else null,
+            "isPasspoint" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) ap.isPasspointNetwork else null,
+            "operatorFriendlyName" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) ap.operatorFriendlyName else null,
+            "venueName" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) ap.venueName else null,
+            "is80211mcResponder" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) ap.is80211mcResponder else null
+        )
     }
 }

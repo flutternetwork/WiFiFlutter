@@ -91,7 +91,20 @@ class WiFiAccessPoint {
   /// WiFi standard supported by the access poit.
   final WiFiStandards standard;
 
-  /// The detected signal level in dBm, also known as the RSSI.
+  /// The detected signal strength in dBm, also known as the RSSI.
+  ///
+  /// The value is in negative integer, the greater the value, the stronger the
+  /// signal. The closer the value is to 0, the stronger the received signal
+  /// has been.
+  ///
+  /// Following data can be used to determine signal quality:
+  /// -30 dBm = Excellent
+  /// -67 dBm = Very Good
+  /// -70 dBm = Okay
+  /// -80 dBm = Not Good
+  /// -90 dBm = Unusable
+  /// For more info - https://www.securedgenetworks.com/blog/wifi-signal-strength.
+  // TODO: rename to rssi or signalStrength - and give additional enum for level
   final int level;
 
   /// Channel bandwidth of the access point.
