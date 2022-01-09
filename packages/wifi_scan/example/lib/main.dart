@@ -17,7 +17,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   bool shouldCheck = true;
-  bool shouldStream = false;
+  bool shouldStream = true;
   List<WiFiAccessPoint> accessPoints = <WiFiAccessPoint>[];
 
   void showSnackBar(BuildContext context, String message) {
@@ -127,13 +127,13 @@ class _MyAppState extends State<MyApp> {
             if (snapshotCan.connectionState != ConnectionState.done) {
               return const CircularProgressIndicator();
             }
+            // return without stream - if can't
+            if (!(snapshotCan.data ?? false)) return _buildWifiApList(context);
             return StreamBuilder<List<WiFiAccessPoint>>(
               stream: WiFiScan.instance.onScannedResultsAvailable,
               builder: (context, snapshot) {
-                if (snapshotCan.data ?? false) {
-                  // update accesspoint if available
-                  accessPoints = snapshot.data ?? accessPoints;
-                }
+                // update accesspoint if available
+                accessPoints = snapshot.data ?? accessPoints;
                 return _buildWifiApList(context);
               },
             );
@@ -154,16 +154,9 @@ class _MyAppState extends State<MyApp> {
               mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildSwitch("SHOULD CHECK", shouldCheck,
-                    (v) => setState(() => shouldCheck = v)),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    ElevatedButton.icon(
-                      icon: const Icon(Icons.perm_scan_wifi),
-                      label: const Text('SCAN'),
-                      onPressed: () => _startScan(context),
-                    ),
                     ElevatedButton.icon(
                       icon: const Icon(Icons.refresh),
                       label: const Text('GET'),
@@ -175,8 +168,21 @@ class _MyAppState extends State<MyApp> {
                         }
                       },
                     ),
+                    ElevatedButton.icon(
+                      icon: const Icon(Icons.perm_scan_wifi),
+                      label: const Text('SCAN'),
+                      onPressed: () => _startScan(context),
+                    ),
+                  ],
+                ),
+                const Divider(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    _buildSwitch("SHOULD CHECK", shouldCheck,
+                            (v) => setState(() => shouldCheck = v)),
                     _buildSwitch("STREAM", shouldStream,
-                        (v) => setState(() => shouldStream = v)),
+                            (v) => setState(() => shouldStream = v)),
                   ],
                 ),
                 const Divider(),
