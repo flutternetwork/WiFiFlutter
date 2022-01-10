@@ -120,6 +120,7 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
 
     private func connect(call: FlutterMethodCall, result: @escaping FlutterResult) {
         let sSSID = (call.arguments as? [String : AnyObject])?["ssid"] as! String
+        let _ = (call.arguments as? [String : AnyObject])?["bssid"] as? String? // not used
         let sPassword = (call.arguments as? [String : AnyObject])?["password"] as! String?
         let bJoinOnce = (call.arguments as? [String : AnyObject])?["join_once"] as! Bool?
         let sSecurity = (call.arguments as? [String : AnyObject])?["security"] as! String?
