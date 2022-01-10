@@ -108,6 +108,8 @@ class WifiScanPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
         channel.setMethodCallHandler(null)
         eventChannel.setStreamHandler(null)
         wifi = null
+        context.unregisterReceiver(wifiScanReceiver)
+        wifiScanReceiver = null
     }
 
 
