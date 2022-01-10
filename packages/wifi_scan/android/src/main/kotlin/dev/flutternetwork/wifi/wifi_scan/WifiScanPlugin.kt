@@ -133,7 +133,7 @@ class WifiScanPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
         activity = null
     }
 
-    override fun onListen(arguments: Any?, events: EventChannel.EventSink?) {
+    override fun onListen(arguments: Any?, events: EventSink?) {
         eventSink = events
         // put getScannedResults in sink - to start with
         eventSink?.success(getScannedResults())
