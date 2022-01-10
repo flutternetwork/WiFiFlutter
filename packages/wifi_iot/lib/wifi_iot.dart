@@ -226,14 +226,16 @@ class WiFiForIoTPlugin {
     return await WiFiForIoTPlugin.onWifiScanResultReady.first;
   }
 
-  static Future<bool?> forceWifiUsage(bool useWifi) async {
+  static Future<bool> forceWifiUsage(bool useWifi) async {
     final Map<String, bool> htArguments = Map();
     htArguments["useWifi"] = useWifi;
+    bool? result;
     try {
-      return await _channel.invokeMethod('forceWifiUsage', htArguments);
+      result = await _channel.invokeMethod('forceWifiUsage', htArguments);
     } on MissingPluginException catch (e) {
       print("MissingPluginException : ${e.toString()}");
     }
+    return result ?? false;
   }
 
   /// Returns whether the WiFi is enabled
@@ -348,13 +350,19 @@ class WiFiForIoTPlugin {
     return bResult != null && bResult;
   }
 
-  static disconnect() async {
+  /// Disconnect from the currently connected network.
+  ///
+  /// @returns True if successfully disconnected from the network.
+  /// False in case of errors or if no network is currently connected.
+  static Future<bool> disconnect() async {
     final Map<String, bool> htArguments = Map();
+    bool? bResult;
     try {
-      await _channel.invokeMethod('disconnect', htArguments);
+      bResult = await _channel.invokeMethod('disconnect', htArguments);
     } on MissingPluginException catch (e) {
       print("MissingPluginException : ${e.toString()}");
     }
+    return bResult ?? false;
   }
 
   static Future<String?> getSSID() async {
