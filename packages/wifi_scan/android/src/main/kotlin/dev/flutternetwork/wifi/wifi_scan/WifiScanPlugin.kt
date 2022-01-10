@@ -10,6 +10,7 @@ import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.net.wifi.WifiManager
 import android.os.Build
+import android.util.Log
 import androidx.annotation.NonNull
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -66,6 +67,7 @@ enum class LocPermStatus {
  * */
 class WifiScanPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
     PluginRegistry.RequestPermissionsResultListener, EventChannel.StreamHandler {
+    private val logTag = javaClass.simpleName
     private lateinit var context: Context
     private var activity: Activity? = null
     private var wifi: WifiManager? = null
@@ -172,11 +174,14 @@ class WifiScanPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
                 )
                 when (val canCode = canGetScannedResults(askPermission)) {
                     ASK_FOR_LOC_PERM -> askForLocationPermission(result) { status ->
-                        when (status) {
-                            LocPermStatus.GRANTED -> canGetScannedResults(askPermission = false)
-                            LocPermStatus.UPGRADE_TO_FINE -> CAN_GET_RESULTS_NO_LOC_PERM_UPGRADE_ACCURACY
-                            LocPermStatus.DENIED -> CAN_GET_RESULTS_NO_LOC_PERM_DENIED
-                        }
+                        Log.d(logTag, "canGetScannedResults -> askPerm: status: $status")
+                        result.success(
+                            when (status) {
+                                LocPermStatus.GRANTED -> canGetScannedResults(askPermission = false)
+                                LocPermStatus.UPGRADE_TO_FINE -> CAN_GET_RESULTS_NO_LOC_PERM_UPGRADE_ACCURACY
+                                LocPermStatus.DENIED -> CAN_GET_RESULTS_NO_LOC_PERM_DENIED
+                            }
+                        )
                     }
                     else -> result.success(canCode)
                 }
@@ -190,7 +195,9 @@ class WifiScanPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
     override fun onRequestPermissionsResult(
         requestCode: Int, permissions: Array<out String>?, grantResults: IntArray?
     ): Boolean {
+        Log.d(logTag, "onRequestPermissionsResult: arguments ($requestCode, $permissions, $grantResults)")
         if (grantResults != null) {
+            Log.d(logTag, "requestPermissionCookie: $requestPermissionCookie")
             return requestPermissionCookie[requestCode]?.invoke(grantResults) ?: false
         }
         return false
@@ -231,6 +238,7 @@ class WifiScanPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
         val permissionCode = 6560000 + Random.Default.nextInt(10000)
         requestPermissionCookie[permissionCode] = { grantArray ->
             // invoke callback with proper status
+            Log.d(logTag, "permissionResultCallback: args($grantArray)")
             callback.invoke(
                 when {
                     // GRANTED: if all granted
