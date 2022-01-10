@@ -1,3 +1,9 @@
+## 0.3.13
+
+ - **FIX**: `forceWifiUsage` for iOS not returning any result (#213).
+ - **FEAT**: add a boolean return value to disconnect (#218).
+ - **FEAT**: allow to specify the bssid for registering and connecting network (#217).
+
 ## 0.3.12 2021-12-17
 
  - **FIX**: `serializeNetworkSecurityMap` not mapping to null (#212).
