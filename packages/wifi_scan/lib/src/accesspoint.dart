@@ -1,4 +1,4 @@
-part of '../../wifi_scan.dart';
+part of '../wifi_scan.dart';
 
 /// WiFi standards.
 enum WiFiStandards {
@@ -77,7 +77,7 @@ WiFiChannelWidth _deserializeWiFiChannelWidth(int? channelWidthCode) {
 }
 
 /// Describes information about a detected access point.
-class WiFiNetwork {
+class WiFiAccessPoint {
   /// The network name.
   final String ssid;
 
@@ -91,7 +91,20 @@ class WiFiNetwork {
   /// WiFi standard supported by the access poit.
   final WiFiStandards standard;
 
-  /// The detected signal level in dBm, also known as the RSSI.
+  /// The detected signal strength in dBm, also known as the RSSI.
+  ///
+  /// The value is in negative integer, the greater the value, the stronger the
+  /// signal. The closer the value is to 0, the stronger the received signal
+  /// has been.
+  ///
+  /// Following data can be used to determine signal quality:
+  /// -30 dBm = Excellent
+  /// -67 dBm = Very Good
+  /// -70 dBm = Okay
+  /// -80 dBm = Not Good
+  /// -90 dBm = Unusable
+  /// For more info - https://www.securedgenetworks.com/blog/wifi-signal-strength.
+  // TODO: rename to rssi or signalStrength - and give additional enum for level
   final int level;
 
   /// Channel bandwidth of the access point.
@@ -134,7 +147,7 @@ class WiFiNetwork {
   /// ranging requests.
   final bool? is80211mcResponder;
 
-  WiFiNetwork._fromMap(Map map)
+  WiFiAccessPoint._fromMap(Map map)
       : ssid = map["ssid"],
         bssid = map["bssid"],
         capabilities = map["capabilities"],
