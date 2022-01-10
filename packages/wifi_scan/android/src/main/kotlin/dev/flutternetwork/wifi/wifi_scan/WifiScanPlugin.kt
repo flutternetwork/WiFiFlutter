@@ -50,13 +50,6 @@ private const val CAN_GET_RESULTS_NO_LOC_DISABLED = 5
 /** Magic codes */
 private const val ASK_FOR_LOC_PERM = -1
 
-typealias PermissionAskCallback = (status: LocPermStatus) -> Any
-typealias PermissionResultCallback = (grantResults: IntArray) -> Boolean
-
-enum class LocPermStatus {
-    GRANTED, UPGRADE_TO_FINE, DENIED
-}
-
 /** WifiScanPlugin
  *
  * Useful links:
@@ -72,7 +65,7 @@ class WifiScanPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
     private var activity: Activity? = null
     private var wifi: WifiManager? = null
     private var wifiScanReceiver: BroadcastReceiver? = null
-    private val requestPermissionCookie = mutableMapOf<Int, PermissionResultCallback>()
+    private val requestPermissionCookie = mutableMapOf<Int, (grantResults: IntArray) -> Boolean>()
     private val locationPermissionCoarse = arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION)
     private val locationPermissionFine = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
     private val locationPermissionBoth = locationPermissionCoarse + locationPermissionFine
@@ -153,14 +146,25 @@ class WifiScanPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
                     null
                 )
                 when (val canCode = canStartScan(askPermission)) {
-                    ASK_FOR_LOC_PERM -> askForLocationPermission(result) { status ->
-                        result.success(
-                            when (status) {
-                                LocPermStatus.GRANTED -> canStartScan(askPermission = false)
-                                LocPermStatus.UPGRADE_TO_FINE -> CAN_START_SCAN_NO_LOC_PERM_UPGRADE_ACCURACY
-                                LocPermStatus.DENIED -> CAN_START_SCAN_NO_LOC_PERM_DENIED
+                    ASK_FOR_LOC_PERM -> askForLocationPermission {askResult ->
+                        when (askResult) {
+                            AskLocPermResult.GRANTED -> {
+                                result.success(canStartScan(askPermission = false))
                             }
-                        )
+                            AskLocPermResult.UPGRADE_TO_FINE -> {
+                                result.success(CAN_START_SCAN_NO_LOC_PERM_UPGRADE_ACCURACY)
+                            }
+                            AskLocPermResult.DENIED -> {
+                                result.success(CAN_START_SCAN_NO_LOC_PERM_DENIED)
+                            }
+                            AskLocPermResult.ERROR_NO_ACTIVITY -> {
+                                result.error(
+                                    ERROR_NULL_ACTIVITY,
+                                    "Cannot ask for location permission.",
+                                    "Looks like called from non-Activity."
+                                )
+                            }
+                        }
                     }
                     else -> result.success(canCode)
                 }
@@ -173,15 +177,25 @@ class WifiScanPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
                     null
                 )
                 when (val canCode = canGetScannedResults(askPermission)) {
-                    ASK_FOR_LOC_PERM -> askForLocationPermission(result) { status ->
-                        Log.d(logTag, "canGetScannedResults -> askPerm: status: $status")
-                        result.success(
-                            when (status) {
-                                LocPermStatus.GRANTED -> canGetScannedResults(askPermission = false)
-                                LocPermStatus.UPGRADE_TO_FINE -> CAN_GET_RESULTS_NO_LOC_PERM_UPGRADE_ACCURACY
-                                LocPermStatus.DENIED -> CAN_GET_RESULTS_NO_LOC_PERM_DENIED
+                    ASK_FOR_LOC_PERM -> askForLocationPermission { askResult ->
+                        when (askResult) {
+                            AskLocPermResult.GRANTED -> {
+                                result.success(canGetScannedResults(askPermission = false))
                             }
-                        )
+                            AskLocPermResult.UPGRADE_TO_FINE -> {
+                                result.success(CAN_GET_RESULTS_NO_LOC_PERM_UPGRADE_ACCURACY)
+                            }
+                            AskLocPermResult.DENIED -> {
+                                result.success(CAN_GET_RESULTS_NO_LOC_PERM_DENIED)
+                            }
+                            AskLocPermResult.ERROR_NO_ACTIVITY -> {
+                                result.error(
+                                    ERROR_NULL_ACTIVITY,
+                                    "Cannot ask for location permission.",
+                                    "Looks like called from non-Activity."
+                                )
+                            }
+                        }
                     }
                     else -> result.success(canCode)
                 }
@@ -220,11 +234,13 @@ class WifiScanPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
         }
     }
 
-    private fun askForLocationPermission(result: Result, callback: PermissionAskCallback) {
+    private enum class AskLocPermResult {
+        GRANTED, UPGRADE_TO_FINE, DENIED, ERROR_NO_ACTIVITY
+    }
+
+    private fun askForLocationPermission(callback: (AskLocPermResult) -> Unit) {
         // check if has activity - return error if null
-        if (activity == null) return result.error(ERROR_NULL_ACTIVITY,
-            "Cannot ask for location permission.",
-            "Looks like called from non-Activity.")
+        if (activity == null) return callback.invoke(AskLocPermResult.ERROR_NO_ACTIVITY)
         // make permissions
         val requiresFine = requiresFineLocation()
         // - for SDK > R[30] - cannot only ask for FINE
@@ -237,19 +253,19 @@ class WifiScanPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
         // request permission - add result-handler in requestPermissionCookie
         val permissionCode = 6560000 + Random.Default.nextInt(10000)
         requestPermissionCookie[permissionCode] = { grantArray ->
-            // invoke callback with proper status
+            // invoke callback with proper askResult
             Log.d(logTag, "permissionResultCallback: args($grantArray)")
             callback.invoke(
                 when {
                     // GRANTED: if all granted
                     grantArray.all { it == PackageManager.PERMISSION_GRANTED } -> {
-                        LocPermStatus.GRANTED
+                        AskLocPermResult.GRANTED
                     }
                     // UPGRADE_TO_FINE: if requiresFineButAskBoth and COARSE granted
                     requiresFineButAskBoth && grantArray.first() == PackageManager.PERMISSION_GRANTED -> {
-                        LocPermStatus.UPGRADE_TO_FINE
+                        AskLocPermResult.UPGRADE_TO_FINE
                     }
-                    else -> LocPermStatus.DENIED
+                    else -> AskLocPermResult.DENIED
                 }
             )
             true
