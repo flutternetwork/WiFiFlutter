@@ -350,13 +350,19 @@ class WiFiForIoTPlugin {
     return bResult != null && bResult;
   }
 
-  static disconnect() async {
+  /// Disconnect from the currently connected network.
+  ///
+  /// @returns True if successfully disconnected from the network.
+  /// False in case of errors or if no network is currently connected.
+  static Future<bool> disconnect() async {
     final Map<String, bool> htArguments = Map();
+    bool? bResult;
     try {
-      await _channel.invokeMethod('disconnect', htArguments);
+      bResult = await _channel.invokeMethod('disconnect', htArguments);
     } on MissingPluginException catch (e) {
       print("MissingPluginException : ${e.toString()}");
     }
+    return bResult ?? false;
   }
 
   static Future<String?> getSSID() async {
