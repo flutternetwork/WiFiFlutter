@@ -1,5 +1,8 @@
 import Flutter
 
+// Since no API for scanning or getting scanned results in iOS.
+// This class is just a "dummy" implementation with sane returns.
+// It is maintained to avoid `MissingPluginException`.
 public class SwiftWifiScanPlugin: NSObject, FlutterPlugin {
   public static func register(with registrar: FlutterPluginRegistrar) {
     let instance = SwiftWifiScanPlugin()
