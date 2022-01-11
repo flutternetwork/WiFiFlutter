@@ -270,7 +270,7 @@ class WiFiForIoTPlugin {
   /// @param [ssid] The SSID of the network to connect to.
   ///   In case multiple networks share the same SSID, which one is connected to
   ///   is undefined. Use the optional [bssid] parameters if you want to specify
-  ///   the network.
+  ///   the network. The SSID must be between 1 and 32 characters.
   ///
   /// @param [bssid] The BSSID (unique id) of the network to connect to.
   ///   This allows to specify exactly which network to connect to.
@@ -306,6 +306,18 @@ class WiFiForIoTPlugin {
     bool withInternet = false,
     bool isHidden = false,
   }) async {
+    // https://en.wikipedia.org/wiki/Service_set_(802.11_network)
+    // According to IEEE Std 802.11, a SSID must be between 0 and 32 bytes
+    // either with no encoding or UTF8-encoded.
+    // We do not accept 0 length SSID here since this is a probe request
+    // (wildcard SSID), and thus does not have meaning in the context of
+    // connecting to a specific network.
+    // TODO: support any binary sequence as required instead of just strings.
+    if (ssid.length == 0 || ssid.length > 32) {
+      print("Invalid SSID");
+      return false;
+    }
+
     if (!Platform.isIOS && !await isEnabled()) await setEnabled(true);
     bool? bResult;
     try {
@@ -321,9 +333,36 @@ class WiFiForIoTPlugin {
     } on MissingPluginException catch (e) {
       print("MissingPluginException : ${e.toString()}");
     }
-    return bResult != null && bResult;
+    return bResult ?? false;
   }
 
+  /// Register a network with the system in the device's wireless networks.
+  /// Android only.
+  ///
+  /// @param [ssid] The SSID of the network to register.
+  ///   The SSID must be between 1 and 32 characters.
+  ///
+  /// @param [bssid] The BSSID (unique id) of the network to register.
+  ///   This allows to specify exactly which network to register in case of
+  ///   duplicated SSID.
+  ///   To obtain the BSSID, use [loadWifiList] (Android only) or save the value
+  ///   from a previous connection.
+  ///   On Android, specifying the BSSID will also result in no system message
+  ///   requesting permission being shown to the user when connecting.
+  ///   Does nothing on iOS.
+  ///
+  /// @param [password] The password of the network. Should only be null in case
+  ///   [security] NetworkSecurity.NONE is used.
+  ///
+  /// @param [security] The security type of the network. [NetworkSecurity.NONE]
+  ///   means no password is required.
+  ///   On Android, from version 10 (Q) onward, [NetworkSecurity.WEP] is no
+  ///   longer supported.
+  ///
+  /// @param [isHidden] Whether the SSID is hidden (not broadcasted by the AP).
+  ///
+  /// @returns True in case the requested network could be registered, false
+  ///   otherwise.
   static Future<bool> registerWifiNetwork(
     String ssid, {
     String? bssid,
@@ -331,6 +370,18 @@ class WiFiForIoTPlugin {
     NetworkSecurity security = NetworkSecurity.NONE,
     bool isHidden = false,
   }) async {
+    // https://en.wikipedia.org/wiki/Service_set_(802.11_network)
+    // According to IEEE Std 802.11, a SSID must be between 0 and 32 bytes
+    // either with no encoding or UTF8-encoded.
+    // We do not accept 0 length SSID here since this is a probe request
+    // (wildcard SSID), and thus does not have meaning in the context of
+    // connecting to a specific network.
+    // TODO: support any binary sequence as required instead of just strings.
+    if (ssid.length == 0 || ssid.length > 32) {
+      print("Invalid SSID");
+      return false;
+    }
+
     if (!Platform.isIOS && !await isEnabled()) await setEnabled(true);
     bool? bResult;
     try {
@@ -344,24 +395,56 @@ class WiFiForIoTPlugin {
     } on MissingPluginException catch (e) {
       print("MissingPluginException : ${e.toString()}");
     }
-    return bResult != null && bResult;
+    return bResult ?? false;
   }
 
+  /// Scan for Wi-Fi networks and connect to the requested AP Wi-Fi network if
+  /// found.
+  /// Android only.
+  ///
+  /// @param [ssid] The SSID of the network to connect to.
+  ///   In case multiple networks share the same SSID, which one is connected to
+  ///   is undefined. Use the optional [bssid] parameters if you want to specify
+  ///   the network. The SSID must be between 1 and 32 characters.
+  ///
+  /// @param [bssid] The BSSID (unique id) of the network to connect to.
+  ///   This allows to specify exactly which network to connect to.
+  ///   To obtain the BSSID, use [loadWifiList] (Android only) or save the value
+  ///   from a previous connection.
+  ///   On Android, specifying the BSSID will also result in no system message
+  ///   requesting permission being shown to the user.
+  ///   Does nothing on iOS.
+  ///
+  /// @param [password] The password of the network. Should only be null in case
+  ///   the network is not password protected.
+  ///
+  /// @param [joinOnce] If true, the network will be removed on exit.
+  ///
+  /// @param [withInternet] Whether the connected network has internet access.
+  ///   Android only.
+  ///
+  /// @returns True in case the requested network could be connected to, false
+  ///   otherwise.
   static Future<bool> findAndConnect(String ssid,
       {String? bssid,
       String? password,
       bool joinOnce = true,
       bool withInternet = false}) async {
+    // https://en.wikipedia.org/wiki/Service_set_(802.11_network)
+    // According to IEEE Std 802.11, a SSID must be between 0 and 32 bytes
+    // either with no encoding or UTF8-encoded.
+    // We do not accept 0 length SSID here since this is a probe request
+    // (wildcard SSID), and thus does not have meaning in the context of
+    // connecting to a specific network.
+    // TODO: support any binary sequence as required instead of just strings.
+    if (ssid.length == 0 || ssid.length > 32) {
+      print("Invalid SSID");
+      return false;
+    }
+
     if (!await isEnabled()) {
       await setEnabled(true);
     }
-//    Map<String, Object> htArguments = Map();
-//    htArguments["ssid"] = ssid;
-//    htArguments["password"] = password;
-//    if (joinOnce != null && isWep != null) {
-//      htArguments["join_once"] = joinOnce;
-//      htArguments["is_wep"] = isWep;
-//    }
     bool? bResult;
     try {
       bResult = await _channel.invokeMethod('findAndConnect', {
@@ -374,9 +457,13 @@ class WiFiForIoTPlugin {
     } on MissingPluginException catch (e) {
       print("MissingPluginException : ${e.toString()}");
     }
-    return bResult != null && bResult;
+    return bResult ?? false;
   }
 
+  /// Returns whether the device is connected to a Wi-Fi network.
+  /// Note that this does not necessarily mean that the network is accessible.
+  ///
+  /// @ returns True if connected to a Wi-Fi network, false otherwise.
   static Future<bool> isConnected() async {
     final Map<String, String> htArguments = Map();
     bool? bResult;
@@ -385,7 +472,7 @@ class WiFiForIoTPlugin {
     } on MissingPluginException catch (e) {
       print("MissingPluginException : ${e.toString()}");
     }
-    return bResult != null && bResult;
+    return bResult ?? false;
   }
 
   /// Disconnect from the currently connected network.
