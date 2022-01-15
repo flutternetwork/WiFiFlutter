@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
+import android.net.MacAddress;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.NetworkRequest;
@@ -813,15 +814,30 @@ public class WifiIotPlugin
     new Thread() {
       public void run() {
         String ssid = poCall.argument("ssid");
+        String bssid = poCall.argument("bssid");
         String password = poCall.argument("password");
         String security = poCall.argument("security");
         Boolean joinOnce = poCall.argument("join_once");
         Boolean withInternet = poCall.argument("with_internet");
         Boolean isHidden = poCall.argument("is_hidden");
 
-        connectTo(poResult, ssid, password, security, joinOnce, withInternet, isHidden);
+        connectTo(poResult, ssid, bssid, password, security, joinOnce, withInternet, isHidden);
       }
     }.start();
+  }
+
+  /// Transform a string based bssid into a MacAdress.
+  /// Return null in case of error.
+  private static MacAddress macAddressFromBssid(String bssid) {
+    if (bssid == null) {
+      return null;
+    }
+
+    try {
+      return MacAddress.fromString(bssid);
+    } catch (IllegalArgumentException invalidRepresentation) {
+      return null;
+    }
   }
 
   /**
@@ -833,6 +849,7 @@ public class WifiIotPlugin
    */
   private void registerWifiNetwork(final MethodCall poCall, final Result poResult) {
     String ssid = poCall.argument("ssid");
+    String bssid = poCall.argument("bssid");
     String password = poCall.argument("password");
     String security = poCall.argument("security");
     Boolean isHidden = poCall.argument("is_hidden");
@@ -841,6 +858,14 @@ public class WifiIotPlugin
       final WifiNetworkSuggestion.Builder suggestedNet = new WifiNetworkSuggestion.Builder();
       suggestedNet.setSsid(ssid);
       suggestedNet.setIsHiddenSsid(isHidden != null ? isHidden : false);
+      if (bssid != null) {
+        final MacAddress macAddress = macAddressFromBssid(bssid);
+        if (macAddress == null) {
+          poResult.error("Error", "Invalid BSSID representation", "");
+          return;
+        }
+        suggestedNet.setBssid(macAddress);
+      }
 
       if (security != null && security.toUpperCase().equals("WPA")) {
         suggestedNet.setWpa2Passphrase(password);
@@ -867,7 +892,7 @@ public class WifiIotPlugin
     } else {
       // Deprecated version
       android.net.wifi.WifiConfiguration conf =
-          generateConfiguration(ssid, password, security, isHidden);
+          generateConfiguration(ssid, bssid, password, security, isHidden);
 
       int updateNetwork = registerWifiNetworkDeprecated(conf);
 
@@ -909,6 +934,7 @@ public class WifiIotPlugin
     new Thread() {
       public void run() {
         String ssid = poCall.argument("ssid");
+        String bssid = poCall.argument("bssid");
         String password = poCall.argument("password");
         Boolean joinOnce = poCall.argument("join_once");
         Boolean withInternet = poCall.argument("with_internet");
@@ -917,12 +943,16 @@ public class WifiIotPlugin
         List<ScanResult> results = moWiFi.getScanResults();
         for (ScanResult result : results) {
           String resultString = "" + result.SSID;
-          if (ssid.equals(resultString)) {
+          if (ssid.equals(resultString)
+              && (result.BSSID == null || bssid == null || result.BSSID.equals(bssid))) {
             security = getSecurityType(result);
+            if (bssid == null) {
+              bssid = result.BSSID;
+            }
           }
         }
 
-        connectTo(poResult, ssid, password, security, joinOnce, withInternet, false);
+        connectTo(poResult, bssid, ssid, password, security, joinOnce, withInternet, false);
       }
     }.start();
   }
@@ -1132,6 +1162,7 @@ public class WifiIotPlugin
   private void connectTo(
       final Result poResult,
       final String ssid,
+      final String bssid,
       final String password,
       final String security,
       final Boolean joinOnce,
@@ -1139,7 +1170,8 @@ public class WifiIotPlugin
       final Boolean isHidden) {
     final Handler handler = new Handler(Looper.getMainLooper());
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-      final boolean connected = connectToDeprecated(ssid, password, security, joinOnce, isHidden);
+      final boolean connected =
+          connectToDeprecated(ssid, bssid, password, security, joinOnce, isHidden);
       handler.post(
           new Runnable() {
             @Override
@@ -1167,6 +1199,21 @@ public class WifiIotPlugin
         // set ssid
         builder.setSsid(ssid);
         builder.setIsHiddenSsid(isHidden != null ? isHidden : false);
+        if (bssid != null) {
+          final MacAddress macAddress = macAddressFromBssid(bssid);
+          if (macAddress == null) {
+            handler.post(
+                new Runnable() {
+                  @Override
+                  public void run() {
+                    poResult.error("Error", "Invalid BSSID representation", "");
+                  }
+                });
+            return;
+          }
+          builder.setBssid(macAddress);
+        }
+
         // set password
         if (security != null && security.toUpperCase().equals("WPA")) {
           builder.setWpa2Passphrase(password);
@@ -1202,6 +1249,21 @@ public class WifiIotPlugin
         // set ssid
         builder.setSsid(ssid);
         builder.setIsHiddenSsid(isHidden != null ? isHidden : false);
+        if (bssid != null) {
+          final MacAddress macAddress = macAddressFromBssid(bssid);
+          if (macAddress == null) {
+            handler.post(
+                new Runnable() {
+                  @Override
+                  public void run() {
+                    poResult.error("Error", "Invalid BSSID representation", "");
+                  }
+                });
+            return;
+          }
+          builder.setBssid(macAddress);
+        }
+
         // set security
         if (security != null && security.toUpperCase().equals("WPA")) {
           builder.setWpa2Passphrase(password);
@@ -1256,7 +1318,10 @@ public class WifiIotPlugin
 
     if (mWifiConfigList != null) {
       for (android.net.wifi.WifiConfiguration wifiConfig : mWifiConfigList) {
-        if (wifiConfig.SSID.equals(conf.SSID)) {
+        if (wifiConfig.SSID.equals(conf.SSID)
+            && (wifiConfig.BSSID == null
+                || conf.BSSID == null
+                || wifiConfig.BSSID.equals(conf.BSSID))) {
           conf.networkId = wifiConfig.networkId;
           updateNetwork = moWiFi.updateNetwork(conf);
         }
@@ -1273,10 +1338,13 @@ public class WifiIotPlugin
   }
 
   private android.net.wifi.WifiConfiguration generateConfiguration(
-      String ssid, String password, String security, Boolean isHidden) {
+      String ssid, String bssid, String password, String security, Boolean isHidden) {
     android.net.wifi.WifiConfiguration conf = new android.net.wifi.WifiConfiguration();
     conf.SSID = "\"" + ssid + "\"";
     conf.hiddenSSID = isHidden != null ? isHidden : false;
+    if (bssid != null) {
+      conf.BSSID = bssid;
+    }
 
     if (security != null) security = security.toUpperCase();
     else security = "NONE";
@@ -1317,10 +1385,15 @@ public class WifiIotPlugin
 
   @SuppressWarnings("deprecation")
   private Boolean connectToDeprecated(
-      String ssid, String password, String security, Boolean joinOnce, Boolean isHidden) {
+      String ssid,
+      String bssid,
+      String password,
+      String security,
+      Boolean joinOnce,
+      Boolean isHidden) {
     /// Make new configuration
     android.net.wifi.WifiConfiguration conf =
-        generateConfiguration(ssid, password, security, isHidden);
+        generateConfiguration(ssid, bssid, password, security, isHidden);
 
     int updateNetwork = registerWifiNetworkDeprecated(conf);
 
