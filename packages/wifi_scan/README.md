@@ -65,14 +65,14 @@ if (can == CanGetScannedResults.yes){
 
 > **NOTE:** `getScannedResults` API can be used independently of `startScan` API. This returns the latest available scanned results.
 
-For more details, you can read documentation of [`WiFiScan.getScannedResults`][doc_getScannedResults], [`WiFiScan.canGetScannedResults`][doc_canGetScannedResults] and [`CanGetScannedResults`][doc_enum_CanGetScannedResults].
+For more details, you can read documentation of [`WiFiScan.getScannedResults`][doc_getScannedResults], `WiFiAccessPoint`[doc_WiFiAccessPoint], [`WiFiScan.canGetScannedResults`][doc_canGetScannedResults] and [`CanGetScannedResults`][doc_enum_CanGetScannedResults].
 
 ### Get notified when scanned results available
 You can get notified when new scanned results are available, as shown below:
 ```dart
 // initialize accessPoints and subscription
 List<WiFiAccessPoint> accessPoints = [];
-StreamSubscription<List<WiFiAccessPoint>> subscription;
+StreamSubscription<List<WiFiAccessPoint>>? subscription;
 
 void _startListeningToScannedResults(){
 // check if platform support and necessary requirements
@@ -103,7 +103,7 @@ Additionally, `WiFiScan.onScannedResultsAvailable` API can also be used with Flu
 
 > **NOTE:** `onScannedResultsAvailable` API can be used  independently of `startScan` API. The notification can also be result of a full scan performed by platform or other app.
 
-For more details, you can read documentation of [`WiFiScan.onScannedResultsAvailable`][doc_onScannedResultsAvailable], [`WiFiScan.canGetScannedResults`][doc_canGetScannedResults] and [`CanGetScannedResults`][doc_enum_CanGetScannedResults].
+For more details, you can read documentation of [`WiFiScan.onScannedResultsAvailable`][doc_onScannedResultsAvailable], `WiFiAccessPoint`[doc_WiFiAccessPoint], [`WiFiScan.canGetScannedResults`][doc_canGetScannedResults] and [`CanGetScannedResults`][doc_enum_CanGetScannedResults].
 
 ## Resources
 - 📖[API docs][docs]
@@ -128,6 +128,7 @@ To contribute a change to this plugin, please review our [contribution guide][wf
 [doc_canStartScan]: https://pub.dev/documentation/wifi_scan/latest/wifi_scan/WiFiScan/canStartScan.html
 [doc_enum_CanStartScan]: https://pub.dev/documentation/wifi_scan/latest/wifi_scan/CanStartScan.html
 [doc_getScannedResults]: https://pub.dev/documentation/wifi_scan/latest/wifi_scan/WiFiScan/getScannedResults.html
+[doc_WiFiAccessPoint]: https://pub.dev/documentation/wifi_scan/latest/wifi_scan/WiFiAccessPoint.html
 [doc_canGetScannedResults]: https://pub.dev/documentation/wifi_scan/latest/wifi_scan/WiFiScan/canGetScannedResults.html
 [doc_enum_CanGetScannedResults]: https://pub.dev/documentation/wifi_scan/latest/wifi_scan/CanGetScannedResults.html
 [doc_onScannedResultsAvailable]: https://pub.dev/documentation/wifi_scan/latest/wifi_scan/WiFiScan/onScannedResultsAvailable.html
