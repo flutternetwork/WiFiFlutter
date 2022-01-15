@@ -38,12 +38,13 @@ You can trigger full WiFi scan with `WiFiScan.startScan` API, as shown below:
 ```dart
 // check if platform support and necessary requirements
 final can = await WiFiScan.instance.canStartScan(askPermissions: true);
-if (can == CanStartScan.yes){
-  // start full scan async-ly
-  final isScanning = await WiFiScan.instance.startScan();
-  // ...
-} else {
-  // ... check and handle other cases with CanStartScan values
+switch(can) {
+  case CanStartScan.yes:
+    // start full scan async-ly
+    final isScanning = await WiFiScan.instance.startScan();
+    //...
+    break;
+  // ... handle other cases of CanStartScan values
 }
 ```
 
@@ -54,12 +55,13 @@ You can get scanned results with `WiFiScan.getScannedResults` API, as shown belo
 ```dart
 // check if platform support and necessary requirements
 final can = await WiFiScan.instance.canGetScannedResults(askPermissions: true);
-if (can == CanGetScannedResults.yes){
-  // get scanned results
-  final accessPoints = await WiFiScan.instance.getScannedResults();
-  // ...
-} else {
-  // ... check and handle other cases with CanGetScannedResults values
+switch(can) {
+  case CanGetScannedResults.yes:
+    // get scanned results
+    final accessPoints = await WiFiScan.instance.getScannedResults();
+    // ...
+    break;
+  // ... handle other cases of CanGetScannedResults values
 }
 ```
 
@@ -77,17 +79,16 @@ StreamSubscription<List<WiFiAccessPoint>>? subscription;
 void _startListeningToScannedResults(){
 // check if platform support and necessary requirements
   final can = await WiFiScan.instance.canGetScannedResults(askPermissions: true);
-  if (can == CanGetScannedResults.yes){
-    // listen to onScannedResultsAvailable stream
-    subscription = WiFiScan.instance.onScannedResultsAvailable.listen((results){
-      // update accessPoints
-      setState((){
-        accessPoints = results;
+  switch(can) {
+    case CanGetScannedResults.yes:
+      // listen to onScannedResultsAvailable stream
+      subscription = WiFiScan.instance.onScannedResultsAvailable.listen((results) {
+        // update accessPoints
+        setState(() => accessPoints = results);
       });
-    });
-    // ...
-  } else {
-    // ... check and handle other cases with CanGetScannedResults values
+      // ...
+      break;
+    // ... handle other cases of CanGetScannedResults values
   }
 }
 
