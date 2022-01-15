@@ -1,0 +1,10 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+  package="dev.flutternetwork.wifi.wifi_scan">
+    <!-- required for: `WifiManager.getScanResult` -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <!-- required for: `WifiManager.startScan` -->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <!-- required for: `WifiManager.getScanResult`, `WifiManager.startScan` -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+</manifest>
