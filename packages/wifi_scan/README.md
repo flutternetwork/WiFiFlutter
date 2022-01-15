@@ -27,7 +27,7 @@ This plugin allows Flutter apps to trigger WiFi scan and get scanned results.
 
 | Platform | Status | Min. Version |  API  | Notes |
 | :------: | :----: |:------------:| :---: |:-----:|
-| **Android** | ✔️ | 16 (J) | Scan related APIs in [`WifiManager`][android_WifiManager] | [Android guide on WiFi scanning][android_guide] |
+| **Android** | ✔️ | 16 (J) | Scan related APIs in [`WifiManager`][android_WifiManager] | For SDK >= 26(O) scans are [throttled][android_throttling]. |
 | **iOS** | ✔️ | 9.0 | No API available | Dummy implementation |
 
 ## Usage
@@ -135,5 +135,5 @@ To contribute a change to this plugin, please review our [contribution guide][wf
 
 [flutter_StreamBuilder]: https://api.flutter.dev/flutter/widgets/StreamBuilder-class.html
 
-[android_guide]: https://developer.android.com/guide/topics/connectivity/wifi-scan
+[android_throttling]: https://developer.android.com/guide/topics/connectivity/wifi-scan#wifi-scan-throttling
 [android_WifiManager]: https://developer.android.com/reference/android/net/wifi/WifiManager
