@@ -1,3 +1,7 @@
+## 0.3.14
+
+ - **FIX**: add size restrictions on the SSID according to IEEE Std 802.11 (#222).
+
 ## 0.3.13
 
  - **FIX**: `forceWifiUsage` for iOS not returning any result (#213).
