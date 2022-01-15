@@ -5,9 +5,9 @@
 Pod::Spec.new do |s|
   s.name             = 'wifi_scan'
   s.version          = '0.0.1'
-  s.summary          = 'Flutter plugin to scan for WiFi networks.'
+  s.summary          = 'Flutter plugin to scan for WiFi access points.'
   s.description      = <<-DESC
-Flutter plugin to scan for WiFi networks.
+Flutter plugin to scan for WiFi access points.
                        DESC
   s.homepage         = 'https://wifi.flutternetwork.dev'
   s.license          = { :file => '../LICENSE' }
