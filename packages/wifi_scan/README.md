@@ -114,7 +114,7 @@ For more details, you can read documentation of [`WiFiScan.onScannedResultsAvail
 
 Please file WiFiFlutter specific issues, bugs, or feature requests in our [issue tracker][wf_issue].
 
-To contribute a change to this plugin, please review our [contribution guide][wf_contrib] and open a [pull request][wf_pull].
+To contribute a change to this plugin, please review plugin [checklist for 1.0][checklist], our [contribution guide][wf_contrib] and open a [pull request][wf_pull].
 
 <!-- links -->
 [wf_home]: https://wifi.flutternetwork.dev/
@@ -122,6 +122,7 @@ To contribute a change to this plugin, please review our [contribution guide][wf
 [wf_contrib]: https://github.com/flutternetwork/WiFiFlutter/blob/master/CONTRIBUTING.md
 [wf_pull]: https://github.com/flutternetwork/WiFiFlutter/pulls
 
+[checklist]: https://github.com/flutternetwork/WiFiFlutter/issues/188
 [docs]: https://pub.dev/documentation/wifi_scan/latest/wifi_scan/wifi_scan-library.html
 [example]: https://github.com/flutternetwork/WiFiFlutter/tree/master/packages/wifi_scan/example
 
