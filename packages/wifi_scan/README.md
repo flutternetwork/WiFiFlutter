@@ -130,7 +130,7 @@ To contribute a change to this plugin, please review plugin [checklist for 1.0][
 [doc_canStartScan]: https://pub.dev/documentation/wifi_scan/latest/wifi_scan/WiFiScan/canStartScan.html
 [doc_enum_CanStartScan]: https://pub.dev/documentation/wifi_scan/latest/wifi_scan/CanStartScan.html
 [doc_getScannedResults]: https://pub.dev/documentation/wifi_scan/latest/wifi_scan/WiFiScan/getScannedResults.html
-[doc_WiFiAccessPoint]: https://pub.dev/documentation/wifi_scan/latest/wifi_scan/WiFiAccessPoint.html
+[doc_WiFiAccessPoint]: https://pub.dev/documentation/wifi_scan/latest/wifi_scan/WiFiAccessPoint-class.html
 [doc_canGetScannedResults]: https://pub.dev/documentation/wifi_scan/latest/wifi_scan/WiFiScan/canGetScannedResults.html
 [doc_enum_CanGetScannedResults]: https://pub.dev/documentation/wifi_scan/latest/wifi_scan/CanGetScannedResults.html
 [doc_onScannedResultsAvailable]: https://pub.dev/documentation/wifi_scan/latest/wifi_scan/WiFiScan/onScannedResultsAvailable.html
