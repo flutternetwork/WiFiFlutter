@@ -19,7 +19,7 @@
 </p>  
 
 ---
-This plugin allows Flutter apps to trigger WiFi scan and get scanned results.
+This plugin allows Flutter apps to scan for nearby visible WiFi access points.
 
 > This plugin is part of [WiFiFlutter][wf_home] suite, enabling various WiFi services for Flutter. 
 
