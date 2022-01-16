@@ -35,7 +35,7 @@ class _MyAppState extends State<MyApp> {
     }
     kShowSnackBar(context, "startScan: ${await WiFiScan.instance.startScan()}");
     // reset access points.
-    setState(() => accessPoints = []);
+    setState(() => accessPoints = <WiFiAccessPoint>[]);
   }
 
   Future<bool> _canGetScannedResults(BuildContext context) async {
@@ -54,9 +54,9 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> _getScannedResults(BuildContext context) async {
     if (await _canGetScannedResults(context)) {
-      // start listening - when notified - update accessPoints list
-      subscription = WiFiScan.instance.onScannedResultsAvailable
-          .listen((event) => setState(() => accessPoints = event));
+      // get scanned results
+      final results = await WiFiScan.instance.getScannedResults();
+      setState(() => accessPoints = results);
     }
   }
 
