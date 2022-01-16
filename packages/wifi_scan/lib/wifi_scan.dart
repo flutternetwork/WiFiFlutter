@@ -35,7 +35,7 @@ class WiFiScan {
 
   /// Request a Wi-Fi scan.
   ///
-  /// Return value indicates if the "scan" is being triggered.
+  /// Return value indicates if the "scan" trigger successed.
   ///
   /// Should call [canStartScan] as a check before calling this method.
   Future<bool> startScan() async {
