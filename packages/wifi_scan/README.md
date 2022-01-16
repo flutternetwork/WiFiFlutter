@@ -28,7 +28,7 @@ This plugin allows Flutter apps to trigger WiFi scan and get scanned results.
 | Platform | Status | Min. Version |  API  | Notes |
 | :------: | :----: |:------------:| :---: |:-----:|
 | **Android** | ✔️ | 16 (J) | Scan related APIs in [`WifiManager`][android_WifiManager] *[[Guide][android_guide]]* | For SDK >= 26(O) scans are [throttled][android_throttling]. |
-| **iOS** | ✔️ | 9.0 | No API available | Dummy implementation with [sane static returns][ios_dummy]. |
+| **iOS** | ✔️ | 9.0 | No API available | [Stub implementation][ios_stub] with sane static returns. |
 
 ## Usage
 The entry point for the plugin is the singleton instance `WiFiScan.instance`.
@@ -48,7 +48,8 @@ switch(can) {
 }
 ```
 
-For more details, you can read documentation of [`WiFiScan.startScan`][doc_startScan], [`WiFiScan.canStartScan`][doc_canStartScan] and [`CanStartScan`][doc_enum_CanStartScan].
+For more details, you can read documentation of [`WiFiScan.startScan`][doc_startScan], 
+[`WiFiScan.canStartScan`][doc_canStartScan] and [`CanStartScan`][doc_enum_CanStartScan].
 
 ### Get scanned results
 You can get scanned results with `WiFiScan.getScannedResults` API, as shown below:
@@ -67,7 +68,10 @@ switch(can) {
 
 > **NOTE:** `getScannedResults` API can be used independently of `startScan` API. This returns the latest available scanned results.
 
-For more details, you can read documentation of [`WiFiScan.getScannedResults`][doc_getScannedResults], [`WiFiAccessPoint`][doc_WiFiAccessPoint], [`WiFiScan.canGetScannedResults`][doc_canGetScannedResults] and [`CanGetScannedResults`][doc_enum_CanGetScannedResults].
+For more details, you can read documentation of [`WiFiScan.getScannedResults`][doc_getScannedResults], 
+[`WiFiAccessPoint`][doc_WiFiAccessPoint], 
+[`WiFiScan.canGetScannedResults`][doc_canGetScannedResults] and 
+[`CanGetScannedResults`][doc_enum_CanGetScannedResults].
 
 ### Get notified when scanned results available
 You can get notified when new scanned results are available, as shown below:
@@ -100,11 +104,16 @@ dispose() {
 }
 ```
 
-Additionally, `WiFiScan.onScannedResultsAvailable` API can also be used with Flutter's [`StreamBuilder`][flutter_StreamBuilder] widget.
+Additionally, `WiFiScan.onScannedResultsAvailable` API can also be used with Flutter's 
+[`StreamBuilder`][flutter_StreamBuilder] widget.
 
 > **NOTE:** `onScannedResultsAvailable` API can be used  independently of `startScan` API. The notification can also be result of a full scan performed by platform or other app.
 
-For more details, you can read documentation of [`WiFiScan.onScannedResultsAvailable`][doc_onScannedResultsAvailable], [`WiFiAccessPoint`][doc_WiFiAccessPoint], [`WiFiScan.canGetScannedResults`][doc_canGetScannedResults] and [`CanGetScannedResults`][doc_enum_CanGetScannedResults].
+For more details, you can read documentation of 
+[`WiFiScan.onScannedResultsAvailable`][doc_onScannedResultsAvailable], 
+[`WiFiAccessPoint`][doc_WiFiAccessPoint], 
+[`WiFiScan.canGetScannedResults`][doc_canGetScannedResults] and 
+[`CanGetScannedResults`][doc_enum_CanGetScannedResults].
 
 ## Resources
 - 📖[API docs][docs]
@@ -114,7 +123,8 @@ For more details, you can read documentation of [`WiFiScan.onScannedResultsAvail
 
 Please file WiFiFlutter specific issues, bugs, or feature requests in our [issue tracker][wf_issue].
 
-To contribute a change to this plugin, please review plugin [checklist for 1.0][checklist], our [contribution guide][wf_contrib] and open a [pull request][wf_pull].
+To contribute a change to this plugin, please review plugin [checklist for 1.0][checklist], our 
+[contribution guide][wf_contrib] and open a [pull request][wf_pull].
 
 <!-- links -->
 [wf_home]: https://wifi.flutternetwork.dev/
@@ -141,4 +151,4 @@ To contribute a change to this plugin, please review plugin [checklist for 1.0][
 [android_throttling]: https://developer.android.com/guide/topics/connectivity/wifi-scan#wifi-scan-throttling
 [android_WifiManager]: https://developer.android.com/reference/android/net/wifi/WifiManager
 
-[ios_dummy]: https://github.com/flutternetwork/WiFiFlutter/blob/master/packages/wifi_scan/ios/Classes/SwiftWifiScanPlugin.swift
+[ios_stub]: https://github.com/flutternetwork/WiFiFlutter/blob/master/packages/wifi_scan/ios/Classes/SwiftWifiScanPlugin.swift

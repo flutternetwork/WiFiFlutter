@@ -1,7 +1,7 @@
 import Flutter
 
 // Since no API for scanning or getting scanned results in iOS.
-// This class is just a "dummy" implementation with sane returns.
+// This class is just a "stub" implementation with sane returns.
 // It is maintained to avoid `MissingPluginException`.
 public class SwiftWifiScanPlugin: NSObject, FlutterPlugin {
   public static func register(with registrar: FlutterPluginRegistrar) {
@@ -15,7 +15,7 @@ public class SwiftWifiScanPlugin: NSObject, FlutterPlugin {
         name: "wifi_scan/onScannedResultsAvailable",
         binaryMessenger: registrar.messenger()
     )
-    eventChannel.setStreamHandler(DummyStreamHandler())
+    eventChannel.setStreamHandler(StubStreamHandler())
   }
 
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
@@ -35,7 +35,7 @@ public class SwiftWifiScanPlugin: NSObject, FlutterPlugin {
 }
 
 
-class DummyStreamHandler: NSObject, FlutterStreamHandler{
+class StubStreamHandler: NSObject, FlutterStreamHandler{
     func onListen(withArguments arguments: Any?, eventSink events: @escaping FlutterEventSink) -> FlutterError? {
         return nil
     }
