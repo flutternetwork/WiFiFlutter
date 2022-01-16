@@ -1,3 +1,7 @@
+## 0.1.0+2
+
+ - **FIX**: example -`_getScannedResults` wrong implementation (#232).
+
 ## 0.1.0+1
 
  - **REFACTOR**: not using `StreamBuilder` but listening (#231).
