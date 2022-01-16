@@ -67,7 +67,7 @@ switch(can) {
 
 > **NOTE:** `getScannedResults` API can be used independently of `startScan` API. This returns the latest available scanned results.
 
-For more details, you can read documentation of [`WiFiScan.getScannedResults`][doc_getScannedResults], `WiFiAccessPoint`[doc_WiFiAccessPoint], [`WiFiScan.canGetScannedResults`][doc_canGetScannedResults] and [`CanGetScannedResults`][doc_enum_CanGetScannedResults].
+For more details, you can read documentation of [`WiFiScan.getScannedResults`][doc_getScannedResults], [`WiFiAccessPoint`][doc_WiFiAccessPoint], [`WiFiScan.canGetScannedResults`][doc_canGetScannedResults] and [`CanGetScannedResults`][doc_enum_CanGetScannedResults].
 
 ### Get notified when scanned results available
 You can get notified when new scanned results are available, as shown below:
@@ -104,7 +104,7 @@ Additionally, `WiFiScan.onScannedResultsAvailable` API can also be used with Flu
 
 > **NOTE:** `onScannedResultsAvailable` API can be used  independently of `startScan` API. The notification can also be result of a full scan performed by platform or other app.
 
-For more details, you can read documentation of [`WiFiScan.onScannedResultsAvailable`][doc_onScannedResultsAvailable], `WiFiAccessPoint`[doc_WiFiAccessPoint], [`WiFiScan.canGetScannedResults`][doc_canGetScannedResults] and [`CanGetScannedResults`][doc_enum_CanGetScannedResults].
+For more details, you can read documentation of [`WiFiScan.onScannedResultsAvailable`][doc_onScannedResultsAvailable], [`WiFiAccessPoint`][doc_WiFiAccessPoint], [`WiFiScan.canGetScannedResults`][doc_canGetScannedResults] and [`CanGetScannedResults`][doc_enum_CanGetScannedResults].
 
 ## Resources
 - 📖[API docs][docs]
