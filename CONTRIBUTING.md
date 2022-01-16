@@ -1,7 +1,7 @@
 # Contributing to WiFiFlutter
 
-<a href="https://github.com/alternadom/WiFiFlutter/actions?query=workflow%3Aall_plugins">
-    <img src="https://github.com/alternadom/WiFiFlutter/workflows/all_plugins/badge.svg" alt="all_plugins GitHub Workflow Status"/>
+<a href="https://github.com/flutternetwork/WiFiFlutter/actions?query=workflow%3Aall_plugins">
+    <img src="https://github.com/flutternetwork/WiFiFlutter/workflows/all_plugins/badge.svg" alt="all_plugins GitHub Workflow Status"/>
 </a>
 
 
@@ -18,7 +18,7 @@
 ## 2. Forking & cloning the repository
 
 - Ensure all the dependencies described in the previous section are installed.
-- Fork `https://github.com/alternadom/WiFiFlutter` into your own GitHub account. If
+- Fork `https://github.com/flutternetwork/WiFiFlutter` into your own GitHub account. If
   you already have a fork, and are now installing a development environment on
   a new machine, make sure you've updated your fork so that you don't use stale
   configuration options from long ago.
@@ -26,7 +26,7 @@
   follow [GitHub's directions](https://help.github.com/articles/generating-ssh-keys/)
   to generate an SSH key.
 - `git clone git@github.com:<your_name_here>/WiFiFlutter.git`
-- `git remote add upstream git@github.com:alternadom/WiFiFlutter.git` (So that you
+- `git remote add upstream git@github.com:flutternetwork/WiFiFlutter.git` (So that you
   fetch from the master repository, not your clone, when running `git fetch`
   et al.)
 
@@ -113,7 +113,7 @@ run the following command from the root of your cloned repository:
 melos run analyze
 ```
 
-A full list of all commands can be found within the [`melos.yaml`](https://github.com/alternadom/WiFiFlutter/blob/master/melos.yaml)
+A full list of all commands can be found within the [`melos.yaml`](https://github.com/flutternetwork/WiFiFlutter/blob/master/melos.yaml)
 file.
 
 ## 5. Contributing code
@@ -151,7 +151,7 @@ Assuming all is successful, commit and push your code:
 To send us a pull request:
 
 - `git pull-request` (if you are using [Hub](http://github.com/github/hub/)) or
-  go to `https://github.com/alternadom/WiFiFlutter` and click the
+  go to `https://github.com/flutternetwork/WiFiFlutter` and click the
   "Compare & pull request" button
 
 Please make sure all your check-ins have detailed commit messages explaining the patch.
