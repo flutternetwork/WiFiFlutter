@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:wifi_scan/wifi_scan.dart';
@@ -17,15 +19,10 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   bool shouldCheck = true;
-  bool shouldStream = true;
   List<WiFiAccessPoint> accessPoints = <WiFiAccessPoint>[];
+  StreamSubscription<List<WiFiAccessPoint>>? subscription;
 
-  void showSnackBar(BuildContext context, String message) {
-    if (kDebugMode) print(message);
-    ScaffoldMessenger.of(context)
-      ..hideCurrentSnackBar()
-      ..showSnackBar(SnackBar(content: Text(message)));
-  }
+  bool get isStreaming => subscription != null;
 
   Future<void> _startScan(BuildContext context) async {
     if (shouldCheck) {
@@ -33,11 +30,12 @@ class _MyAppState extends State<MyApp> {
       final can = await WiFiScan.instance.canStartScan();
       // if can-not, then show error
       if (can != CanStartScan.yes) {
-        showSnackBar(context, "Cannot start scan: $can");
-        return;
+        return kShowSnackBar(context, "Cannot start scan: $can");
       }
     }
-    showSnackBar(context, "startScan: ${await WiFiScan.instance.startScan()}");
+    kShowSnackBar(context, "startScan: ${await WiFiScan.instance.startScan()}");
+    // reset access points.
+    setState(() => accessPoints = []);
   }
 
   Future<bool> _canGetScannedResults(BuildContext context) async {
@@ -46,7 +44,7 @@ class _MyAppState extends State<MyApp> {
       final can = await WiFiScan.instance.canGetScannedResults();
       // if can-not, then show error
       if (can != CanGetScannedResults.yes) {
-        showSnackBar(context, "Cannot get scanned results: $can");
+        kShowSnackBar(context, "Cannot get scanned results: $can");
         accessPoints = <WiFiAccessPoint>[];
         return false;
       }
@@ -54,6 +52,25 @@ class _MyAppState extends State<MyApp> {
     return true;
   }
 
+  Future<void> _getScannedResults(BuildContext context) async {
+    if (await _canGetScannedResults(context)) {
+      // start listening - when notified - update accessPoints list
+      subscription = WiFiScan.instance.onScannedResultsAvailable
+          .listen((event) => setState(() => accessPoints = event));
+    }
+  }
+
+  Future<void> _startListeningToScanResults(BuildContext context) async {
+    if (await _canGetScannedResults(context)) {
+      // start listening - when notified - update accessPoints list
+      subscription = WiFiScan.instance.onScannedResultsAvailable
+          .listen((event) => setState(() => accessPoints = event));
+    }
+  }
+
+  void _stopListteningToScanResults() => subscription?.cancel();
+
+  // build toggle switch
   Widget _buildSwitch(String label, bool value, ValueChanged<bool> onChanged) =>
       Row(
         children: [
@@ -62,6 +79,7 @@ class _MyAppState extends State<MyApp> {
         ],
       );
 
+  // build row that can display info, based on label: value pair.
   Widget _buildInfo(String label, dynamic value) => Container(
         decoration: const BoxDecoration(
             border: Border(bottom: BorderSide(color: Colors.grey))),
@@ -74,71 +92,20 @@ class _MyAppState extends State<MyApp> {
         ),
       );
 
-  Widget _buildWifiApList(BuildContext context) => accessPoints.isEmpty
-      ? const Text("NO SCANNED RESULTS")
-      : ListView.builder(
-          itemCount: accessPoints.length,
-          itemBuilder: (context, i) {
-            final ap = accessPoints[i];
-            final title = ap.ssid.isNotEmpty ? ap.ssid : "**EMPTY**";
-            final signalIcon = ap.level >= -80
-                ? Icons.signal_wifi_4_bar
-                : Icons.signal_wifi_0_bar;
-            return ListTile(
-              visualDensity: VisualDensity.compact,
-              leading: Icon(signalIcon),
-              title: Text(title),
-              subtitle: Text(ap.capabilities),
-              onTap: () => showDialog(
-                context: context,
-                builder: (context) => AlertDialog(
-                  title: Text(title),
-                  content: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      _buildInfo("BSSDI", ap.bssid),
-                      _buildInfo("Capability", ap.capabilities),
-                      _buildInfo("frequency", "${ap.frequency}MHz"),
-                      _buildInfo("level", ap.level),
-                      _buildInfo("standard", ap.standard),
-                      _buildInfo(
-                          "centerFrequency0", "${ap.centerFrequency0}MHz"),
-                      _buildInfo(
-                          "centerFrequency1", "${ap.centerFrequency1}MHz"),
-                      _buildInfo("channelWidth", ap.channelWidth),
-                      _buildInfo("isPasspoint", ap.isPasspoint),
-                      _buildInfo(
-                          "operatorFriendlyName", ap.operatorFriendlyName),
-                      _buildInfo("venueName", ap.venueName),
-                      _buildInfo("is80211mcResponder", ap.is80211mcResponder),
-                    ],
-                  ),
-                ),
-              ),
-            );
-          },
-        );
+  @override
+  void initState() {
+    super.initState();
+    // fetch getScannedResults post first build
+    WidgetsBinding.instance
+        ?.addPostFrameCallback((_) => _getScannedResults(context));
+  }
 
-  Widget _buildWifiAPStreamable(BuildContext context) => !shouldStream
-      ? _buildWifiApList(context)
-      : FutureBuilder<bool>(
-          future: _canGetScannedResults(context),
-          builder: (context, snapshotCan) {
-            if (snapshotCan.connectionState != ConnectionState.done) {
-              return const CircularProgressIndicator();
-            }
-            // return without stream - if can't
-            if (!(snapshotCan.data ?? false)) return _buildWifiApList(context);
-            return StreamBuilder<List<WiFiAccessPoint>>(
-              stream: WiFiScan.instance.onScannedResultsAvailable,
-              builder: (context, snapshot) {
-                // update accesspoint if available
-                accessPoints = snapshot.data ?? accessPoints;
-                return _buildWifiApList(context);
-              },
-            );
-          },
-        );
+  @override
+  void dispose() {
+    super.dispose();
+    // stop subscription for scanned results
+    _stopListteningToScanResults();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -160,13 +127,7 @@ class _MyAppState extends State<MyApp> {
                     ElevatedButton.icon(
                       icon: const Icon(Icons.refresh),
                       label: const Text('GET'),
-                      onPressed: () async {
-                        if (await _canGetScannedResults(context)) {
-                          accessPoints =
-                              await WiFiScan.instance.getScannedResults();
-                          setState(() {});
-                        }
-                      },
+                      onPressed: () => _getScannedResults(context),
                     ),
                     ElevatedButton.icon(
                       icon: const Icon(Icons.perm_scan_wifi),
@@ -181,14 +142,67 @@ class _MyAppState extends State<MyApp> {
                   children: [
                     _buildSwitch("SHOULD CHECK", shouldCheck,
                         (v) => setState(() => shouldCheck = v)),
-                    _buildSwitch("STREAM", shouldStream,
-                        (v) => setState(() => shouldStream = v)),
+                    _buildSwitch(
+                        "STREAM",
+                        isStreaming,
+                        (shouldStream) => shouldStream
+                            ? _startListeningToScanResults(context)
+                            : _stopListteningToScanResults()),
                   ],
                 ),
                 const Divider(),
                 Flexible(
                   child: Center(
-                    child: _buildWifiAPStreamable(context),
+                    child: accessPoints.isEmpty
+                        ? const Text("NO SCANNED RESULTS")
+                        : ListView.builder(
+                            itemCount: accessPoints.length,
+                            itemBuilder: (context, i) {
+                              final ap = accessPoints[i];
+                              final title =
+                                  ap.ssid.isNotEmpty ? ap.ssid : "**EMPTY**";
+                              final signalIcon = ap.level >= -80
+                                  ? Icons.signal_wifi_4_bar
+                                  : Icons.signal_wifi_0_bar;
+                              return ListTile(
+                                visualDensity: VisualDensity.compact,
+                                leading: Icon(signalIcon),
+                                title: Text(title),
+                                subtitle: Text(ap.capabilities),
+                                onTap: () => showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                    title: Text(title),
+                                    content: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        _buildInfo("BSSDI", ap.bssid),
+                                        _buildInfo(
+                                            "Capability", ap.capabilities),
+                                        _buildInfo(
+                                            "frequency", "${ap.frequency}MHz"),
+                                        _buildInfo("level", ap.level),
+                                        _buildInfo("standard", ap.standard),
+                                        _buildInfo("centerFrequency0",
+                                            "${ap.centerFrequency0}MHz"),
+                                        _buildInfo("centerFrequency1",
+                                            "${ap.centerFrequency1}MHz"),
+                                        _buildInfo(
+                                            "channelWidth", ap.channelWidth),
+                                        _buildInfo(
+                                            "isPasspoint", ap.isPasspoint),
+                                        _buildInfo("operatorFriendlyName",
+                                            ap.operatorFriendlyName),
+                                        _buildInfo("venueName", ap.venueName),
+                                        _buildInfo("is80211mcResponder",
+                                            ap.is80211mcResponder),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
                   ),
                 ),
               ],
@@ -198,4 +212,12 @@ class _MyAppState extends State<MyApp> {
       ),
     );
   }
+}
+
+/// Show snackbar.
+void kShowSnackBar(BuildContext context, String message) {
+  if (kDebugMode) print(message);
+  ScaffoldMessenger.of(context)
+    ..hideCurrentSnackBar()
+    ..showSnackBar(SnackBar(content: Text(message)));
 }
