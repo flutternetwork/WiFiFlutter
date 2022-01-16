@@ -5,7 +5,7 @@ enum CanStartScan {
   /// Functionality is not supported.
   notSupported,
 
-  /// It is ok to call functionality.
+  /// It is ok to call the functionality.
   yes,
 
   /// Location permission is required.
@@ -47,7 +47,7 @@ CanStartScan _deserializeCanStartScan(int? canCode) {
 
 /// Result for [WiFiScan.canGetScannedResults] method.
 enum CanGetScannedResults {
-  /// Functionality is not supported.
+  /// Functionality is not the supported.
   notSupported,
 
   /// It is ok to call functionality.
