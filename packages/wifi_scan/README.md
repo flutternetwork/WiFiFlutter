@@ -117,7 +117,7 @@ For more details, you can read documentation of
 
 ## Resources
 - 📖[API docs][docs]
-- 💻[Example app][example]
+- 💡[Example app][example]
 
 ## Issues and feedback
 
