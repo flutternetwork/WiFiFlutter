@@ -5,19 +5,19 @@ enum WiFiStandards {
   /// Unknown.
   unkown,
 
-  /// Wi-Fi 802.11a/b/g.
+  /// [Wi-Fi 802.11a/b/g](https://en.wikipedia.org/wiki/IEEE_802.11).
   legacy,
 
-  /// Wi-Fi 802.11n (Wi-Fi 4).
+  /// [Wi-Fi 802.11n (Wi-Fi 4)](https://en.wikipedia.org/wiki/IEEE_802.11n).
   n,
 
-  /// Wi-Fi 802.11ac (Wi-Fi 5).
+  /// [Wi-Fi 802.11ac (Wi-Fi 5)](https://en.wikipedia.org/wiki/IEEE_802.11ac).
   ac,
 
-  /// Wi-Fi 802.11ax (Wi-Fi 6).
+  /// [Wi-Fi 802.11ax (Wi-Fi 6)](https://en.wikipedia.org/wiki/IEEE_802.11ax).
   ax,
 
-  /// Wi-Fi 802.11ad.
+  /// [Wi-Fi 802.11ad](https://en.wikipedia.org/wiki/IEEE_802.11ad).
   ad,
 }
 
@@ -143,7 +143,8 @@ class WiFiAccessPoint {
   /// Only available on Passpoint network and if published by access point.
   final String? venueName;
 
-  /// Indicates if the access point can respond to IEEE 802.11mc (WiFi RTT)
+  /// Indicates if the access point can respond to
+  /// [IEEE 802.11mc (WiFi RTT)](https://en.wikipedia.org/wiki/IEEE_802.11mc)
   /// ranging requests.
   final bool? is80211mcResponder;
 

@@ -72,7 +72,7 @@ Flutter plugin for basic WiFi information and functionalities.
 ### `wifi_scan`
 > [![wifi_scan][scan_workflow_badge]][scan_workflow] [![wifi_scan][scan_pub_badge]][scan_pub] [![pub points][scan_pub_points_badge]][scan_pub_points]
 
-Flutter plugin to scan for WiFi access points.
+Flutter plugin to scan for nearby visible WiFi access points.
 
 [[View Source][scan_code]]
 
