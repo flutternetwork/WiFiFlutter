@@ -11,14 +11,15 @@
   <a href="https://codecov.io/gh/flutternetwork/WiFiFlutter/">
     <img src="https://codecov.io/gh/flutternetwork/WiFiFlutter/graph/badge.svg" alt="all_plugins Coverage"/>
   </a>
+  <a href="https://gitter.im/flutternetwork/WiFiFlutter?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge">
+    <img src="https://badges.gitter.im/flutternetwork/WiFiFlutter.svg" alt="Join the chat at https://gitter.im/flutternetwork/WiFiFlutter]">
+  </a>
   <a href="https://github.com/invertase/melos#readme-badge">
     <img src="https://img.shields.io/badge/maintained%20with-melos-f700ff.svg" alt="Melos" />
   </a>
 </p>
 
 ---
-
-[![Join the chat at https://gitter.im/flutternetwork/WiFiFlutter](https://badges.gitter.im/flutternetwork/WiFiFlutter.svg)](https://gitter.im/flutternetwork/WiFiFlutter?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 WiFiFlutter is a suite of Flutter plugins that enable Flutter apps to use various WiFi services.
 
