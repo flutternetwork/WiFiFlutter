@@ -18,6 +18,8 @@
 
 ---
 
+[![Join the chat at https://gitter.im/flutternetwork/WiFiFlutter](https://badges.gitter.im/flutternetwork/WiFiFlutter.svg)](https://gitter.im/flutternetwork/WiFiFlutter?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 WiFiFlutter is a suite of Flutter plugins that enable Flutter apps to use various WiFi services.
 
 > *Note*: WiFiFlutter is going under [reforms](https://github.com/flutternetwork/WiFiFlutter/discussions/229), therefore some plugins might not be available yet. [Feedback](https://github.com/flutternetwork/WiFiFlutter/issues) and [Pull Requests](https://github.com/flutternetwork/WiFiFlutter/pulls) are most welcome!
