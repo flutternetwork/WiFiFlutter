@@ -1,38 +1,12 @@
 import 'package:async/async.dart';
+import 'package:collection/collection.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:wifi_basic/src/extensions.dart';
 
-enum WiFiGenerations { unknown, legacy, wifi4, wifi5, wifi6 }
-
-enum WiFiNetworkSecurity { unknown, none, wep, wpa, wpa2, wpa3 }
-
-class WiFiInfo {
-  final String ssid;
-  final String bssid;
-  final WiFiNetworkSecurity security;
-  final bool isHidden;
-  final int rssi;
-  final double signalStrength;
-  final bool hasInternet;
-  final WiFiGenerations generation;
-
-  bool get isNull => ssid.isEmpty;
-
-  WiFiInfo._fromMap(Map map)
-      : ssid = map["ssid"],
-        bssid = map["bssid"],
-        security = (map["security"] as int?).toWifiNetworkSecurity(),
-        isHidden = map["isHidden"],
-        rssi = map["rssi"],
-        signalStrength = map["signalStrength"],
-        hasInternet = map["hasInternet"],
-        generation = (map["generation"] as int?).toWifiGeneration();
-
-  @override
-  String toString() => "ssid; $ssid; bssid: $bssid; security: $security; "
-      "isHidden: $isHidden; rssi: $rssi; signalStrength: $signalStrength; "
-      "hasInternet: $hasInternet; generation: $generation";
-}
+part 'wifi_generations.dart';
+part 'wifi_info.dart';
+part 'wifi_network_security.dart';
 
 class WiFiBasic {
   WiFiBasic._();
@@ -42,21 +16,40 @@ class WiFiBasic {
   final _isSupportedMemo = AsyncMemoizer<bool>();
   final _getGenerationMemo = AsyncMemoizer<WiFiGenerations>();
 
-  Future<bool> isSupported() => _isSupportedMemo
-      .runOnce(() async => await _channel.invokeMethod('isSupported'));
+  Future<bool> isSupported() {
+    return _isSupportedMemo.runOnce(() async {
+      return (await _channel.invokeMethod<bool>('isSupported'))!;
+    });
+  }
 
-  Future<WiFiGenerations> getGeneration() => _getGenerationMemo.runOnce(
-      () async => (await _channel.invokeMethod("getGeneration") as int?)
-          .toWifiGeneration());
+  Future<WiFiGenerations> getGeneration() {
+    return _getGenerationMemo.runOnce(() async {
+      final generation = await _channel.invokeMethod<int?>("getGeneration");
+      return WiFiGenerationsExtension.fromInt(generation);
+    });
+  }
 
-  Future<bool> isEnabled() async => await _channel.invokeMethod('isEnabled');
+  Future<bool> isEnabled() async {
+    return (await _channel.invokeMethod<bool>('isEnabled'))!;
+  }
 
-  Future<bool> setEnabled(bool enabled) async =>
-      await _channel.invokeMethod('setEnabled', {"enabled": enabled});
+  Future<bool> setEnabled(bool enabled) async {
+    return (await _channel.invokeMethod<bool>(
+      'setEnabled',
+      {"enabled": enabled},
+    ))!;
+  }
 
-  Future<void> openSettings() async =>
-      await _channel.invokeMethod("openSettings");
+  Future<void> openSettings() async {
+    await _channel.invokeMethod<void>("openSettings");
+  }
 
-  Future<WiFiInfo> getCurrentInfo() async =>
-      WiFiInfo._fromMap(await _channel.invokeMapMethod("getCurrentInfo") ?? {});
+  Future<WiFiInfo?> getCurrentInfo() async {
+    final result =
+        await _channel.invokeMapMethod<String, dynamic>("getCurrentInfo");
+
+    if (result == null) return null;
+
+    return WiFiInfo.fromMap(result);
+  }
 }
