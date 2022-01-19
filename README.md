@@ -30,12 +30,16 @@ WiFiFlutter is a suite of Flutter plugins that enable Flutter apps to use variou
 **Table of contents:**
 
 - [For IoT (`wifi_iot`)](#wifi_iot)
+<!-- HIDING until available
 - [Basic (`wifi_basic`)](#wifi_basic)
+-->
 - [Scan (`wifi_scan`)](#wifi_scan)
+<!--
 - [Station (`wifi_sta`)](#wifi_sta)
 - [Access Point / Hotspot (`wifi_ap`)](#wifi_ap)
 - [Aware (`wifi_aware`)](#wifi_aware)
 - [Location / RTT  (`wifi_rtt`)](#wifi_rtt)
+-->
 
 ---
 
@@ -56,6 +60,7 @@ Flutter plugin which can handle WiFi connections (AP, STA).
 
 ---
 
+<!-- HIDING until available
 ### `wifi_basic`
 > [![wifi_basic][basic_workflow_badge]][basic_workflow] [![wifi_basic][basic_pub_badge]][basic_pub] [![pub points][basic_pub_points_badge]][basic_pub_points]
 
@@ -71,6 +76,7 @@ Flutter plugin for basic WiFi information and functionalities.
 <sub>*Only supports getting network info.</sub>
 
 ---
+-->
 
 ### `wifi_scan`
 > [![wifi_scan][scan_workflow_badge]][scan_workflow] [![wifi_scan][scan_pub_badge]][scan_pub] [![pub points][scan_pub_points_badge]][scan_pub_points]
@@ -86,6 +92,7 @@ Flutter plugin to scan for nearby visible WiFi access points.
 
 ---
 
+<!-- HIDING until available
 ### `wifi_sta`
 > [![wifi_sta][sta_workflow_badge]][sta_workflow] [![wifi_sta][sta_pub_badge]][sta_pub] [![pub points][sta_pub_points_badge]][sta_pub_points]
 
@@ -143,6 +150,7 @@ Flutter plugin to measure the distance to nearby RTT-capable Wi-Fi access points
 |    ❌    |  ➖ |
 
 ---
+-->
 
 ## Issues
 
