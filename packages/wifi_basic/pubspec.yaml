@@ -1,7 +1,7 @@
 name: wifi_basic
 description: Flutter plugin for basic WiFi information and functionalities.
 version: 0.0.1
-homepage: https://github.com/alternadom/WiFiFlutter/tree/master/packages/wifi_basic
+homepage: https://github.com/flutternetwork/WiFiFlutter/tree/master/packages/wifi_basic
 
 environment:
   sdk: ">=2.12.0 <3.0.0"

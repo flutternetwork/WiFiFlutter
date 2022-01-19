@@ -1,4 +1,24 @@
-## 0.3.10 2021 2021-11-28
+## 0.3.14
+
+ - **FIX**: add size restrictions on the SSID according to IEEE Std 802.11 (#222).
+
+## 0.3.13
+
+ - **FIX**: `forceWifiUsage` for iOS not returning any result (#213).
+ - **FEAT**: add a boolean return value to disconnect (#218).
+ - **FEAT**: allow to specify the bssid for registering and connecting network (#217).
+
+## 0.3.12 2021-12-17
+
+ - **FIX**: `serializeNetworkSecurityMap` not mapping to null (#212).
+ - **CHORE**: added lint rules for docs (#209).
+
+## 0.3.11 2021-12-08
+
+ - **FIX**: proper serializing to avoid issue when obfuscated (#207).
+ - **DOCS**: smaller banner.
+
+## 0.3.10 2021-11-28
 
  - **DOCS**: proper banner with package name.
 

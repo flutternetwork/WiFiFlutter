@@ -1,6 +1,6 @@
 {
   "projectName": "WiFiFlutter",
-  "projectOwner": "alternadom",
+  "projectOwner": "flutternetwork",
   "repoType": "github",
   "repoHost": "https://github.com",
   "files": [
@@ -14,17 +14,17 @@
     "code_pr": {
       "symbol": "💻",
       "description": "Code",
-      "link": "https://github.com/alternadom/WiFiFlutter/pulls?q=is%3Apr+author%3A<%= contributor.login %>"
+      "link": "https://github.com/flutternetwork/WiFiFlutter/pulls?q=is%3Apr+author%3A<%= contributor.login %>"
     },
     "code_coauthor": {
       "symbol": "💻",
       "description": "Code",
-      "link": "https://github.com/alternadom/WiFiFlutter/search?q=<%= contributor.login %>&type=commits"
+      "link": "https://github.com/flutternetwork/WiFiFlutter/search?q=<%= contributor.login %>&type=commits"
     },
     "doc": {
       "symbol": "📖",
       "description": "Documentation",
-      "link": "https://github.com/alternadom/WiFiFlutter/commits/master/packages/wifi_iot/README.md?author=<%= contributor.login %>"
+      "link": "https://github.com/flutternetwork/WiFiFlutter/commits/master/packages/wifi_iot/README.md?author=<%= contributor.login %>"
     },
     "design": {
       "symbol": "🎨",
@@ -34,7 +34,7 @@
     "example": {
       "symbol": "💡",
       "description": "Examples",
-      "link": "https://github.com/alternadom/WiFiFlutter/commits/master/packages/wifi_iot/example?author=<%= contributor.login %>"
+      "link": "https://github.com/flutternetwork/WiFiFlutter/commits/master/packages/wifi_iot/example?author=<%= contributor.login %>"
     }
   },
   "contributorsPerLine": 9,
@@ -442,7 +442,8 @@
       "profile": "https://github.com/Hallot",
       "contributions": [
         "bug",
-        "code"
+        "code",
+        "review"
       ]
     },
     {
@@ -468,6 +469,24 @@
       "name": "troyredder",
       "avatar_url": "https://avatars.githubusercontent.com/u/30933678?v=4",
       "profile": "https://github.com/troyredder",
+      "contributions": [
+        "bug"
+      ]
+    },
+    {
+      "login": "nathan2day",
+      "name": "Nathan",
+      "avatar_url": "https://avatars.githubusercontent.com/u/17063283?v=4",
+      "profile": "https://github.com/nathan2day",
+      "contributions": [
+        "bug"
+      ]
+    },
+    {
+      "login": "nikolip",
+      "name": "nikolip",
+      "avatar_url": "https://avatars.githubusercontent.com/u/44801617?v=4",
+      "profile": "https://github.com/nikolip",
       "contributions": [
         "bug"
       ]
