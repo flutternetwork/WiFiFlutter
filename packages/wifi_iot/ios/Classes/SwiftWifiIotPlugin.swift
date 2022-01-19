@@ -106,24 +106,22 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
     private func forceWifiUsage(call: FlutterMethodCall, result: FlutterResult) {
         let arguments = call.arguments
         let useWifi = (arguments as! [String : Bool])["useWifi"]
-        if (useWifi != nil) {
-            print("Forcing WiFi usage : %s", ((useWifi ?? false) ? "Use WiFi" : "Use 3G/4G Data"))
-            if #available(iOS 14.0, *) {
-                if(useWifi ?? false){
-                    // trigger access for local network
-                    triggerLocalNetworkPrivacyAlert();
-                }
-            } else {
-                result(FlutterMethodNotImplemented)
+        print("Forcing WiFi usage : %s", ((useWifi ?? false) ? "Use WiFi" : "Use 3G/4G Data"))
+        if #available(iOS 14.0, *) {
+            if(useWifi ?? false){
+                // trigger access for local network
+                triggerLocalNetworkPrivacyAlert();
             }
+            result(true)
         } else {
-            result(nil)
+            result(FlutterMethodNotImplemented)
         }
     }
 
     private func connect(call: FlutterMethodCall, result: @escaping FlutterResult) {
         let sSSID = (call.arguments as? [String : AnyObject])?["ssid"] as! String
-        let sPassword = (call.arguments as? [String : AnyObject])?["password"] as! String?
+        let _ = (call.arguments as? [String : AnyObject])?["bssid"] as? String? // not used
+        let sPassword = (call.arguments as? [String : AnyObject])?["password"] as? String? ?? nil
         let bJoinOnce = (call.arguments as? [String : AnyObject])?["join_once"] as! Bool?
         let sSecurity = (call.arguments as? [String : AnyObject])?["security"] as! String?
         
@@ -223,16 +221,16 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
         if #available(iOS 11.0, *) {
             getSSID { (sSSID) in
                 if (sSSID != nil) {
-                    print("trying to disconnect from '\(sSSID!)'")
+                    print("Trying to disconnect from '\(sSSID!)'")
                     NEHotspotConfigurationManager.shared.removeConfiguration(forSSID: sSSID ?? "")
                     result(true)
                 } else {
-                    print("SSID is null")
+                    print("Not connected to a network")
                     result(false)
                 }
             }
         } else {
-            print("Not disconnected")
+            print("disconnect not available on this iOS version")
             result(nil)
         }
     }
