@@ -1029,29 +1029,27 @@ public class WifiIotPlugin
 
   /// Disconnect current Wifi.
   private void disconnect(Result poResult) {
+    boolean disconnected = false;
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
       //noinspection deprecation
-      final boolean disconnected = moWiFi.disconnect();
-      poResult.success(disconnected);
-      return;
+      disconnected = moWiFi.disconnect();
     } else {
       if (networkCallback != null) {
         final ConnectivityManager connectivityManager =
             (ConnectivityManager) moContext.getSystemService(Context.CONNECTIVITY_SERVICE);
         connectivityManager.unregisterNetworkCallback(networkCallback);
+        networkCallback = null;
+        disconnected = true;
+      } else if (networkSuggestions != null) {
+        final int networksRemoved = moWiFi.removeNetworkSuggestions(networkSuggestions);
+        disconnected = networksRemoved == WifiManager.STATUS_NETWORK_SUGGESTIONS_SUCCESS;
       } else {
         Log.e(
             WifiIotPlugin.class.getSimpleName(),
-            "Can't disconnect from WiFi, networkCallback is null.");
-      }
-
-      if (networkSuggestions != null) {
-        final int networksRemoved = moWiFi.removeNetworkSuggestions(networkSuggestions);
-        poResult.success(networksRemoved == WifiManager.STATUS_NETWORK_SUGGESTIONS_SUCCESS);
-        return;
+            "Can't disconnect from WiFi, networkCallback and networkSuggestions is null.");
       }
     }
-    poResult.success(null);
+    poResult.success(disconnected);
   }
 
   /// This method will return current ssid
