@@ -25,6 +25,8 @@ import android.os.Looper;
 import android.provider.Settings;
 import android.util.Log;
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+
 import info.whitebyte.hotspotmanager.ClientScanResult;
 import info.whitebyte.hotspotmanager.FinishScanListener;
 import info.whitebyte.hotspotmanager.WifiApManager;
@@ -828,6 +830,7 @@ public class WifiIotPlugin
 
   /// Transform a string based bssid into a MacAdress.
   /// Return null in case of error.
+  @RequiresApi(Build.VERSION_CODES.P)
   private static MacAddress macAddressFromBssid(String bssid) {
     if (bssid == null) {
       return null;
@@ -836,6 +839,7 @@ public class WifiIotPlugin
     try {
       return MacAddress.fromString(bssid);
     } catch (IllegalArgumentException invalidRepresentation) {
+      Log.e(WifiIotPlugin.class.getSimpleName(), "Mac address parsing failed for bssid: " + bssid, invalidRepresentation);
       return null;
     }
   }
@@ -952,7 +956,7 @@ public class WifiIotPlugin
           }
         }
 
-        connectTo(poResult, bssid, ssid, password, security, joinOnce, withInternet, false);
+        connectTo(poResult, ssid, bssid, password, security, joinOnce, withInternet, false);
       }
     }.start();
   }
