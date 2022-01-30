@@ -68,7 +68,10 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
-  void _stopListteningToScanResults() => subscription?.cancel();
+  void _stopListteningToScanResults() {
+    subscription?.cancel();
+    setState(() => subscription = null);
+  }
 
   // build toggle switch
   Widget _buildSwitch(String label, bool value, ValueChanged<bool> onChanged) =>
