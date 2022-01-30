@@ -39,7 +39,11 @@ Becareful, some commands as no effect on iOS because Apple don't let us to do wh
 
 :warning:(3): Wifi API changes in Android SDK >= 29, restricts certain behaviour:
   * a. Enable/Disable Wifi Module is deprecated and will always fail [[docs](https://developer.android.com/reference/android/net/wifi/WifiManager#setWifiEnabled(boolean))]. If you  want to open "Wifi Setting" in that case then, set the `shouldOpenSettings: true` when calling `setEnabled`.
-  * b. For Connecting to Wifi, WEP security is deprecated and will always fail, also the network will be disconnected when the app is closed (if permanent network is required(Check :warning:(3c)), use "Register Network" feature) [[docs](https://developer.android.com/guide/topics/connectivity/wifi-bootstrap))]. By default the connection would not have internet access, to connect to network with internet user `withInternet` which is a different API underneath (this API will not disconnect to network after app closes) [[docs](https://developer.android.com/guide/topics/connectivity/wifi-suggest)].
+  * b. Note for connecting to Wifi - 
+    * (i) WEP security is deprecated and will always fail.
+    * (ii) By default the connection would not have internet access and will be disconnected when the app is closed (if permanent network is required(Check :warning:(3c)), use "Register Network" feature) [[docs](https://developer.android.com/guide/topics/connectivity/wifi-bootstrap))]. 
+    * (iii) To connect to network with internet use `withInternet` which is a different API underneath (this API will not disconnect to network after app closes, therefore use `removeWifiNetwork` method to remove/disconnect network added in previous session) [[docs](https://developer.android.com/guide/topics/connectivity/wifi-suggest)].
+    * (iv) Will have to use `forceWifiUsage(true)` to route app traffic via connected access point, similarly can be disabled to route traffic via cellular network (for internet). This is not enabled by default and left upto to the user. 
   * c. Registering Wifi Network, will require user approval - and the network saved would not be controlled by the app (for deletion, updation, etc) [[docs](https://developer.android.com/guide/topics/connectivity/wifi-save-network-passpoint-config)];
 
 Additional Wifi protocols on Android side like - Wifi Direct, Wifi Aware, etc are in active discussion at [#140](https://github.com/flutternetwork/WiFiFlutter/issues/140). Encourage you to engage if you want this features.

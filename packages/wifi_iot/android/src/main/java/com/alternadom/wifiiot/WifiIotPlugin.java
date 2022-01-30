@@ -283,12 +283,7 @@ public class WifiIotPlugin
         getIP(poResult);
         break;
       case "removeWifiNetwork":
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) removeWifiNetwork(poCall, poResult);
-        else
-          poResult.error(
-              "Error",
-              "removeWifiNetwork not supported for Android SDK " + Build.VERSION.SDK_INT,
-              null);
+        removeWifiNetwork(poCall, poResult);
         break;
       case "isRegisteredWifiNetwork":
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q)
@@ -1113,18 +1108,35 @@ public class WifiIotPlugin
     if (prefix_ssid.equals("")) {
       poResult.error("Error", "No prefix SSID was given!", null);
     }
+    boolean removed = false;
 
-    List<android.net.wifi.WifiConfiguration> mWifiConfigList = moWiFi.getConfiguredNetworks();
-    for (android.net.wifi.WifiConfiguration wifiConfig : mWifiConfigList) {
-      String comparableSSID = ('"' + prefix_ssid); //Add quotes because wifiConfig.SSID has them
-      if (wifiConfig.SSID.startsWith(comparableSSID)) {
-        moWiFi.removeNetwork(wifiConfig.networkId);
-        moWiFi.saveConfiguration();
-        poResult.success(true);
-        return;
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+      List<android.net.wifi.WifiConfiguration> mWifiConfigList = moWiFi.getConfiguredNetworks();
+      for (android.net.wifi.WifiConfiguration wifiConfig : mWifiConfigList) {
+        String comparableSSID = ('"' + prefix_ssid); //Add quotes because wifiConfig.SSID has them
+        if (wifiConfig.SSID.startsWith(comparableSSID)) {
+          moWiFi.removeNetwork(wifiConfig.networkId);
+          moWiFi.saveConfiguration();
+          removed = true;
+          break;
+        }
       }
     }
-    poResult.success(false);
+
+    // remove network suggestion
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+      List<WifiNetworkSuggestion> suggestions = moWiFi.getNetworkSuggestions();
+      List<WifiNetworkSuggestion> removeSuggestions = new ArrayList();
+      for (int i = 0, suggestionsSize = suggestions.size(); i < suggestionsSize; i++) {
+        WifiNetworkSuggestion suggestion = suggestions.get(i);
+        if (suggestion.getSsid().startsWith(prefix_ssid)) {
+          removeSuggestions.add(suggestion);
+        }
+      }
+      final int networksRemoved = moWiFi.removeNetworkSuggestions(removeSuggestions);
+      removed = networksRemoved == WifiManager.STATUS_NETWORK_SUGGESTIONS_SUCCESS;
+    }
+    poResult.success(removed);
   }
 
   /// This method will remove the WiFi network as per the passed SSID from the device list
