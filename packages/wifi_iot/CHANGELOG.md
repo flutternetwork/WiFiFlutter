@@ -1,3 +1,10 @@
+## 0.3.15
+
+ - **FIX**: iOS accept connect function password argument to be nil (#224).
+ - **FIX**: `findAndConnect` - param inter-changed (#245).
+ - **FIX**: `disconnect` - returning result properly  (#242).
+ - **FEAT**: remove `WifiNetworkSuggestion` for >=R (#243).
+
 ## 0.3.14
 
  - **FIX**: add size restrictions on the SSID according to IEEE Std 802.11 (#222).

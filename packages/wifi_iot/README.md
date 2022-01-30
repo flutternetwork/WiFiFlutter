@@ -185,7 +185,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   </tr>
   <tr>
     <td align="center"><a href="https://github.com/nathan2day"><img src="https://avatars.githubusercontent.com/u/17063283?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Nathan</b></sub></a><br /><a href="https://github.com/flutternetwork/WiFiFlutter/issues?q=author%3Anathan2day" title="Bug reports">🐛</a></td>
-    <td align="center"><a href="https://github.com/nikolip"><img src="https://avatars.githubusercontent.com/u/44801617?v=4?s=100" width="100px;" alt=""/><br /><sub><b>nikolip</b></sub></a><br /><a href="https://github.com/flutternetwork/WiFiFlutter/issues?q=author%3Anikolip" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://github.com/nikolip"><img src="https://avatars.githubusercontent.com/u/44801617?v=4?s=100" width="100px;" alt=""/><br /><sub><b>nikolip</b></sub></a><br /><a href="https://github.com/flutternetwork/WiFiFlutter/issues?q=author%3Anikolip" title="Bug reports">🐛</a> <a href="https://github.com/flutternetwork/WiFiFlutter/commits?author=nikolip" title="Code">💻</a></td>
   </tr>
 </table>
 
