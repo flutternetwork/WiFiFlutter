@@ -18,69 +18,31 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  bool shouldCheck = true;
   List<WiFiAccessPoint> accessPoints = <WiFiAccessPoint>[];
-  StreamSubscription<List<WiFiAccessPoint>>? subscription;
+  StreamSubscription<Result<List<WiFiAccessPoint>, GetScannedResultsErrors>>?
+      subscription;
 
   bool get isStreaming => subscription != null;
 
-  Future<void> _startScan(BuildContext context) async {
-    if (shouldCheck) {
-      // check if can-startScan
-      final can = await WiFiScan.instance.canStartScan();
-      // if can-not, then show error
-      if (can != CanStartScan.yes) {
-        return kShowSnackBar(context, "Cannot start scan: $can");
-      }
-    }
-    kShowSnackBar(context, "startScan: ${await WiFiScan.instance.startScan()}");
-    // reset access points.
-    setState(() => accessPoints = <WiFiAccessPoint>[]);
-  }
-
-  Future<bool> _canGetScannedResults(BuildContext context) async {
-    if (shouldCheck) {
-      // check if can-getScannedResults
-      final can = await WiFiScan.instance.canGetScannedResults();
-      // if can-not, then show error
-      if (can != CanGetScannedResults.yes) {
-        kShowSnackBar(context, "Cannot get scanned results: $can");
-        accessPoints = <WiFiAccessPoint>[];
-        return false;
-      }
-    }
-    return true;
-  }
-
-  Future<void> _getScannedResults(BuildContext context) async {
-    if (await _canGetScannedResults(context)) {
-      // get scanned results
-      final results = await WiFiScan.instance.getScannedResults();
-      setState(() => accessPoints = results);
+  void _handleScannedResults(
+      Result<List<WiFiAccessPoint>, GetScannedResultsErrors> result) {
+    if (result.hasError) {
+      kShowSnackBar(context, "Cannot get scanned results: ${result.error}");
+      setState(() => accessPoints = <WiFiAccessPoint>[]);
+    } else {
+      setState(() => accessPoints = result.value!);
     }
   }
 
-  Future<void> _startListeningToScanResults(BuildContext context) async {
-    if (await _canGetScannedResults(context)) {
-      // start listening - when notified - update accessPoints list
-      subscription = WiFiScan.instance.onScannedResultsAvailable
-          .listen((event) => setState(() => accessPoints = event));
-    }
+  void _startListeningToScanResults(BuildContext context) {
+    subscription = WiFiScan.instance.onScannedResultsAvailable
+        .listen((result) => _handleScannedResults(result));
   }
 
   void _stopListteningToScanResults() {
     subscription?.cancel();
     setState(() => subscription = null);
   }
-
-  // build toggle switch
-  Widget _buildSwitch(String label, bool value, ValueChanged<bool> onChanged) =>
-      Row(
-        children: [
-          Text(label),
-          Switch(value: value, onChanged: onChanged),
-        ],
-      );
 
   // build row that can display info, based on label: value pair.
   Widget _buildInfo(String label, dynamic value) => Container(
@@ -94,14 +56,6 @@ class _MyAppState extends State<MyApp> {
           ],
         ),
       );
-
-  @override
-  void initState() {
-    super.initState();
-    // fetch getScannedResults post first build
-    WidgetsBinding.instance
-        ?.addPostFrameCallback((_) => _getScannedResults(context));
-  }
 
   @override
   void dispose() {
@@ -128,29 +82,31 @@ class _MyAppState extends State<MyApp> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     ElevatedButton.icon(
-                      icon: const Icon(Icons.refresh),
-                      label: const Text('GET'),
-                      onPressed: () => _getScannedResults(context),
-                    ),
-                    ElevatedButton.icon(
                       icon: const Icon(Icons.perm_scan_wifi),
                       label: const Text('SCAN'),
-                      onPressed: () => _startScan(context),
+                      // call startScan and reset the ap list
+                      onPressed: () => () async {
+                        final error = await WiFiScan.instance.startScan();
+                        kShowSnackBar(context, "startScan: ${error ?? 'done'}");
+                        setState(() => accessPoints = <WiFiAccessPoint>[]);
+                      },
                     ),
-                  ],
-                ),
-                const Divider(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    _buildSwitch("SHOULD CHECK", shouldCheck,
-                        (v) => setState(() => shouldCheck = v)),
-                    _buildSwitch(
-                        "STREAM",
-                        isStreaming,
-                        (shouldStream) => shouldStream
-                            ? _startListeningToScanResults(context)
-                            : _stopListteningToScanResults()),
+                    ElevatedButton.icon(
+                        icon: const Icon(Icons.refresh),
+                        label: const Text('GET'),
+                        // call getScannedResults and handle the result
+                        onPressed: () async => _handleScannedResults(
+                            await WiFiScan.instance.getScannedResults())),
+                    Row(
+                      children: [
+                        const Text("STREAM"),
+                        Switch(
+                            value: isStreaming,
+                            onChanged: (shouldStream) => shouldStream
+                                ? _startListeningToScanResults(context)
+                                : _stopListteningToScanResults()),
+                      ],
+                    ),
                   ],
                 ),
                 const Divider(),
