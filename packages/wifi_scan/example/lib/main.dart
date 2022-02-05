@@ -85,7 +85,7 @@ class _MyAppState extends State<MyApp> {
                       icon: const Icon(Icons.perm_scan_wifi),
                       label: const Text('SCAN'),
                       // call startScan and reset the ap list
-                      onPressed: () => () async {
+                      onPressed: () async {
                         final error = await WiFiScan.instance.startScan();
                         kShowSnackBar(context, "startScan: ${error ?? 'done'}");
                         setState(() => accessPoints = <WiFiAccessPoint>[]);
