@@ -24,7 +24,7 @@ class _MyAppState extends State<MyApp> {
 
   bool get isStreaming => subscription != null;
 
-  void _handleScannedResults(
+  void _handleScannedResults(BuildContext context,
       Result<List<WiFiAccessPoint>, GetScannedResultsErrors> result) {
     if (result.hasError) {
       kShowSnackBar(context, "Cannot get scanned results: ${result.error}");
@@ -36,7 +36,7 @@ class _MyAppState extends State<MyApp> {
 
   void _startListeningToScanResults(BuildContext context) {
     subscription = WiFiScan.instance.onScannedResultsAvailable
-        .listen((result) => _handleScannedResults(result));
+        .listen((result) => _handleScannedResults(context, result));
   }
 
   void _stopListteningToScanResults() {
@@ -92,11 +92,12 @@ class _MyAppState extends State<MyApp> {
                       },
                     ),
                     ElevatedButton.icon(
-                        icon: const Icon(Icons.refresh),
-                        label: const Text('GET'),
-                        // call getScannedResults and handle the result
-                        onPressed: () async => _handleScannedResults(
-                            await WiFiScan.instance.getScannedResults())),
+                      icon: const Icon(Icons.refresh),
+                      label: const Text('GET'),
+                      // call getScannedResults and handle the result
+                      onPressed: () async => _handleScannedResults(
+                          context, await WiFiScan.instance.getScannedResults()),
+                    ),
                     Row(
                       children: [
                         const Text("STREAM"),

@@ -31,18 +31,6 @@ class WiFiScan {
     return errorCode == null ? null : _deserializeStartScanError(errorCode);
   }
 
-  Result<List<WiFiAccessPoint>, GetScannedResultsErrors>
-      _scannedResultMapToResult(Map map) {
-    // check if any error - return Result._error if any
-    final errorCode = map["error"];
-    if (errorCode != null) {
-      return Result._error(_deserializeGetScannedResultsError(errorCode));
-    }
-    // parse and return list of WiFiAccessPoint
-    return Result._value(List<WiFiAccessPoint>.unmodifiable(
-        map["value"].map((map) => WiFiAccessPoint._fromMap(map))));
-  }
-
   /// Get scanned access point.
   ///
   /// Returns [Result] object. If successful then [Result.value] is a [List] of
@@ -80,4 +68,16 @@ class WiFiScan {
             }
             throw UnsupportedError("Unknown event received: $event");
           });
+
+  Result<List<WiFiAccessPoint>, GetScannedResultsErrors>
+      _scannedResultMapToResult(Map map) {
+    // check if any error - return Result._error if any
+    final errorCode = map["error"];
+    if (errorCode != null) {
+      return Result._error(_deserializeGetScannedResultsError(errorCode));
+    }
+    // parse and return list of WiFiAccessPoint
+    return Result._value(List<WiFiAccessPoint>.unmodifiable(
+        map["value"].map((map) => WiFiAccessPoint._fromMap(map))));
+  }
 }
