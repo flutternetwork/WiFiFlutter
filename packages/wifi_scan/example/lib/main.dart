@@ -57,6 +57,42 @@ class _MyAppState extends State<MyApp> {
         ),
       );
 
+  // build access point tile.
+  Widget _buildAccessPointTile(BuildContext context, WiFiAccessPoint ap) {
+    final title = ap.ssid.isNotEmpty ? ap.ssid : "**EMPTY**";
+    final signalIcon =
+        ap.level >= -80 ? Icons.signal_wifi_4_bar : Icons.signal_wifi_0_bar;
+    return ListTile(
+      visualDensity: VisualDensity.compact,
+      leading: Icon(signalIcon),
+      title: Text(title),
+      subtitle: Text(ap.capabilities),
+      onTap: () => showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text(title),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _buildInfo("BSSDI", ap.bssid),
+              _buildInfo("Capability", ap.capabilities),
+              _buildInfo("frequency", "${ap.frequency}MHz"),
+              _buildInfo("level", ap.level),
+              _buildInfo("standard", ap.standard),
+              _buildInfo("centerFrequency0", "${ap.centerFrequency0}MHz"),
+              _buildInfo("centerFrequency1", "${ap.centerFrequency1}MHz"),
+              _buildInfo("channelWidth", ap.channelWidth),
+              _buildInfo("isPasspoint", ap.isPasspoint),
+              _buildInfo("operatorFriendlyName", ap.operatorFriendlyName),
+              _buildInfo("venueName", ap.venueName),
+              _buildInfo("is80211mcResponder", ap.is80211mcResponder),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   void dispose() {
     super.dispose();
@@ -117,52 +153,8 @@ class _MyAppState extends State<MyApp> {
                         ? const Text("NO SCANNED RESULTS")
                         : ListView.builder(
                             itemCount: accessPoints.length,
-                            itemBuilder: (context, i) {
-                              final ap = accessPoints[i];
-                              final title =
-                                  ap.ssid.isNotEmpty ? ap.ssid : "**EMPTY**";
-                              final signalIcon = ap.level >= -80
-                                  ? Icons.signal_wifi_4_bar
-                                  : Icons.signal_wifi_0_bar;
-                              return ListTile(
-                                visualDensity: VisualDensity.compact,
-                                leading: Icon(signalIcon),
-                                title: Text(title),
-                                subtitle: Text(ap.capabilities),
-                                onTap: () => showDialog(
-                                  context: context,
-                                  builder: (context) => AlertDialog(
-                                    title: Text(title),
-                                    content: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        _buildInfo("BSSDI", ap.bssid),
-                                        _buildInfo(
-                                            "Capability", ap.capabilities),
-                                        _buildInfo(
-                                            "frequency", "${ap.frequency}MHz"),
-                                        _buildInfo("level", ap.level),
-                                        _buildInfo("standard", ap.standard),
-                                        _buildInfo("centerFrequency0",
-                                            "${ap.centerFrequency0}MHz"),
-                                        _buildInfo("centerFrequency1",
-                                            "${ap.centerFrequency1}MHz"),
-                                        _buildInfo(
-                                            "channelWidth", ap.channelWidth),
-                                        _buildInfo(
-                                            "isPasspoint", ap.isPasspoint),
-                                        _buildInfo("operatorFriendlyName",
-                                            ap.operatorFriendlyName),
-                                        _buildInfo("venueName", ap.venueName),
-                                        _buildInfo("is80211mcResponder",
-                                            ap.is80211mcResponder),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
+                            itemBuilder: (context, i) => _buildAccessPointTile(
+                                context, accessPoints[i])),
                   ),
                 ),
               ],
