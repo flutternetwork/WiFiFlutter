@@ -186,7 +186,7 @@ class WifiScanPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
                 val mResult = getScannedResults(askPermission)
                 // if error != ASK_FOR_LOC_PERM, send result
                 // else ask for permission - wait for user action - return result based on it
-                if (mResult.getValue("error") != ASK_FOR_LOC_PERM) {
+                if (mResult["error"] != ASK_FOR_LOC_PERM) {
                     result.success(mResult)
                 } else {
                     askForLocationPermission { askResult ->
