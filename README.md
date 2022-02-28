@@ -47,7 +47,7 @@ WiFiFlutter is a suite of Flutter plugins that enable Flutter apps to use variou
 > [![wifi_iot][iot_workflow_badge]][iot_workflow] [![wifi_iot][iot_pub_badge]][iot_pub] [![pub points][iot_pub_points_badge]][iot_pub_points]
 
 Flutter plugin which can handle WiFi connections (AP, STA).
-> This plugin is only maintained for legacy reasons. Kindly switch to other alternate plugins from this suite.
+<!--  HIDING until other plugins available > This plugin is only maintained for legacy reasons. Kindly switch to other alternate plugins from this suite. -->
 
 [[View Source][iot_code]]
 
