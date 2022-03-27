@@ -1,3 +1,9 @@
+## 0.2.0
+
+> Note: This release has breaking changes.
+
+ - **BREAKING** **REFACTOR**: not having separate "can" APIs for checks (#246).
+
 ## 0.1.0+3
 
  - **FIX**: example - stream toggle not working (#241).
