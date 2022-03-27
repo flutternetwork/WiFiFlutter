@@ -9,7 +9,7 @@
 #endif
 
 @implementation WifiScanPlugin
-+ (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
++ (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar> *)registrar {
   [SwiftWifiScanPlugin registerWithRegistrar:registrar];
 }
 @end
