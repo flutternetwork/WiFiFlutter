@@ -148,7 +148,7 @@ Flutter plugin to measure the distance to nearby RTT-capable Wi-Fi access points
 #### Platform Support
 | Android | iOS |
 | :-----: | :-: |
-|    ❌    |  ➖ |
+|   ✔️    |     |
 
 ---
 
