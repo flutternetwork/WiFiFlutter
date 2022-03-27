@@ -26,10 +26,10 @@ class WiFiRTT {
     return hasSupport!;
   }
 
-  Future<Result<List<WiFiRangingResult>, RangingErrors>> startRanging(
+  Future<Result<List<WiFiRangingResult>, RangingErrors>> requestRanging(
       List<WiFiRangingDevice> devices,
       {bool askPermissions = true}) async {
-    final map = await _channel.invokeMapMethod("startRanging", {
+    final map = await _channel.invokeMapMethod("requestRanging", {
       "askPermissions": askPermissions,
       "devices": devices.map((device) => device._map).toList(),
     });
