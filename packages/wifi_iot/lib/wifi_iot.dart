@@ -22,6 +22,9 @@ const serializeNetworkSecurityMap = <NetworkSecurity, String>{
 };
 
 const MethodChannel _channel = const MethodChannel('wifi_iot');
+@Deprecated(
+    "APIs related to 'scan' functionalities are deprecated in `wifi_iot`. "
+    "Switch to new `wifi_scan` plugin by WiFiFlutter - https://pub.dev/packages/wifi_scan")
 const EventChannel _eventChannel =
     const EventChannel('plugins.wififlutter.io/wifi_scan');
 
