@@ -289,6 +289,7 @@ class WiFiForIoTPlugin {
   ///
   /// @param [bssid] The BSSID (unique id) of the network to connect to.
   ///   This allows to specify exactly which network to connect to.
+  // ignore: deprecated_member_use_from_same_package
   ///   To obtain the BSSID, use [loadWifiList] (Android only) or save the value
   ///   from a previous connection.
   ///   On Android, specifying the BSSID will also result in no system message
@@ -360,6 +361,7 @@ class WiFiForIoTPlugin {
   /// @param [bssid] The BSSID (unique id) of the network to register.
   ///   This allows to specify exactly which network to register in case of
   ///   duplicated SSID.
+  // ignore: deprecated_member_use_from_same_package
   ///   To obtain the BSSID, use [loadWifiList] (Android only) or save the value
   ///   from a previous connection.
   ///   On Android, specifying the BSSID will also result in no system message
@@ -424,6 +426,7 @@ class WiFiForIoTPlugin {
   ///
   /// @param [bssid] The BSSID (unique id) of the network to connect to.
   ///   This allows to specify exactly which network to connect to.
+  // ignore: deprecated_member_use_from_same_package
   ///   To obtain the BSSID, use [loadWifiList] (Android only) or save the value
   ///   from a previous connection.
   ///   On Android, specifying the BSSID will also result in no system message
