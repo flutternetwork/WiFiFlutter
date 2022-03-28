@@ -25,7 +25,7 @@
 
 WiFiFlutter is a suite of Flutter plugins that enable Flutter apps to use various WiFi services.
 
-> *Note*: WiFiFlutter is going under [reforms][reforms], therefore some plugins might not be available yet. [Feedback][issue] and [Pull Requests][pull] are most welcome!
+> *Note*: WiFiFlutter is going under [reforms][reform], therefore some plugins might not be available yet. [Feedback][issue] and [Pull Requests][pull] are most welcome!
 
 ## Plugins
 
