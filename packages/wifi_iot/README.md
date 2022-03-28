@@ -46,7 +46,7 @@ Becareful, some commands as no effect on iOS because Apple don't let us to do wh
     * (iv) Will have to use `forceWifiUsage(true)` to route app traffic via connected access point, similarly can be disabled to route traffic via cellular network (for internet). This is not enabled by default and left upto to the user. 
   * c. Registering Wifi Network, will require user approval - and the network saved would not be controlled by the app (for deletion, updation, etc) [[docs](https://developer.android.com/guide/topics/connectivity/wifi-save-network-passpoint-config)];
 
-:warning:(4): This functionality is "discontinued" - checkout [`wifi_scan`](https://pub.dev/packages/wifi_scan) plugin instead.
+:warning:(4): This functionality is "discontinued" - checkout new [`wifi_scan`](https://pub.dev/packages/wifi_scan) plugin (also by WiFiFlutter) instead.
 
 Additional Wifi protocols on Android side like - Wifi Direct, Wifi Aware, etc are in active discussion at [#140](https://github.com/flutternetwork/WiFiFlutter/issues/140). Encourage you to engage if you want this features.
 
