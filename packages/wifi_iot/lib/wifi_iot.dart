@@ -22,6 +22,9 @@ const serializeNetworkSecurityMap = <NetworkSecurity, String>{
 };
 
 const MethodChannel _channel = const MethodChannel('wifi_iot');
+@Deprecated(
+    "This is discontinued, switch to new `wifi_scan` plugin by WiFiFlutter. "
+    "Check - https://pub.dev/packages/wifi_scan")
 const EventChannel _eventChannel =
     const EventChannel('plugins.wififlutter.io/wifi_scan');
 
@@ -194,8 +197,14 @@ class WiFiForIoTPlugin {
     }
   }
 
+  @Deprecated(
+      "This is discontinued, switch to new `wifi_scan` plugin by WiFiFlutter. "
+      "Check - https://pub.dev/packages/wifi_scan")
   static Stream<List<WifiNetwork>>? _onWifiScanResultReady;
 
+  @Deprecated(
+      "This is discontinued, switch to new `wifi_scan` plugin by WiFiFlutter. "
+      "Check - https://pub.dev/packages/wifi_scan")
   static Stream<List<WifiNetwork>> get onWifiScanResultReady {
     if (_onWifiScanResultReady == null) {
       _onWifiScanResultReady = _eventChannel
@@ -205,6 +214,9 @@ class WiFiForIoTPlugin {
     return _onWifiScanResultReady!;
   }
 
+  @Deprecated(
+      "This is discontinued, switch to new `wifi_scan` plugin by WiFiFlutter. "
+      "Check - https://pub.dev/packages/wifi_scan")
   static Future<List<WifiNetwork>>? _loadWifiList() async {
     final Map<String, String> htArguments = Map();
     String? sResult;
@@ -218,6 +230,9 @@ class WiFiForIoTPlugin {
     return htResult;
   }
 
+  @Deprecated(
+      "This is discontinued, switch to new `wifi_scan` plugin by WiFiFlutter. "
+      "Check - https://pub.dev/packages/wifi_scan")
   static Future<List<WifiNetwork>> loadWifiList() async {
     final List<WifiNetwork> result = (await _loadWifiList() ?? <WifiNetwork>[]);
     if (result.length >= 1) return result;
@@ -274,6 +289,7 @@ class WiFiForIoTPlugin {
   ///
   /// @param [bssid] The BSSID (unique id) of the network to connect to.
   ///   This allows to specify exactly which network to connect to.
+  // ignore: deprecated_member_use_from_same_package
   ///   To obtain the BSSID, use [loadWifiList] (Android only) or save the value
   ///   from a previous connection.
   ///   On Android, specifying the BSSID will also result in no system message
@@ -345,6 +361,7 @@ class WiFiForIoTPlugin {
   /// @param [bssid] The BSSID (unique id) of the network to register.
   ///   This allows to specify exactly which network to register in case of
   ///   duplicated SSID.
+  // ignore: deprecated_member_use_from_same_package
   ///   To obtain the BSSID, use [loadWifiList] (Android only) or save the value
   ///   from a previous connection.
   ///   On Android, specifying the BSSID will also result in no system message
@@ -409,6 +426,7 @@ class WiFiForIoTPlugin {
   ///
   /// @param [bssid] The BSSID (unique id) of the network to connect to.
   ///   This allows to specify exactly which network to connect to.
+  // ignore: deprecated_member_use_from_same_package
   ///   To obtain the BSSID, use [loadWifiList] (Android only) or save the value
   ///   from a previous connection.
   ///   On Android, specifying the BSSID will also result in no system message
@@ -614,6 +632,9 @@ class APClient {
   }
 }
 
+@Deprecated(
+    "This is discontinued, switch to new `wifi_scan` plugin by WiFiFlutter. "
+    "Check - https://pub.dev/packages/wifi_scan")
 class WifiNetwork {
   String? ssid;
   String? bssid;
