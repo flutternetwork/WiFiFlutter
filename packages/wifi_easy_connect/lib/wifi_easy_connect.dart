@@ -34,7 +34,7 @@ class WiFiEasyConnect {
 
     final map = await _channel.invokeMapMethod("onboard", {
       "dppUri": dppUri.toString(),
-      "brands": bands,
+      "bands": bands,
     });
 
     // check if any error - return Result._error if any
