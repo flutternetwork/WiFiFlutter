@@ -23,7 +23,7 @@ Becareful, some commands as no effect on iOS because Apple don't let us to do wh
 | :---------------------------------------------------- | :----------------: | :------------------: |
 | Enabling / Disabling WiFi module                      | :warning:(3a) |  :x:  |
 | Getting WiFi status                                   | :white_check_mark: |  :x:  |
-| Scanning for networks, with "already-associated" flag | :white_check_mark: |  :x:  |
+| Scanning for networks, with "already-associated" flag | :white_check_mark:(4) |  :x:  |
 | Connecting / Disconnecting on a network in WPA / WEP  | :white_check_mark:(3b) |  :white_check_mark:(1)  |
 | Registering / Unregistering a WiFi network            | :white_check_mark:(3c) |  :warning:(2)  |
 | Getting informations like :                           | :white_check_mark: |  :white_check_mark:  |
@@ -45,6 +45,8 @@ Becareful, some commands as no effect on iOS because Apple don't let us to do wh
     * (iii) To connect to network with internet use `withInternet` which is a different API underneath (this API will not disconnect to network after app closes, therefore use `removeWifiNetwork` method to remove/disconnect network added in previous session) [[docs](https://developer.android.com/guide/topics/connectivity/wifi-suggest)].
     * (iv) Will have to use `forceWifiUsage(true)` to route app traffic via connected access point, similarly can be disabled to route traffic via cellular network (for internet). This is not enabled by default and left upto to the user. 
   * c. Registering Wifi Network, will require user approval - and the network saved would not be controlled by the app (for deletion, updation, etc) [[docs](https://developer.android.com/guide/topics/connectivity/wifi-save-network-passpoint-config)];
+
+:warning:(4): This functionality is "discontinued" - checkout [`wifi_scan`](https://pub.dev/packages/wifi_scan) plugin instead.
 
 Additional Wifi protocols on Android side like - Wifi Direct, Wifi Aware, etc are in active discussion at [#140](https://github.com/flutternetwork/WiFiFlutter/issues/140). Encourage you to engage if you want this features.
 
