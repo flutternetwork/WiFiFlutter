@@ -1,3 +1,8 @@
+## 0.2.0+1
+
+ - **FIX**: proper result if error after "ask permission" (#257).
+ - **DOCS**: added link for iOS requirements.
+
 ## 0.2.0
 
 > Note: This release has breaking changes.

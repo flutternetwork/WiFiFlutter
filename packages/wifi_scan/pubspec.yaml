@@ -1,6 +1,6 @@
 name: wifi_scan
 description: Flutter plugin to scan for nearby visible WiFi access points.
-version: 0.2.0
+version: 0.2.0+1
 homepage: https://github.com/flutternetwork/WiFiFlutter/tree/master/packages/wifi_scan
 
 environment:
