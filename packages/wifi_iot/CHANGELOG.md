@@ -1,3 +1,8 @@
+## 0.3.15+1
+
+ - **FIX**: properly upgrade to v2 android embedding (#255).
+ - **DOCS**: deprecating message for "scan" related APIs (#254).
+
 ## 0.3.15
 
  - **FIX**: iOS accept connect function password argument to be nil (#224).

@@ -4,12 +4,14 @@
   "repoType": "github",
   "repoHost": "https://github.com",
   "files": [
-    "README.md"
+    "CONTRIBUTORS.md",
+    "README.md",
+    "CONTRIBUTING.md"
   ],
   "imageSize": 100,
   "commit": false,
   "commitConvention": "none",
-  "badgeTemplate": "<a href=\"#contributors-\"><img src=\"https://img.shields.io/badge/all_contributors-<%= contributors.length %>-orange.svg\" alt=\"All Contributors\" /></a>",
+  "badgeTemplate": "<a href=\"https://github.com/flutternetwork/WiFiFlutter/blob/master/CONTRIBUTORS.md#contributors-\"><img src=\"https://img.shields.io/badge/all_contributors-<%= contributors.length %>-orange.svg\" alt=\"All Contributors\" /></a>",
   "types": {
     "code_pr": {
       "symbol": "💻",
@@ -21,20 +23,10 @@
       "description": "Code",
       "link": "https://github.com/flutternetwork/WiFiFlutter/search?q=<%= contributor.login %>&type=commits"
     },
-    "doc": {
-      "symbol": "📖",
-      "description": "Documentation",
-      "link": "https://github.com/flutternetwork/WiFiFlutter/commits/master/packages/wifi_iot/README.md?author=<%= contributor.login %>"
-    },
     "design": {
       "symbol": "🎨",
       "description": "Design",
       "link": "https://dribbble.com/shots/10203130-WiFi-Flutter-Logo-Design"
-    },
-    "example": {
-      "symbol": "💡",
-      "description": "Examples",
-      "link": "https://github.com/flutternetwork/WiFiFlutter/commits/master/packages/wifi_iot/example?author=<%= contributor.login %>"
     }
   },
   "contributorsPerLine": 9,

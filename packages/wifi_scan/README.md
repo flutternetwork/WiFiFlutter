@@ -28,7 +28,7 @@ This plugin allows Flutter apps to scan for nearby visible WiFi access points.
 | Platform | Status | Min. Version |  API  | Notes |
 | :------: | :----: |:------------:| :---: |:-----:|
 | **Android** | ✔️ | 16 (J) | Scan related APIs in [`WifiManager`][android_WifiManager] *[[Guide][android_guide]]* | For SDK >= 26(O) scans are [throttled][android_throttling]. |
-| **iOS** | ✔️ | 9.0 | [No public API][ios_thread] | [Stub implementation][ios_stub] with sane returns. |
+| **iOS** | ✔️ | 9.0 | [No public API][ios_thread], requires [special entitlements from Apple][ios_special] | [Stub implementation][ios_stub] with sane returns. |
 
 ## Usage
 The entry point for the plugin is the singleton instance `WiFiScan.instance`.
@@ -123,11 +123,19 @@ Please file WiFiFlutter specific issues, bugs, or feature requests in our [issue
 To contribute a change to this plugin, please review plugin [checklist for 1.0][checklist], our 
 [contribution guide][wf_contrib] and open a [pull request][wf_pull].
 
+## Contributors ✨
+
+Thanks goes to [these 💖 people][wf_contributors] for their contributions.
+
+This project follows the [all-contributors][all_contributors] specification. Contributions of any kind welcome!
+
 <!-- links -->
 [wf_home]: https://wifi.flutternetwork.dev/
 [wf_issue]: https://github.com/flutternetwork/WiFiFlutter/issues/new
 [wf_contrib]: https://github.com/flutternetwork/WiFiFlutter/blob/master/CONTRIBUTING.md
 [wf_pull]: https://github.com/flutternetwork/WiFiFlutter/pulls
+[wf_contributors]: https://github.com/flutternetwork/WiFiFlutter/blob/master/CONTRIBUTORS.md
+[all_contributors]: https://github.com/all-contributors/all-contributors
 
 [checklist]: https://github.com/flutternetwork/WiFiFlutter/issues/188
 [docs]: https://pub.dev/documentation/wifi_scan/latest/wifi_scan/wifi_scan-library.html
@@ -148,4 +156,5 @@ To contribute a change to this plugin, please review plugin [checklist for 1.0][
 [android_WifiManager]: https://developer.android.com/reference/android/net/wifi/WifiManager
 
 [ios_thread]: https://developer.apple.com/forums/thread/39204
+[ios_special]: https://developer.apple.com/forums/thread/91351?answerId=276151022#276151022
 [ios_stub]: https://github.com/flutternetwork/WiFiFlutter/blob/master/packages/wifi_scan/ios/Classes/SwiftWifiScanPlugin.swift

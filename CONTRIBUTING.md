@@ -2,7 +2,9 @@
 
 <a href="https://github.com/flutternetwork/WiFiFlutter/actions?query=workflow%3Aall_plugins">
     <img src="https://github.com/flutternetwork/WiFiFlutter/workflows/all_plugins/badge.svg" alt="all_plugins GitHub Workflow Status"/>
-</a>
+</a><!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+<a href="https://github.com/flutternetwork/WiFiFlutter/blob/master/CONTRIBUTORS.md#contributors-"><img src="https://img.shields.io/badge/all_contributors-47-orange.svg" alt="All Contributors" /></a>
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 
 ## 1. Things you will need
@@ -167,12 +169,6 @@ your code contributions, various tests will be run against your updated code aut
 Once you've gotten an LGTM from a project maintainer and once your PR has received
 the green light from all our automated testing, wait for one the package maintainers
 to merge the pull request.
-
-You must complete the
-[Contributor License Agreement](https://cla.developers.google.com/clas).
-You can do this online, and it only takes a minute.
-If you've never submitted code before, you must add your (or your
-organization's) name and contact info to the [AUTHORS](AUTHORS) file.
 
 ### The review process
 
