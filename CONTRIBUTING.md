@@ -170,12 +170,6 @@ Once you've gotten an LGTM from a project maintainer and once your PR has receiv
 the green light from all our automated testing, wait for one the package maintainers
 to merge the pull request.
 
-You must complete the
-[Contributor License Agreement](https://cla.developers.google.com/clas).
-You can do this online, and it only takes a minute.
-If you've never submitted code before, you must add your (or your
-organization's) name and contact info to the [AUTHORS](AUTHORS) file.
-
 ### The review process
 
 Newly opened PRs first go through initial triage which results in one of:
