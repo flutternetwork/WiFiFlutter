@@ -9,7 +9,7 @@
 #endif
 
 @implementation WifiEasyConnectPlugin
-+ (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
++ (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar> *)registrar {
   [SwiftWifiEasyConnectPlugin registerWithRegistrar:registrar];
 }
 @end

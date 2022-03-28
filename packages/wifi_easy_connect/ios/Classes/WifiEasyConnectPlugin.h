@@ -1,4 +1,4 @@
 #import <Flutter/Flutter.h>
 
-@interface WifiEasyConnectPlugin : NSObject<FlutterPlugin>
+@interface WifiEasyConnectPlugin : NSObject <FlutterPlugin>
 @end
