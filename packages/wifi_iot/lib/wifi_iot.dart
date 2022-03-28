@@ -196,8 +196,9 @@ class WiFiForIoTPlugin {
 
   static Stream<List<WifiNetwork>>? _onWifiScanResultReady;
 
-  @Deprecated("APIs related to 'scan' functionalities are deprecated. "
-      "Switch to `wifi_scan` plugin - https://pub.dev/packages/wifi_scan")
+  @Deprecated(
+      "APIs related to 'scan' functionalities are deprecated in `wifi_iot`. "
+      "Switch to new `wifi_scan` plugin by WiFiFlutter - https://pub.dev/packages/wifi_scan")
   static Stream<List<WifiNetwork>> get onWifiScanResultReady {
     if (_onWifiScanResultReady == null) {
       _onWifiScanResultReady = _eventChannel
@@ -207,6 +208,9 @@ class WiFiForIoTPlugin {
     return _onWifiScanResultReady!;
   }
 
+  @Deprecated(
+      "APIs related to 'scan' functionalities are deprecated in `wifi_iot`. "
+      "Switch to new `wifi_scan` plugin by WiFiFlutter - https://pub.dev/packages/wifi_scan")
   static Future<List<WifiNetwork>>? _loadWifiList() async {
     final Map<String, String> htArguments = Map();
     String? sResult;
@@ -220,8 +224,9 @@ class WiFiForIoTPlugin {
     return htResult;
   }
 
-  @Deprecated("APIs related to 'scan' functionalities are deprecated. "
-      "Switch to `wifi_scan` plugin - https://pub.dev/packages/wifi_scan")
+  @Deprecated(
+      "APIs related to 'scan' functionalities are deprecated in `wifi_iot`. "
+      "Switch to new `wifi_scan` plugin by WiFiFlutter - https://pub.dev/packages/wifi_scan")
   static Future<List<WifiNetwork>> loadWifiList() async {
     final List<WifiNetwork> result = (await _loadWifiList() ?? <WifiNetwork>[]);
     if (result.length >= 1) return result;
@@ -618,8 +623,9 @@ class APClient {
   }
 }
 
-@Deprecated("APIs related to 'scan' functionalities are deprecated. "
-    "Switch to `wifi_scan` plugin - https://pub.dev/packages/wifi_scan")
+@Deprecated(
+    "APIs related to 'scan' functionalities are deprecated in `wifi_iot`. "
+    "Switch to new `wifi_scan` plugin by WiFiFlutter - https://pub.dev/packages/wifi_scan")
 class WifiNetwork {
   String? ssid;
   String? bssid;
