@@ -195,10 +195,10 @@ class WifiScanPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
                                 result.success(getScannedResults(askPermission = false))
                             }
                             AskLocPermResult.UPGRADE_TO_FINE -> {
-                                result.success(ERROR_GET_RESULTS_NO_LOC_PERM_UPGRADE_ACCURACY)
+                                result.success(errorResult(ERROR_GET_RESULTS_NO_LOC_PERM_UPGRADE_ACCURACY))
                             }
                             AskLocPermResult.DENIED -> {
-                                result.success(ERROR_GET_RESULTS_NO_LOC_PERM_DENIED)
+                                result.success(errorResult(ERROR_GET_RESULTS_NO_LOC_PERM_DENIED))
                             }
                             AskLocPermResult.ERROR_NO_ACTIVITY -> {
                                 result.error(
@@ -262,7 +262,7 @@ class WifiScanPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
         }
 
         // if any errorCode then return it
-        if (errorCode != null) return mapOf("error" to errorCode)
+        if (errorCode != null) return errorResult(errorCode)
 
         // return scannedResults
         return mapOf("value" to wifi!!.scanResults.map { ap ->
@@ -351,4 +351,6 @@ class WifiScanPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
         LocationManagerCompat.isLocationEnabled(
             context.applicationContext.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         )
+
+   private fun errorResult(code: Int): Map<String, Int> = mapOf("error" to code)
 }
