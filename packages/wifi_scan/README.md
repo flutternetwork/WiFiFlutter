@@ -28,7 +28,7 @@ This plugin allows Flutter apps to scan for nearby visible WiFi access points.
 | Platform | Status | Min. Version |  API  | Notes |
 | :------: | :----: |:------------:| :---: |:-----:|
 | **Android** | ✔️ | 16 (J) | Scan related APIs in [`WifiManager`][android_WifiManager] *[[Guide][android_guide]]* | For SDK >= 26(O) scans are [throttled][android_throttling]. |
-| **iOS** | ✔️ | 9.0 | [No public API][ios_thread] | [Stub implementation][ios_stub] with sane returns. |
+| **iOS** | ✔️ | 9.0 | [No public API][ios_thread], requires [special entitlements from Apple][ios_special] | [Stub implementation][ios_stub] with sane returns. |
 
 ## Usage
 The entry point for the plugin is the singleton instance `WiFiScan.instance`.
@@ -156,4 +156,5 @@ This project follows the [all-contributors][all_contributors] specification. Con
 [android_WifiManager]: https://developer.android.com/reference/android/net/wifi/WifiManager
 
 [ios_thread]: https://developer.apple.com/forums/thread/39204
+[ios_special]: https://developer.apple.com/forums/thread/91351?answerId=276151022#276151022
 [ios_stub]: https://github.com/flutternetwork/WiFiFlutter/blob/master/packages/wifi_scan/ios/Classes/SwiftWifiScanPlugin.swift
