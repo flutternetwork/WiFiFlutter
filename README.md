@@ -10,7 +10,9 @@
   </a>
   <a href="https://codecov.io/gh/flutternetwork/WiFiFlutter/">
     <img src="https://codecov.io/gh/flutternetwork/WiFiFlutter/graph/badge.svg" alt="all_plugins Coverage"/>
-  </a>
+  </a><!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+<a href="https://github.com/flutternetwork/WiFiFlutter/blob/master/CONTRIBUTORS.md#contributors-"><img src="https://img.shields.io/badge/all_contributors-47-orange.svg" alt="All Contributors" /></a>
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
   <a href="https://gitter.im/flutternetwork/WiFiFlutter?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge">
     <img src="https://badges.gitter.im/flutternetwork/WiFiFlutter.svg" alt="Join the chat at https://gitter.im/flutternetwork/WiFiFlutter]">
   </a>
@@ -23,7 +25,7 @@
 
 WiFiFlutter is a suite of Flutter plugins that enable Flutter apps to use various WiFi services.
 
-> *Note*: WiFiFlutter is going under [reforms](https://github.com/flutternetwork/WiFiFlutter/discussions/229), therefore some plugins might not be available yet. [Feedback](https://github.com/flutternetwork/WiFiFlutter/issues) and [Pull Requests](https://github.com/flutternetwork/WiFiFlutter/pulls) are most welcome!
+> *Note*: WiFiFlutter is going under [reforms][reforms], therefore some plugins might not be available yet. [Feedback][issue] and [Pull Requests][pull] are most welcome!
 
 ## Plugins
 
@@ -154,21 +156,34 @@ Flutter plugin to measure the distance to nearby RTT-capable Wi-Fi access points
 
 ## Issues
 
-Please file WiFiFlutter specific issues, bugs, or feature requests in our [issue tracker](https://github.com/flutternetwork/WiFiFlutter/issues/new).
+Please file WiFiFlutter specific issues, bugs, or feature requests in our [issue tracker][issue].
 
-Plugin issues that are not specific to WiFiFlutter can be filed in the [Flutter issue tracker](https://github.com/flutter/flutter/issues/new).
+Plugin issues that are not specific to WiFiFlutter can be filed in the [Flutter issue tracker][issue].
 
 ## Contributing
 
 If you wish to contribute a change to any of the existing plugins in this repo,
-please review our [contribution guide](https://github.com/flutternetwork/WiFiFlutter/blob/master/CONTRIBUTING.md)
-and open a [pull request](https://github.com/flutternetwork/WiFiFlutter/pulls).
+please review our [contribution guide][contrib] and open a [pull request][pull].
 
 ## Status
 
 This repository is maintained by WiFiFlutter authors. Issues here are answered by maintainers and other community members on GitHub on a best-effort basis.
 
+## Contributors ✨
+
+Thanks goes to [these 💖 people][contributors] for their contributions.
+
+This project follows the [all-contributors][all_contributors] specification. Contributions of any kind welcome!
+
 <!-- links -->
+[home]: https://wifi.flutternetwork.dev
+[reform]: https://github.com/flutternetwork/WiFiFlutter/discussions/229
+[issue]: https://github.com/flutternetwork/WiFiFlutter/issues/new
+[contrib]: https://github.com/flutternetwork/WiFiFlutter/blob/master/CONTRIBUTING.md
+[pull]: https://github.com/flutternetwork/WiFiFlutter/pulls
+[contributors]: https://github.com/flutternetwork/WiFiFlutter/blob/master/CONTRIBUTORS.md
+[all_contributors]: https://github.com/all-contributors/all-contributors
+
 [iot_code]: https://github.com/flutternetwork/WiFiFlutter/tree/master/packages/wifi_iot
 [iot_workflow]: https://github.com/flutternetwork/WiFiFlutter/actions/workflows/wifi_iot.yaml
 [iot_workflow_badge]: https://github.com/flutternetwork/WiFiFlutter/actions/workflows/wifi_iot.yaml/badge.svg

@@ -123,11 +123,19 @@ Please file WiFiFlutter specific issues, bugs, or feature requests in our [issue
 To contribute a change to this plugin, please review plugin [checklist for 1.0][checklist], our 
 [contribution guide][wf_contrib] and open a [pull request][wf_pull].
 
+## Contributors ✨
+
+Thanks goes to [these 💖 people][wf_contributors] for their contributions.
+
+This project follows the [all-contributors][all_contributors] specification. Contributions of any kind welcome!
+
 <!-- links -->
 [wf_home]: https://wifi.flutternetwork.dev/
 [wf_issue]: https://github.com/flutternetwork/WiFiFlutter/issues/new
 [wf_contrib]: https://github.com/flutternetwork/WiFiFlutter/blob/master/CONTRIBUTING.md
 [wf_pull]: https://github.com/flutternetwork/WiFiFlutter/pulls
+[wf_contributors]: https://github.com/flutternetwork/WiFiFlutter/blob/master/CONTRIBUTORS.md
+[all_contributors]: https://github.com/all-contributors/all-contributors
 
 [checklist]: https://github.com/flutternetwork/WiFiFlutter/issues/188
 [docs]: https://pub.dev/documentation/wifi_scan/latest/wifi_scan/wifi_scan-library.html
