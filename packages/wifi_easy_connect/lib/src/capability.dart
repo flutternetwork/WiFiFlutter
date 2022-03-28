@@ -14,12 +14,12 @@ enum WiFiEasyConnectCapability {
 
   /// Wi-Fi Easy Connect (or DPP) is supported only as a Configurator.
   ///
-  /// It is posssible to - send network credentials to a new device.
+  /// It is possible to - send network credentials to a new device.
   configuratorOnly,
 
   /// Wi-Fi Easy Connect (or DPP) is supported only as a Enrollee.
   ///
-  /// It is posssible to - join a network.
+  /// It is possible to - join a network.
   enrolleeOnly,
 }
 
