@@ -143,6 +143,7 @@ class WifiScanPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
 
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
         when (call.method) {
+            "hasCapability" -> result.success(true)
             "startScan" -> {
                 val askPermission = call.argument<Boolean>("askPermissions") ?: return result.error(
                     ERROR_INVALID_ARGS,
