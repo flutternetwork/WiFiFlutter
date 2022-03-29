@@ -241,6 +241,17 @@ class WiFiForIoTPlugin {
     return await WiFiForIoTPlugin.onWifiScanResultReady.first;
   }
 
+  /// Route network traffic via WiFi network.
+  ///
+  /// Method to force wifi usage if the user needs to send requests via wifi
+  /// if it does not have internet connection. Useful for IoT applications, when
+  /// the app needs to communicate and send requests to a device that have no
+  /// internet connection via wifi.
+  ///
+  /// Receives a boolean to enable forceWifiUsage if true, and disable if false.
+  ///
+  /// Is important to enable only when communicating with the device via wifi
+  /// and remember to disable it when disconnecting from device.
   static Future<bool> forceWifiUsage(bool useWifi) async {
     final Map<String, bool> htArguments = Map();
     htArguments["useWifi"] = useWifi;
@@ -281,6 +292,9 @@ class WiFiForIoTPlugin {
   }
 
   /// Connect to the requested AP Wi-Fi network.
+  ///
+  /// Once connected, to route network traffic via the network use
+  /// [forceWifiUsage].
   ///
   /// @param [ssid] The SSID of the network to connect to.
   ///   In case multiple networks share the same SSID, which one is connected to
@@ -355,6 +369,9 @@ class WiFiForIoTPlugin {
   /// Register a network with the system in the device's wireless networks.
   /// Android only.
   ///
+  /// Once registered and connected, to route network traffic via the network
+  /// use [forceWifiUsage].
+  ///
   /// @param [ssid] The SSID of the network to register.
   ///   The SSID must be between 1 and 32 characters.
   ///
@@ -418,6 +435,9 @@ class WiFiForIoTPlugin {
   /// Scan for Wi-Fi networks and connect to the requested AP Wi-Fi network if
   /// found.
   /// Android only.
+  ///
+  /// Once connected, to route network traffic via the network use
+  /// [forceWifiUsage].
   ///
   /// @param [ssid] The SSID of the network to connect to.
   ///   In case multiple networks share the same SSID, which one is connected to
