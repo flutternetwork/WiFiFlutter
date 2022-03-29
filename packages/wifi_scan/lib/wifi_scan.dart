@@ -21,6 +21,12 @@ class WiFiScan {
   Stream<Result<List<WiFiAccessPoint>, GetScannedResultsErrors>>?
       _onScannedResultsAvailable;
 
+  /// Check if supports Wi-Fi scan.
+  Future<bool> hasCapability() async {
+    final isCapable = await _channel.invokeMethod<bool>("hasCapability");
+    return isCapable!;
+  }
+
   /// Request a Wi-Fi scan.
   ///
   /// Returns null if successful, else [StartScanErrors].
