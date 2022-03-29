@@ -28,6 +28,23 @@ void main() {
     channel.setMockMethodCallHandler(null);
   });
 
+  group("hasCapability", () {
+    test("successful", () async {
+      mockHandlers["hasCapability"] = (_) => true;
+      expect(await WiFiScan.instance.hasCapability(), true);
+      mockHandlers["hasCapability"] = (_) => false;
+      expect(await WiFiScan.instance.hasCapability(), false);
+    });
+
+    test("null result", () async {
+      mockHandlers["hasCapability"] = (_) => null;
+      await expectLater(
+        () async => await WiFiScan.instance.hasCapability(),
+        throwsA(const TypeMatcher<TypeError>()),
+      );
+    });
+  });
+
   group("startScan", () {
     test('successful', () async {
       mockHandlers["startScan"] = (_) => null;
