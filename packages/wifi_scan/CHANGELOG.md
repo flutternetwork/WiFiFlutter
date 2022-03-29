@@ -1,3 +1,7 @@
+## 0.2.1
+
+ - **FEAT**: added `hasCapability` API (#258).
+
 ## 0.2.0+1
 
  - **FIX**: proper result if error after "ask permission" (#257).
