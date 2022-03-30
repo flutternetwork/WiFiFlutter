@@ -33,6 +33,20 @@ This plugin allows Flutter apps to scan for nearby visible WiFi access points.
 ## Usage
 The entry point for the plugin is the singleton instance `WiFiScan.instance`.
 
+### Check support
+You can check if the platform has Wi-Fi scan capabilities with `WiFiScan.hasCapability` API, as shown below:
+```dart
+void _scan() async {
+  if(await WiFiScan.instance.hasCapability()){
+    // can safely call scan related functionalities
+  } else {
+    // fallback mechanism, like - show user that "scan" is not possible 
+  }
+}
+```
+
+For more details, you can read documentation of [`WiFiScan.hasCapability`][doc_hasCapability].
+
 ### Start scan
 You can trigger full WiFi scan with `WiFiScan.startScan` API, as shown below:
 ```dart
@@ -141,6 +155,7 @@ This project follows the [all-contributors][all_contributors] specification. Con
 [docs]: https://pub.dev/documentation/wifi_scan/latest/wifi_scan/wifi_scan-library.html
 [example]: https://github.com/flutternetwork/WiFiFlutter/tree/master/packages/wifi_scan/example
 
+[doc_hasCapability]: https://pub.dev/documentation/wifi_scan/latest/wifi_scan/WiFiScan/hasCapability.html
 [doc_startScan]: https://pub.dev/documentation/wifi_scan/latest/wifi_scan/WiFiScan/startScan.html
 [doc_StartScanErrors]: https://pub.dev/documentation/wifi_scan/latest/wifi_scan/StartScanErrors.html
 [doc_Result]: https://pub.dev/documentation/wifi_scan/latest/wifi_scan/Result-class.html
