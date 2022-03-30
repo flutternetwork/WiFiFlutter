@@ -20,6 +20,8 @@ public class SwiftWifiScanPlugin: NSObject, FlutterPlugin {
 
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
     switch(call.method){
+      case "hasCapability":
+          return result(false)
       case "startScan":
           return result(0) // not supported
       case "getScannedResults":

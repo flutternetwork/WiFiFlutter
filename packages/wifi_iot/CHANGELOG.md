@@ -1,3 +1,7 @@
+## 0.3.15+2
+
+ - **DOCS**: added docs for `forceWifiUsage` (#259).
+
 ## 0.3.15+1
 
  - **FIX**: properly upgrade to v2 android embedding (#255).
