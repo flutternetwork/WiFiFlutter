@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 
 part 'src/capability.dart';
 part 'src/error.dart';
-part 'src/result.dart';
 
 /// The `wifi_easy_connect` plugin entry point.
 ///
@@ -28,8 +27,7 @@ class WiFiEasyConnect {
   /// Onboard a device to join network via Wi-Fi Easy Connect (DPP).
   ///
   /// TODO: more info about args and return value.
-  Future<Result<OnboardingInfo, OnboardErrors>> onboard(Uri dppUri,
-      {List<int>? bands}) async {
+  Future<OnboardError?> onboard(Uri dppUri, {List<int>? bands}) async {
     assert(dppUri.scheme.toUpperCase() == "DPP", "Valid scheme for DPP URI");
 
     final map = await _channel.invokeMapMethod("onboard", {
@@ -37,19 +35,11 @@ class WiFiEasyConnect {
       "bands": bands,
     });
 
-    // check if any error - return Result._error if any
-    final errorCode = map!["error"];
-    if (errorCode != null) {
-      return Result._error(_deserializeOnboardingError(errorCode));
+    // check if any error - return OnboardError
+    if (map?.containsKey("error") ?? false) {
+      return OnboardError._fromMap(map!);
     }
-    // parse and return list of WiFiAccessPoint
-    return Result._value(OnboardingInfo._fromMap(map["value"]));
-  }
-}
 
-/// Information about Wi-Fi Easy Connect (DPP) onboarding flow.
-///
-/// For more info, see [WiFiEasyConnect.onboard].
-class OnboardingInfo {
-  OnboardingInfo._fromMap(Map map);
+    return null;
+  }
 }

@@ -3,8 +3,12 @@ package dev.flutternetwork.wifi.wifi_easy_connect
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
+import android.net.wifi.EasyConnectStatusCallback.*
 import android.net.wifi.WifiManager
 import android.os.Build
+import android.provider.Settings.*
+import android.util.Log
 import androidx.annotation.NonNull
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
@@ -14,6 +18,7 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 import io.flutter.plugin.common.PluginRegistry.ActivityResultListener
+import kotlin.random.Random
 
 /** Error Codes */
 private const val ERROR_INVALID_ARGS = "InvalidArgs"
@@ -24,9 +29,6 @@ private const val CAPABILITY_NONE = 0
 private const val CAPABILITY_FULL = 1
 private const val CAPABILITY_ONLY_CONFIGURATOR = 2
 private const val CAPABILITY_ONLY_ENROLLEE = 3
-
-/** OnboardErrors codes */
-private const val ONBOARD_ERROR_NOT_SUPPORTED = 0
 
 /** WifiEasyConnectPlugin
  *
@@ -42,6 +44,8 @@ class WifiEasyConnectPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
     private lateinit var context: Context
     private var activity: Activity? = null
     private var wifi: WifiManager? = null
+    private val activityResultCookies =
+        mutableMapOf<Int, (resultCode: Int, data: Intent?) -> Boolean>()
 
     // plugin interface
     private lateinit var channel: MethodChannel
@@ -83,10 +87,12 @@ class WifiEasyConnectPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
             "hasCapability" -> result.success(hasCapability())
             "onboard" -> {
                 onboard(
-                    dppUri = call.argument<String>("dppUri") ?: return result.error(
-                        ERROR_INVALID_ARGS,
-                        "askPermissions argument is null",
-                        null
+                    dppUri = Uri.parse(
+                        call.argument<String>("dppUri") ?: return result.error(
+                            ERROR_INVALID_ARGS,
+                            "askPermissions argument is null",
+                            null
+                        )
                     ),
                     bands = call.argument<List<Int>>("bands")
                 ) {
@@ -99,7 +105,8 @@ class WifiEasyConnectPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?): Boolean {
-        TODO("Not yet implemented")
+        Log.d(logTag, "onActivityResult: arguments ($requestCode, $resultCode, $data)")
+        return activityResultCookies[requestCode]?.invoke(resultCode, data) ?: false
     }
 
     private fun hasConfiguratorCapability(): Boolean = when {
@@ -124,7 +131,7 @@ class WifiEasyConnectPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
     }
 
     private fun onboard(
-        dppUri: String,
+        dppUri: Uri,
         bands: List<Int>?,
         callback: (result: OnboardingResult) -> Unit
     ) {
@@ -139,39 +146,136 @@ class WifiEasyConnectPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
 
         // check if hasConfiguratorCapability - return error if doesn't
         if (!hasConfiguratorCapability()) {
-            return callback.invoke(OnboardingResult(ONBOARD_ERROR_NOT_SUPPORTED))
+            return callback.invoke(OnboardingResult(OnboardError.NotSupported))
         }
 
-        TODO("make intent to startActivity with ACTION_PROCESS_WIFI_EASY_CONNECT_URI")
+        // startActivity with ACTION_PROCESS_WIFI_EASY_CONNECT_URI" - add result-handler in activityResultCookies
+        val requestCode = 6007800 + Random.Default.nextInt(100)
+        activityResultCookies[requestCode] = { resultCode, data ->
+            // invoke callback with proper args
+            Log.d(logTag, "activityResultCallback: args($resultCode, $data)")
+            callback.invoke(OnboardingResult(requestCode, data))
+            true
+        }
 
-        TODO("wait for result, invoke callback when received")
+        val intent = Intent(ACTION_PROCESS_WIFI_EASY_CONNECT_URI, dppUri).apply {
+            if (bands?.isNotEmpty() == true && Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                putExtra(EXTRA_EASY_CONNECT_BAND_LIST, bands.toIntArray())
+            }
+        }
+        activity!!.startActivityForResult(intent, requestCode)
+    }
+
+    private enum class OnboardError {
+        NotSupported,
+        UnknownFailure,
+        Cancel,
+        InvalidUri,
+        InitFailure,
+        NotCompatible,
+        MalformedMessage,
+        Busy,
+        Timeout,
+        ProtocolFailure,
+        InvalidNetwork,
+        CannotFindNetwork,
+        AuthenticationFailure,
+        EnrolleeRejected,
     }
 
     private class OnboardingResult {
-        // error to fail
-        private var errorCodeStr: String? = null
-        private var errorMessage: String? = null
-        private var errorDetails: String? = null
+        // exception
+        private var exceptionCode: String? = null
+        private var exceptionMessage: String? = null
+        private var exceptionDetails: String? = null
 
-        // error - but not fail
-        private var errorCodeInt: Int? = null
+        // error
+        private var error: OnboardError? = null
+        private var errorInfo: Map<String, Any?>? = null
 
-        constructor(errorCode: String, errorMessage: String?, errorDetails: String?) {
-            this.errorCodeStr = errorCode
-            this.errorMessage = errorMessage
-            this.errorDetails = errorDetails
+        constructor(exceptionCode: String, exceptionMessage: String?, exceptionDetails: String?) {
+            this.exceptionCode = exceptionCode
+            this.exceptionMessage = exceptionMessage
+            this.exceptionDetails = exceptionDetails
         }
 
-        constructor(errorCode: Int) {
-            errorCodeInt = errorCode
+        constructor(error: OnboardError) {
+            this.error = error
+        }
+
+        constructor(resultCode: Int, data: Intent?) {
+            when (resultCode) {
+                Activity.RESULT_OK -> {}
+                Activity.RESULT_CANCELED -> error = OnboardError.Cancel
+                else -> {
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+                        error = OnboardError.UnknownFailure
+                    } else {
+                        // set error properly based on "ERROR_CODE"
+                        when (val errorCode =
+                            data!!.getIntExtra(EXTRA_EASY_CONNECT_ERROR_CODE, -99)) {
+                            EASY_CONNECT_EVENT_FAILURE_INVALID_URI ->
+                                error = OnboardError.InvalidUri
+                            EASY_CONNECT_EVENT_FAILURE_AUTHENTICATION ->
+                                error = OnboardError.InitFailure
+                            EASY_CONNECT_EVENT_FAILURE_NOT_COMPATIBLE ->
+                                error = OnboardError.NotCompatible
+                            EASY_CONNECT_EVENT_FAILURE_CONFIGURATION ->
+                                error = OnboardError.MalformedMessage
+                            EASY_CONNECT_EVENT_FAILURE_BUSY -> error = OnboardError.Busy
+                            EASY_CONNECT_EVENT_FAILURE_TIMEOUT -> error = OnboardError.Timeout
+                            EASY_CONNECT_EVENT_FAILURE_GENERIC ->
+                                error = OnboardError.ProtocolFailure
+                            EASY_CONNECT_EVENT_FAILURE_NOT_SUPPORTED -> {
+                                error = OnboardError.NotSupported
+                                errorInfo = mapOf("origin" to "from ActivityResult")
+                            }
+                            EASY_CONNECT_EVENT_FAILURE_INVALID_NETWORK ->
+                                error = OnboardError.InvalidNetwork
+                            EASY_CONNECT_EVENT_FAILURE_CANNOT_FIND_NETWORK ->
+                                error = OnboardError.CannotFindNetwork
+                            EASY_CONNECT_EVENT_FAILURE_ENROLLEE_AUTHENTICATION ->
+                                error = OnboardError.AuthenticationFailure
+                            EASY_CONNECT_EVENT_FAILURE_ENROLLEE_REJECTED_CONFIGURATION ->
+                                error = OnboardError.EnrolleeRejected
+                            else -> {
+                                error = OnboardError.UnknownFailure
+                                errorInfo = mapOf("error_code" to errorCode)
+                            }
+                        }
+                        // set errorInfo - R2 enrollee provides additional failure info
+                        if (errorInfo == null) errorInfo = mapOf()
+                        // - attempted ssid
+                        if (data.hasExtra(EXTRA_EASY_CONNECT_ATTEMPTED_SSID)) errorInfo.apply {
+                            "ssid" to data.getStringExtra(EXTRA_EASY_CONNECT_ATTEMPTED_SSID)
+                        }
+                        // - channel list
+                        if (data.hasExtra(EXTRA_EASY_CONNECT_CHANNEL_LIST)) errorInfo.apply {
+                            "channels" to data.getStringExtra(EXTRA_EASY_CONNECT_CHANNEL_LIST)
+                        }
+                        // - band list
+                        if (data.hasExtra(EXTRA_EASY_CONNECT_BAND_LIST)) errorInfo.apply {
+                            "bands" to listOf(data.getIntArrayExtra(EXTRA_EASY_CONNECT_BAND_LIST))
+                        }
+                    }
+                }
+            }
         }
 
         fun send(result: Result) =
             when {
-                errorCodeStr != null -> result.error(errorCodeStr, errorMessage, errorDetails)
-                errorCodeInt != null -> result.success(mapOf("error" to errorCodeInt))
-                // TODO proper value to be sent
-                else -> result.success(mapOf<String, Map<String, Any?>>("value" to emptyMap()))
+                exceptionCode != null -> result.error(
+                    exceptionCode,
+                    exceptionMessage,
+                    exceptionDetails
+                )
+                error != null -> result.success(
+                    mapOf(
+                        "error" to OnboardError.Busy.ordinal,
+                        "data" to errorInfo
+                    )
+                )
+                else -> result.success(emptyMap<String, Any?>())
             }
     }
 }
