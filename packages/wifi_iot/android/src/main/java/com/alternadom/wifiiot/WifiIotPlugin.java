@@ -353,7 +353,6 @@ public class WifiIotPlugin
         WifiConfiguration wifiConfiguration = apReservation.getWifiConfiguration();
         String ssid = wifiConfiguration.SSID;
         poResult.success(ssid);
-        return;
       }
       else {
         poResult.error("Exception [getWiFiAPSSID]", "Hotspot is not enabled.", null);
@@ -395,10 +394,13 @@ public class WifiIotPlugin
 
       poResult.error("Exception [isSSIDHidden]", "Wifi AP not Supported", null);
     } else {
-      poResult.error(
-          "Exception [isSSIDHidden]",
-          "Getting SSID visibility is not supported on API level >= 26",
-          null);
+      if (apReservation != null) {
+        WifiConfiguration wifiConfiguration = apReservation.getWifiConfiguration();
+        poResult.success(wifiConfiguration.isHiddenSsid);
+      }
+      else {
+        poResult.error("Exception [isSSIDHidden]", "Hotspot is not enabled.", null);
+      }
     }
   }
 
@@ -535,11 +537,17 @@ public class WifiIotPlugin
    * Wi-Fi AP is enabled
    */
   private void isWiFiAPEnabled(Result poResult) {
-    try {
-      poResult.success(moWiFiAPManager.isWifiApEnabled());
-    } catch (SecurityException e) {
-      Log.e(WifiIotPlugin.class.getSimpleName(), e.getMessage(), null);
-      poResult.error("Exception [isWiFiAPEnabled]", e.getMessage(), null);
+
+    /** Checking if LocalOnlyHotspot is enabled when API level >= 29 */
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+      try {
+        poResult.success(moWiFiAPManager.isWifiApEnabled());
+      } catch (SecurityException e) {
+        Log.e(WifiIotPlugin.class.getSimpleName(), e.getMessage(), null);
+        poResult.error("Exception [isWiFiAPEnabled]", e.getMessage(), null);
+      }
+    } else {
+      poResult.success(apReservation != null);
     }
   }
 
