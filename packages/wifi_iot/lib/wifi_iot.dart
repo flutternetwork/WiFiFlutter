@@ -30,8 +30,6 @@ const EventChannel _eventChannel =
 
 class WiFiForIoTPlugin {
   /// Returns whether the WiFi AP is enabled or not
-  @Deprecated(
-      "This is will only work with < Android SDK 26. It could be made to work for >= Android SDK 29, request at https://github.com/flutternetwork/WiFiFlutter/issues/134.")
   static Future<bool> isWiFiAPEnabled() async {
     final Map<String, String> htArguments = Map();
     bool? bResult;
