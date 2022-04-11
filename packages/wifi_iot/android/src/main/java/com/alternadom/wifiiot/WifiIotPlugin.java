@@ -396,7 +396,7 @@ public class WifiIotPlugin
     } else {
       if (apReservation != null) {
         WifiConfiguration wifiConfiguration = apReservation.getWifiConfiguration();
-        poResult.success(wifiConfiguration.isHiddenSsid);
+        poResult.success(wifiConfiguration.isHiddenSsid());
       }
       else {
         poResult.error("Exception [isSSIDHidden]", "Hotspot is not enabled.", null);
