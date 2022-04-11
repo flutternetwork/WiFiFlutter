@@ -13,6 +13,7 @@ import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.NetworkRequest;
 import android.net.wifi.ScanResult;
+import android.net.wifi.SoftApConfiguration;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -395,8 +396,12 @@ public class WifiIotPlugin
       poResult.error("Exception [isSSIDHidden]", "Wifi AP not Supported", null);
     } else {
       if (apReservation != null) {
-        WifiConfiguration wifiConfiguration = apReservation.getWifiConfiguration();
-        poResult.success(wifiConfiguration.isHiddenSsid());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+          SoftApConfiguration softApConfiguration = apReservation.getSoftApConfiguration();
+          poResult.success(softApConfiguration.isHiddenSsid());
+        } else {
+          poResult.error("Exception [isSSIDHidden]", "Getting SoftAPConfiguration is not supported on API level < 30", null);
+        }
       }
       else {
         poResult.error("Exception [isSSIDHidden]", "Hotspot is not enabled.", null);
