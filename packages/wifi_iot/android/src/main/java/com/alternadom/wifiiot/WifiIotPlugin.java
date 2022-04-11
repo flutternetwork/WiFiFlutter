@@ -555,7 +555,7 @@ public class WifiIotPlugin
 
     /** Using LocalOnlyHotspotCallback when setting WiFi AP state on API level >= 29 */
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-      final result = moWiFiAPManager.setWifiApEnabled(null, enabled);
+      final boolean result = moWiFiAPManager.setWifiApEnabled(null, enabled);
       poResult.success(result);
     } else {
       if (enabled) {
