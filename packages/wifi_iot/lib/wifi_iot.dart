@@ -50,14 +50,16 @@ class WiFiForIoTPlugin {
   /// * Uses `startLocalOnlyHotspot` API to enable or disable WiFi AP.
   /// * This can only be used to communicate between co-located devices connected to the created WiFi Hotspot
   /// * The network created by this method will not have Internet access
-  static void setWiFiAPEnabled(bool state) async {
+  static Future<bool> setWiFiAPEnabled(bool state) async {
     final Map<String, bool> htArguments = Map();
     htArguments["state"] = state;
+    bool? bResult;
     try {
-      await _channel.invokeMethod('setWiFiAPEnabled', htArguments);
+      bResult = await _channel.invokeMethod('setWiFiAPEnabled', htArguments);
     } on MissingPluginException catch (e) {
       print("MissingPluginException : ${e.toString()}");
     }
+    return bResult ?? false;
   }
 
   /// Request write permission

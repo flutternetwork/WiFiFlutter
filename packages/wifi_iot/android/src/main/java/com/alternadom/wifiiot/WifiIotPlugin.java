@@ -550,12 +550,13 @@ public class WifiIotPlugin
    * part of WifiConfiguration return {@code true} if the operation succeeds, {@code false}
    * otherwise
    */
-  private void setWiFiAPEnabled(MethodCall poCall, Result poResult) {
+  private void setWiFiAPEnabled(MethodCall poCall, final Result poResult) {
     boolean enabled = poCall.argument("state");
 
     /** Using LocalOnlyHotspotCallback when setting WiFi AP state on API level >= 29 */
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-      moWiFiAPManager.setWifiApEnabled(null, enabled);
+      final result = moWiFiAPManager.setWifiApEnabled(null, enabled);
+      poResult.success(result);
     } else {
       if (enabled) {
         moWiFi.startLocalOnlyHotspot(
@@ -564,6 +565,7 @@ public class WifiIotPlugin
               public void onStarted(WifiManager.LocalOnlyHotspotReservation reservation) {
                 super.onStarted(reservation);
                 apReservation = reservation;
+                poResult.success(true);
               }
 
               @Override
@@ -578,20 +580,21 @@ public class WifiIotPlugin
                 Log.d(
                     WifiIotPlugin.class.getSimpleName(),
                     "LocalHotspot failed with code: " + String.valueOf(reason));
+                poResult.success(false);
               }
             },
             new Handler());
       } else {
         if (apReservation != null) {
           apReservation.close();
+          poResult.success(true);
         } else {
           Log.e(
               WifiIotPlugin.class.getSimpleName(), "Can't disable WiFi AP, apReservation is null.");
+          poResult.success(false);
         }
       }
     }
-
-    poResult.success(null);
   }
 
   /**
