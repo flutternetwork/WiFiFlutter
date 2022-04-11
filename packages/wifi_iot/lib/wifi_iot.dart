@@ -144,19 +144,6 @@ class WiFiForIoTPlugin {
     await _channel.invokeMethod('setWiFiAPConfiguration', htArguments);
   }
 
-  /// Get WIFIAP Password
-  /// This will only work with >= Android SDK 29
-  static Future<String?> getWiFiAPPassword() async {
-    final Map<String, String> htArguments = Map();
-    String? sResult;
-    try {
-      sResult = await _channel.invokeMethod('getWiFiAPPassword', htArguments);
-    } on MissingPluginException catch (e) {
-      print("MissingPluginException : ${e.toString()}");
-    }
-    return sResult;
-  }
-
   /// Get WiFi AP SSID
   static Future<String?> getWiFiAPSSID() async {
     final Map<String, String> htArguments = Map();
@@ -182,8 +169,6 @@ class WiFiForIoTPlugin {
   }
 
   /// Get WiFi AP's password
-  @Deprecated(
-      "This is will only work with < Android SDK 26. It could be made to work for >= Android SDK 29, request at https://github.com/flutternetwork/WiFiFlutter/issues/134.")
   static Future<String?> getWiFiAPPreSharedKey() async {
     final Map<String, String> htArguments = Map();
     String? sResult;
