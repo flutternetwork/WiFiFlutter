@@ -347,12 +347,17 @@ public class WifiIotPlugin
         return;
       }
 
-      poResult.error("Exception", "SSID not found", null);
+      poResult.error("Exception [getWiFiAPSSID]", "SSID not found", null);
     } else {
-      poResult.error(
-          "Exception [getWiFiAPSSID]",
-          "Getting SSID name is not supported on API level >= 26",
-          null);
+      if (apReservation != null) {
+        WifiConfiguration wifiConfiguration = apReservation.getWifiConfiguration();
+        String ssid = wifiConfiguration.SSID;
+        poResult.success(ssid);
+        return;
+      }
+      else {
+        poResult.error("Exception [getWiFiAPSSID]", "Hotspot is not enabled.", null);
+      }
     }
   }
 
@@ -434,10 +439,14 @@ public class WifiIotPlugin
 
       poResult.error("Exception", "Wifi AP not Supported", null);
     } else {
-      poResult.error(
-          "Exception [getWiFIAPPreSharedKey]",
-          "Getting WiFi AP password is not supported on API level >= 26",
-          null);
+      if (apReservation != null) {
+        WifiConfiguration wifiConfiguration = apReservation.getWifiConfiguration();
+        String pwd = wifiConfiguration.preSharedKey;
+        poResult.success(pwd);
+      }
+      else {
+        poResult.error("Exception [getWiFiAPPreSharedKey]", "Hotspot is not enabled.", null);
+      }
     }
   }
 
