@@ -571,12 +571,14 @@ public class WifiIotPlugin
               @Override
               public void onStopped() {
                 super.onStopped();
+                apReservation = null;
                 Log.d(WifiIotPlugin.class.getSimpleName(), "LocalHotspot Stopped.");
               }
 
               @Override
               public void onFailed(int reason) {
                 super.onFailed(reason);
+                apReservation = null;
                 Log.d(
                     WifiIotPlugin.class.getSimpleName(),
                     "LocalHotspot failed with code: " + String.valueOf(reason));
