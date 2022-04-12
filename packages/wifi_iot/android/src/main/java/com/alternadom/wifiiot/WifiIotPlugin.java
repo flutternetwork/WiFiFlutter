@@ -351,8 +351,14 @@ public class WifiIotPlugin
       poResult.error("Exception [getWiFiAPSSID]", "SSID not found", null);
     } else {
       if (apReservation != null) {
-        WifiConfiguration wifiConfiguration = apReservation.getWifiConfiguration();
-        String ssid = wifiConfiguration.SSID;
+        String ssid;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+          WifiConfiguration wifiConfiguration = apReservation.getWifiConfiguration();
+          ssid = wifiConfiguration.SSID;
+        } else {
+          SoftApConfiguration softApConfiguration = apReservation.getSoftApConfiguration();
+          ssid = softApConfiguration.getSsid();
+        }
         poResult.success(ssid);
       } else {
         poResult.error("Exception [getWiFiAPSSID]", "Hotspot is not enabled.", null);
@@ -448,8 +454,14 @@ public class WifiIotPlugin
       poResult.error("Exception", "Wifi AP not Supported", null);
     } else {
       if (apReservation != null) {
-        WifiConfiguration wifiConfiguration = apReservation.getWifiConfiguration();
-        String pwd = wifiConfiguration.preSharedKey;
+        String pwd;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+          WifiConfiguration wifiConfiguration = apReservation.getWifiConfiguration();
+          pwd = wifiConfiguration.preSharedKey;
+        } else {
+          SoftApConfiguration softApConfiguration = apReservation.getSoftApConfiguration();
+          pwd = softApConfiguration.getPassphrase();
+        }
         poResult.success(pwd);
       } else {
         poResult.error("Exception [getWiFiAPPreSharedKey]", "Hotspot is not enabled.", null);
@@ -543,7 +555,6 @@ public class WifiIotPlugin
    */
   private void isWiFiAPEnabled(Result poResult) {
 
-    /** Checking if LocalOnlyHotspot is enabled when API level >= 29 */
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
       try {
         poResult.success(moWiFiAPManager.isWifiApEnabled());
