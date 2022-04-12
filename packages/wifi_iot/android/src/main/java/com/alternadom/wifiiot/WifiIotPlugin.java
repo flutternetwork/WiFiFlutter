@@ -354,8 +354,7 @@ public class WifiIotPlugin
         WifiConfiguration wifiConfiguration = apReservation.getWifiConfiguration();
         String ssid = wifiConfiguration.SSID;
         poResult.success(ssid);
-      }
-      else {
+      } else {
         poResult.error("Exception [getWiFiAPSSID]", "Hotspot is not enabled.", null);
       }
     }
@@ -400,10 +399,12 @@ public class WifiIotPlugin
           SoftApConfiguration softApConfiguration = apReservation.getSoftApConfiguration();
           poResult.success(softApConfiguration.isHiddenSsid());
         } else {
-          poResult.error("Exception [isSSIDHidden]", "Getting SoftAPConfiguration is not supported on API level < 30", null);
+          poResult.error(
+              "Exception [isSSIDHidden]",
+              "Getting SoftAPConfiguration is not supported on API level < 30",
+              null);
         }
-      }
-      else {
+      } else {
         poResult.error("Exception [isSSIDHidden]", "Hotspot is not enabled.", null);
       }
     }
@@ -450,8 +451,7 @@ public class WifiIotPlugin
         WifiConfiguration wifiConfiguration = apReservation.getWifiConfiguration();
         String pwd = wifiConfiguration.preSharedKey;
         poResult.success(pwd);
-      }
-      else {
+      } else {
         poResult.error("Exception [getWiFiAPPreSharedKey]", "Hotspot is not enabled.", null);
       }
     }
