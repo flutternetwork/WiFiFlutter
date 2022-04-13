@@ -595,6 +595,9 @@ public class WifiIotPlugin
               @Override
               public void onStopped() {
                 super.onStopped();
+                if (apReservation != null) {
+                  apReservation.close();
+                }
                 apReservation = null;
                 Log.d(WifiIotPlugin.class.getSimpleName(), "LocalHotspot Stopped.");
               }
@@ -602,6 +605,9 @@ public class WifiIotPlugin
               @Override
               public void onFailed(int reason) {
                 super.onFailed(reason);
+                if (apReservation != null) {
+                  apReservation.close();
+                }
                 apReservation = null;
                 Log.d(
                     WifiIotPlugin.class.getSimpleName(),
@@ -613,6 +619,7 @@ public class WifiIotPlugin
       } else {
         if (apReservation != null) {
           apReservation.close();
+          apReservation = null;
           poResult.success(true);
         } else {
           Log.e(
