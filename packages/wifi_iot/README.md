@@ -49,13 +49,13 @@ Becareful, some commands as no effect on iOS because Apple don't let us to do wh
 Additional Wifi protocols on Android side like - Wifi Direct, Wifi Aware, etc are in active discussion at [#140](https://github.com/flutternetwork/WiFiFlutter/issues/140). Encourage you to engage if you want this features.
 
 ## Access Point
-|                                       Description                                     |      Android       |         iOS          |
-| :------------------------------------------------------------------------------------ | :----------------: | :------------------: |
-| Getting the status of the Access Point (Disable, disabling, enable, enabling, failed) | :warning:(1a) |  :x:  |
-| Enabling / Disabling Access Point                                                     | :white_check_mark:(1b) |  :x:  |
-| Getting / Setting new credentials (SSID / Password)                                   | :warning:(1b - iii) |  :x:  |
-| Enabling / Disabling the visibility of the SSID Access Point                          | :warning:(1a) |  :x:  |
-| Getting the clients list (IP, BSSID, Device, Reachable)                               | :warning:(1a) |  :x:  |
+|                                       Description                                     |         Android        |         iOS          |
+| :------------------------------------------------------------------------------------ | :--------------------: | :------------------: |
+| Getting the status of the Access Point (Disable, disabling, enable, enabling, failed) | :warning:(1a)          |         :x:          |
+| Enabling / Disabling Access Point                                                     | :white_check_mark:(1b) |         :x:          |
+| Getting / Setting new credentials (SSID / Password)                                   | :warning:(1b - iii)    |         :x:          |
+| Enabling / Disabling the visibility of the SSID Access Point                          | :warning:(1a)          |         :x:          |
+| Getting the clients list (IP, BSSID, Device, Reachable)                               | :warning:(1a)          |         :x:          |
 
 :warning:(1): Wifi API changes in Android SDK 26 and 29, restricts certain behaviour:
   * a. This has been deprecated and will always fail for >= 26 Android SDK.
