@@ -1,7 +1,7 @@
 name: wifi_connect_to
 description: Flutter plugin to connect (and disconnect) to a WiFi access point.
 version: 0.0.1
-homepage:
+homepage: https://github.com/flutternetwork/WiFiFlutter/pull/276
 
 environment:
   sdk: ">=2.16.2 <3.0.0"
