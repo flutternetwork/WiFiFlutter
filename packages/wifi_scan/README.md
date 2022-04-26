@@ -1,9 +1,9 @@
 <h3><a href="https://wifi.flutternetwork.dev/" ><img src="https://raw.githubusercontent.com/flutternetwork/WiFiFlutter/master/logo/logo%2Bname_vertical_color.png" alt="WiFiFlutter" height="112"/></a>| <code>wifi_scan</code></h3>
 
-<p>  
-<a href="https://github.com/flutternetwork/WiFiFlutter/actions/workflows/wifi_scan.yaml">
-  <img src="https://github.com/flutternetwork/WiFiFlutter/actions/workflows/wifi_scan.yaml/badge.svg" alt="analysis">
-</a>  
+<p>
+<a href="https://flutternetwork.dev">
+  <img src="https://raw.githubusercontent.com/flutternetwork/.github/master/profile/badge.svg" alt="Flutter Network" />
+</a>
 <a href="https://pub.dev/packages/wifi_scan">
   <img src="https://img.shields.io/pub/v/wifi_scan?logo=dart" alt="pub.dev">
 </a>
