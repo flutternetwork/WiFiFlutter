@@ -1354,7 +1354,7 @@ public class WifiIotPlugin
     }
 
     // Try returning last known valid network id
-    if(updateNetwork == -1) {
+    if (updateNetwork == -1) {
       return registeredNetwork;
     }
 
