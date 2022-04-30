@@ -5,6 +5,9 @@
 </a>
 
 <p align="center">
+  <a href="https://flutternetwork.dev">
+    <img src="https://raw.githubusercontent.com/flutternetwork/.github/master/profile/badge.svg" alt="Flutter Network" />
+  </a>
   <a href="https://github.com/flutternetwork/WiFiFlutter/actions?query=workflow%3Aall_plugins">
     <img src="https://github.com/flutternetwork/WiFiFlutter/workflows/all_plugins/badge.svg" alt="all_plugins GitHub Workflow Status"/>
   </a>
