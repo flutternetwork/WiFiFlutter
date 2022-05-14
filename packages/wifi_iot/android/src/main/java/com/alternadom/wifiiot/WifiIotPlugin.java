@@ -14,6 +14,7 @@ import android.net.NetworkCapabilities;
 import android.net.NetworkRequest;
 import android.net.wifi.ScanResult;
 import android.net.wifi.SoftApConfiguration;
+import android.net.wifi.SupplicantState;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -1373,6 +1374,7 @@ public class WifiIotPlugin
   @SuppressWarnings("deprecation")
   private int registerWifiNetworkDeprecated(android.net.wifi.WifiConfiguration conf) {
     int updateNetwork = -1;
+    int registeredNetwork = -1;
 
     /// Remove the existing configuration for this netwrok
     List<android.net.wifi.WifiConfiguration> mWifiConfigList = moWiFi.getConfiguredNetworks();
@@ -1384,6 +1386,7 @@ public class WifiIotPlugin
                 || conf.BSSID == null
                 || wifiConfig.BSSID.equals(conf.BSSID))) {
           conf.networkId = wifiConfig.networkId;
+          registeredNetwork = wifiConfig.networkId;
           updateNetwork = moWiFi.updateNetwork(conf);
         }
       }
@@ -1393,6 +1396,11 @@ public class WifiIotPlugin
     if (updateNetwork == -1) {
       updateNetwork = moWiFi.addNetwork(conf);
       moWiFi.saveConfiguration();
+    }
+
+    // Try returning last known valid network id
+    if (updateNetwork == -1) {
+      return registeredNetwork;
     }
 
     return updateNetwork;
@@ -1475,14 +1483,19 @@ public class WifiIotPlugin
     if (!enabled) return false;
 
     boolean connected = false;
-    for (int i = 0; i < 30; i++) {
-      int networkId = moWiFi.getConnectionInfo().getNetworkId();
-      if (networkId != -1) {
+    for (int i = 0; i < 20; i++) {
+      WifiInfo currentNet = moWiFi.getConnectionInfo();
+      int networkId = currentNet.getNetworkId();
+      SupplicantState netState = currentNet.getSupplicantState();
+
+      // Wait for connection to reach state completed
+      // to discard false positives like auth error
+      if (networkId != -1 && netState == SupplicantState.COMPLETED) {
         connected = networkId == updateNetwork;
         break;
       }
       try {
-        Thread.sleep(1000);
+        Thread.sleep(500);
       } catch (InterruptedException ignored) {
         break;
       }

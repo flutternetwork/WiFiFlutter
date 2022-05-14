@@ -1,3 +1,10 @@
+## 0.3.0
+
+> Note: This release has breaking changes.
+
+ - **DOCS**: added "Check support" section in README (#260).
+ - **BREAKING** **FIX**: flutter 3 support (#281).
+
 ## 0.2.1
 
  - **FEAT**: added `hasCapability` API (#258).
