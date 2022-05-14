@@ -30,6 +30,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import info.whitebyte.hotspotmanager.ClientScanResult;
 import info.whitebyte.hotspotmanager.FinishScanListener;
+import info.whitebyte.hotspotmanager.WIFI_AP_STATE;
 import info.whitebyte.hotspotmanager.WifiApManager;
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.embedding.engine.plugins.activity.ActivityAware;
@@ -67,6 +68,7 @@ public class WifiIotPlugin
   private Activity moActivity;
   private BroadcastReceiver receiver;
   private WifiManager.LocalOnlyHotspotReservation apReservation;
+  private WIFI_AP_STATE localOnlyHotspotState = WIFI_AP_STATE.WIFI_AP_STATE_DISABLED;
   private ConnectivityManager.NetworkCallback networkCallback;
   private List<WifiNetworkSuggestion> networkSuggestions;
   private List<String> ssidsToBeRemovedOnExit = new ArrayList<String>();
@@ -406,9 +408,10 @@ public class WifiIotPlugin
           SoftApConfiguration softApConfiguration = apReservation.getSoftApConfiguration();
           poResult.success(softApConfiguration.isHiddenSsid());
         } else {
-          poResult.error(
-              "Exception [isSSIDHidden]",
-              "Getting SoftAPConfiguration is not supported on API level < 30",
+          poResult.success(true);
+          Log.w(
+              WifiIotPlugin.class.getSimpleName(),
+              "[isSSIDHidden] is not supported on API level < 30",
               null);
         }
       } else {
@@ -584,12 +587,14 @@ public class WifiIotPlugin
       poResult.success(result);
     } else {
       if (enabled) {
+        localOnlyHotspotState = WIFI_AP_STATE.WIFI_AP_STATE_ENABLING;
         moWiFi.startLocalOnlyHotspot(
             new WifiManager.LocalOnlyHotspotCallback() {
               @Override
               public void onStarted(WifiManager.LocalOnlyHotspotReservation reservation) {
                 super.onStarted(reservation);
                 apReservation = reservation;
+                localOnlyHotspotState = WIFI_AP_STATE.WIFI_AP_STATE_ENABLED;
                 poResult.success(true);
               }
 
@@ -600,6 +605,7 @@ public class WifiIotPlugin
                   apReservation.close();
                 }
                 apReservation = null;
+                localOnlyHotspotState = WIFI_AP_STATE.WIFI_AP_STATE_DISABLED;
                 Log.d(WifiIotPlugin.class.getSimpleName(), "LocalHotspot Stopped.");
               }
 
@@ -610,6 +616,7 @@ public class WifiIotPlugin
                   apReservation.close();
                 }
                 apReservation = null;
+                localOnlyHotspotState = WIFI_AP_STATE.WIFI_AP_STATE_FAILED;
                 Log.d(
                     WifiIotPlugin.class.getSimpleName(),
                     "LocalHotspot failed with code: " + String.valueOf(reason));
@@ -618,6 +625,7 @@ public class WifiIotPlugin
             },
             new Handler());
       } else {
+        localOnlyHotspotState = WIFI_AP_STATE.WIFI_AP_STATE_DISABLING;
         if (apReservation != null) {
           apReservation.close();
           apReservation = null;
@@ -627,6 +635,7 @@ public class WifiIotPlugin
               WifiIotPlugin.class.getSimpleName(), "Can't disable WiFi AP, apReservation is null.");
           poResult.success(false);
         }
+        localOnlyHotspotState = WIFI_AP_STATE.WIFI_AP_STATE_DISABLED;
       }
     }
   }
@@ -645,7 +654,11 @@ public class WifiIotPlugin
 
   /** Gets the Wi-Fi enabled state. *** getWifiApState : return {link WIFI_AP_STATE} */
   private void getWiFiAPState(Result poResult) {
-    poResult.success(moWiFiAPManager.getWifiApState().ordinal());
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+      poResult.success(moWiFiAPManager.getWifiApState().ordinal());
+    } else {
+      poResult.success(localOnlyHotspotState);
+    }
   }
 
   @Override
