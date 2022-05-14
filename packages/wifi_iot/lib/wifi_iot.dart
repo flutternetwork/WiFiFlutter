@@ -71,9 +71,9 @@ class WiFiForIoTPlugin {
     }
   }
 
-  /// Returns whether the WiFi AP is hidden or not
-  @Deprecated(
-      "This is will only work with < Android SDK 26. It could be made to work for >= Android SDK 29, request at https://github.com/flutternetwork/WiFiFlutter/issues/134.")
+  /// Returns whether the WiFi AP is hidden or not.
+  ///
+  /// For Android version 27 to 29, there is no way to get this info.
   static Future<bool> isWiFiAPSSIDHidden() async {
     final Map<String, String> htArguments = Map();
     bool? bResult;
