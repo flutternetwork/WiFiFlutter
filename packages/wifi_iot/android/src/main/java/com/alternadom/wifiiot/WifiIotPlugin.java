@@ -408,7 +408,7 @@ public class WifiIotPlugin
           SoftApConfiguration softApConfiguration = apReservation.getSoftApConfiguration();
           poResult.success(softApConfiguration.isHiddenSsid());
         } else {
-          poResult.success(true);
+          poResult.success(false);
           Log.w(
               WifiIotPlugin.class.getSimpleName(),
               "[isSSIDHidden] is not supported on API level < 30",
