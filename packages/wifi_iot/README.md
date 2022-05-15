@@ -51,7 +51,7 @@ Additional Wifi protocols on Android side like - Wifi Direct, Wifi Aware, etc ar
 ## Access Point
 |                                       Description                                     |         Android        |         iOS          |
 | :------------------------------------------------------------------------------------ | :--------------------: | :------------------: |
-| Getting the status of the Access Point (Disable, disabling, enable, enabling, failed) | :warning:(1a)          |         :x:          |
+| Getting the status of the Access Point (Disable, disabling, enable, enabling, failed) | :white_check_mark:          |         :x:          |
 | Enabling / Disabling Access Point                                                     | :white_check_mark:(1b) |         :x:          |
 | Getting / Setting new credentials (SSID / Password)                                   | :warning:(1b - iii)    |         :x:          |
 | Enabling / Disabling the visibility of the SSID Access Point                          | :warning:(1a)          |         :x:          |
