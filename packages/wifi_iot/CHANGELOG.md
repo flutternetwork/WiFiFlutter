@@ -1,3 +1,7 @@
+## 0.3.15+3
+
+ - **FIX**: Fix connection to registered network on Android < 10 (Q) (#277).
+
 ## 0.3.15+2
 
  - **DOCS**: added docs for `forceWifiUsage` (#259).

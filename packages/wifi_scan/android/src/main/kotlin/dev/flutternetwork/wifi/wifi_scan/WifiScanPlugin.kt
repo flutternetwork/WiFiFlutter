@@ -217,17 +217,14 @@ class WifiScanPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
     }
 
     override fun onRequestPermissionsResult(
-        requestCode: Int, permissions: Array<out String>?, grantResults: IntArray?
+        requestCode: Int, permissions: Array<out String>, grantResults: IntArray
     ): Boolean {
         Log.d(
             logTag,
             "onRequestPermissionsResult: arguments ($requestCode, $permissions, $grantResults)"
         )
-        if (grantResults != null) {
-            Log.d(logTag, "requestPermissionCookie: $requestPermissionCookie")
-            return requestPermissionCookie[requestCode]?.invoke(grantResults) ?: false
-        }
-        return false
+        Log.d(logTag, "requestPermissionCookie: $requestPermissionCookie")
+        return requestPermissionCookie[requestCode]?.invoke(grantResults) ?: false
     }
 
     private fun startScan(askPermission: Boolean): Int? {
