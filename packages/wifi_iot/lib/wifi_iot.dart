@@ -72,8 +72,6 @@ class WiFiForIoTPlugin {
   }
 
   /// Returns whether the WiFi AP is hidden or not.
-  ///
-  /// For Android version 27 to 29, there is no way to get this info.
   static Future<bool> isWiFiAPSSIDHidden() async {
     final Map<String, String> htArguments = Map();
     bool? bResult;
