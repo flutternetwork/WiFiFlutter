@@ -354,11 +354,10 @@ public class WifiIotPlugin
       poResult.error("Exception [getWiFiAPSSID]", "SSID not found", null);
     } else {
       if (apReservation != null) {
-        String ssid;
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
           WifiConfiguration wifiConfiguration = apReservation.getWifiConfiguration();
           if (wifiConfiguration != null) {
-            ssid = wifiConfiguration.SSID;
+            poResult.success(wifiConfiguration.SSID);
           } else {
             poResult.error(
                 "Exception [getWiFiAPSSID]",
@@ -367,9 +366,8 @@ public class WifiIotPlugin
           }
         } else {
           SoftApConfiguration softApConfiguration = apReservation.getSoftApConfiguration();
-          ssid = softApConfiguration.getSsid();
+          poResult.sucess(softApConfiguration.getSsid());
         }
-        poResult.success(ssid);
       } else {
         poResult.error("Exception [getWiFiAPSSID]", "Hotspot is not enabled.", null);
       }
@@ -469,11 +467,10 @@ public class WifiIotPlugin
       poResult.error("Exception", "Wifi AP not Supported", null);
     } else {
       if (apReservation != null) {
-        String pwd;
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
           WifiConfiguration wifiConfiguration = apReservation.getWifiConfiguration();
           if (wifiConfiguration != null) {
-            pwd = wifiConfiguration.preSharedKey;
+            poResult.success(wifiConfiguration.preSharedKey);
           } else {
             poResult.error(
                 "Exception [getWiFiAPPreSharedKey]",
@@ -482,9 +479,8 @@ public class WifiIotPlugin
           }
         } else {
           SoftApConfiguration softApConfiguration = apReservation.getSoftApConfiguration();
-          pwd = softApConfiguration.getPassphrase();
+          poResult.success(softApConfiguration.getPassphrase());
         }
-        poResult.success(pwd);
       } else {
         poResult.error("Exception [getWiFiAPPreSharedKey]", "Hotspot is not enabled.", null);
       }
