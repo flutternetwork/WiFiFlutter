@@ -38,10 +38,7 @@ import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
-import io.flutter.plugin.common.PluginRegistry.Registrar;
 import io.flutter.plugin.common.PluginRegistry.RequestPermissionsResultListener;
-import io.flutter.plugin.common.PluginRegistry.ViewDestroyListener;
-import io.flutter.view.FlutterNativeView;
 import java.util.ArrayList;
 import java.util.List;
 import org.json.JSONArray;
@@ -81,20 +78,28 @@ public class WifiIotPlugin
       65655437;
   private static final int PERMISSIONS_REQUEST_CODE_ACCESS_NETWORK_STATE_IS_CONNECTED = 65655438;
 
-  // initialize members of this class with Context
-  private void initWithContext(Context context) {
-    moContext = context;
+  @Override
+  public void onAttachedToEngine(@NonNull FlutterPluginBinding binding) {
+    // initialize method and event channel and set handlers
+    channel = new MethodChannel(binding.getBinaryMessenger(), "wifi_iot");
+    eventChannel =
+        new EventChannel(binding.getBinaryMessenger(), "plugins.wififlutter.io/wifi_scan");
+    channel.setMethodCallHandler(this);
+    eventChannel.setStreamHandler(this);
+
+    // initialize context, moWiFi, moWiFiAPManager
+    moContext = binding.getApplicationContext();
     moWiFi = (WifiManager) moContext.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
     moWiFiAPManager = new WifiApManager(moContext.getApplicationContext());
   }
 
-  // initialize members of this class with Activity
-  private void initWithActivity(Activity activity) {
-    moActivity = activity;
-  }
+  @Override
+  public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
+    // set null as channel handlers
+    channel.setMethodCallHandler(null);
+    eventChannel.setStreamHandler(null);
 
-  // cleanup
-  private void cleanup() {
+    // disconnect to "joinOnce" networks
     if (!ssidsToBeRemovedOnExit.isEmpty()) {
       List<WifiConfiguration> wifiConfigList = moWiFi.getConfiguredNetworks();
       for (String ssid : ssidsToBeRemovedOnExit) {
@@ -108,6 +113,7 @@ public class WifiIotPlugin
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && !suggestionsToBeRemovedOnExit.isEmpty()) {
       moWiFi.removeNetworkSuggestions(suggestionsToBeRemovedOnExit);
     }
+
     // setting all members to null to avoid memory leaks
     channel = null;
     eventChannel = null;
@@ -117,55 +123,9 @@ public class WifiIotPlugin
     moWiFiAPManager = null;
   }
 
-  /** Plugin registration. This is used for registering with v1 Android embedding. */
-  public static void registerWith(Registrar registrar) {
-    final MethodChannel channel = new MethodChannel(registrar.messenger(), "wifi_iot");
-    final EventChannel eventChannel =
-        new EventChannel(registrar.messenger(), "plugins.wififlutter.io/wifi_scan");
-    final WifiIotPlugin wifiIotPlugin = new WifiIotPlugin();
-    wifiIotPlugin.initWithActivity(registrar.activity());
-    wifiIotPlugin.initWithContext(registrar.activeContext());
-    eventChannel.setStreamHandler(wifiIotPlugin);
-    channel.setMethodCallHandler(wifiIotPlugin);
-
-    registrar.addViewDestroyListener(
-        new ViewDestroyListener() {
-          @Override
-          public boolean onViewDestroy(FlutterNativeView view) {
-            wifiIotPlugin.cleanup();
-            return false;
-          }
-        });
-    registrar.addRequestPermissionsResultListener(wifiIotPlugin);
-  }
-
-  @Override
-  public void onAttachedToEngine(@NonNull FlutterPluginBinding binding) {
-    // initialize method and event channel and set handlers
-    channel = new MethodChannel(binding.getBinaryMessenger(), "wifi_iot");
-    eventChannel =
-        new EventChannel(binding.getBinaryMessenger(), "plugins.wififlutter.io/wifi_scan");
-    channel.setMethodCallHandler(this);
-    eventChannel.setStreamHandler(this);
-
-    // initializeWithContext
-    initWithContext(binding.getApplicationContext());
-  }
-
-  @Override
-  public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
-    // set null as channel handlers
-    channel.setMethodCallHandler(null);
-    eventChannel.setStreamHandler(null);
-
-    // set member to null
-    cleanup();
-  }
-
   @Override
   public void onAttachedToActivity(@NonNull ActivityPluginBinding binding) {
-    // init with activity
-    initWithActivity(binding.getActivity());
+    moActivity = binding.getActivity();
     binding.addRequestPermissionsResultListener(this);
   }
 
@@ -177,8 +137,7 @@ public class WifiIotPlugin
 
   @Override
   public void onReattachedToActivityForConfigChanges(@NonNull ActivityPluginBinding binding) {
-    // init with activity
-    initWithActivity(binding.getActivity());
+    moActivity = binding.getActivity();
     binding.addRequestPermissionsResultListener(this);
   }
 
@@ -190,7 +149,7 @@ public class WifiIotPlugin
 
   @Override
   public boolean onRequestPermissionsResult(
-      int requestCode, String[] permissions, int[] grantResults) {
+          int requestCode, @NonNull String[] permissions, int[] grantResults) {
     final boolean wasPermissionGranted =
         grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED;
     switch (requestCode) {
@@ -239,7 +198,7 @@ public class WifiIotPlugin
   }
 
   @Override
-  public void onMethodCall(MethodCall poCall, Result poResult) {
+  public void onMethodCall(MethodCall poCall, @NonNull Result poResult) {
     switch (poCall.method) {
       case "loadWifiList":
         loadWifiList(poResult);
@@ -384,7 +343,7 @@ public class WifiIotPlugin
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
       android.net.wifi.WifiConfiguration oWiFiConfig = moWiFiAPManager.getWifiApConfiguration();
 
-      if (oWiFiConfig != null && oWiFiConfig.hiddenSSID) {
+      if (oWiFiConfig != null) {
         poResult.success(oWiFiConfig.hiddenSSID);
         return;
       }
@@ -545,7 +504,7 @@ public class WifiIotPlugin
   private void setWiFiAPEnabled(MethodCall poCall, Result poResult) {
     boolean enabled = poCall.argument("state");
 
-    /** Using LocalOnlyHotspotCallback when setting WiFi AP state on API level >= 29 */
+    // Using LocalOnlyHotspotCallback when setting WiFi AP state on API level >= 29
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
       moWiFiAPManager.setWifiApEnabled(null, enabled);
     } else {
@@ -1019,7 +978,6 @@ public class WifiIotPlugin
     poResult.success(result);
   }
 
-  @SuppressWarnings("deprecation")
   private void isConnectedDeprecated(Result poResult) {
     ConnectivityManager connManager =
         (ConnectivityManager) moContext.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -1033,7 +991,6 @@ public class WifiIotPlugin
   private void disconnect(Result poResult) {
     boolean disconnected = false;
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-      //noinspection deprecation
       disconnected = moWiFi.disconnect();
     } else {
       if (networkCallback != null) {
@@ -1326,7 +1283,6 @@ public class WifiIotPlugin
     }
   }
 
-  @SuppressWarnings("deprecation")
   private int registerWifiNetworkDeprecated(android.net.wifi.WifiConfiguration conf) {
     int updateNetwork = -1;
     int registeredNetwork = -1;
@@ -1407,7 +1363,6 @@ public class WifiIotPlugin
     return conf;
   }
 
-  @SuppressWarnings("deprecation")
   private Boolean connectToDeprecated(
       String ssid,
       String bssid,
