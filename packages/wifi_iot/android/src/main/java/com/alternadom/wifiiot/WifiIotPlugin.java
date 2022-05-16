@@ -366,7 +366,7 @@ public class WifiIotPlugin
           }
         } else {
           SoftApConfiguration softApConfiguration = apReservation.getSoftApConfiguration();
-          poResult.sucess(softApConfiguration.getSsid());
+          poResult.success(softApConfiguration.getSsid());
         }
       } else {
         poResult.error("Exception [getWiFiAPSSID]", "Hotspot is not enabled.", null);
