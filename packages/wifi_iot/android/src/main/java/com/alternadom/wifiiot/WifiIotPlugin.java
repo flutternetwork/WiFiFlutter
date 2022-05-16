@@ -184,7 +184,7 @@ public class WifiIotPlugin
         return true;
 
       case PERMISSIONS_REQUEST_CODE_ACCESS_NETWORK_STATE_IS_CONNECTED:
-        if (wasPermissionGranted) {
+        if (wasPermissionGranted && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
           _isConnected(permissionRequestResultCallback);
         } else {
           permissionRequestResultCallback.error(
@@ -948,6 +948,7 @@ public class WifiIotPlugin
     }
   }
 
+  @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
   private void _isConnected(Result poResult) {
     ConnectivityManager connManager =
         (ConnectivityManager) moContext.getSystemService(Context.CONNECTIVITY_SERVICE);
