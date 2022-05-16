@@ -408,11 +408,8 @@ public class WifiIotPlugin
           SoftApConfiguration softApConfiguration = apReservation.getSoftApConfiguration();
           poResult.success(softApConfiguration.isHiddenSsid());
         } else {
-          poResult.success(false);
-          Log.w(
-              WifiIotPlugin.class.getSimpleName(),
-              "[isSSIDHidden] is not supported on API level < 30",
-              null);
+          WifiConfiguration wifiConfiguration = apReservation.getWifiConfiguration();
+          poResult.success(wifiConfiguration.hiddenSSID);
         }
       } else {
         poResult.error("Exception [isSSIDHidden]", "Hotspot is not enabled.", null);
