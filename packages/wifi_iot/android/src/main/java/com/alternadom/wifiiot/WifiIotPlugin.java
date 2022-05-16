@@ -149,7 +149,7 @@ public class WifiIotPlugin
 
   @Override
   public boolean onRequestPermissionsResult(
-          int requestCode, @NonNull String[] permissions, int[] grantResults) {
+      int requestCode, @NonNull String[] permissions, int[] grantResults) {
     final boolean wasPermissionGranted =
         grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED;
     switch (requestCode) {
@@ -767,19 +767,15 @@ public class WifiIotPlugin
   }
 
   private void connect(final MethodCall poCall, final Result poResult) {
-    new Thread() {
-      public void run() {
-        String ssid = poCall.argument("ssid");
-        String bssid = poCall.argument("bssid");
-        String password = poCall.argument("password");
-        String security = poCall.argument("security");
-        Boolean joinOnce = poCall.argument("join_once");
-        Boolean withInternet = poCall.argument("with_internet");
-        Boolean isHidden = poCall.argument("is_hidden");
+    String ssid = poCall.argument("ssid");
+    String bssid = poCall.argument("bssid");
+    String password = poCall.argument("password");
+    String security = poCall.argument("security");
+    Boolean joinOnce = poCall.argument("join_once");
+    Boolean withInternet = poCall.argument("with_internet");
+    Boolean isHidden = poCall.argument("is_hidden");
 
-        connectTo(poResult, ssid, bssid, password, security, joinOnce, withInternet, isHidden);
-      }
-    }.start();
+    connectTo(poResult, ssid, bssid, password, security, joinOnce, withInternet, isHidden);
   }
 
   /// Transform a string based bssid into a MacAdress.
@@ -892,30 +888,26 @@ public class WifiIotPlugin
   }
 
   private void _findAndConnect(final MethodCall poCall, final Result poResult) {
-    new Thread() {
-      public void run() {
-        String ssid = poCall.argument("ssid");
-        String bssid = poCall.argument("bssid");
-        String password = poCall.argument("password");
-        Boolean joinOnce = poCall.argument("join_once");
-        Boolean withInternet = poCall.argument("with_internet");
+    String ssid = poCall.argument("ssid");
+    String bssid = poCall.argument("bssid");
+    String password = poCall.argument("password");
+    Boolean joinOnce = poCall.argument("join_once");
+    Boolean withInternet = poCall.argument("with_internet");
 
-        String security = null;
-        List<ScanResult> results = moWiFi.getScanResults();
-        for (ScanResult result : results) {
-          String resultString = "" + result.SSID;
-          if (ssid.equals(resultString)
-              && (result.BSSID == null || bssid == null || result.BSSID.equals(bssid))) {
-            security = getSecurityType(result);
-            if (bssid == null) {
-              bssid = result.BSSID;
-            }
-          }
+    String security = null;
+    List<ScanResult> results = moWiFi.getScanResults();
+    for (ScanResult result : results) {
+      String resultString = "" + result.SSID;
+      if (ssid.equals(resultString)
+          && (result.BSSID == null || bssid == null || result.BSSID.equals(bssid))) {
+        security = getSecurityType(result);
+        if (bssid == null) {
+          bssid = result.BSSID;
         }
-
-        connectTo(poResult, ssid, bssid, password, security, joinOnce, withInternet, false);
       }
-    }.start();
+    }
+
+    connectTo(poResult, ssid, bssid, password, security, joinOnce, withInternet, false);
   }
 
   private static String getSecurityType(ScanResult scanResult) {
@@ -1142,28 +1134,29 @@ public class WifiIotPlugin
       final Boolean joinOnce,
       final Boolean withInternet,
       final Boolean isHidden) {
-    final Handler handler = new Handler(Looper.getMainLooper());
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-      final boolean connected =
-          connectToDeprecated(ssid, bssid, password, security, joinOnce, isHidden);
-      handler.post(
-          new Runnable() {
-            @Override
-            public void run() {
-              poResult.success(connected);
-            }
-          });
+      new Thread(
+              new Runnable() {
+                @Override
+                public void run() {
+                  final boolean connected =
+                      connectToDeprecated(ssid, bssid, password, security, joinOnce, isHidden);
+                  new Handler(Looper.getMainLooper())
+                      .post(
+                          new Runnable() {
+                            @Override
+                            public void run() {
+                              poResult.success(connected);
+                            }
+                          });
+                }
+              })
+          .start();
     } else {
       // error if WEP security, since not supported
       if (security != null && security.toUpperCase().equals("WEP")) {
-        handler.post(
-            new Runnable() {
-              @Override
-              public void run() {
-                poResult.error(
-                    "Error", "WEP is not supported for Android SDK " + Build.VERSION.SDK_INT, "");
-              }
-            });
+        poResult.error(
+            "Error", "WEP is not supported for Android SDK " + Build.VERSION.SDK_INT, "");
         return;
       }
 
@@ -1176,13 +1169,7 @@ public class WifiIotPlugin
         if (bssid != null) {
           final MacAddress macAddress = macAddressFromBssid(bssid);
           if (macAddress == null) {
-            handler.post(
-                new Runnable() {
-                  @Override
-                  public void run() {
-                    poResult.error("Error", "Invalid BSSID representation", "");
-                  }
-                });
+            poResult.error("Error", "Invalid BSSID representation", "");
             return;
           }
           builder.setBssid(macAddress);
@@ -1210,13 +1197,7 @@ public class WifiIotPlugin
         final int status = moWiFi.addNetworkSuggestions(networkSuggestions);
         Log.e(WifiIotPlugin.class.getSimpleName(), "status: " + status);
 
-        handler.post(
-            new Runnable() {
-              @Override
-              public void run() {
-                poResult.success(status == WifiManager.STATUS_NETWORK_SUGGESTIONS_SUCCESS);
-              }
-            });
+        poResult.success(status == WifiManager.STATUS_NETWORK_SUGGESTIONS_SUCCESS);
       } else {
         // Make new network specifier
         final WifiNetworkSpecifier.Builder builder = new WifiNetworkSpecifier.Builder();
@@ -1226,13 +1207,7 @@ public class WifiIotPlugin
         if (bssid != null) {
           final MacAddress macAddress = macAddressFromBssid(bssid);
           if (macAddress == null) {
-            handler.post(
-                new Runnable() {
-                  @Override
-                  public void run() {
-                    poResult.error("Error", "Invalid BSSID representation", "");
-                  }
-                });
+            poResult.error("Error", "Invalid BSSID representation", "");
             return;
           }
           builder.setBssid(macAddress);
@@ -1278,7 +1253,7 @@ public class WifiIotPlugin
               }
             };
 
-        connectivityManager.requestNetwork(networkRequest, networkCallback, handler, 30 * 1000);
+        connectivityManager.requestNetwork(networkRequest, networkCallback, 30 * 1000);
       }
     }
   }
