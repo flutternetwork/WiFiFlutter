@@ -357,7 +357,14 @@ public class WifiIotPlugin
         String ssid;
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
           WifiConfiguration wifiConfiguration = apReservation.getWifiConfiguration();
-          ssid = wifiConfiguration.SSID;
+          if (wifiConfiguration != null) {
+            ssid = wifiConfiguration.SSID;
+          } else {
+            poResult.error(
+                "Exception [getWiFiAPSSID]",
+                "Security type is not WifiConfiguration.KeyMgmt.None or WifiConfiguration.KeyMgmt.WPA2_PSK",
+                null);
+          }
         } else {
           SoftApConfiguration softApConfiguration = apReservation.getSoftApConfiguration();
           ssid = softApConfiguration.getSsid();
@@ -465,7 +472,14 @@ public class WifiIotPlugin
         String pwd;
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
           WifiConfiguration wifiConfiguration = apReservation.getWifiConfiguration();
-          pwd = wifiConfiguration.preSharedKey;
+          if (wifiConfiguration != null) {
+            pwd = wifiConfiguration.preSharedKey;
+          } else {
+            poResult.error(
+                "Exception [getWiFiAPPreSharedKey]",
+                "Security type is not WifiConfiguration.KeyMgmt.None or WifiConfiguration.KeyMgmt.WPA2_PSK",
+                null);
+          }
         } else {
           SoftApConfiguration softApConfiguration = apReservation.getSoftApConfiguration();
           pwd = softApConfiguration.getPassphrase();
