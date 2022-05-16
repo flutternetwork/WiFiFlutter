@@ -409,7 +409,14 @@ public class WifiIotPlugin
           poResult.success(softApConfiguration.isHiddenSsid());
         } else {
           WifiConfiguration wifiConfiguration = apReservation.getWifiConfiguration();
-          poResult.success(wifiConfiguration.hiddenSSID);
+          if (wifiConfiguration != null) {
+            poResult.success(wifiConfiguration.hiddenSSID);
+          } else {
+            poResult.error(
+                "Exception [isSSIDHidden]",
+                "Security type is not WifiConfiguration.KeyMgmt.None or WifiConfiguration.KeyMgmt.WPA2_PSK",
+                null);
+          }
         }
       } else {
         poResult.error("Exception [isSSIDHidden]", "Hotspot is not enabled.", null);
