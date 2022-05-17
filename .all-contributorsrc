@@ -503,6 +503,16 @@
         "bug",
         "code"
       ]
+    },
+    {
+      "login": "PoloLacoste",
+      "name": "JM REMEUR",
+      "avatar_url": "https://avatars.githubusercontent.com/u/18294375?v=4",
+      "profile": "https://github.com/PoloLacoste",
+      "contributions": [
+        "code",
+        "doc"
+      ]
     }
   ]
 }
