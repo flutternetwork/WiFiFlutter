@@ -1,9 +1,9 @@
 <h3><a href="https://wifi.flutternetwork.dev/" ><img src="https://raw.githubusercontent.com/flutternetwork/WiFiFlutter/master/logo/logo%2Bname_vertical_color.png" alt="WiFiFlutter" height="112"/></a>| <code>wifi_scan</code></h3>
 
-<p>  
-<a href="https://github.com/flutternetwork/WiFiFlutter/actions/workflows/wifi_scan.yaml">
-  <img src="https://github.com/flutternetwork/WiFiFlutter/actions/workflows/wifi_scan.yaml/badge.svg" alt="analysis">
-</a>  
+<p>
+<a href="https://flutternetwork.dev">
+  <img src="https://raw.githubusercontent.com/flutternetwork/.github/master/profile/badge.svg" alt="Flutter Network" />
+</a>
 <a href="https://pub.dev/packages/wifi_scan">
   <img src="https://img.shields.io/pub/v/wifi_scan?logo=dart" alt="pub.dev">
 </a>
@@ -32,6 +32,20 @@ This plugin allows Flutter apps to scan for nearby visible WiFi access points.
 
 ## Usage
 The entry point for the plugin is the singleton instance `WiFiScan.instance`.
+
+### Check support
+You can check if the platform has Wi-Fi scan capabilities with `WiFiScan.hasCapability` API, as shown below:
+```dart
+void _scan() async {
+  if(await WiFiScan.instance.hasCapability()){
+    // can safely call scan related functionalities
+  } else {
+    // fallback mechanism, like - show user that "scan" is not possible 
+  }
+}
+```
+
+For more details, you can read documentation of [`WiFiScan.hasCapability`][doc_hasCapability].
 
 ### Start scan
 You can trigger full WiFi scan with `WiFiScan.startScan` API, as shown below:
@@ -141,6 +155,7 @@ This project follows the [all-contributors][all_contributors] specification. Con
 [docs]: https://pub.dev/documentation/wifi_scan/latest/wifi_scan/wifi_scan-library.html
 [example]: https://github.com/flutternetwork/WiFiFlutter/tree/master/packages/wifi_scan/example
 
+[doc_hasCapability]: https://pub.dev/documentation/wifi_scan/latest/wifi_scan/WiFiScan/hasCapability.html
 [doc_startScan]: https://pub.dev/documentation/wifi_scan/latest/wifi_scan/WiFiScan/startScan.html
 [doc_StartScanErrors]: https://pub.dev/documentation/wifi_scan/latest/wifi_scan/StartScanErrors.html
 [doc_Result]: https://pub.dev/documentation/wifi_scan/latest/wifi_scan/Result-class.html

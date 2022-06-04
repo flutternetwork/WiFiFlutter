@@ -13,6 +13,8 @@ import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.NetworkRequest;
 import android.net.wifi.ScanResult;
+import android.net.wifi.SoftApConfiguration;
+import android.net.wifi.SupplicantState;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -28,6 +30,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import info.whitebyte.hotspotmanager.ClientScanResult;
 import info.whitebyte.hotspotmanager.FinishScanListener;
+import info.whitebyte.hotspotmanager.WIFI_AP_STATE;
 import info.whitebyte.hotspotmanager.WifiApManager;
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.embedding.engine.plugins.activity.ActivityAware;
@@ -65,6 +68,7 @@ public class WifiIotPlugin
   private Activity moActivity;
   private BroadcastReceiver receiver;
   private WifiManager.LocalOnlyHotspotReservation apReservation;
+  private WIFI_AP_STATE localOnlyHotspotState = WIFI_AP_STATE.WIFI_AP_STATE_DISABLED;
   private ConnectivityManager.NetworkCallback networkCallback;
   private List<WifiNetworkSuggestion> networkSuggestions;
   private List<String> ssidsToBeRemovedOnExit = new ArrayList<String>();
@@ -347,12 +351,26 @@ public class WifiIotPlugin
         return;
       }
 
-      poResult.error("Exception", "SSID not found", null);
+      poResult.error("Exception [getWiFiAPSSID]", "SSID not found", null);
     } else {
-      poResult.error(
-          "Exception [getWiFiAPSSID]",
-          "Getting SSID name is not supported on API level >= 26",
-          null);
+      if (apReservation != null) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+          WifiConfiguration wifiConfiguration = apReservation.getWifiConfiguration();
+          if (wifiConfiguration != null) {
+            poResult.success(wifiConfiguration.SSID);
+          } else {
+            poResult.error(
+                "Exception [getWiFiAPSSID]",
+                "Security type is not WifiConfiguration.KeyMgmt.None or WifiConfiguration.KeyMgmt.WPA2_PSK",
+                null);
+          }
+        } else {
+          SoftApConfiguration softApConfiguration = apReservation.getSoftApConfiguration();
+          poResult.success(softApConfiguration.getSsid());
+        }
+      } else {
+        poResult.error("Exception [getWiFiAPSSID]", "Hotspot is not enabled.", null);
+      }
     }
   }
 
@@ -390,10 +408,24 @@ public class WifiIotPlugin
 
       poResult.error("Exception [isSSIDHidden]", "Wifi AP not Supported", null);
     } else {
-      poResult.error(
-          "Exception [isSSIDHidden]",
-          "Getting SSID visibility is not supported on API level >= 26",
-          null);
+      if (apReservation != null) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+          SoftApConfiguration softApConfiguration = apReservation.getSoftApConfiguration();
+          poResult.success(softApConfiguration.isHiddenSsid());
+        } else {
+          WifiConfiguration wifiConfiguration = apReservation.getWifiConfiguration();
+          if (wifiConfiguration != null) {
+            poResult.success(wifiConfiguration.hiddenSSID);
+          } else {
+            poResult.error(
+                "Exception [isSSIDHidden]",
+                "Security type is not WifiConfiguration.KeyMgmt.None or WifiConfiguration.KeyMgmt.WPA2_PSK",
+                null);
+          }
+        }
+      } else {
+        poResult.error("Exception [isSSIDHidden]", "Hotspot is not enabled.", null);
+      }
     }
   }
 
@@ -434,10 +466,24 @@ public class WifiIotPlugin
 
       poResult.error("Exception", "Wifi AP not Supported", null);
     } else {
-      poResult.error(
-          "Exception [getWiFIAPPreSharedKey]",
-          "Getting WiFi AP password is not supported on API level >= 26",
-          null);
+      if (apReservation != null) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+          WifiConfiguration wifiConfiguration = apReservation.getWifiConfiguration();
+          if (wifiConfiguration != null) {
+            poResult.success(wifiConfiguration.preSharedKey);
+          } else {
+            poResult.error(
+                "Exception [getWiFiAPPreSharedKey]",
+                "Security type is not WifiConfiguration.KeyMgmt.None or WifiConfiguration.KeyMgmt.WPA2_PSK",
+                null);
+          }
+        } else {
+          SoftApConfiguration softApConfiguration = apReservation.getSoftApConfiguration();
+          poResult.success(softApConfiguration.getPassphrase());
+        }
+      } else {
+        poResult.error("Exception [getWiFiAPPreSharedKey]", "Hotspot is not enabled.", null);
+      }
     }
   }
 
@@ -526,11 +572,16 @@ public class WifiIotPlugin
    * Wi-Fi AP is enabled
    */
   private void isWiFiAPEnabled(Result poResult) {
-    try {
-      poResult.success(moWiFiAPManager.isWifiApEnabled());
-    } catch (SecurityException e) {
-      Log.e(WifiIotPlugin.class.getSimpleName(), e.getMessage(), null);
-      poResult.error("Exception [isWiFiAPEnabled]", e.getMessage(), null);
+
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+      try {
+        poResult.success(moWiFiAPManager.isWifiApEnabled());
+      } catch (SecurityException e) {
+        Log.e(WifiIotPlugin.class.getSimpleName(), e.getMessage(), null);
+        poResult.error("Exception [isWiFiAPEnabled]", e.getMessage(), null);
+      }
+    } else {
+      poResult.success(apReservation != null);
     }
   }
 
@@ -541,48 +592,66 @@ public class WifiIotPlugin
    * part of WifiConfiguration return {@code true} if the operation succeeds, {@code false}
    * otherwise
    */
-  private void setWiFiAPEnabled(MethodCall poCall, Result poResult) {
+  private void setWiFiAPEnabled(MethodCall poCall, final Result poResult) {
     boolean enabled = poCall.argument("state");
 
     /** Using LocalOnlyHotspotCallback when setting WiFi AP state on API level >= 29 */
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-      moWiFiAPManager.setWifiApEnabled(null, enabled);
+      final boolean result = moWiFiAPManager.setWifiApEnabled(null, enabled);
+      poResult.success(result);
     } else {
       if (enabled) {
+        localOnlyHotspotState = WIFI_AP_STATE.WIFI_AP_STATE_ENABLING;
         moWiFi.startLocalOnlyHotspot(
             new WifiManager.LocalOnlyHotspotCallback() {
               @Override
               public void onStarted(WifiManager.LocalOnlyHotspotReservation reservation) {
                 super.onStarted(reservation);
                 apReservation = reservation;
+                localOnlyHotspotState = WIFI_AP_STATE.WIFI_AP_STATE_ENABLED;
+                poResult.success(true);
               }
 
               @Override
               public void onStopped() {
                 super.onStopped();
+                if (apReservation != null) {
+                  apReservation.close();
+                }
+                apReservation = null;
+                localOnlyHotspotState = WIFI_AP_STATE.WIFI_AP_STATE_DISABLED;
                 Log.d(WifiIotPlugin.class.getSimpleName(), "LocalHotspot Stopped.");
               }
 
               @Override
               public void onFailed(int reason) {
                 super.onFailed(reason);
+                if (apReservation != null) {
+                  apReservation.close();
+                }
+                apReservation = null;
+                localOnlyHotspotState = WIFI_AP_STATE.WIFI_AP_STATE_FAILED;
                 Log.d(
                     WifiIotPlugin.class.getSimpleName(),
                     "LocalHotspot failed with code: " + String.valueOf(reason));
+                poResult.success(false);
               }
             },
             new Handler());
       } else {
+        localOnlyHotspotState = WIFI_AP_STATE.WIFI_AP_STATE_DISABLING;
         if (apReservation != null) {
           apReservation.close();
+          apReservation = null;
+          poResult.success(true);
         } else {
           Log.e(
               WifiIotPlugin.class.getSimpleName(), "Can't disable WiFi AP, apReservation is null.");
+          poResult.success(false);
         }
+        localOnlyHotspotState = WIFI_AP_STATE.WIFI_AP_STATE_DISABLED;
       }
     }
-
-    poResult.success(null);
   }
 
   /**
@@ -599,7 +668,11 @@ public class WifiIotPlugin
 
   /** Gets the Wi-Fi enabled state. *** getWifiApState : return {link WIFI_AP_STATE} */
   private void getWiFiAPState(Result poResult) {
-    poResult.success(moWiFiAPManager.getWifiApState().ordinal());
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+      poResult.success(moWiFiAPManager.getWifiApState().ordinal());
+    } else {
+      poResult.success(localOnlyHotspotState);
+    }
   }
 
   @Override
@@ -1328,6 +1401,7 @@ public class WifiIotPlugin
   @SuppressWarnings("deprecation")
   private int registerWifiNetworkDeprecated(android.net.wifi.WifiConfiguration conf) {
     int updateNetwork = -1;
+    int registeredNetwork = -1;
 
     /// Remove the existing configuration for this netwrok
     List<android.net.wifi.WifiConfiguration> mWifiConfigList = moWiFi.getConfiguredNetworks();
@@ -1339,6 +1413,7 @@ public class WifiIotPlugin
                 || conf.BSSID == null
                 || wifiConfig.BSSID.equals(conf.BSSID))) {
           conf.networkId = wifiConfig.networkId;
+          registeredNetwork = wifiConfig.networkId;
           updateNetwork = moWiFi.updateNetwork(conf);
         }
       }
@@ -1348,6 +1423,11 @@ public class WifiIotPlugin
     if (updateNetwork == -1) {
       updateNetwork = moWiFi.addNetwork(conf);
       moWiFi.saveConfiguration();
+    }
+
+    // Try returning last known valid network id
+    if (updateNetwork == -1) {
+      return registeredNetwork;
     }
 
     return updateNetwork;
@@ -1430,14 +1510,19 @@ public class WifiIotPlugin
     if (!enabled) return false;
 
     boolean connected = false;
-    for (int i = 0; i < 30; i++) {
-      int networkId = moWiFi.getConnectionInfo().getNetworkId();
-      if (networkId != -1) {
+    for (int i = 0; i < 20; i++) {
+      WifiInfo currentNet = moWiFi.getConnectionInfo();
+      int networkId = currentNet.getNetworkId();
+      SupplicantState netState = currentNet.getSupplicantState();
+
+      // Wait for connection to reach state completed
+      // to discard false positives like auth error
+      if (networkId != -1 && netState == SupplicantState.COMPLETED) {
         connected = networkId == updateNetwork;
         break;
       }
       try {
-        Thread.sleep(1000);
+        Thread.sleep(500);
       } catch (InterruptedException ignored) {
         break;
       }
