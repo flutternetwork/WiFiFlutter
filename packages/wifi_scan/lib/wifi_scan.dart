@@ -3,8 +3,7 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 
 part 'src/accesspoint.dart';
-part 'src/error.dart';
-part 'src/result.dart';
+part 'src/can.dart';
 
 /// The `wifi_scan` plugin entry point.
 ///
@@ -18,72 +17,73 @@ class WiFiScan {
   final _channel = const MethodChannel('wifi_scan');
   final _scannedResultsAvailableChannel =
       const EventChannel('wifi_scan/onScannedResultsAvailable');
-  Stream<Result<List<WiFiAccessPoint>, GetScannedResultsErrors>>?
-      _onScannedResultsAvailable;
+  Stream<List<WiFiAccessPoint>>? _onScannedResultsAvailable;
 
-  /// Check if supports Wi-Fi scan.
-  Future<bool> hasCapability() async {
-    final isCapable = await _channel.invokeMethod<bool>("hasCapability");
-    return isCapable!;
+  /// Checks if it is ok to invoke [startScan].
+  ///
+  /// Necesearry platform requirements, like permissions dependent services,
+  /// configuration, etc are checked.
+  ///
+  /// Set [askPermissions] flag to ask user for necessary permissions.
+  Future<CanStartScan> canStartScan({bool askPermissions = true}) async {
+    final canCode = await _channel.invokeMethod<int>("canStartScan", {
+      "askPermissions": askPermissions,
+    });
+    return _deserializeCanStartScan(canCode);
   }
 
   /// Request a Wi-Fi scan.
   ///
-  /// Returns null if successful, else [StartScanErrors].
-  Future<StartScanErrors?> startScan({bool askPermissions = true}) async {
-    final errorCode = await _channel.invokeMethod<int>("startScan", {
+  /// Return value indicates if the "scan" trigger successed.
+  ///
+  /// Should call [canStartScan] as a check before calling this method.
+  Future<bool> startScan() async {
+    final isSucess = await _channel.invokeMethod<bool>("startScan");
+    return isSucess!;
+  }
+
+  /// Checks if it is ok to invoke [getScannedResults] or [onScannedResultsAvailable].
+  ///
+  /// Necesearry platform requirements, like permissions dependent services,
+  /// configuration, etc are checked.
+  ///
+  /// Set [askPermissions] flag to ask user for necessary permissions.
+  Future<CanGetScannedResults> canGetScannedResults(
+      {bool askPermissions = true}) async {
+    final canCode = await _channel.invokeMethod<int>("canGetScannedResults", {
       "askPermissions": askPermissions,
     });
-    return errorCode == null ? null : _deserializeStartScanError(errorCode);
+    return _deserializeCanGetScannedResults(canCode);
   }
 
   /// Get scanned access point.
   ///
-  /// Returns [Result] object. If successful then [Result.value] is a [List] of
-  /// [WiFiAccessPoint] and if failed then [Result.error] is a
-  /// [GetScannedResultsErrors] value.
+  /// This are cached accesss points from most recently performed scan.
   ///
-  /// [Result.value] are cached accesss points from most recently performed scan.
-  ///
-  /// Set [askPermissions] flag to ask user for necessary permissions.
-  Future<Result<List<WiFiAccessPoint>, GetScannedResultsErrors>>
-      getScannedResults({bool askPermissions = true}) async {
-    final resultMap = await _channel.invokeMapMethod("getScannedResults", {
-      "askPermissions": askPermissions,
-    });
-    return _scannedResultMapToResult(resultMap!);
+  /// Should call [canGetScannedResults] as a check before calling this method.
+  Future<List<WiFiAccessPoint>> getScannedResults() async {
+    final scannedResults =
+        await _channel.invokeListMethod<Map>("getScannedResults");
+    return scannedResults!
+        .map((map) => WiFiAccessPoint._fromMap(map))
+        .toList(growable: false);
   }
 
   /// Fires whenever new scanned results are available.
   ///
-  /// Each event is of type [Result], where [Result.value] is a [List] of
-  /// [WiFiAccessPoint] if fetched successfully or [Result.error] of type
-  /// [GetScannedResultsErrors] otherwise.
-  ///
-  /// Unlike [getScannedResults] required permission are never asked to the user.
-  ///
   /// New results are added to stream when platform performs the scan, either by
   /// itself or trigger with [startScan].
-  Stream<Result<List<WiFiAccessPoint>, GetScannedResultsErrors>>
-      get onScannedResultsAvailable =>
-          _onScannedResultsAvailable ??= _scannedResultsAvailableChannel
-              .receiveBroadcastStream()
-              .map((event) {
-            if (event is Map) {
-              return _scannedResultMapToResult(event);
-            }
-            throw UnsupportedError("Unknown event received: $event");
-          });
-
-  Result<List<WiFiAccessPoint>, GetScannedResultsErrors>
-      _scannedResultMapToResult(Map map) {
-    // check if any error - return Result._error if any
-    final errorCode = map["error"];
-    if (errorCode != null) {
-      return Result._error(_deserializeGetScannedResultsError(errorCode));
-    }
-    // parse and return list of WiFiAccessPoint
-    return Result._value(List<WiFiAccessPoint>.unmodifiable(
-        map["value"].map((map) => WiFiAccessPoint._fromMap(map))));
-  }
+  ///
+  /// Should call [canGetScannedResults] as a check before calling this method.
+  Stream<List<WiFiAccessPoint>> get onScannedResultsAvailable =>
+      _onScannedResultsAvailable ??=
+          _scannedResultsAvailableChannel.receiveBroadcastStream().map((event) {
+        if (event is Error) throw event;
+        if (event is List) {
+          return event
+              .map((map) => WiFiAccessPoint._fromMap(map))
+              .toList(growable: false);
+        }
+        return const <WiFiAccessPoint>[];
+      });
 }
