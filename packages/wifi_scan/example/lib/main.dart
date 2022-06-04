@@ -173,11 +173,14 @@ class _AccessPointTile extends StatelessWidget {
   // build row that can display info, based on label: value pair.
   Widget _buildInfo(String label, dynamic value) => Container(
         decoration: const BoxDecoration(
-            border: Border(bottom: BorderSide(color: Colors.grey))),
+          border: Border(bottom: BorderSide(color: Colors.grey)),
+        ),
         child: Row(
           children: [
-            Text("$label: ",
-                style: const TextStyle(fontWeight: FontWeight.bold)),
+            Text(
+              "$label: ",
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
             Expanded(child: Text(value.toString()))
           ],
         ),
