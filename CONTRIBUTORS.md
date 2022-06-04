@@ -1,5 +1,5 @@
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-<a href="https://github.com/flutternetwork/WiFiFlutter/blob/master/CONTRIBUTORS.md#contributors-"><img src="https://img.shields.io/badge/all_contributors-47-orange.svg" alt="All Contributors" /></a>
+<a href="https://github.com/flutternetwork/WiFiFlutter/blob/master/CONTRIBUTORS.md#contributors-"><img src="https://img.shields.io/badge/all_contributors-50-orange.svg" alt="All Contributors" /></a>
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## Contributors ✨
@@ -68,6 +68,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   <tr>
     <td align="center"><a href="https://github.com/nathan2day"><img src="https://avatars.githubusercontent.com/u/17063283?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Nathan</b></sub></a><br /><a href="https://github.com/flutternetwork/WiFiFlutter/issues?q=author%3Anathan2day" title="Bug reports">🐛</a></td>
     <td align="center"><a href="https://github.com/nikolip"><img src="https://avatars.githubusercontent.com/u/44801617?v=4?s=100" width="100px;" alt=""/><br /><sub><b>nikolip</b></sub></a><br /><a href="https://github.com/flutternetwork/WiFiFlutter/issues?q=author%3Anikolip" title="Bug reports">🐛</a> <a href="https://github.com/flutternetwork/WiFiFlutter/commits?author=nikolip" title="Code">💻</a></td>
+    <td align="center"><a href="http://jonasbark.de/"><img src="https://avatars.githubusercontent.com/u/1151304?v=4?s=100" width="100px;" alt=""/><br /><sub><b>jonasbark</b></sub></a><br /><a href="https://github.com/flutternetwork/WiFiFlutter/issues?q=author%3Ajonasbark" title="Bug reports">🐛</a> <a href="https://github.com/flutternetwork/WiFiFlutter/commits?author=jonasbark" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/lmmfranco"><img src="https://avatars.githubusercontent.com/u/5719409?v=4?s=100" width="100px;" alt=""/><br /><sub><b>lmmfranco</b></sub></a><br /><a href="https://github.com/flutternetwork/WiFiFlutter/issues?q=author%3Almmfranco" title="Bug reports">🐛</a> <a href="https://github.com/flutternetwork/WiFiFlutter/commits?author=lmmfranco" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/PoloLacoste"><img src="https://avatars.githubusercontent.com/u/18294375?v=4?s=100" width="100px;" alt=""/><br /><sub><b>JM REMEUR</b></sub></a><br /><a href="https://github.com/flutternetwork/WiFiFlutter/commits?author=PoloLacoste" title="Code">💻</a> <a href="https://github.com/flutternetwork/WiFiFlutter/commits?author=PoloLacoste" title="Documentation">📖</a></td>
   </tr>
 </table>
 

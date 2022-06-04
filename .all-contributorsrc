@@ -483,6 +483,36 @@
         "bug",
         "code"
       ]
+    },
+    {
+      "login": "jonasbark",
+      "name": "jonasbark",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1151304?v=4",
+      "profile": "http://jonasbark.de/",
+      "contributions": [
+        "bug",
+        "code"
+      ]
+    },
+    {
+      "login": "lmmfranco",
+      "name": "lmmfranco",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5719409?v=4",
+      "profile": "https://github.com/lmmfranco",
+      "contributions": [
+        "bug",
+        "code"
+      ]
+    },
+    {
+      "login": "PoloLacoste",
+      "name": "JM REMEUR",
+      "avatar_url": "https://avatars.githubusercontent.com/u/18294375?v=4",
+      "profile": "https://github.com/PoloLacoste",
+      "contributions": [
+        "code",
+        "doc"
+      ]
     }
   ]
 }
