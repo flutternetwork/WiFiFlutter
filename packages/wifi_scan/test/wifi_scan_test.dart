@@ -2,12 +2,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:wifi_scan/wifi_scan.dart';
 
-Map _makeResult({dynamic value, dynamic error}) {
-  assert((value != null) ^ (error != null));
-  if (error != null) return {"error": error};
-  return {"value": value};
-}
-
 void main() {
   const channel = MethodChannel('wifi_scan');
   final mockHandlers = <String, Function(dynamic arguments)>{};
@@ -28,109 +22,80 @@ void main() {
     channel.setMockMethodCallHandler(null);
   });
 
-  group("hasCapability", () {
-    test("successful", () async {
-      mockHandlers["hasCapability"] = (_) => true;
-      expect(await WiFiScan.instance.hasCapability(), true);
-      mockHandlers["hasCapability"] = (_) => false;
-      expect(await WiFiScan.instance.hasCapability(), false);
-    });
+  test('canStartScan', () async {
+    final canCodes = [0, 1, 2, 3, 4, 5];
+    final enumValues = [
+      CanStartScan.notSupported,
+      CanStartScan.yes,
+      CanStartScan.noLocationPermissionRequired,
+      CanStartScan.noLocationPermissionDenied,
+      CanStartScan.noLocationPermissionUpgradeAccuracy,
+      CanStartScan.noLocationServiceDisabled,
+    ];
+    for (int i = 0; i < canCodes.length; i++) {
+      mockHandlers["canStartScan"] = (_) => canCodes[i];
+      expect(await WiFiScan.instance.canStartScan(), enumValues[i]);
+    }
 
-    test("null result", () async {
-      mockHandlers["hasCapability"] = (_) => null;
-      await expectLater(
-        () async => await WiFiScan.instance.hasCapability(),
-        throwsA(const TypeMatcher<TypeError>()),
-      );
-    });
+    // -ve test
+    final badCanCodes = [null, -1, 6, 7];
+    for (int i = 0; i < badCanCodes.length; i++) {
+      mockHandlers["canStartScan"] = (_) => badCanCodes[i];
+      expect(() async => await WiFiScan.instance.canStartScan(),
+          throwsUnsupportedError);
+    }
   });
 
-  group("startScan", () {
-    test('successful', () async {
-      mockHandlers["startScan"] = (_) => null;
-      expect(await WiFiScan.instance.startScan(), isNull);
-    });
-
-    test("fail with valid code", () async {
-      final errorCodes = [0, 1, 2, 3, 4, 5];
-      final enumValues = [
-        StartScanErrors.notSupported,
-        StartScanErrors.noLocationPermissionRequired,
-        StartScanErrors.noLocationPermissionDenied,
-        StartScanErrors.noLocationPermissionUpgradeAccuracy,
-        StartScanErrors.noLocationServiceDisabled,
-        StartScanErrors.failed,
-      ];
-      for (int i = 0; i < errorCodes.length; i++) {
-        mockHandlers["startScan"] = (_) => errorCodes[i];
-        expect(await WiFiScan.instance.startScan(), enumValues[i]);
-      }
-    });
-
-    test("fail with in valid code", () {
-      final badErrorCodes = [-1, 6, 7];
-      for (var erroCode in badErrorCodes) {
-        mockHandlers["startScan"] = (_) => erroCode;
-        expect(() async => await WiFiScan.instance.startScan(),
-            throwsUnsupportedError);
-      }
-    });
+  test('startScan', () async {
+    mockHandlers["startScan"] = (_) => true;
+    expect(await WiFiScan.instance.startScan(), true);
   });
 
-  group("getScannedResults", () {
-    test("successfull", () async {
-      mockHandlers["getScannedResults"] = (_) => _makeResult(value: [
-            {
-              "ssid": "my-ssid",
-              "bssid": "00:00:00:12",
-              "capabilities": "Unknown",
-              "frequency": 600,
-              "level": 5,
-              "timestamp": null,
-              "standard": null,
-              "centerFrequency0": null,
-              "centerFrequency1": null,
-              "channelWidth": null,
-              "isPasspoint": null,
-              "operatorFriendlyName": null,
-              "venueName": null,
-              "is80211mcResponder": null,
-            }
-          ]);
-      final result = await WiFiScan.instance.getScannedResults();
-      expect(result.hasError, false);
-      expect(result.value, isNotNull);
-      expect(result.value!.length, 1);
-    });
+  test("canGetScannedResults", () async {
+    final canCodes = [0, 1, 2, 3, 4, 5];
+    final enumValues = [
+      CanGetScannedResults.notSupported,
+      CanGetScannedResults.yes,
+      CanGetScannedResults.noLocationPermissionRequired,
+      CanGetScannedResults.noLocationPermissionDenied,
+      CanGetScannedResults.noLocationPermissionUpgradeAccuracy,
+      CanGetScannedResults.noLocationServiceDisabled,
+    ];
+    for (int i = 0; i < canCodes.length; i++) {
+      mockHandlers["canGetScannedResults"] = (_) => canCodes[i];
+      expect(await WiFiScan.instance.canGetScannedResults(), enumValues[i]);
+    }
 
-    test("fail with valid code", () async {
-      final errorCodes = [0, 1, 2, 3, 4];
-      final enumValues = [
-        GetScannedResultsErrors.notSupported,
-        GetScannedResultsErrors.noLocationPermissionRequired,
-        GetScannedResultsErrors.noLocationPermissionDenied,
-        GetScannedResultsErrors.noLocationPermissionUpgradeAccuracy,
-        GetScannedResultsErrors.noLocationServiceDisabled,
-      ];
-      for (int i = 0; i < errorCodes.length; i++) {
-        mockHandlers["getScannedResults"] =
-            (_) => _makeResult(error: errorCodes[i]);
-        final result = await WiFiScan.instance.getScannedResults();
-        expect(result.hasError, true);
-        expect(result.error, isNotNull);
-        expect(result.error, enumValues[i]);
-      }
-    });
+    // -ve test
+    final badCanCodes = [null, -1, 6, 7];
+    for (int i = 0; i < badCanCodes.length; i++) {
+      mockHandlers["canGetScannedResults"] = (_) => badCanCodes[i];
+      expect(() async => await WiFiScan.instance.canGetScannedResults(),
+          throwsUnsupportedError);
+    }
+  });
 
-    test("fail with invalid code", () async {
-      final badCanCodes = [-1, 6, 7];
-      for (int i = 0; i < badCanCodes.length; i++) {
-        mockHandlers["getScannedResults"] =
-            (_) => _makeResult(error: badCanCodes[i]);
-        expect(() async => await WiFiScan.instance.getScannedResults(),
-            throwsUnsupportedError);
-      }
-    });
+  test("getScannedResults", () async {
+    mockHandlers["getScannedResults"] = (_) => [
+          {
+            "ssid": "my-ssid",
+            "bssid": "00:00:00:12",
+            "capabilities": "Unknown",
+            "frequency": 600,
+            "level": 5,
+            "timestamp": null,
+            "standard": null,
+            "centerFrequency0": null,
+            "centerFrequency1": null,
+            "channelWidth": null,
+            "isPasspoint": null,
+            "operatorFriendlyName": null,
+            "venueName": null,
+            "is80211mcResponder": null,
+          }
+        ];
+    final scannedNetworks = await WiFiScan.instance.getScannedResults();
+    expect(scannedNetworks.length, 1);
   });
 
   // TODO: firgure out way to mock EventChannel

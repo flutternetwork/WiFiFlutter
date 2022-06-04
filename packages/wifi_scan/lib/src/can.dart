@@ -1,9 +1,12 @@
 part of '../wifi_scan.dart';
 
-/// Possible errors for [WiFiScan.startScan] method.
-enum StartScanErrors {
+/// Result for [WiFiScan.canStartScan] method.
+enum CanStartScan {
   /// Functionality is not supported.
   notSupported,
+
+  /// It is ok to call the functionality.
+  yes,
 
   /// Location permission is required.
   ///
@@ -27,29 +30,31 @@ enum StartScanErrors {
   failed,
 }
 
-StartScanErrors _deserializeStartScanError(int errorCode) {
-  switch (errorCode) {
+CanStartScan _deserializeCanStartScan(int? canCode) {
+  switch (canCode) {
     case 0:
-      return StartScanErrors.notSupported;
+      return CanStartScan.notSupported;
     case 1:
-      return StartScanErrors.noLocationPermissionRequired;
+      return CanStartScan.yes;
     case 2:
-      return StartScanErrors.noLocationPermissionDenied;
+      return CanStartScan.noLocationPermissionRequired;
     case 3:
-      return StartScanErrors.noLocationPermissionUpgradeAccuracy;
+      return CanStartScan.noLocationPermissionDenied;
     case 4:
-      return StartScanErrors.noLocationServiceDisabled;
+      return CanStartScan.noLocationPermissionUpgradeAccuracy;
     case 5:
-      return StartScanErrors.failed;
+      return CanStartScan.noLocationServiceDisabled;
   }
-  throw UnsupportedError("$errorCode cannot be serialized to StartScanError");
+  throw UnsupportedError("$canCode cannot be serialized to CanStartScan");
 }
 
-/// Possible errors for [WiFiScan.getScannedResults] and
-/// [WiFiScan.onScannedResultsAvailable] methods.
-enum GetScannedResultsErrors {
+/// Result for [WiFiScan.canGetScannedResults] method.
+enum CanGetScannedResults {
   /// Functionality is not the supported.
   notSupported,
+
+  /// It is ok to call functionality.
+  yes,
 
   /// Location permission is required.
   ///
@@ -70,19 +75,21 @@ enum GetScannedResultsErrors {
   noLocationServiceDisabled,
 }
 
-GetScannedResultsErrors _deserializeGetScannedResultsError(int errorCode) {
-  switch (errorCode) {
+CanGetScannedResults _deserializeCanGetScannedResults(int? canCode) {
+  switch (canCode) {
     case 0:
-      return GetScannedResultsErrors.notSupported;
+      return CanGetScannedResults.notSupported;
     case 1:
-      return GetScannedResultsErrors.noLocationPermissionRequired;
+      return CanGetScannedResults.yes;
     case 2:
-      return GetScannedResultsErrors.noLocationPermissionDenied;
+      return CanGetScannedResults.noLocationPermissionRequired;
     case 3:
-      return GetScannedResultsErrors.noLocationPermissionUpgradeAccuracy;
+      return CanGetScannedResults.noLocationPermissionDenied;
     case 4:
-      return GetScannedResultsErrors.noLocationServiceDisabled;
+      return CanGetScannedResults.noLocationPermissionUpgradeAccuracy;
+    case 5:
+      return CanGetScannedResults.noLocationServiceDisabled;
   }
   throw UnsupportedError(
-      "$errorCode cannot be serialized to GetScannedResultsError");
+      "$canCode cannot be serialized to CanGetScannedNetworks");
 }

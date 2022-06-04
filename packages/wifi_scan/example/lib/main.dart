@@ -19,30 +19,154 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   List<WiFiAccessPoint> accessPoints = <WiFiAccessPoint>[];
-  StreamSubscription<Result<List<WiFiAccessPoint>, GetScannedResultsErrors>>?
-      subscription;
+  StreamSubscription<List<WiFiAccessPoint>>? subscription;
+  bool shouldCheckCan = true;
 
   bool get isStreaming => subscription != null;
 
-  void _handleScannedResults(BuildContext context,
-      Result<List<WiFiAccessPoint>, GetScannedResultsErrors> result) {
-    if (result.hasError) {
-      kShowSnackBar(context, "Cannot get scanned results: ${result.error}");
-      setState(() => accessPoints = <WiFiAccessPoint>[]);
-    } else {
-      setState(() => accessPoints = result.value!);
+  Future<void> _startScan(BuildContext context) async {
+    // check if "can" startScan
+    if (shouldCheckCan) {
+      // check if can-startScan
+      final can = await WiFiScan.instance.canStartScan();
+      // if can-not, then show error
+      if (can != CanStartScan.yes) {
+        if (mounted) kShowSnackBar(context, "Cannot start scan: $can");
+        return;
+      }
+    }
+
+    // call startScan API
+    final result = await WiFiScan.instance.startScan();
+    if (mounted) kShowSnackBar(context, "startScan: $result");
+    // reset access points.
+    setState(() => accessPoints = <WiFiAccessPoint>[]);
+  }
+
+  Future<bool> _canGetScannedResults(BuildContext context) async {
+    if (shouldCheckCan) {
+      // check if can-getScannedResults
+      final can = await WiFiScan.instance.canGetScannedResults();
+      // if can-not, then show error
+      if (can != CanGetScannedResults.yes) {
+        if (mounted) kShowSnackBar(context, "Cannot get scanned results: $can");
+        accessPoints = <WiFiAccessPoint>[];
+        return false;
+      }
+    }
+    return true;
+  }
+
+  Future<void> _getScannedResults(BuildContext context) async {
+    if (await _canGetScannedResults(context)) {
+      // get scanned results
+      final results = await WiFiScan.instance.getScannedResults();
+      setState(() => accessPoints = results);
     }
   }
 
-  void _startListeningToScanResults(BuildContext context) {
-    subscription = WiFiScan.instance.onScannedResultsAvailable
-        .listen((result) => _handleScannedResults(context, result));
+  Future<void> _startListeningToScanResults(BuildContext context) async {
+    if (await _canGetScannedResults(context)) {
+      subscription = WiFiScan.instance.onScannedResultsAvailable
+          .listen((result) => setState(() => accessPoints = result));
+    }
   }
 
-  void _stopListteningToScanResults() {
+  void _stopListeningToScanResults() {
     subscription?.cancel();
     setState(() => subscription = null);
   }
+
+  @override
+  void dispose() {
+    super.dispose();
+    // stop subscription for scanned results
+    _stopListeningToScanResults();
+  }
+
+  // build toggle with label
+  Widget _buildToggle({
+    String? label,
+    bool value = false,
+    ValueChanged<bool>? onChanged,
+    Color? activeColor,
+  }) =>
+      Row(
+        children: [
+          if (label != null) Text(label),
+          Switch(value: value, onChanged: onChanged, activeColor: activeColor),
+        ],
+      );
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Plugin example app'),
+          actions: [
+            _buildToggle(
+                label: "Check can?",
+                value: shouldCheckCan,
+                onChanged: (v) => setState(() => shouldCheckCan = v),
+                activeColor: Colors.purple)
+          ],
+        ),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton.icon(
+                    icon: const Icon(Icons.perm_scan_wifi),
+                    label: const Text('SCAN'),
+                    onPressed: () async => _startScan(context),
+                  ),
+                  ElevatedButton.icon(
+                    icon: const Icon(Icons.refresh),
+                    label: const Text('GET'),
+                    onPressed: () async => _getScannedResults(context),
+                  ),
+                  _buildToggle(
+                    label: "STREAM",
+                    value: isStreaming,
+                    onChanged: (shouldStream) async => shouldStream
+                        ? await _startListeningToScanResults(context)
+                        : _stopListeningToScanResults(),
+                  ),
+                ],
+              ),
+              const Divider(),
+              Flexible(
+                child: Center(
+                  child: accessPoints.isEmpty
+                      ? const Text("NO SCANNED RESULTS")
+                      : ListView.builder(
+                          itemCount: accessPoints.length,
+                          itemBuilder: (context, i) =>
+                              _AccessPointTile(accessPoint: accessPoints[i])),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Show tile for AccessPoint.
+///
+/// Can be see details when tapped.
+class _AccessPointTile extends StatelessWidget {
+  final WiFiAccessPoint accessPoint;
+
+  const _AccessPointTile({Key? key, required this.accessPoint})
+      : super(key: key);
 
   // build row that can display info, based on label: value pair.
   Widget _buildInfo(String label, dynamic value) => Container(
@@ -57,16 +181,17 @@ class _MyAppState extends State<MyApp> {
         ),
       );
 
-  // build access point tile.
-  Widget _buildAccessPointTile(BuildContext context, WiFiAccessPoint ap) {
-    final title = ap.ssid.isNotEmpty ? ap.ssid : "**EMPTY**";
-    final signalIcon =
-        ap.level >= -80 ? Icons.signal_wifi_4_bar : Icons.signal_wifi_0_bar;
+  @override
+  Widget build(BuildContext context) {
+    final title = accessPoint.ssid.isNotEmpty ? accessPoint.ssid : "**EMPTY**";
+    final signalIcon = accessPoint.level >= -80
+        ? Icons.signal_wifi_4_bar
+        : Icons.signal_wifi_0_bar;
     return ListTile(
       visualDensity: VisualDensity.compact,
       leading: Icon(signalIcon),
       title: Text(title),
-      subtitle: Text(ap.capabilities),
+      subtitle: Text(accessPoint.capabilities),
       onTap: () => showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -74,105 +199,23 @@ class _MyAppState extends State<MyApp> {
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              _buildInfo("BSSDI", ap.bssid),
-              _buildInfo("Capability", ap.capabilities),
-              _buildInfo("frequency", "${ap.frequency}MHz"),
-              _buildInfo("level", ap.level),
-              _buildInfo("standard", ap.standard),
-              _buildInfo("centerFrequency0", "${ap.centerFrequency0}MHz"),
-              _buildInfo("centerFrequency1", "${ap.centerFrequency1}MHz"),
-              _buildInfo("channelWidth", ap.channelWidth),
-              _buildInfo("isPasspoint", ap.isPasspoint),
-              _buildInfo("operatorFriendlyName", ap.operatorFriendlyName),
-              _buildInfo("venueName", ap.venueName),
-              _buildInfo("is80211mcResponder", ap.is80211mcResponder),
+              _buildInfo("BSSDI", accessPoint.bssid),
+              _buildInfo("Capability", accessPoint.capabilities),
+              _buildInfo("frequency", "${accessPoint.frequency}MHz"),
+              _buildInfo("level", accessPoint.level),
+              _buildInfo("standard", accessPoint.standard),
+              _buildInfo(
+                  "centerFrequency0", "${accessPoint.centerFrequency0}MHz"),
+              _buildInfo(
+                  "centerFrequency1", "${accessPoint.centerFrequency1}MHz"),
+              _buildInfo("channelWidth", accessPoint.channelWidth),
+              _buildInfo("isPasspoint", accessPoint.isPasspoint),
+              _buildInfo(
+                  "operatorFriendlyName", accessPoint.operatorFriendlyName),
+              _buildInfo("venueName", accessPoint.venueName),
+              _buildInfo("is80211mcResponder", accessPoint.is80211mcResponder),
             ],
           ),
-        ),
-      ),
-    );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    // stop subscription for scanned results
-    _stopListteningToScanResults();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Plugin example app'),
-        ),
-        body: FutureBuilder<bool>(
-          future: WiFiScan.instance.hasCapability(),
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) {
-              return const Center(child: CircularProgressIndicator());
-            }
-            if (!snapshot.data!) {
-              return const Center(child: Text("WiFi scan not supported."));
-            }
-            return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      ElevatedButton.icon(
-                        icon: const Icon(Icons.perm_scan_wifi),
-                        label: const Text('SCAN'),
-                        // call startScan and reset the ap list
-                        onPressed: () async {
-                          final error = await WiFiScan.instance.startScan();
-                          if (mounted) {
-                            kShowSnackBar(
-                                context, "startScan: ${error ?? 'done'}");
-                            setState(() => accessPoints = <WiFiAccessPoint>[]);
-                          }
-                        },
-                      ),
-                      ElevatedButton.icon(
-                        icon: const Icon(Icons.refresh),
-                        label: const Text('GET'),
-                        // call getScannedResults and handle the result
-                        onPressed: () async => _handleScannedResults(context,
-                            await WiFiScan.instance.getScannedResults()),
-                      ),
-                      Row(
-                        children: [
-                          const Text("STREAM"),
-                          Switch(
-                              value: isStreaming,
-                              onChanged: (shouldStream) => shouldStream
-                                  ? _startListeningToScanResults(context)
-                                  : _stopListteningToScanResults()),
-                        ],
-                      ),
-                    ],
-                  ),
-                  const Divider(),
-                  Flexible(
-                    child: Center(
-                      child: accessPoints.isEmpty
-                          ? const Text("NO SCANNED RESULTS")
-                          : ListView.builder(
-                              itemCount: accessPoints.length,
-                              itemBuilder: (context, i) =>
-                                  _buildAccessPointTile(
-                                      context, accessPoints[i])),
-                    ),
-                  ),
-                ],
-              ),
-            );
-          },
         ),
       ),
     );
