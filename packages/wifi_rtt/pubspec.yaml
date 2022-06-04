@@ -5,7 +5,7 @@ homepage: https://github.com/flutternetwork/WiFiFlutter/tree/master/packages/wif
 
 environment:
   sdk: ">=2.16.2 <3.0.0"
-  flutter: ">=2.5.0"
+  flutter: ">=3.0.0"
 
 dependencies:
   flutter:
