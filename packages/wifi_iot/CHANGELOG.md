@@ -1,3 +1,11 @@
+## 0.3.16
+
+ - **FEAT**: proper response to methods when using LocalOnlyHostspot (#268).
+
+## 0.3.15+3
+
+ - **FIX**: Fix connection to registered network on Android < 10 (Q) (#277).
+
 ## 0.3.15+2
 
  - **DOCS**: added docs for `forceWifiUsage` (#259).

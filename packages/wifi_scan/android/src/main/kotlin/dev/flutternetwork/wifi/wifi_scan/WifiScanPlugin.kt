@@ -31,20 +31,21 @@ import kotlin.random.Random
 private const val ERROR_INVALID_ARGS = "InvalidArgs"
 private const val ERROR_NULL_ACTIVITY = "NullActivity"
 
-/** StartScanError codes */
-private const val ERROR_START_SCAN_NOT_SUPPORTED = 0
-private const val ERROR_START_SCAN_NO_LOC_PERM_REQUIRED = 1
-private const val ERROR_START_SCAN_NO_LOC_PERM_DENIED = 2
-private const val ERROR_START_SCAN_NO_LOC_PERM_UPGRADE_ACCURACY = 3
-private const val ERROR_START_SCAN_NO_LOC_DISABLED = 4
-private const val ERROR_START_SCAN_FAILED = 5
+/** CanStartScan codes */
+private const val CAN_START_SCAN_NOT_SUPPORTED = 0
+private const val CAN_START_SCAN_YES = 1
+private const val CAN_START_SCAN_NO_LOC_PERM_REQUIRED = 2
+private const val CAN_START_SCAN_NO_LOC_PERM_DENIED = 3
+private const val CAN_START_SCAN_NO_LOC_PERM_UPGRADE_ACCURACY = 4
+private const val CAN_START_SCAN_NO_LOC_DISABLED = 5
 
-/** GetScannedResultsError codes */
-private const val ERROR_GET_RESULTS_NOT_SUPPORTED = 0
-private const val ERROR_GET_RESULTS_NO_LOC_PERM_REQUIRED = 1
-private const val ERROR_GET_RESULTS_NO_LOC_PERM_DENIED = 2
-private const val ERROR_GET_RESULTS_NO_LOC_PERM_UPGRADE_ACCURACY = 3
-private const val ERROR_GET_RESULTS_NO_LOC_DISABLED = 4
+/** CanGetScannedResults codes */
+private const val CAN_GET_RESULTS_NOT_SUPPORTED = 0
+private const val CAN_GET_RESULTS_YES = 1
+private const val CAN_GET_RESULTS_NO_LOC_PERM_REQUIRED = 2
+private const val CAN_GET_RESULTS_NO_LOC_PERM_DENIED = 3
+private const val CAN_GET_RESULTS_NO_LOC_PERM_UPGRADE_ACCURACY = 4
+private const val CAN_GET_RESULTS_NO_LOC_DISABLED = 5
 
 /** Magic codes */
 private const val ASK_FOR_LOC_PERM = -1
@@ -141,153 +142,137 @@ class WifiScanPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
         eventSink = null
     }
 
-    override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
-        when (call.method) {
-            "hasCapability" -> result.success(true)
-            "startScan" -> {
-                val askPermission = call.argument<Boolean>("askPermissions") ?: return result.error(
-                    ERROR_INVALID_ARGS,
-                    "askPermissions argument is null",
-                    null
-                )
-                val errorCode = startScan(askPermission)
-                // if not ASK_FOR_LOC_PERM, send result
-                // else ask for permission - wait for user action - return result based on it
-                if (errorCode != ASK_FOR_LOC_PERM) {
-                    result.success(errorCode)
-                } else {
-                    askForLocationPermission { askResult ->
-                        when (askResult) {
-                            AskLocPermResult.GRANTED -> {
-                                result.success(startScan(askPermission = false))
-                            }
-                            AskLocPermResult.UPGRADE_TO_FINE -> {
-                                result.success(ERROR_START_SCAN_NO_LOC_PERM_UPGRADE_ACCURACY)
-                            }
-                            AskLocPermResult.DENIED -> {
-                                result.success(ERROR_START_SCAN_NO_LOC_PERM_DENIED)
-                            }
-                            AskLocPermResult.ERROR_NO_ACTIVITY -> {
-                                result.error(
-                                    ERROR_NULL_ACTIVITY,
-                                    "Cannot ask for location permission.",
-                                    "Looks like called from non-Activity."
-                                )
-                            }
-                        }
-                    }
-                }
-            }
-            "getScannedResults" -> {
-                val askPermission = call.argument<Boolean>("askPermissions") ?: return result.error(
-                    ERROR_INVALID_ARGS,
-                    "askPermissions argument is null",
-                    null
-                )
-                val mResult = getScannedResults(askPermission)
-                // if error != ASK_FOR_LOC_PERM, send result
-                // else ask for permission - wait for user action - return result based on it
-                if (mResult["error"] != ASK_FOR_LOC_PERM) {
-                    result.success(mResult)
-                } else {
-                    askForLocationPermission { askResult ->
-                        when (askResult) {
-                            AskLocPermResult.GRANTED -> {
-                                result.success(getScannedResults(askPermission = false))
-                            }
-                            AskLocPermResult.UPGRADE_TO_FINE -> {
-                                result.success(errorResult(ERROR_GET_RESULTS_NO_LOC_PERM_UPGRADE_ACCURACY))
-                            }
-                            AskLocPermResult.DENIED -> {
-                                result.success(errorResult(ERROR_GET_RESULTS_NO_LOC_PERM_DENIED))
-                            }
-                            AskLocPermResult.ERROR_NO_ACTIVITY -> {
-                                result.error(
-                                    ERROR_NULL_ACTIVITY,
-                                    "Cannot ask for location permission.",
-                                    "Looks like called from non-Activity."
-                                )
-                            }
-                        }
-                    }
-                }
-            }
-            else -> result.notImplemented()
-        }
-    }
-
     override fun onRequestPermissionsResult(
-        requestCode: Int, permissions: Array<out String>?, grantResults: IntArray?
+        requestCode: Int, permissions: Array<out String>, grantResults: IntArray
     ): Boolean {
         Log.d(
             logTag,
             "onRequestPermissionsResult: arguments ($requestCode, $permissions, $grantResults)"
         )
-        if (grantResults != null) {
-            Log.d(logTag, "requestPermissionCookie: $requestPermissionCookie")
-            return requestPermissionCookie[requestCode]?.invoke(grantResults) ?: false
-        }
-        return false
+        Log.d(logTag, "requestPermissionCookie: $requestPermissionCookie")
+        return requestPermissionCookie[requestCode]?.invoke(grantResults) ?: false
     }
 
-    private fun startScan(askPermission: Boolean): Int? {
+    override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
+        when (call.method) {
+            "canStartScan" -> {
+                val askPermission = call.argument<Boolean>("askPermissions") ?: return result.error(
+                    ERROR_INVALID_ARGS,
+                    "askPermissions argument is null",
+                    null
+                )
+                // if not ASK_FOR_LOC_PERM, send result
+                // else ask for permission - wait for user action - return result based on it
+                when (val canCode = canStartScan(askPermission)) {
+                    ASK_FOR_LOC_PERM -> askForLocationPermission { askResult ->
+                        when (askResult) {
+                            AskLocPermResult.GRANTED -> {
+                                result.success(canStartScan(askPermission = false))
+                            }
+                            AskLocPermResult.UPGRADE_TO_FINE -> {
+                                result.success(CAN_START_SCAN_NO_LOC_PERM_UPGRADE_ACCURACY)
+                            }
+                            AskLocPermResult.DENIED -> {
+                                result.success(CAN_START_SCAN_NO_LOC_PERM_DENIED)
+                            }
+                            AskLocPermResult.ERROR_NO_ACTIVITY -> {
+                                result.error(
+                                    ERROR_NULL_ACTIVITY,
+                                    "Cannot ask for location permission.",
+                                    "Looks like called from non-Activity."
+                                )
+                            }
+                        }
+                    }
+                    else -> result.success(canCode)
+                }
+            }
+            "startScan" -> result.success(startScan())
+            "canGetScannedResults" -> {
+                val askPermission = call.argument<Boolean>("askPermissions") ?: return result.error(
+                    ERROR_INVALID_ARGS,
+                    "askPermissions argument is null",
+                    null
+                )
+                when(val canCode = canGetScannedResults(askPermission)){
+                    ASK_FOR_LOC_PERM -> askForLocationPermission { askResult ->
+                        when (askResult) {
+                            AskLocPermResult.GRANTED -> {
+                                result.success(canGetScannedResults(askPermission = false))
+                            }
+                            AskLocPermResult.UPGRADE_TO_FINE -> {
+                                result.success(CAN_GET_RESULTS_NO_LOC_PERM_UPGRADE_ACCURACY)
+                            }
+                            AskLocPermResult.DENIED -> {
+                                result.success(CAN_GET_RESULTS_NO_LOC_PERM_DENIED)
+                            }
+                            AskLocPermResult.ERROR_NO_ACTIVITY -> {
+                                result.error(
+                                    ERROR_NULL_ACTIVITY,
+                                    "Cannot ask for location permission.",
+                                    "Looks like called from non-Activity."
+                                )
+                            }
+                        }
+                    }
+                    else -> result.success(canCode)
+                }
+            }
+            "getScannedResults" -> result.success(getScannedResults())
+            else -> result.notImplemented()
+        }
+    }
+
+    private fun canStartScan(askPermission: Boolean): Int {
         val hasLocPerm = hasLocationPermission()
         val isLocEnabled = isLocationEnabled()
-        // check all prerequisite conditions for startScan
-        val errorCode = when {
+        return when {
             // for SDK < P[28] : Not in guide, should not require any additional permissions
-            Build.VERSION.SDK_INT < Build.VERSION_CODES.P -> null
+            Build.VERSION.SDK_INT < Build.VERSION_CODES.P -> CAN_START_SCAN_YES
             // for SDK >= Q[29]: CHANGE_WIFI_STATE & ACCESS_x_LOCATION & "Location enabled"
-            hasLocPerm && isLocEnabled -> null
-            hasLocPerm -> ERROR_START_SCAN_NO_LOC_DISABLED
+            hasLocPerm && isLocEnabled -> CAN_START_SCAN_YES
+            hasLocPerm -> CAN_START_SCAN_NO_LOC_DISABLED
             askPermission -> ASK_FOR_LOC_PERM
-            else -> ERROR_START_SCAN_NO_LOC_PERM_REQUIRED
+            else -> CAN_START_SCAN_NO_LOC_PERM_REQUIRED
         }
-        // if any errorCode then return it
-        if (errorCode != null) return errorCode
-
-        // call startScan API - if failed then return ERROR_START_SCAN_FAILED
-        return if (wifi!!.startScan()) null else ERROR_START_SCAN_FAILED
     }
 
-    private fun getScannedResults(askPermission: Boolean): Map<String, Any?> {
+    private fun startScan(): Boolean = wifi!!.startScan()
+
+    private fun canGetScannedResults(askPermission: Boolean): Int {
         // check all prerequisite conditions
         // ACCESS_WIFI_STATE & ACCESS_x_LOCATION & "Location enabled"
         val hasLocPerm = hasLocationPermission()
         val isLocEnabled = isLocationEnabled()
-        val errorCode = when {
-            hasLocPerm && isLocEnabled -> null
-            hasLocPerm -> ERROR_GET_RESULTS_NO_LOC_DISABLED
+        return when {
+            hasLocPerm && isLocEnabled -> CAN_GET_RESULTS_YES
+            hasLocPerm -> CAN_GET_RESULTS_NO_LOC_DISABLED
             askPermission -> ASK_FOR_LOC_PERM
-            else -> ERROR_GET_RESULTS_NO_LOC_PERM_REQUIRED
+            else -> CAN_GET_RESULTS_NO_LOC_PERM_REQUIRED
         }
+    }
 
-        // if any errorCode then return it
-        if (errorCode != null) return errorResult(errorCode)
-
-        // return scannedResults
-        return mapOf("value" to wifi!!.scanResults.map { ap ->
-            mapOf(
-                "ssid" to ap.SSID,
-                "bssid" to ap.BSSID,
-                "capabilities" to ap.capabilities,
-                "frequency" to ap.frequency,
-                "level" to ap.level,
-                "timestamp" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) ap.timestamp else null,
-                "standard" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) ap.wifiStandard else null,
-                "centerFrequency0" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) ap.centerFreq0 else null,
-                "centerFrequency1" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) ap.centerFreq1 else null,
-                "channelWidth" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) ap.channelWidth else null,
-                "isPasspoint" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) ap.isPasspointNetwork else null,
-                "operatorFriendlyName" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) ap.operatorFriendlyName else null,
-                "venueName" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) ap.venueName else null,
-                "is80211mcResponder" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) ap.is80211mcResponder else null
-            )
-        })
+    private fun getScannedResults(): List<Map<String, Any?>> = wifi!!.scanResults.map { ap ->
+        mapOf(
+            "ssid" to ap.SSID,
+            "bssid" to ap.BSSID,
+            "capabilities" to ap.capabilities,
+            "frequency" to ap.frequency,
+            "level" to ap.level,
+            "timestamp" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) ap.timestamp else null,
+            "standard" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) ap.wifiStandard else null,
+            "centerFrequency0" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) ap.centerFreq0 else null,
+            "centerFrequency1" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) ap.centerFreq1 else null,
+            "channelWidth" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) ap.channelWidth else null,
+            "isPasspoint" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) ap.isPasspointNetwork else null,
+            "operatorFriendlyName" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) ap.operatorFriendlyName else null,
+            "venueName" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) ap.venueName else null,
+            "is80211mcResponder" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) ap.is80211mcResponder else null
+        )
     }
 
     private fun onScannedResultsAvailable() {
-        eventSink?.success(getScannedResults(askPermission = false))
+        eventSink?.success(getScannedResults())
     }
 
     /**
@@ -352,6 +337,4 @@ class WifiScanPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
         LocationManagerCompat.isLocationEnabled(
             context.applicationContext.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         )
-
-   private fun errorResult(code: Int): Map<String, Int> = mapOf("error" to code)
 }
