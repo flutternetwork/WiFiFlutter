@@ -1,53 +1,53 @@
 part of '../wifi_rtt.dart';
 
-enum RangingErrors {
+enum CanRequestRanging {
   /// Functionality is not supported.
   notSupported,
+
+  /// It is ok to call the functionality.
+  yes,
 
   /// Functionality is not avialable at this point.
   ///
   /// This could be because of multiple reasons - WiFi disabled, SoftAP or
   /// tethering are in use, etc.
-  notAvailable,
+  noUnavailable,
 
   /// Location permission is required.
   ///
   /// A prompt for permission can be requested.
-  locationPermissionRequired,
+  noLocationPermissionRequired,
 
   /// Location permission is denied.
   ///
   /// Need to ask user to manually allow from settings.
-  locationPermissionDenied,
+  noLocationPermissionDenied,
 
   /// Location permission accuracy needs to be upgraded.
   ///
   /// Need to ask user to manually allow from settings.
-  locationPermissionUpgradeAccuracy,
+  noLocationPermissionUpgradeAccuracy,
 
   /// Location service needs to be enabled.
-  locationServiceDisabled,
-
-  /// Ranging operation failed.
-  failed,
+  noLocationServiceDisabled,
 }
 
-RangingErrors _deserializeRangingError(int errorCode) {
-  switch (errorCode) {
+CanRequestRanging _deserializeCanRequestRanging(int? canCode) {
+  switch (canCode) {
     case 0:
-      return RangingErrors.notSupported;
+      return CanRequestRanging.notSupported;
     case 1:
-      return RangingErrors.notAvailable;
+      return CanRequestRanging.yes;
     case 2:
-      return RangingErrors.locationPermissionRequired;
+      return CanRequestRanging.noUnavailable;
     case 3:
-      return RangingErrors.locationPermissionDenied;
+      return CanRequestRanging.noLocationPermissionRequired;
     case 4:
-      return RangingErrors.locationPermissionUpgradeAccuracy;
+      return CanRequestRanging.noLocationPermissionDenied;
     case 5:
-      return RangingErrors.failed;
+      return CanRequestRanging.noLocationPermissionUpgradeAccuracy;
     default:
       throw UnsupportedError(
-          "$errorCode cannot be serialized to RangingErrors");
+          "$canCode cannot be deserialized to CanRequestRanging");
   }
 }

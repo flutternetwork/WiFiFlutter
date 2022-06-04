@@ -4,11 +4,9 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 
-part 'src/error.dart';
-
-part 'src/result.dart';
-
+part 'src/can.dart';
 part 'src/device.dart';
+part 'src/result.dart';
 
 /// The `wifi_rtt` plugin entry point.
 ///
@@ -21,25 +19,21 @@ class WiFiRTT {
 
   final _channel = const MethodChannel('wifi_rtt');
 
-  Future<bool> hasSupport() async {
-    final hasSupport = await _channel.invokeMethod<bool>("hasSupport");
-    return hasSupport!;
+  Future<CanRequestRanging> canRequestRanging(
+      {bool askPermissions = true}) async {
+    final canCode = await _channel.invokeMethod<int>("canRequestRanging", {
+      "askPermissions": askPermissions,
+    });
+    return _deserializeCanRequestRanging(canCode);
   }
 
-  Future<Result<List<WiFiRangingResult>, RangingErrors>> requestRanging(
-      List<WiFiRangingDevice> devices,
-      {bool askPermissions = true}) async {
-    final map = await _channel.invokeMapMethod("requestRanging", {
-      "askPermissions": askPermissions,
+  Future<List<WiFiRangingResult>> requestRanging(
+      List<WiFiRangingDevice> devices) async {
+    final results = await _channel.invokeListMethod("requestRanging", {
       "devices": devices.map((device) => device._map).toList(),
     });
-    // check if any error - return Result._error if any
-    final errorCode = map!["error"];
-    if (errorCode != null) {
-      return Result._error(_deserializeRangingError(errorCode));
-    }
     // parse and return list of RangingResult
-    return Result._value(List<WiFiRangingResult>.unmodifiable(
-        map["value"].map((map) => WiFiRangingResult._fromMap(map))));
+    return List<WiFiRangingResult>.unmodifiable(
+        results!.map((map) => WiFiRangingResult._fromMap(map)));
   }
 }
