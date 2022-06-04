@@ -163,7 +163,7 @@ class _MyAppState extends State<MyApp> {
 
 /// Show tile for AccessPoint.
 ///
-/// Can be see details when tapped.
+/// Can see details when tapped.
 class _AccessPointTile extends StatelessWidget {
   final WiFiAccessPoint accessPoint;
 
