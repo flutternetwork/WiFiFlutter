@@ -37,7 +37,7 @@ The entry point for the plugin is the singleton instance `WiFiScan.instance`.
 You can trigger full WiFi scan with `WiFiScan.startScan` API, as shown below:
 ```dart
 void _startScan() async {
-  // check if platform support and necessary requirements
+  // check platform support and necessary requirements
   final can = await WiFiScan.instance.canStartScan(askPermissions: true);
   switch(can) {
     case CanStartScan.yes:
@@ -57,7 +57,7 @@ For more details, you can read documentation of [`WiFiScan.startScan`][doc_start
 You can get scanned results with `WiFiScan.getScannedResults` API, as shown below:
 ```dart
 void _getScannedResults() async {
-  // check if platform support and necessary requirements
+  // check platform support and necessary requirements
   final can = await WiFiScan.instance.canGetScannedResults(askPermissions: true);
   switch(can) {
     case CanGetScannedResults.yes:
@@ -85,7 +85,7 @@ List<WiFiAccessPoint> accessPoints = [];
 StreamSubscription<List<WiFiAccessPoint>>? subscription;
 
 void _startListeningToScannedResults() async {
-  // check if platform support and necessary requirements
+  // check platform support and necessary requirements
   final can = await WiFiScan.instance.canGetScannedResults(askPermissions: true);
   switch(can) {
     case CanGetScannedResults.yes:
