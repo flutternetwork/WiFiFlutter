@@ -89,7 +89,7 @@ void _startListeningToScannedResults() async {
   final can = await WiFiScan.instance.canGetScannedResults(askPermissions: true);
   switch(can) {
     case CanGetScannedResults.yes:
-       // listen to onScannedResultsAvailable stream
+      // listen to onScannedResultsAvailable stream
       subscription = WiFiScan.instance.onScannedResultsAvailable.listen((results) {
         // update accessPoints
         setState(() => accessPoints = results);
