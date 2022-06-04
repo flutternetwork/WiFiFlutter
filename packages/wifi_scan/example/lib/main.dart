@@ -112,46 +112,48 @@ class _MyAppState extends State<MyApp> {
                 activeColor: Colors.purple)
           ],
         ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ElevatedButton.icon(
-                    icon: const Icon(Icons.perm_scan_wifi),
-                    label: const Text('SCAN'),
-                    onPressed: () async => _startScan(context),
-                  ),
-                  ElevatedButton.icon(
-                    icon: const Icon(Icons.refresh),
-                    label: const Text('GET'),
-                    onPressed: () async => _getScannedResults(context),
-                  ),
-                  _buildToggle(
-                    label: "STREAM",
-                    value: isStreaming,
-                    onChanged: (shouldStream) async => shouldStream
-                        ? await _startListeningToScanResults(context)
-                        : _stopListeningToScanResults(),
-                  ),
-                ],
-              ),
-              const Divider(),
-              Flexible(
-                child: Center(
-                  child: accessPoints.isEmpty
-                      ? const Text("NO SCANNED RESULTS")
-                      : ListView.builder(
-                          itemCount: accessPoints.length,
-                          itemBuilder: (context, i) =>
-                              _AccessPointTile(accessPoint: accessPoints[i])),
+        body: Builder(
+          builder: (context) => Padding(
+            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ElevatedButton.icon(
+                      icon: const Icon(Icons.perm_scan_wifi),
+                      label: const Text('SCAN'),
+                      onPressed: () async => _startScan(context),
+                    ),
+                    ElevatedButton.icon(
+                      icon: const Icon(Icons.refresh),
+                      label: const Text('GET'),
+                      onPressed: () async => _getScannedResults(context),
+                    ),
+                    _buildToggle(
+                      label: "STREAM",
+                      value: isStreaming,
+                      onChanged: (shouldStream) async => shouldStream
+                          ? await _startListeningToScanResults(context)
+                          : _stopListeningToScanResults(),
+                    ),
+                  ],
                 ),
-              ),
-            ],
+                const Divider(),
+                Flexible(
+                  child: Center(
+                    child: accessPoints.isEmpty
+                        ? const Text("NO SCANNED RESULTS")
+                        : ListView.builder(
+                            itemCount: accessPoints.length,
+                            itemBuilder: (context, i) =>
+                                _AccessPointTile(accessPoint: accessPoints[i])),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
