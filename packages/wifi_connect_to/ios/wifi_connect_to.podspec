@@ -9,9 +9,9 @@ Pod::Spec.new do |s|
   s.description      = <<-DESC
 Flutter plugin to connect (and disconnect) to a WiFi access point.
                        DESC
-  s.homepage         = 'http://example.com'
+  s.homepage         = 'https://wifi.flutternetwork.dev'
   s.license          = { :file => '../LICENSE' }
-  s.author           = { 'Your Company' => 'email@example.com' }
+  s.author           = { 'WiFiFlutter' => 'contact@flutternetwork.dev' }
   s.source           = { :path => '.' }
   s.source_files = 'Classes/**/*'
   s.dependency 'Flutter'
