@@ -131,9 +131,11 @@ class _MyAppState extends State<MyApp> {
                         // call startScan and reset the ap list
                         onPressed: () async {
                           final error = await WiFiScan.instance.startScan();
-                          kShowSnackBar(
-                              context, "startScan: ${error ?? 'done'}");
-                          setState(() => accessPoints = <WiFiAccessPoint>[]);
+                          if (mounted) {
+                            kShowSnackBar(
+                                context, "startScan: ${error ?? 'done'}");
+                            setState(() => accessPoints = <WiFiAccessPoint>[]);
+                          }
                         },
                       ),
                       ElevatedButton.icon(
