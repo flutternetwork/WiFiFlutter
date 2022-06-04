@@ -33,79 +33,71 @@ This plugin allows Flutter apps to scan for nearby visible WiFi access points.
 ## Usage
 The entry point for the plugin is the singleton instance `WiFiScan.instance`.
 
-### Check support
-You can check if the platform has Wi-Fi scan capabilities with `WiFiScan.hasCapability` API, as shown below:
-```dart
-void _scan() async {
-  if(await WiFiScan.instance.hasCapability()){
-    // can safely call scan related functionalities
-  } else {
-    // fallback mechanism, like - show user that "scan" is not possible 
-  }
-}
-```
-
-For more details, you can read documentation of [`WiFiScan.hasCapability`][doc_hasCapability].
-
 ### Start scan
 You can trigger full WiFi scan with `WiFiScan.startScan` API, as shown below:
 ```dart
 void _startScan() async {
-  // start full scan async-ly
-  final error = await WiFiScan.instance.startScan(askPermissions: true);
-  if (error != null) {
-    switch(error) {
-      // handle error for values of StartScanErrors
-    }
+  // check platform support and necessary requirements
+  final can = await WiFiScan.instance.canStartScan(askPermissions: true);
+  switch(can) {
+    case CanStartScan.yes:
+      // start full scan async-ly
+      final isScanning = await WiFiScan.instance.startScan();
+      //...
+      break;
+    // ... handle other cases of CanStartScan values
   }
 }
 ```
 
 For more details, you can read documentation of [`WiFiScan.startScan`][doc_startScan], 
-[`StartScanErrors`][doc_StartScanErrors] and [`Result<ValueType, ErrorType>`][doc_Result].
+[`WiFiScan.canStartScan`][doc_canStartScan] and [`CanStartScan`][doc_enum_CanStartScan].
 
 ### Get scanned results
 You can get scanned results with `WiFiScan.getScannedResults` API, as shown below:
 ```dart
 void _getScannedResults() async {
-  // get scanned results
-  final result = await WiFiScan.instance.getScannedResults(askPermissions: true);
-  if (result.hasError){
-    switch (error){
-      // handle error for values of GetScannedResultErrors
-    }
-  } else {
-    final accessPoints = result.value;
-    // ...
+  // check platform support and necessary requirements
+  final can = await WiFiScan.instance.canGetScannedResults(askPermissions: true);
+  switch(can) {
+    case CanGetScannedResults.yes:
+      // get scanned results
+      final accessPoints = await WiFiScan.instance.getScannedResults();
+      // ...
+      break;
+    // ... handle other cases of CanGetScannedResults values
   }
 }
 ```
 
 > **NOTE:** `getScannedResults` API can be used independently of `startScan` API. This returns the latest available scanned results.
 
-For more details, you can read documentation of [`WiFiScan.getScannedResults`][doc_getScannedResults], 
-[`WiFiAccessPoint`][doc_WiFiAccessPoint], [`GetScannedResultsErrors`][doc_GetScannedResultsErrors] and 
-[`Result<ValueType, ErrorType>`][doc_Result].
+For more details, you can read documentation of [`WiFiScan.getScannedResults`][doc_getScannedResults],
+[`WiFiAccessPoint`][doc_WiFiAccessPoint],
+[`WiFiScan.canGetScannedResults`][doc_canGetScannedResults] and
+[`CanGetScannedResults`][doc_enum_CanGetScannedResults].
 
 ### Get notified when scanned results available
 You can get notified when new scanned results are available with `WiFiScan.onScannedResultsAvailable` API, as shown below:
 ```dart
 // initialize accessPoints and subscription
 List<WiFiAccessPoint> accessPoints = [];
-StreamSubscription<Result<List<WiFiAccessPoint>, GetScannedResultErrors>>? subscription;
+StreamSubscription<List<WiFiAccessPoint>>? subscription;
 
 void _startListeningToScannedResults() async {
-  // listen to onScannedResultsAvailable stream
-  subscription = WiFiScan.instance.onScannedResultsAvailable.listen((result) {
-    if (result.hasError){
-      switch (error){
-      // handle error for values of GetScannedResultErrors
-      }  
-    } else {
-      // update accessPoints
-      setState(() => accessPoints = result.value);
-    }
-  });
+  // check platform support and necessary requirements
+  final can = await WiFiScan.instance.canGetScannedResults(askPermissions: true);
+  switch(can) {
+    case CanGetScannedResults.yes:
+      // listen to onScannedResultsAvailable stream
+      subscription = WiFiScan.instance.onScannedResultsAvailable.listen((results) {
+        // update accessPoints
+        setState(() => accessPoints = results);
+      });
+      // ...
+      break;
+    // ... handle other cases of CanGetScannedResults values
+  }
 }
 
 // make sure to cancel subscription after you are done
@@ -122,9 +114,10 @@ Additionally, `WiFiScan.onScannedResultsAvailable` API can also be used with Flu
 > **NOTE:** `onScannedResultsAvailable` API can be used  independently of `startScan` API. The notification can also be result of a full scan performed by platform or other app.
 
 For more details, you can read documentation of 
-[`WiFiScan.onScannedResultsAvailable`][doc_onScannedResultsAvailable], 
-[`WiFiAccessPoint`][doc_WiFiAccessPoint], [`GetScannedResultsErrors`][doc_GetScannedResultsErrors] and 
-[`Result<ValueType, ErrorType>`][doc_Result].
+[`WiFiScan.onScannedResultsAvailable`][doc_onScannedResultsAvailable],
+[`WiFiAccessPoint`][doc_WiFiAccessPoint],
+[`WiFiScan.canGetScannedResults`][doc_canGetScannedResults] and
+[`CanGetScannedResults`][doc_enum_CanGetScannedResults].
 
 ## Resources
 - 📖[API docs][docs]
@@ -155,13 +148,13 @@ This project follows the [all-contributors][all_contributors] specification. Con
 [docs]: https://pub.dev/documentation/wifi_scan/latest/wifi_scan/wifi_scan-library.html
 [example]: https://github.com/flutternetwork/WiFiFlutter/tree/master/packages/wifi_scan/example
 
-[doc_hasCapability]: https://pub.dev/documentation/wifi_scan/latest/wifi_scan/WiFiScan/hasCapability.html
 [doc_startScan]: https://pub.dev/documentation/wifi_scan/latest/wifi_scan/WiFiScan/startScan.html
-[doc_StartScanErrors]: https://pub.dev/documentation/wifi_scan/latest/wifi_scan/StartScanErrors.html
-[doc_Result]: https://pub.dev/documentation/wifi_scan/latest/wifi_scan/Result-class.html
+[doc_canStartScan]: https://pub.dev/documentation/wifi_scan/latest/wifi_scan/WiFiScan/canStartScan.html
+[doc_enum_CanStartScan]: https://pub.dev/documentation/wifi_scan/latest/wifi_scan/CanStartScan.html
 [doc_getScannedResults]: https://pub.dev/documentation/wifi_scan/latest/wifi_scan/WiFiScan/getScannedResults.html
 [doc_WiFiAccessPoint]: https://pub.dev/documentation/wifi_scan/latest/wifi_scan/WiFiAccessPoint-class.html
-[doc_GetScannedResultsErrors]: https://pub.dev/documentation/wifi_scan/latest/wifi_scan/GetScannedResultsErrors.html
+[doc_canGetScannedResults]: https://pub.dev/documentation/wifi_scan/latest/wifi_scan/WiFiScan/canGetScannedResults.html
+[doc_enum_CanGetScannedResults]: https://pub.dev/documentation/wifi_scan/latest/wifi_scan/CanGetScannedResults.html
 [doc_onScannedResultsAvailable]: https://pub.dev/documentation/wifi_scan/latest/wifi_scan/WiFiScan/onScannedResultsAvailable.html
 
 [flutter_StreamBuilder]: https://api.flutter.dev/flutter/widgets/StreamBuilder-class.html
