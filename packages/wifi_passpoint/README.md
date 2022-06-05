@@ -1,4 +1,4 @@
-# wifi_passpoint
+# wifi_passpoint _[COMING SOON]_
 
 Flutter plugin to discover and connect to WiFi Passpoint(Hotspot 2.0) access points.
 
