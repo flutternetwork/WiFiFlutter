@@ -1,4 +1,3 @@
-
 import 'wifi_passpoint_platform_interface.dart';
 
 class WifiPasspoint {

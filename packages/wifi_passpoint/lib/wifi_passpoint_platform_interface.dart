@@ -14,7 +14,7 @@ abstract class WifiPasspointPlatform extends PlatformInterface {
   ///
   /// Defaults to [MethodChannelWifiPasspoint].
   static WifiPasspointPlatform get instance => _instance;
-  
+
   /// Platform-specific implementations should set this with their own
   /// platform-specific class that extends [WifiPasspointPlatform] when
   /// they register themselves.

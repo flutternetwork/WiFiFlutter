@@ -9,7 +9,7 @@
 #endif
 
 @implementation WifiPasspointPlugin
-+ (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
++ (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar> *)registrar {
   [SwiftWifiPasspointPlugin registerWithRegistrar:registrar];
 }
 @end
