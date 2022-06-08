@@ -45,7 +45,7 @@ CanStartScan _deserializeCanStartScan(int? canCode) {
     case 5:
       return CanStartScan.noLocationServiceDisabled;
   }
-  throw UnsupportedError("$canCode cannot be serialized to CanStartScan");
+  throw UnsupportedError('$canCode cannot be serialized to CanStartScan');
 }
 
 /// Result for [WiFiScan.canGetScannedResults] method.
@@ -91,5 +91,5 @@ CanGetScannedResults _deserializeCanGetScannedResults(int? canCode) {
       return CanGetScannedResults.noLocationServiceDisabled;
   }
   throw UnsupportedError(
-      "$canCode cannot be serialized to CanGetScannedNetworks");
+      '$canCode cannot be serialized to CanGetScannedNetworks');
 }

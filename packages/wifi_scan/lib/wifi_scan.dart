@@ -12,10 +12,10 @@ class WiFiScan {
   WiFiScan._();
 
   /// Singleton instance of [WiFiScan].
-  static final instance = WiFiScan._();
+  static final WiFiScan instance = WiFiScan._();
 
-  final _channel = const MethodChannel('wifi_scan');
-  final _scannedResultsAvailableChannel =
+  final MethodChannel _channel = const MethodChannel('wifi_scan');
+  final EventChannel _scannedResultsAvailableChannel =
       const EventChannel('wifi_scan/onScannedResultsAvailable');
   Stream<List<WiFiAccessPoint>>? _onScannedResultsAvailable;
 
@@ -26,8 +26,9 @@ class WiFiScan {
   ///
   /// Set [askPermissions] flag to ask user for necessary permissions.
   Future<CanStartScan> canStartScan({bool askPermissions = true}) async {
-    final canCode = await _channel.invokeMethod<int>("canStartScan", {
-      "askPermissions": askPermissions,
+    // ignore: always_specify_types
+    final int? canCode = await _channel.invokeMethod<int>('canStartScan', {
+      'askPermissions': askPermissions,
     });
     return _deserializeCanStartScan(canCode);
   }
@@ -38,7 +39,7 @@ class WiFiScan {
   ///
   /// Should call [canStartScan] as a check before calling this method.
   Future<bool> startScan() async {
-    final isSucess = await _channel.invokeMethod<bool>("startScan");
+    final bool? isSucess = await _channel.invokeMethod<bool>('startScan');
     return isSucess!;
   }
 
@@ -50,9 +51,13 @@ class WiFiScan {
   /// Set [askPermissions] flag to ask user for necessary permissions.
   Future<CanGetScannedResults> canGetScannedResults(
       {bool askPermissions = true}) async {
-    final canCode = await _channel.invokeMethod<int>("canGetScannedResults", {
-      "askPermissions": askPermissions,
-    });
+    // ignore: always_specify_types
+    final int? canCode = await _channel.invokeMethod<int>(
+      'canGetScannedResults',
+      <String, bool>{
+        'askPermissions': askPermissions,
+      },
+    );
     return _deserializeCanGetScannedResults(canCode);
   }
 
@@ -62,10 +67,13 @@ class WiFiScan {
   ///
   /// Should call [canGetScannedResults] as a check before calling this method.
   Future<List<WiFiAccessPoint>> getScannedResults() async {
-    final scannedResults =
-        await _channel.invokeListMethod<Map>("getScannedResults");
+    // ignore: always_specify_types, strict_raw_type
+    final List<Map>? scannedResults =
+        // ignore: always_specify_types, strict_raw_type
+        await _channel.invokeListMethod<Map>('getScannedResults');
     return scannedResults!
-        .map((map) => WiFiAccessPoint._fromMap(map))
+        // ignore: always_specify_types, strict_raw_type
+        .map((Map map) => WiFiAccessPoint._fromMap(map))
         .toList(growable: false);
   }
 
@@ -76,11 +84,15 @@ class WiFiScan {
   ///
   /// Should call [canGetScannedResults] as a check before calling this method.
   Stream<List<WiFiAccessPoint>> get onScannedResultsAvailable =>
-      _onScannedResultsAvailable ??=
-          _scannedResultsAvailableChannel.receiveBroadcastStream().map((event) {
-        if (event is Error) throw event;
+      _onScannedResultsAvailable ??= _scannedResultsAvailableChannel
+          .receiveBroadcastStream()
+          .map((dynamic event) {
+        if (event is Error) {
+          throw event;
+        }
         if (event is List) {
           return event
+              // ignore: always_specify_types
               .map((map) => WiFiAccessPoint._fromMap(map))
               .toList(growable: false);
         }

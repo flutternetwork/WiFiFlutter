@@ -78,6 +78,23 @@ WiFiChannelWidth _deserializeWiFiChannelWidth(int? channelWidthCode) {
 
 /// Describes information about a detected access point.
 class WiFiAccessPoint {
+  // ignore: strict_raw_type, always_specify_types
+  WiFiAccessPoint._fromMap(Map map)
+      : ssid = map['ssid'],
+        bssid = map['bssid'],
+        capabilities = map['capabilities'],
+        frequency = map['frequency'],
+        level = map['level'],
+        timestamp = map['timestamp'],
+        standard = _deserializeWiFiStandards(map['standard']),
+        centerFrequency0 = map['centerFrequency0'],
+        centerFrequency1 = map['centerFrequency1'],
+        channelWidth = _deserializeWiFiChannelWidth(map['channelWidth']),
+        isPasspoint = map['isPasspoint'],
+        operatorFriendlyName = map['operatorFriendlyName'],
+        venueName = map['venueName'],
+        is80211mcResponder = map['is80211mcResponder'];
+
   /// The network name.
   final String ssid;
 
@@ -147,20 +164,4 @@ class WiFiAccessPoint {
   /// [IEEE 802.11mc (WiFi RTT)](https://en.wikipedia.org/wiki/IEEE_802.11mc)
   /// ranging requests.
   final bool? is80211mcResponder;
-
-  WiFiAccessPoint._fromMap(Map map)
-      : ssid = map["ssid"],
-        bssid = map["bssid"],
-        capabilities = map["capabilities"],
-        frequency = map["frequency"],
-        level = map["level"],
-        timestamp = map["timestamp"],
-        standard = _deserializeWiFiStandards(map["standard"]),
-        centerFrequency0 = map["centerFrequency0"],
-        centerFrequency1 = map["centerFrequency1"],
-        channelWidth = _deserializeWiFiChannelWidth(map["channelWidth"]),
-        isPasspoint = map["isPasspoint"],
-        operatorFriendlyName = map["operatorFriendlyName"],
-        venueName = map["venueName"],
-        is80211mcResponder = map["is80211mcResponder"];
 }
