@@ -1439,7 +1439,7 @@ public class WifiIotPlugin
           registeredNetwork = wifiConfig.networkId;
           //only try to update the configuration if joinOnce is false
           //otherwise use the new add/update method
-          if(joinOnce == false) {
+          if(joinOnce != null && !joinOnce.booleanValue()) {
             updateNetwork = moWiFi.updateNetwork(conf);
             //required for pre API 26
             moWiFi.saveConfiguration();
@@ -1583,7 +1583,7 @@ public class WifiIotPlugin
       // to discard false positives like auth error
       if (networkId != -1 && netState == SupplicantState.COMPLETED) {
         connected = networkId == updateNetwork;
-        if(connected == true) {
+        if(connected) {
           break;
         } else {
           disconnect = moWiFi.disconnect();
