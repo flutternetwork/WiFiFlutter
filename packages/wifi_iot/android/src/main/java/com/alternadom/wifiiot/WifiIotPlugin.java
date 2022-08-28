@@ -889,8 +889,9 @@ public class WifiIotPlugin
         Boolean joinOnce = poCall.argument("join_once");
         Boolean withInternet = poCall.argument("with_internet");
         Boolean isHidden = poCall.argument("is_hidden");
+        Integer timeoutInSeconds = poCall.argument("timeout_in_seconds");
 
-        connectTo(poResult, ssid, bssid, password, security, joinOnce, withInternet, isHidden);
+        connectTo(poResult, ssid, bssid, password, security, joinOnce, withInternet, isHidden, timeoutInSeconds);
       }
     }.start();
   }
@@ -1012,6 +1013,7 @@ public class WifiIotPlugin
         String password = poCall.argument("password");
         Boolean joinOnce = poCall.argument("join_once");
         Boolean withInternet = poCall.argument("with_internet");
+        Integer timeoutInSeconds = poCall.argument("timeout_in_seconds");
 
         String security = null;
         List<ScanResult> results = moWiFi.getScanResults();
@@ -1026,7 +1028,7 @@ public class WifiIotPlugin
           }
         }
 
-        connectTo(poResult, ssid, bssid, password, security, joinOnce, withInternet, false);
+        connectTo(poResult, ssid, bssid, password, security, joinOnce, withInternet, false, timeoutInSeconds);
       }
     }.start();
   }
@@ -1256,7 +1258,8 @@ public class WifiIotPlugin
       final String security,
       final Boolean joinOnce,
       final Boolean withInternet,
-      final Boolean isHidden) {
+      final Boolean isHidden,
+      final Integer timeoutInSeconds) {
     final Handler handler = new Handler(Looper.getMainLooper());
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
       final boolean connected =
@@ -1393,7 +1396,7 @@ public class WifiIotPlugin
               }
             };
 
-        connectivityManager.requestNetwork(networkRequest, networkCallback, handler, 30 * 1000);
+        connectivityManager.requestNetwork(networkRequest, networkCallback, handler, timeoutInSeconds * 1000);
       }
     }
   }
