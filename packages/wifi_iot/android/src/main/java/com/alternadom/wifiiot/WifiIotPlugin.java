@@ -14,6 +14,7 @@ import android.net.NetworkCapabilities;
 import android.net.NetworkRequest;
 import android.net.wifi.ScanResult;
 import android.net.wifi.SoftApConfiguration;
+import android.net.wifi.SupplicantState;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -45,11 +46,10 @@ import io.flutter.plugin.common.PluginRegistry.ViewDestroyListener;
 import io.flutter.view.FlutterNativeView;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import java.util.Random;
-import android.net.wifi.SupplicantState;
 
 /** WifiIotPlugin */
 public class WifiIotPlugin
@@ -1116,7 +1116,7 @@ public class WifiIotPlugin
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
       //noinspection deprecation
       disconnected = moWiFi.disconnect();
-      if(lastConnectedNetworkId != -1) {
+      if (lastConnectedNetworkId != -1) {
         //android 8.1 won't automatically reconnect to the previous network if it shares the same SSID
         moWiFi.enableNetwork(lastConnectedNetworkId, true);
       }
@@ -1199,21 +1199,22 @@ public class WifiIotPlugin
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
       List<android.net.wifi.WifiConfiguration> mWifiConfigList = moWiFi.getConfiguredNetworks();
       for (android.net.wifi.WifiConfiguration wifiConfig : mWifiConfigList) {
-        String comparableSSID = ('"' + prefix_ssid + '"'); //Add quotes because wifiConfig.SSID has them
+        String comparableSSID =
+            ('"' + prefix_ssid + '"'); //Add quotes because wifiConfig.SSID has them
         if (wifiConfig.SSID.equals(comparableSSID)) {
           Boolean isRemoved = moWiFi.removeNetwork(wifiConfig.networkId);
-          if(isRemoved) {
+          if (isRemoved) {
             moWiFi.saveConfiguration();
             removed = true;
             //if the last connected network was our app's network, reset the last connected network
-            if(wifiConfig.networkId == lastConnectedNetworkId) {
+            if (wifiConfig.networkId == lastConnectedNetworkId) {
               lastConnectedNetworkId = -1;
             }
           }
           //multiple networks with the same SSID could be removed
         }
       }
-      if(lastConnectedNetworkId != -1) {
+      if (lastConnectedNetworkId != -1) {
         //android 8.1 won't automatically reconnect to the previous network if it shares the same SSID
         moWiFi.enableNetwork(lastConnectedNetworkId, true);
       }
@@ -1422,7 +1423,8 @@ public class WifiIotPlugin
   }
 
   @SuppressWarnings("deprecation")
-  private int registerWifiNetworkDeprecated(android.net.wifi.WifiConfiguration conf, Boolean joinOnce) {
+  private int registerWifiNetworkDeprecated(
+      android.net.wifi.WifiConfiguration conf, Boolean joinOnce) {
     int updateNetwork = -1;
     int registeredNetwork = -1;
 
@@ -1439,7 +1441,7 @@ public class WifiIotPlugin
           registeredNetwork = wifiConfig.networkId;
           //only try to update the configuration if joinOnce is false
           //otherwise use the new add/update method
-          if(joinOnce != null && !joinOnce.booleanValue()) {
+          if (joinOnce != null && !joinOnce.booleanValue()) {
             updateNetwork = moWiFi.updateNetwork(conf);
             //required for pre API 26
             moWiFi.saveConfiguration();
@@ -1447,7 +1449,7 @@ public class WifiIotPlugin
           //Android 6.0 and higher no longer allows you to update a network that wasn't created
           //from our app, nor delete it, nor add a network with the same SSID
           //See https://developer.android.com/about/versions/marshmallow/android-6.0-changes.html#behavior-network
-          if(updateNetwork == -1) {
+          if (updateNetwork == -1) {
             //we add some random number to the conf SSID, add that network, then change the SSID
             // back to circumvent the issue
             String ssid = conf.SSID;
@@ -1456,18 +1458,21 @@ public class WifiIotPlugin
             for (int i = 0; i < 20; i++) {
               int randomInteger = random.nextInt(10000);
               //create a valid SSID with max length of 32
-              String ssidRandomized = ssid+randomInteger;
-              int ssidRandomizedExtraLength = ssidRandomized.length()-32;
-              if(ssidRandomizedExtraLength > 0) {
-                ssidRandomized = ssid.substring(0,ssid.length()-ssidRandomizedExtraLength)+randomInteger;
+              String ssidRandomized = ssid + randomInteger;
+              int ssidRandomizedExtraLength = ssidRandomized.length() - 32;
+              if (ssidRandomizedExtraLength > 0) {
+                ssidRandomized =
+                    ssid.substring(0, ssid.length() - ssidRandomizedExtraLength) + randomInteger;
               }
               conf.SSID = "\"" + ssidRandomized + "\"";
               updateNetwork = moWiFi.addNetwork(conf); // Add my wifi with another name
               conf.SSID = ssid;
               conf.networkId = updateNetwork;
-              updateNetwork = moWiFi.updateNetwork(conf); // After my wifi is added with another name, I change it to the desired name
+              updateNetwork =
+                  moWiFi.updateNetwork(
+                      conf); // After my wifi is added with another name, I change it to the desired name
               moWiFi.saveConfiguration();
-              if(updateNetwork != -1) {
+              if (updateNetwork != -1) {
                 break;
               }
             }
@@ -1560,7 +1565,7 @@ public class WifiIotPlugin
     if (joinOnce != null && joinOnce.booleanValue()) {
       ssidsToBeRemovedOnExit.add(conf.SSID);
     }
-    if(lastConnectedNetworkId == -1) {
+    if (lastConnectedNetworkId == -1) {
       lastConnectedNetworkId = moWiFi.getConnectionInfo().getNetworkId();
     }
 
@@ -1583,7 +1588,7 @@ public class WifiIotPlugin
       // to discard false positives like auth error
       if (networkId != -1 && netState == SupplicantState.COMPLETED) {
         connected = networkId == updateNetwork;
-        if(connected) {
+        if (connected) {
           break;
         } else {
           disconnect = moWiFi.disconnect();
@@ -1601,7 +1606,7 @@ public class WifiIotPlugin
         break;
       }
     }
-    if(!connected && lastConnectedNetworkId != -1) {
+    if (!connected && lastConnectedNetworkId != -1) {
       //android 8.1 won't automatically reconnect to the previous network if it shares the same SSID
       moWiFi.enableNetwork(lastConnectedNetworkId, true);
     }
