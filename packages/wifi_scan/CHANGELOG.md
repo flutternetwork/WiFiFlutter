@@ -1,3 +1,9 @@
+## 0.4.0
+
+> Note: This release has breaking changes.
+
+ - **BREAKING** **REVERT**: added back "can" APIs (#288).
+
 ## 0.3.0
 
 > Note: This release has breaking changes.
