@@ -891,7 +891,16 @@ public class WifiIotPlugin
         Boolean isHidden = poCall.argument("is_hidden");
         Integer timeoutInSeconds = poCall.argument("timeout_in_seconds");
 
-        connectTo(poResult, ssid, bssid, password, security, joinOnce, withInternet, isHidden, timeoutInSeconds);
+        connectTo(
+            poResult,
+            ssid,
+            bssid,
+            password,
+            security,
+            joinOnce,
+            withInternet,
+            isHidden,
+            timeoutInSeconds);
       }
     }.start();
   }
@@ -1028,7 +1037,16 @@ public class WifiIotPlugin
           }
         }
 
-        connectTo(poResult, ssid, bssid, password, security, joinOnce, withInternet, false, timeoutInSeconds);
+        connectTo(
+            poResult,
+            ssid,
+            bssid,
+            password,
+            security,
+            joinOnce,
+            withInternet,
+            false,
+            timeoutInSeconds);
       }
     }.start();
   }
@@ -1396,7 +1414,8 @@ public class WifiIotPlugin
               }
             };
 
-        connectivityManager.requestNetwork(networkRequest, networkCallback, handler, timeoutInSeconds * 1000);
+        connectivityManager.requestNetwork(
+            networkRequest, networkCallback, handler, timeoutInSeconds * 1000);
       }
     }
   }
