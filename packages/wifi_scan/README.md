@@ -8,13 +8,13 @@
   <img src="https://img.shields.io/pub/v/wifi_scan?logo=dart" alt="pub.dev">
 </a>
 <a href="https://pub.dev/packages/wifi_scan/score">
-  <img src="https://badges.bar/wifi_scan/pub%20points" alt="pub points">
+  <img src="https://img.shields.io/pub/points/wifi_scan?logo=dart" alt="pub points">
 </a>  
 <a href="https://pub.dev/packages/wifi_scan/score">
-  <img src="https://badges.bar/wifi_scan/popularity" alt="popularity">
+  <img src="https://img.shields.io/pub/popularity/wifi_scan?logo=dart" alt="popularity">
 </a>  
 <a href="https://pub.dev/packages/wifi_scan/score">
-  <img src="https://badges.bar/wifi_scan/likes" alt="likes">
+  <img src="https://img.shields.io/pub/likes/wifi_scan?logo=dart" alt="likes">
 </a>  
 </p>  
 

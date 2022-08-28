@@ -193,7 +193,7 @@ This project follows the [all-contributors][all_contributors] specification. Con
 [iot_pub]: https://pub.dev/packages/wifi_iot
 [iot_pub_badge]: https://img.shields.io/pub/v/wifi_iot.svg
 [iot_pub_points]: https://pub.dev/packages/wifi_iot/score
-[iot_pub_points_badge]: https://badges.bar/wifi_iot/pub%20points
+[iot_pub_points_badge]: https://img.shields.io/pub/likes/wifi_iot.svg
 
 [basic_code]: https://github.com/flutternetwork/WiFiFlutter/tree/master/packages/wifi_basic
 [basic_workflow]: https://github.com/flutternetwork/WiFiFlutter/actions/workflows/wifi_basic.yaml
@@ -201,7 +201,7 @@ This project follows the [all-contributors][all_contributors] specification. Con
 [basic_pub]: https://pub.dev/packages/wifi_basic
 [basic_pub_badge]: https://img.shields.io/pub/v/wifi_basic.svg
 [basic_pub_points]: https://pub.dev/packages/wifi_basic/score
-[basic_pub_points_badge]: https://badges.bar/wifi_basic/pub%20points
+[basic_pub_points_badge]: https://img.shields.io/pub/likes/wifi_basic.svg
 
 [scan_code]: https://github.com/flutternetwork/WiFiFlutter/tree/master/packages/wifi_scan
 [scan_workflow]: https://github.com/flutternetwork/WiFiFlutter/actions/workflows/wifi_scan.yaml
@@ -209,7 +209,7 @@ This project follows the [all-contributors][all_contributors] specification. Con
 [scan_pub]: https://pub.dev/packages/wifi_scan
 [scan_pub_badge]: https://img.shields.io/pub/v/wifi_scan.svg
 [scan_pub_points]: https://pub.dev/packages/wifi_scan/score
-[scan_pub_points_badge]: https://badges.bar/wifi_scan/pub%20points
+[scan_pub_points_badge]: https://img.shields.io/pub/likes/wifi_scan.svg
 
 [sta_code]: https://github.com/flutternetwork/WiFiFlutter/tree/master/packages/wifi_sta
 [sta_workflow]: https://github.com/flutternetwork/WiFiFlutter/actions/workflows/wifi_sta.yaml
@@ -217,7 +217,7 @@ This project follows the [all-contributors][all_contributors] specification. Con
 [sta_pub]: https://pub.dev/packages/wifi_sta
 [sta_pub_badge]: https://img.shields.io/pub/v/wifi_sta.svg
 [sta_pub_points]: https://pub.dev/packages/wifi_sta/score
-[sta_pub_points_badge]: https://badges.bar/wifi_sta/pub%20points
+[sta_pub_points_badge]: https://img.shields.io/pub/likes/wifi_sta.svg
 
 [ap_code]: https://github.com/flutternetwork/WiFiFlutter/tree/master/packages/wifi_ap
 [ap_workflow]: https://github.com/flutternetwork/WiFiFlutter/actions/workflows/wifi_ap.yaml
@@ -225,7 +225,7 @@ This project follows the [all-contributors][all_contributors] specification. Con
 [ap_pub]: https://pub.dev/packages/wifi_ap
 [ap_pub_badge]: https://img.shields.io/pub/v/wifi_ap.svg
 [ap_pub_points]: https://pub.dev/packages/wifi_ap/score
-[ap_pub_points_badge]: https://badges.bar/wifi_ap/pub%20points
+[ap_pub_points_badge]: https://img.shields.io/pub/likes/wifi_ap.svg
 
 [aware_code]: https://github.com/flutternetwork/WiFiFlutter/tree/master/packages/wifi_aware
 [aware_workflow]: https://github.com/flutternetwork/WiFiFlutter/actions/workflows/wifi_aware.yaml
@@ -233,7 +233,7 @@ This project follows the [all-contributors][all_contributors] specification. Con
 [aware_pub]: https://pub.dev/packages/wifi_aware
 [aware_pub_badge]: https://img.shields.io/pub/v/wifi_aware.svg
 [aware_pub_points]: https://pub.dev/packages/wifi_aware/score
-[aware_pub_points_badge]: https://badges.bar/wifi_aware/pub%20points
+[aware_pub_points_badge]: https://img.shields.io/pub/likes/wifi_aware.svg
 [aware_official_docs]: https://www.wi-fi.org/discover-wi-fi/wi-fi-aware
 [aware_direct_differences]: https://www.wi-fi.org/knowledge-center/faq/what-is-the-relationship-between-wi-fi-aware-and-wi-fi-direct
 
@@ -243,5 +243,5 @@ This project follows the [all-contributors][all_contributors] specification. Con
 [rtt_pub]: https://pub.dev/packages/wifi_rtt
 [rtt_pub_badge]: https://img.shields.io/pub/v/wifi_rtt.svg
 [rtt_pub_points]: https://pub.dev/packages/wifi_rtt/score
-[rtt_pub_points_badge]: https://badges.bar/wifi_rtt/pub%20points
+[rtt_pub_points_badge]: https://img.shields.io/pub/likes/wifi_rtt.svg
 [rtt_wikipedia]: https://en.wikipedia.org/wiki/IEEE_802.11mc
