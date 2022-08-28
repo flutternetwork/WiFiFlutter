@@ -1,3 +1,7 @@
+## 0.3.16+1
+
+ - **DOCS**: fix badge links.
+
 ## 0.3.16
 
  - **FEAT**: proper response to methods when using LocalOnlyHostspot (#268).
