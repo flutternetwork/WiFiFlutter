@@ -1,3 +1,7 @@
+## 0.3.17
+
+ - **FEAT**: Allows to change the default connection timeout from the application (#305).
+
 ## 0.3.16+1
 
  - **DOCS**: fix badge links.
