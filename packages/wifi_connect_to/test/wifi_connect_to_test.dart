@@ -1,23 +1,28 @@
-import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:wifi_connect_to/wifi_connect_to.dart';
+import 'package:wifi_connect_to/wifi_connect_to_platform_interface.dart';
+import 'package:wifi_connect_to/wifi_connect_to_method_channel.dart';
+import 'package:plugin_platform_interface/plugin_platform_interface.dart';
+
+class MockWifiConnectToPlatform
+    with MockPlatformInterfaceMixin
+    implements WifiConnectToPlatform {
+  @override
+  Future<String?> getPlatformVersion() => Future.value('42');
+}
 
 void main() {
-  const MethodChannel channel = MethodChannel('wifi_connect_to');
+  final WifiConnectToPlatform initialPlatform = WifiConnectToPlatform.instance;
 
-  TestWidgetsFlutterBinding.ensureInitialized();
-
-  setUp(() {
-    channel.setMockMethodCallHandler((MethodCall methodCall) async {
-      return '42';
-    });
-  });
-
-  tearDown(() {
-    channel.setMockMethodCallHandler(null);
+  test('$MethodChannelWifiConnectTo is the default instance', () {
+    expect(initialPlatform, isInstanceOf<MethodChannelWifiConnectTo>());
   });
 
   test('getPlatformVersion', () async {
-    expect(await WifiConnectTo.platformVersion, '42');
+    WifiConnectTo wifiConnectToPlugin = WifiConnectTo();
+    MockWifiConnectToPlatform fakePlatform = MockWifiConnectToPlatform();
+    WifiConnectToPlatform.instance = fakePlatform;
+
+    expect(await wifiConnectToPlugin.getPlatformVersion(), '42');
   });
 }

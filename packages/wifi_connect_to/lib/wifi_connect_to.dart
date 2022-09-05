@@ -1,12 +1,7 @@
-import 'dart:async';
-
-import 'package:flutter/services.dart';
+import 'wifi_connect_to_platform_interface.dart';
 
 class WifiConnectTo {
-  static const MethodChannel _channel = MethodChannel('wifi_connect_to');
-
-  static Future<String?> get platformVersion async {
-    final String? version = await _channel.invokeMethod('getPlatformVersion');
-    return version;
+  Future<String?> getPlatformVersion() {
+    return WifiConnectToPlatform.instance.getPlatformVersion();
   }
 }
