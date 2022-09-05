@@ -329,6 +329,7 @@ class WiFiForIoTPlugin {
     bool joinOnce = true,
     bool withInternet = false,
     bool isHidden = false,
+    int timeoutInSeconds = 30,
   }) async {
     // https://en.wikipedia.org/wiki/Service_set_(802.11_network)
     // According to IEEE Std 802.11, a SSID must be between 0 and 32 bytes
@@ -352,6 +353,7 @@ class WiFiForIoTPlugin {
         "join_once": joinOnce,
         "with_internet": withInternet,
         "is_hidden": isHidden,
+        "timeout_in_seconds": timeoutInSeconds,
         "security": serializeNetworkSecurityMap[security],
       });
     } on MissingPluginException catch (e) {
@@ -457,11 +459,14 @@ class WiFiForIoTPlugin {
   ///
   /// @returns True in case the requested network could be connected to, false
   ///   otherwise.
-  static Future<bool> findAndConnect(String ssid,
-      {String? bssid,
-      String? password,
-      bool joinOnce = true,
-      bool withInternet = false}) async {
+  static Future<bool> findAndConnect(
+    String ssid, {
+    String? bssid,
+    String? password,
+    bool joinOnce = true,
+    bool withInternet = false,
+    int timeoutInSeconds = 30,
+  }) async {
     // https://en.wikipedia.org/wiki/Service_set_(802.11_network)
     // According to IEEE Std 802.11, a SSID must be between 0 and 32 bytes
     // either with no encoding or UTF8-encoded.
@@ -485,6 +490,7 @@ class WiFiForIoTPlugin {
         "password": password?.toString(),
         "join_once": joinOnce,
         "with_internet": withInternet,
+        "timeout_in_seconds": timeoutInSeconds,
       });
     } on MissingPluginException catch (e) {
       print("MissingPluginException : ${e.toString()}");

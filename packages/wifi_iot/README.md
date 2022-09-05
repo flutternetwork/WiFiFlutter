@@ -3,9 +3,9 @@
 <p>
 <a href="https://flutternetwork.dev"><img src="https://raw.githubusercontent.com/flutternetwork/.github/master/profile/badge.svg" alt="Flutter Network" /></a>
 <a href="https://pub.dev/packages/wifi_iot"><img src="https://img.shields.io/pub/v/wifi_iot?logo=dart" alt="pub.dev"></a>
-<a href="https://pub.dev/packages/wifi_iot/score"><img src="https://badges.bar/wifi_iot/pub%20points" alt="pub points"></a>
-<a href="https://pub.dev/packages/wifi_iot/score"><img src="https://badges.bar/wifi_iot/popularity" alt="popularity"></a>
-<a href="https://pub.dev/packages/wifi_iot/score"><img src="https://badges.bar/wifi_iot/likes" alt="likes"></a>
+<a href="https://pub.dev/packages/wifi_iot/score"><img src="https://img.shields.io/pub/points/wifi_iot?logo=dart" alt="pub points"></a>
+<a href="https://pub.dev/packages/wifi_iot/score"><img src="https://img.shields.io/pub/popularity/wifi_iot?logo=dart" alt="popularity"></a>
+<a href="https://pub.dev/packages/wifi_iot/score"><img src="https://img.shields.io/pub/likes/wifi_iot?logo=dart" alt="likes"></a>
 </p>
 
 ---
