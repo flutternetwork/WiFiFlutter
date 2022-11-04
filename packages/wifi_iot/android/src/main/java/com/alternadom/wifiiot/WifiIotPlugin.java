@@ -1229,7 +1229,7 @@ public class WifiIotPlugin
     // remove network suggestion
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
       List<WifiNetworkSuggestion> suggestions = moWiFi.getNetworkSuggestions();
-      List<WifiNetworkSuggestion> removeSuggestions = new ArrayList();
+      List<WifiNetworkSuggestion> removeSuggestions = new ArrayList<WifiNetworkSuggestion>();
       for (int i = 0, suggestionsSize = suggestions.size(); i < suggestionsSize; i++) {
         WifiNetworkSuggestion suggestion = suggestions.get(i);
         if (suggestion.getSsid().startsWith(prefix_ssid)) {
