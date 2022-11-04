@@ -62,6 +62,7 @@ public class WifiIotPlugin
   private MethodChannel channel;
   private EventChannel eventChannel;
 
+  private Network joinedNetwork;
   private WifiManager moWiFi;
   private Context moContext;
   private WifiApManager moWiFiAPManager;
@@ -784,6 +785,27 @@ public class WifiIotPlugin
     }
   }
 
+  private boolean selectNetwork(final Network network, final ConnectivityManager manager) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+      return manager.bindProcessToNetwork(network);
+    } else {
+      return ConnectivityManager.setProcessDefaultNetwork(network);
+    }
+  }
+
+  private void onAvailableNetwork(
+      final ConnectivityManager manager, final Network network, final Result poResult) {
+    final boolean result = selectNetwork(network, manager);
+    final Handler handler = new Handler(Looper.getMainLooper());
+    handler.post(
+        new Runnable() {
+          @Override
+          public void run() {
+            poResult.success(result);
+          }
+        });
+  }
+
   /// Method to force wifi usage if the user needs to send requests via wifi
   /// if it does not have internet connection. Useful for IoT applications, when
   /// the app needs to communicate and send requests to a device that have no
@@ -802,43 +824,30 @@ public class WifiIotPlugin
     boolean shouldReply = true;
     if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP && manager != null) {
       if (useWifi) {
-        NetworkRequest.Builder builder;
-        builder = new NetworkRequest.Builder();
-        /// set the transport type do WIFI
-        builder.addTransportType(NetworkCapabilities.TRANSPORT_WIFI);
-        shouldReply = false;
-        manager.requestNetwork(
-            builder.build(),
-            new ConnectivityManager.NetworkCallback() {
-              @Override
-              public void onAvailable(Network network) {
-                super.onAvailable(network);
-                boolean success = false;
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                  success = manager.bindProcessToNetwork(network);
-
-                } else {
-                  success = ConnectivityManager.setProcessDefaultNetwork(network);
-                }
-                manager.unregisterNetworkCallback(this);
-                final boolean result = success;
-                final Handler handler = new Handler(Looper.getMainLooper());
-                handler.post(
-                    new Runnable() {
-                      @Override
-                      public void run() {
-                        poResult.success(result);
-                      }
-                    });
-              }
-            });
-
-      } else {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-          success = manager.bindProcessToNetwork(null);
+        // SDK-31 If not previously in a disconnected state, select the joinedNetwork to ensure
+        // the correct network is used for communications, else fallback to network manager network.
+        // https://developer.android.com/about/versions/12/behavior-changes-12#concurrent-connections
+        if (joinedNetwork != null) {
+          success = selectNetwork(joinedNetwork, manager);
         } else {
-          success = ConnectivityManager.setProcessDefaultNetwork(null);
+          NetworkRequest.Builder builder;
+          builder = new NetworkRequest.Builder();
+          /// set the transport type do WIFI
+          builder.addTransportType(NetworkCapabilities.TRANSPORT_WIFI);
+          shouldReply = false;
+          manager.requestNetwork(
+              builder.build(),
+              new ConnectivityManager.NetworkCallback() {
+                @Override
+                public void onAvailable(Network network) {
+                  super.onAvailable(network);
+                  manager.unregisterNetworkCallback(this);
+                  onAvailableNetwork(manager, network, poResult);
+                }
+              });
         }
+      } else {
+        success = selectNetwork(null, manager);
       }
     }
     if (shouldReply) {
@@ -1134,6 +1143,7 @@ public class WifiIotPlugin
         connectivityManager.unregisterNetworkCallback(networkCallback);
         networkCallback = null;
         disconnected = true;
+        joinedNetwork = null;
       } else if (networkSuggestions != null) {
         final int networksRemoved = moWiFi.removeNetworkSuggestions(networkSuggestions);
         disconnected = networksRemoved == WifiManager.STATUS_NETWORK_SUGGESTIONS_SUCCESS;
@@ -1399,6 +1409,7 @@ public class WifiIotPlugin
               public void onAvailable(@NonNull Network network) {
                 super.onAvailable(network);
                 if (!resultSent) {
+                  joinedNetwork = network;
                   poResult.success(true);
                   resultSent = true;
                 }
