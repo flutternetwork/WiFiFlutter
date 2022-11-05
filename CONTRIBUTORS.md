@@ -1,5 +1,5 @@
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-<a href="https://github.com/flutternetwork/WiFiFlutter/blob/master/CONTRIBUTORS.md#contributors-"><img src="https://img.shields.io/badge/all_contributors-51-orange.svg" alt="All Contributors" /></a>
+<a href="https://github.com/flutternetwork/WiFiFlutter/blob/master/CONTRIBUTORS.md#contributors-"><img src="https://img.shields.io/badge/all_contributors-54-orange.svg" alt="All Contributors" /></a>
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## Contributors ✨
@@ -72,6 +72,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/lmmfranco"><img src="https://avatars.githubusercontent.com/u/5719409?v=4?s=100" width="100px;" alt=""/><br /><sub><b>lmmfranco</b></sub></a><br /><a href="https://github.com/flutternetwork/WiFiFlutter/issues?q=author%3Almmfranco" title="Bug reports">🐛</a> <a href="https://github.com/flutternetwork/WiFiFlutter/commits?author=lmmfranco" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/PoloLacoste"><img src="https://avatars.githubusercontent.com/u/18294375?v=4?s=100" width="100px;" alt=""/><br /><sub><b>JM REMEUR</b></sub></a><br /><a href="https://github.com/flutternetwork/WiFiFlutter/commits?author=PoloLacoste" title="Code">💻</a> <a href="https://github.com/flutternetwork/WiFiFlutter/commits?author=PoloLacoste" title="Documentation">📖</a></td>
     <td align="center"><a href="https://github.com/adnreych"><img src="https://avatars.githubusercontent.com/u/47110538?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Denis</b></sub></a><br /><a href="https://github.com/flutternetwork/WiFiFlutter/issues?q=author%3Aadnreych" title="Bug reports">🐛</a> <a href="https://github.com/flutternetwork/WiFiFlutter/commits?author=adnreych" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/kbessemer"><img src="https://avatars.githubusercontent.com/u/85629592?v=4?s=100" width="100px;" alt=""/><br /><sub><b>kbessemer</b></sub></a><br /><a href="https://github.com/flutternetwork/WiFiFlutter/issues?q=author%3Akbessemer" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://github.com/darhaywa"><img src="https://avatars.githubusercontent.com/u/54070183?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Daren Hayward</b></sub></a><br /><a href="https://github.com/flutternetwork/WiFiFlutter/search?q=darhaywa&type=commits" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/Martichou"><img src="https://avatars.githubusercontent.com/u/23138751?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Martin André</b></sub></a><br /><a href="https://github.com/flutternetwork/WiFiFlutter/search?q=Martichou&type=commits" title="Code">💻</a></td>
   </tr>
 </table>
 

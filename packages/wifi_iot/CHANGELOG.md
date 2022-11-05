@@ -1,3 +1,7 @@
+## 0.3.18
+
+ - **FIX**: Add support for SDK-31 concurrent networks addresses #273 (#309).
+
 ## 0.3.17
 
  - **FEAT**: Allows to change the default connection timeout from the application (#305).

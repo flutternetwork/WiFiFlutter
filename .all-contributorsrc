@@ -523,6 +523,33 @@
         "bug",
         "code"
       ]
+    },
+    {
+      "login": "kbessemer",
+      "name": "kbessemer",
+      "avatar_url": "https://avatars.githubusercontent.com/u/85629592?v=4",
+      "profile": "https://github.com/kbessemer",
+      "contributions": [
+        "bug"
+      ]
+    },
+    {
+      "login": "darhaywa",
+      "name": "Daren Hayward",
+      "avatar_url": "https://avatars.githubusercontent.com/u/54070183?v=4",
+      "profile": "https://github.com/darhaywa",
+      "contributions": [
+        "code_coauthor"
+      ]
+    },
+    {
+      "login": "Martichou",
+      "name": "Martin André",
+      "avatar_url": "https://avatars.githubusercontent.com/u/23138751?v=4",
+      "profile": "https://github.com/Martichou",
+      "contributions": [
+        "code_coauthor"
+      ]
     }
   ]
 }
