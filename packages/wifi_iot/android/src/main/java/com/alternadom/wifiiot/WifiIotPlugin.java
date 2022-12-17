@@ -269,6 +269,9 @@ public class WifiIotPlugin
       case "isConnected":
         isConnected(poResult);
         break;
+      case "reconnect":
+        reconnect(poResult);
+        break;
       case "disconnect":
         disconnect(poResult);
         break;
@@ -1128,6 +1131,10 @@ public class WifiIotPlugin
         connManager != null ? connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI) : null;
 
     poResult.success(mWifi != null && mWifi.isConnected());
+  }
+            
+  private void reconnect(Result poResult) {
+      poResult.success(moWiFi.reconnect());
   }
 
   /// Disconnect current Wifi.
