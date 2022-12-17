@@ -513,6 +513,17 @@ class WiFiForIoTPlugin {
     return bResult ?? false;
   }
 
+  static Future<bool> reconnect() async {
+    final Map<String, bool> htArguments = Map();
+    bool? bResult;
+    try {
+      bResult = await _channel.invokeMethod('reconnect', htArguments);
+    } on MissingPluginException catch (e) {
+      print("MissingPluginException : ${e.toString()}");
+    }
+    return bResult ?? false;
+  }
+  
   /// Disconnect from the currently connected network.
   ///
   /// @returns True if successfully disconnected from the network.
