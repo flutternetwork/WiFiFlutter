@@ -934,8 +934,9 @@ public class WifiIotPlugin
   }
 
   /**
-   * Registers a wifi network in the device wireless networks For API >= 30 uses intent to
-   * permanently store such network in user configuration For API <= 29 uses deprecated functions
+   * Registers a wifi network in the device wireless networks. For API >= 30 uses intent to
+   * permanently store such network in user configuration. For API == 29 adds network as suggestion
+   * in the notification area. For API <= 28 uses deprecated functions
    * that manipulate directly *** registerWifiNetwork : param ssid, SSID to register param password,
    * passphrase to use param security, security mode (WPA or null) to use return {@code true} if the
    * operation succeeds, {@code false} otherwise
@@ -947,7 +948,7 @@ public class WifiIotPlugin
     String security = poCall.argument("security");
     Boolean isHidden = poCall.argument("is_hidden");
 
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
       final WifiNetworkSuggestion.Builder suggestedNet = new WifiNetworkSuggestion.Builder();
       suggestedNet.setSsid(ssid);
       suggestedNet.setIsHiddenSsid(isHidden != null ? isHidden : false);
@@ -976,10 +977,16 @@ public class WifiIotPlugin
       Bundle bundle = new Bundle();
       bundle.putParcelableArrayList(
           android.provider.Settings.EXTRA_WIFI_NETWORK_LIST, suggestionsList);
-      Intent intent = new Intent(android.provider.Settings.ACTION_WIFI_ADD_NETWORKS);
-      intent.putExtras(bundle);
-      intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-      moContext.startActivity(intent);
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        Intent intent = new Intent(android.provider.Settings.ACTION_WIFI_ADD_NETWORKS);
+        intent.putExtras(bundle);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        moContext.startActivity(intent);
+      } else {
+        // on Android 10 the intent is not available yet; instead, a message is shown in the
+        // notification area
+        moWiFi.addNetworkSuggestions(suggestionsList);
+      }
 
       poResult.success(null);
     } else {
