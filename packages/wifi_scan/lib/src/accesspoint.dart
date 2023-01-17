@@ -126,7 +126,7 @@ class WiFiAccessPoint {
   /// Center frequency of the access point.
   ///
   /// Only used for [WiFiChannelWidth.mhz80Plus80] bandwidth, it is the center
-  /// frequency of the secod segment.
+  /// frequency of the second segment.
   final int? centerFrequency1;
 
   /// Timestamp in microseconds (since boot) when this result was last seen.
