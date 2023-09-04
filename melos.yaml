@@ -2,10 +2,6 @@
 # and on your IDEs.
 name: WiFiFlutter
 
-versioning:
-  # Versioning mode, currently only independent supported.
-  mode: independent
-
 # Array of globs to search for packages.
 packages:
   - packages/**
@@ -27,7 +23,7 @@ scripts:
        - Note: you can also rely on your IDEs Dart Analysis / Issues window.
 
   format:
-    run: dart pub global run flutter_plugin_tools format
+    run: melos exec -c 5 -- dart format . && dart pub global run flutter_plugin_tools format
     description: |
       activate flutter_plugin_tools
        - Requires `flutter_plugin_tools` (`pub global activate flutter_plugin_tools`).
@@ -241,10 +237,3 @@ scripts:
   # Additional cleanup lifecycle script, executed when `melos clean` is ran.
   postclean: >
     melos exec -c 6 -- "flutter clean"
-
-dev_dependencies:
-  flutter_lints: ^2.0.0
-
-environment:
-  sdk: ">=2.12.0 <3.0.0"
-  flutter: ">=1.12.13+hotfix.5 <3.0.0"
