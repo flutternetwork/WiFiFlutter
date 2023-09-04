@@ -936,10 +936,10 @@ public class WifiIotPlugin
   /**
    * Registers a wifi network in the device wireless networks. For API >= 30 uses intent to
    * permanently store such network in user configuration. For API == 29 adds network as suggestion
-   * in the notification area. For API <= 28 uses deprecated functions
-   * that manipulate directly *** registerWifiNetwork : param ssid, SSID to register param password,
-   * passphrase to use param security, security mode (WPA or null) to use return {@code true} if the
-   * operation succeeds, {@code false} otherwise
+   * in the notification area. For API <= 28 uses deprecated functions that manipulate directly ***
+   * registerWifiNetwork : param ssid, SSID to register param password, passphrase to use param
+   * security, security mode (WPA or null) to use return {@code true} if the operation succeeds,
+   * {@code false} otherwise
    */
   private void registerWifiNetwork(final MethodCall poCall, final Result poResult) {
     String ssid = poCall.argument("ssid");
