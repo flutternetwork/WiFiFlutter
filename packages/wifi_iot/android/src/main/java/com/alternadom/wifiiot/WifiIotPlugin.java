@@ -257,7 +257,7 @@ public class WifiIotPlugin
       if (requestCode == ACTIVITY_RESULT_REQUEST_CODE_ADD_NETWORKS) {
         result.success(resultCode == Acitivity.RESULT_OK);
       }
-      resultMap.remove(requestCode)
+      resultMap.remove(requestCode);
       return true;
     }
   }
