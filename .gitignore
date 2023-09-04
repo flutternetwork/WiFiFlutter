@@ -42,3 +42,8 @@ unlinked_spec.ds
 
 # Coverage
 coverage/
+
+# Melos related
+!/pubspec.lock
+pubspec_overrides.yaml
+
