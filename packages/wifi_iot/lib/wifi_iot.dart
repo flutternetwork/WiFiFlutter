@@ -415,7 +415,7 @@ class WiFiForIoTPlugin {
     if (!Platform.isIOS && !await isEnabled()) await setEnabled(true);
     bool? bResult;
     try {
-      await _channel.invokeMethod('registerWifiNetwork', {
+      bResult = await _channel.invokeMethod('registerWifiNetwork', {
         "ssid": ssid.toString(),
         "bssid": bssid?.toString(),
         "password": password?.toString(),

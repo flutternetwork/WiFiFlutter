@@ -40,12 +40,15 @@ import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
+import io.flutter.plugin.common.PluginRegistry.ActivityResultListener;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
 import io.flutter.plugin.common.PluginRegistry.RequestPermissionsResultListener;
 import io.flutter.plugin.common.PluginRegistry.ViewDestroyListener;
 import io.flutter.view.FlutterNativeView;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -56,7 +59,8 @@ public class WifiIotPlugin
         ActivityAware,
         MethodCallHandler,
         EventChannel.StreamHandler,
-        RequestPermissionsResultListener {
+        RequestPermissionsResultListener,
+        ActivityResultListener {
   /// This local reference serves to register the plugin with the Flutter Engine and unregister it
   /// when the Flutter Engine is detached from the Activity
   private MethodChannel channel;
@@ -84,6 +88,10 @@ public class WifiIotPlugin
   private static final int PERMISSIONS_REQUEST_CODE_ACCESS_FINE_LOCATION_FIND_AND_CONNECT =
       65655437;
   private static final int PERMISSIONS_REQUEST_CODE_ACCESS_NETWORK_STATE_IS_CONNECTED = 65655438;
+
+  // Acitivity results
+  private static final Map<int, Result> resultMap = new HashMap<int, Result>();
+  private static final int ACTIVITY_RESULT_REQUEST_CODE_ADD_NETWORKS = 66778899;
 
   // initialize members of this class with Context
   private void initWithContext(Context context) {
@@ -240,6 +248,18 @@ public class WifiIotPlugin
     }
     requestingPermission = false;
     return false;
+  }
+
+  @Override
+  public boolean onActivityResult(int requestCode, int resultCode, Intent data) {
+    if (resultMap.containsKey(requestCode)) {
+      result = resultMap.get(requestCode);
+      if (requestCode == ACTIVITY_RESULT_REQUEST_CODE_ADD_NETWORKS) {
+        result.success(resultCode == Acitivity.RESULT_OK);
+      }
+      resultMap.remove(requestCode)
+      return true;
+    }
   }
 
   @Override
@@ -981,14 +1001,16 @@ public class WifiIotPlugin
         Intent intent = new Intent(android.provider.Settings.ACTION_WIFI_ADD_NETWORKS);
         intent.putExtras(bundle);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        moContext.startActivity(intent);
+        moContext.startActivityForResult(intent, ACTIVITY_RESULT_REQUEST_CODE_ADD_NETWORKS);
+        // listen for acitivty result
+        resultMap.put(ACTIVITY_RESULT_REQUEST_CODE_ADD_NETWORKS, poResult);
       } else {
         // on Android 10 the intent is not available yet; instead, a message is shown in the
         // notification area
-        moWiFi.addNetworkSuggestions(suggestionsList);
+        final int status = moWiFi.addNetworkSuggestions(networkSuggestions);
+        Log.e(WifiIotPlugin.class.getSimpleName(), "status: " + status);
+        poResult.success(status == WifiManager.STATUS_NETWORK_SUGGESTIONS_SUCCESS);
       }
-
-      poResult.success(null);
     } else {
       // Deprecated version
       android.net.wifi.WifiConfiguration conf =
@@ -999,7 +1021,7 @@ public class WifiIotPlugin
       if (updateNetwork == -1) {
         poResult.error("Error", "Error updating network configuration", "");
       } else {
-        poResult.success(null);
+        poResult.success(true);
       }
     }
   }
