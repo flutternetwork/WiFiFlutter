@@ -1,3 +1,7 @@
+## 0.4.0+2
+
+ - **FIX**: ci failures.
+
 ## 0.4.0+1
 
  - **DOCS**: fix badge links.
