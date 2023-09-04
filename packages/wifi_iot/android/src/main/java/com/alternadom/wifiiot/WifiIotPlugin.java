@@ -253,7 +253,7 @@ public class WifiIotPlugin
   @Override
   public boolean onActivityResult(int requestCode, int resultCode, Intent data) {
     if (resultMap.containsKey(requestCode)) {
-      result = resultMap.get(requestCode);
+      final Result result = resultMap.get(requestCode);
       if (requestCode == ACTIVITY_RESULT_REQUEST_CODE_ADD_NETWORKS) {
         result.success(resultCode == Acitivity.RESULT_OK);
       }
@@ -1001,9 +1001,13 @@ public class WifiIotPlugin
         Intent intent = new Intent(android.provider.Settings.ACTION_WIFI_ADD_NETWORKS);
         intent.putExtras(bundle);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        moContext.startActivityForResult(intent, ACTIVITY_RESULT_REQUEST_CODE_ADD_NETWORKS);
-        // listen for acitivty result
-        resultMap.put(ACTIVITY_RESULT_REQUEST_CODE_ADD_NETWORKS, poResult);
+        if (moActivity != null) {
+          moActivity.startActivityForResult(intent, ACTIVITY_RESULT_REQUEST_CODE_ADD_NETWORKS);
+          // listen for acitivty result
+          resultMap.put(ACTIVITY_RESULT_REQUEST_CODE_ADD_NETWORKS, poResult);
+        } else {
+          poResult.error("Activity object is null, are you running this from background?");
+        }
       } else {
         // on Android 10 the intent is not available yet; instead, a message is shown in the
         // notification area
