@@ -89,7 +89,7 @@ public class WifiIotPlugin
       65655437;
   private static final int PERMISSIONS_REQUEST_CODE_ACCESS_NETWORK_STATE_IS_CONNECTED = 65655438;
 
-  // Acitivity results
+  // Activity results
   private static final Map<Integer, Result> resultMap = new HashMap<Integer, Result>();
   private static final int ACTIVITY_RESULT_REQUEST_CODE_ADD_NETWORKS = 66778899;
 
@@ -1004,7 +1004,7 @@ public class WifiIotPlugin
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         if (moActivity != null) {
           moActivity.startActivityForResult(intent, ACTIVITY_RESULT_REQUEST_CODE_ADD_NETWORKS);
-          // listen for acitivty result
+          // listen for activity result
           resultMap.put(ACTIVITY_RESULT_REQUEST_CODE_ADD_NETWORKS, poResult);
         } else {
           poResult.error(
