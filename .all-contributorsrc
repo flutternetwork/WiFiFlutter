@@ -550,6 +550,15 @@
       "contributions": [
         "code_coauthor"
       ]
+    },
+    {
+      "login": "weitsai",
+      "name": "蔡佳緯",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1283491?v=4",
+      "profile": "https://github.com/weitsai",
+      "contributions": [
+        "code"
+      ]
     }
   ]
 }

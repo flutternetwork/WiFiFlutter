@@ -1455,9 +1455,20 @@ public class WifiIotPlugin
               @Override
               public void onUnavailable() {
                 super.onUnavailable();
+                if (Build.VERSION.SDK_INT == Build.VERSION_CODES.Q) {
+                  connectivityManager.unregisterNetworkCallback(this);
+                }
                 if (!resultSent) {
                   poResult.success(false);
                   resultSent = true;
+                }
+              }
+
+              @Override
+              public void onLost(Network network) {
+                super.onLost(network);
+                if (Build.VERSION.SDK_INT == Build.VERSION_CODES.Q) {
+                  connectivityManager.unregisterNetworkCallback(this);
                 }
               }
             };

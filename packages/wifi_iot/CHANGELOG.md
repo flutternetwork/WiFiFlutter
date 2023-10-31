@@ -1,3 +1,7 @@
+## 0.3.18+1
+
+ - **FIX**(wifi_iot): multiple triggering issue of NetworkCallback on Android 10 (#344).
+
 ## 0.3.18
 
  - **FIX**: Add support for SDK-31 concurrent networks addresses #273 (#309).
