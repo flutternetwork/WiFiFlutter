@@ -149,6 +149,7 @@ public class WifiIotPlugin
           }
         });
     registrar.addRequestPermissionsResultListener(wifiIotPlugin);
+    registrar.addActivityResultListener(wifiIotPlugin);
   }
 
   @Override
@@ -179,6 +180,7 @@ public class WifiIotPlugin
     // init with activity
     initWithActivity(binding.getActivity());
     binding.addRequestPermissionsResultListener(this);
+    binding.addActivityResultListener(this);
   }
 
   @Override
@@ -192,6 +194,7 @@ public class WifiIotPlugin
     // init with activity
     initWithActivity(binding.getActivity());
     binding.addRequestPermissionsResultListener(this);
+    binding.addActivityResultListener(this);
   }
 
   @Override
