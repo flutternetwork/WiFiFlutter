@@ -15,6 +15,12 @@ enum WIFI_AP_STATE {
 
 enum NetworkSecurity { WPA, WEP, NONE }
 
+enum RegisterWifiNetworkResult {
+  success,
+  failed,
+  alreadyRegistered
+}
+
 const serializeNetworkSecurityMap = <NetworkSecurity, String>{
   NetworkSecurity.WPA: "WPA",
   NetworkSecurity.WEP: "WEP",
@@ -391,9 +397,11 @@ class WiFiForIoTPlugin {
   ///
   /// @param [isHidden] Whether the SSID is hidden (not broadcasted by the AP).
   ///
-  /// @returns True in case the requested network could be registered, false
-  ///   otherwise.
-  static Future<bool> registerWifiNetwork(
+  /// @returns :
+  /// success = in case the requested network could be registered.
+  /// failed = if failed to register.
+  /// alreadyRegistered = if the network is already registered.
+  static Future<RegisterWifiNetworkResult> registerWifiNetwork(
     String ssid, {
     String? bssid,
     String? password,
@@ -409,13 +417,13 @@ class WiFiForIoTPlugin {
     // TODO: support any binary sequence as required instead of just strings.
     if (ssid.length == 0 || ssid.length > 32) {
       print("Invalid SSID");
-      return false;
+      return RegisterWifiNetworkResult.failed;
     }
 
     if (!Platform.isIOS && !await isEnabled()) await setEnabled(true);
-    bool? bResult;
+    int? iResult;
     try {
-      bResult = await _channel.invokeMethod('registerWifiNetwork', {
+      iResult = await _channel.invokeMethod('registerWifiNetwork', {
         "ssid": ssid.toString(),
         "bssid": bssid?.toString(),
         "password": password?.toString(),
@@ -425,7 +433,13 @@ class WiFiForIoTPlugin {
     } on MissingPluginException catch (e) {
       print("MissingPluginException : ${e.toString()}");
     }
-    return bResult ?? false;
+
+    if (iResult == 0)
+      return RegisterWifiNetworkResult.success;
+    else if (iResult == 2)
+      return RegisterWifiNetworkResult.alreadyRegistered;
+    else
+      return RegisterWifiNetworkResult.failed;
   }
 
   /// Scan for Wi-Fi networks and connect to the requested AP Wi-Fi network if
