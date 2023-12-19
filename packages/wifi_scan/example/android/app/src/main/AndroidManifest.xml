@@ -1,5 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="dev.flutternetwork.wifi.wifi_scan_example">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
    <application
         android:label="wifi_scan_example"
         android:icon="@mipmap/ic_launcher">
