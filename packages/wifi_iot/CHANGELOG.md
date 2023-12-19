@@ -1,6 +1,10 @@
+## 0.3.19
+
+ - **CHORE**: Update Gradle to 8.2 and AGP to 8.2.0 (#360)
+
 ## 0.3.18+1
 
- - **FIX**(wifi_iot): multiple triggering issue of NetworkCallback on Android 10 (#344).
+ - **FIX**: multiple triggering issue of NetworkCallback on Android 10 (#344).
 
 ## 0.3.18
 

@@ -1,3 +1,7 @@
+## 0.4.1
+- 
+- **CHORE**: Update Gradle to 8.2 and AGP to 8.2.0 (#360)
+
 ## 0.4.0+2
 
  - **FIX**: ci failures.
