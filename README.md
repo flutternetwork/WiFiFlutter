@@ -39,12 +39,12 @@ WiFiFlutter is a suite of Flutter plugins that enable Flutter apps to use variou
 - [Basic (`wifi_basic`)](#wifi_basic)
 -->
 - [Scan (`wifi_scan`)](#wifi_scan)
-<!--
+<!-- HIDING until available
 - [Station (`wifi_sta`)](#wifi_sta)
 - [Access Point / Hotspot (`wifi_ap`)](#wifi_ap)
 - [Aware (`wifi_aware`)](#wifi_aware)
-- [Location / RTT  (`wifi_rtt`)](#wifi_rtt)
 -->
+- [Location / RTT  (`wifi_rtt`)](#wifi_rtt)
 
 ---
 
@@ -140,6 +140,7 @@ Flutter plugin to discover and connect directly to nearby devices without any ot
 |    ❌    |  ➖ |
 
 ---
+-->
 
 ### `wifi_rtt`
 > [![wifi_rtt][rtt_workflow_badge]][rtt_workflow] [![wifi_rtt][rtt_pub_badge]][rtt_pub] [![pub points][rtt_pub_points_badge]][rtt_pub_points]
@@ -152,10 +153,9 @@ Flutter plugin to measure the distance to nearby RTT-capable Wi-Fi access points
 #### Platform Support
 | Android | iOS |
 | :-----: | :-: |
-|    ❌    |  ➖ |
+|   ✔️    |     |
 
 ---
--->
 
 ## Issues
 

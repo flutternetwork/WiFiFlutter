@@ -12,5 +12,6 @@ jobs:
           workflow_id: >-
             all_plugins.yaml,
             wifi_iot.yaml,
-            wifi_scan.yaml
+            wifi_scan.yaml,
+            wifi_rtt.yaml
           all_but_latest: true
