@@ -42,6 +42,9 @@ WiFiFlutter is a suite of Flutter plugins that enable Flutter apps to use variou
 <!--
 - [Station (`wifi_sta`)](#wifi_sta)
 - [Access Point / Hotspot (`wifi_ap`)](#wifi_ap)
+-->
+- [Passpoint (`wifi_passpoint`)](#wifi_passpoint)
+<!--
 - [Aware (`wifi_aware`)](#wifi_aware)
 - [Location / RTT  (`wifi_rtt`)](#wifi_rtt)
 -->
@@ -125,7 +128,23 @@ Flutter plugin to setup device as a WiFi access point (hotspot).
 |    ❌    |  ➖ |
 
 ---
+-->
 
+### `wifi_passpoint`
+> [![wifi_passpoint][passpoint_workflow_badge]][passpoint_workflow] [![wifi_passpoint][passpoint_pub_badge]][passpoint_pub] [![pub points][passpoint_pub_points_badge]][passpoint_pub_points]
+
+Flutter plugin to discover and connect to WiFi Passpoint(Hotspot 2.0) access points.
+
+[[View Source][passpoint_code]]
+
+#### Platform Support
+| Android | iOS |
+| :-----: | :-: |
+|   ❌️    |  ❌  |
+
+---
+
+<!-- HIDING until available
 ### `wifi_aware`
 > [![wifi_aware][aware_workflow_badge]][aware_workflow] [![wifi_aware][aware_pub_badge]][aware_pub] [![pub points][aware_pub_points_badge]][aware_pub_points]
 
@@ -226,6 +245,14 @@ This project follows the [all-contributors][all_contributors] specification. Con
 [ap_pub_badge]: https://img.shields.io/pub/v/wifi_ap.svg
 [ap_pub_points]: https://pub.dev/packages/wifi_ap/score
 [ap_pub_points_badge]: https://img.shields.io/pub/likes/wifi_ap.svg
+
+[passpoint_code]: https://github.com/flutternetwork/WiFiFlutter/tree/master/packages/wifi_passpoint
+[passpoint_workflow]: https://github.com/flutternetwork/WiFiFlutter/actions/workflows/wifi_passpoint.yaml
+[passpoint_workflow_badge]: https://github.com/flutternetwork/WiFiFlutter/actions/workflows/wifi_passpoint.yaml/badge.svg
+[passpoint_pub]: https://pub.dev/packages/wifi_passpoint
+[passpoint_pub_badge]: https://img.shields.io/pub/v/wifi_passpoint.svg
+[passpoint_pub_points]: https://pub.dev/packages/wifi_passpoint/score
+[passpoint_pub_points_badge]: https://badges.bar/wifi_passpoint/pub%20points
 
 [aware_code]: https://github.com/flutternetwork/WiFiFlutter/tree/master/packages/wifi_aware
 [aware_workflow]: https://github.com/flutternetwork/WiFiFlutter/actions/workflows/wifi_aware.yaml
