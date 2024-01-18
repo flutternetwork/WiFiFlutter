@@ -397,10 +397,8 @@ class WiFiForIoTPlugin {
   ///
   /// @param [isHidden] Whether the SSID is hidden (not broadcasted by the AP).
   ///
-  /// @returns :
-  /// success = in case the requested network could be registered.
-  /// failed = if failed to register.
-  /// alreadyRegistered = if the network is already registered.
+  /// @returns Whether the network could be registered, the network failed to register,
+  /// or the network is already registered.
   static Future<RegisterWifiNetworkResult> registerWifiNetwork(
     String ssid, {
     String? bssid,
@@ -434,12 +432,18 @@ class WiFiForIoTPlugin {
       print("MissingPluginException : ${e.toString()}");
     }
 
-    if (iResult == 0)
+    if (iResult == 0) {
       return RegisterWifiNetworkResult.success;
-    else if (iResult == 2)
-      return RegisterWifiNetworkResult.alreadyRegistered;
-    else
+    }
+    else if (iResult == 1) {
       return RegisterWifiNetworkResult.failed;
+    }
+    else if (iResult == 2) {
+      return RegisterWifiNetworkResult.alreadyRegistered;
+    }
+    else {
+      return RegisterWifiNetworkResult.failed;
+    }
   }
 
   /// Scan for Wi-Fi networks and connect to the requested AP Wi-Fi network if
