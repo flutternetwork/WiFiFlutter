@@ -1,72 +1,69 @@
 import 'dart:async';
 
-import 'package:flutter/services.dart';
+import 'package:plugin_platform_interface/plugin_platform_interface.dart';
+
+import 'channel_platform.dart';
 
 part 'src/accesspoint.dart';
 part 'src/can.dart';
 
-/// The `wifi_scan` plugin entry point.
-///
-/// To get a new instance, call [WiFiScan.instance].
-class WiFiScan {
-  WiFiScan._();
+abstract class WifiScanPlatform extends PlatformInterface {
+  WifiScanPlatform() : super(token: _token);
+  static final Object _token = Object();
 
-  /// Singleton instance of [WiFiScan].
-  static final instance = WiFiScan._();
+  static WifiScanPlatform _instance = MethodChannelWifiScan();
 
-  final _channel = const MethodChannel('wifi_scan');
-  final _scannedResultsAvailableChannel =
-      const EventChannel('wifi_scan/onScannedResultsAvailable');
-  Stream<List<WiFiAccessPoint>>? _onScannedResultsAvailable;
+  /// The default instance of [WifiScanPlatform] to use.
+  ///
+  /// Defaults to [MethodChannelWifiScan].
+  static WifiScanPlatform get instance => _instance;
+
+  /// Platform-specific plugins should set this with their own platform-specific
+  /// class that extends [WifiScanPlatform] when they register themselves.
+  // TODO(amirh): Extract common platform interface logic.
+  // https://github.com/flutter/flutter/issues/43368
+  static set instance(WifiScanPlatform instance) {
+    PlatformInterface.verifyToken(instance, _token);
+    _instance = instance;
+  }
 
   /// Checks if it is ok to invoke [startScan].
   ///
-  /// Necesearry platform requirements, like permissions dependent services,
+  /// Necessary platform requirements, like permissions dependent services,
   /// configuration, etc are checked.
   ///
   /// Set [askPermissions] flag to ask user for necessary permissions.
   Future<CanStartScan> canStartScan({bool askPermissions = true}) async {
-    final canCode = await _channel.invokeMethod<int>("canStartScan", {
-      "askPermissions": askPermissions,
-    });
-    return _deserializeCanStartScan(canCode);
+    throw UnimplementedError('canStartScan() has not been implemented.');
   }
 
   /// Request a Wi-Fi scan.
   ///
-  /// Return value indicates if the "scan" trigger successed.
+  /// Return value indicates if the "scan" trigger succeeded.
   ///
   /// Should call [canStartScan] as a check before calling this method.
   Future<bool> startScan() async {
-    final isSucess = await _channel.invokeMethod<bool>("startScan");
-    return isSucess!;
+    throw UnimplementedError('canStartScan() has not been implemented.');
   }
 
   /// Checks if it is ok to invoke [getScannedResults] or [onScannedResultsAvailable].
   ///
-  /// Necesearry platform requirements, like permissions dependent services,
+  /// Necessary platform requirements, like permissions dependent services,
   /// configuration, etc are checked.
   ///
   /// Set [askPermissions] flag to ask user for necessary permissions.
   Future<CanGetScannedResults> canGetScannedResults(
       {bool askPermissions = true}) async {
-    final canCode = await _channel.invokeMethod<int>("canGetScannedResults", {
-      "askPermissions": askPermissions,
-    });
-    return _deserializeCanGetScannedResults(canCode);
+    throw UnimplementedError('canGetScannedResults() has not been implemented.');
   }
 
   /// Get scanned access point.
   ///
-  /// This are cached accesss points from most recently performed scan.
+  /// This are cached access points from most recently performed scan.
   ///
   /// Should call [canGetScannedResults] as a check before calling this method.
   Future<List<WiFiAccessPoint>> getScannedResults() async {
-    final scannedResults =
-        await _channel.invokeListMethod<Map>("getScannedResults");
-    return scannedResults!
-        .map((map) => WiFiAccessPoint._fromMap(map))
-        .toList(growable: false);
+    throw UnimplementedError('getScannedResults() has not been implemented.');
   }
 
   /// Fires whenever new scanned results are available.
@@ -75,15 +72,7 @@ class WiFiScan {
   /// itself or trigger with [startScan].
   ///
   /// Should call [canGetScannedResults] as a check before calling this method.
-  Stream<List<WiFiAccessPoint>> get onScannedResultsAvailable =>
-      _onScannedResultsAvailable ??=
-          _scannedResultsAvailableChannel.receiveBroadcastStream().map((event) {
-        if (event is Error) throw event;
-        if (event is List) {
-          return event
-              .map((map) => WiFiAccessPoint._fromMap(map))
-              .toList(growable: false);
-        }
-        return const <WiFiAccessPoint>[];
-      });
+  Stream<List<WiFiAccessPoint>> get onScannedResultsAvailable {
+    throw UnimplementedError('onScannedResultsAvailable has not been implemented.');
+  }
 }

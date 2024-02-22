@@ -28,7 +28,7 @@ class _MyAppState extends State<MyApp> {
     // check if "can" startScan
     if (shouldCheckCan) {
       // check if can-startScan
-      final can = await WiFiScan.instance.canStartScan();
+      final can = await WifiScanPlatform.instance.canStartScan();
       // if can-not, then show error
       if (can != CanStartScan.yes) {
         if (mounted) kShowSnackBar(context, "Cannot start scan: $can");
@@ -37,7 +37,7 @@ class _MyAppState extends State<MyApp> {
     }
 
     // call startScan API
-    final result = await WiFiScan.instance.startScan();
+    final result = await WifiScanPlatform.instance.startScan();
     if (mounted) kShowSnackBar(context, "startScan: $result");
     // reset access points.
     setState(() => accessPoints = <WiFiAccessPoint>[]);
@@ -46,7 +46,7 @@ class _MyAppState extends State<MyApp> {
   Future<bool> _canGetScannedResults(BuildContext context) async {
     if (shouldCheckCan) {
       // check if can-getScannedResults
-      final can = await WiFiScan.instance.canGetScannedResults();
+      final can = await WifiScanPlatform.instance.canGetScannedResults();
       // if can-not, then show error
       if (can != CanGetScannedResults.yes) {
         if (mounted) kShowSnackBar(context, "Cannot get scanned results: $can");
@@ -60,14 +60,14 @@ class _MyAppState extends State<MyApp> {
   Future<void> _getScannedResults(BuildContext context) async {
     if (await _canGetScannedResults(context)) {
       // get scanned results
-      final results = await WiFiScan.instance.getScannedResults();
+      final results = await WifiScanPlatform.instance.getScannedResults();
       setState(() => accessPoints = results);
     }
   }
 
   Future<void> _startListeningToScanResults(BuildContext context) async {
     if (await _canGetScannedResults(context)) {
-      subscription = WiFiScan.instance.onScannedResultsAvailable
+      subscription = WifiScanPlatform.instance.onScannedResultsAvailable
           .listen((result) => setState(() => accessPoints = result));
     }
   }
