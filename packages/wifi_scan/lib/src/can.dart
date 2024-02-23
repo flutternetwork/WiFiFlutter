@@ -1,5 +1,3 @@
-part of '../wifi_scan.dart';
-
 /// Result for [WiFiScan.canStartScan] method.
 enum CanStartScan {
   /// Functionality is not supported.

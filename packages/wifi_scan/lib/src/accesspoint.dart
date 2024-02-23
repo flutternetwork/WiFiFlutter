@@ -1,5 +1,3 @@
-part of '../wifi_scan.dart';
-
 /// WiFi standards.
 enum WiFiStandards {
   /// Unknown.
