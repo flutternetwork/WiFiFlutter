@@ -33,21 +33,21 @@ void main() {
     ];
     for (int i = 0; i < canCodes.length; i++) {
       mockHandlers["canStartScan"] = (_) => canCodes[i];
-      expect(await WifiScan.instance.canStartScan(), enumValues[i]);
+      expect(await WiFiScan.instance.canStartScan(), enumValues[i]);
     }
 
     // -ve test
     final badCanCodes = [null, -1, 6, 7];
     for (int i = 0; i < badCanCodes.length; i++) {
       mockHandlers["canStartScan"] = (_) => badCanCodes[i];
-      expect(() async => await WifiScan.instance.canStartScan(),
+      expect(() async => await WiFiScan.instance.canStartScan(),
           throwsUnsupportedError);
     }
   });
 
   test('startScan', () async {
     mockHandlers["startScan"] = (_) => true;
-    expect(await WifiScan.instance.startScan(), true);
+    expect(await WiFiScan.instance.startScan(), true);
   });
 
   test("canGetScannedResults", () async {
@@ -62,14 +62,14 @@ void main() {
     ];
     for (int i = 0; i < canCodes.length; i++) {
       mockHandlers["canGetScannedResults"] = (_) => canCodes[i];
-      expect(await WifiScan.instance.canGetScannedResults(), enumValues[i]);
+      expect(await WiFiScan.instance.canGetScannedResults(), enumValues[i]);
     }
 
     // -ve test
     final badCanCodes = [null, -1, 6, 7];
     for (int i = 0; i < badCanCodes.length; i++) {
       mockHandlers["canGetScannedResults"] = (_) => badCanCodes[i];
-      expect(() async => await WifiScan.instance.canGetScannedResults(),
+      expect(() async => await WiFiScan.instance.canGetScannedResults(),
           throwsUnsupportedError);
     }
   });
@@ -93,7 +93,7 @@ void main() {
             "is80211mcResponder": null,
           }
         ];
-    final scannedNetworks = await WifiScan.instance.getScannedResults();
+    final scannedNetworks = await WiFiScan.instance.getScannedResults();
     expect(scannedNetworks.length, 1);
   });
 

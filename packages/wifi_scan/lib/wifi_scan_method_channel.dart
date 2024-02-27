@@ -1,7 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:wifi_scan/wifi_scan.dart';
 
-class MethodChannelWifiScan extends WifiScan {
+class MethodChannelWifiScan extends WiFiScan {
   final _channel = const MethodChannel('wifi_scan');
   final _scannedResultsAvailableChannel =
   const EventChannel('wifi_scan/onScannedResultsAvailable');

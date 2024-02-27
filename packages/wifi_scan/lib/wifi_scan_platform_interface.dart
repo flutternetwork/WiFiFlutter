@@ -5,22 +5,22 @@ import 'package:wifi_scan/src/accesspoint.dart';
 import 'package:wifi_scan/src/can.dart';
 import 'package:wifi_scan/wifi_scan_method_channel.dart';
 
-abstract class WifiScan extends PlatformInterface {
-  WifiScan() : super(token: _token);
+abstract class WiFiScan extends PlatformInterface {
+  WiFiScan() : super(token: _token);
   static final Object _token = Object();
 
-  static WifiScan _instance = MethodChannelWifiScan();
+  static WiFiScan _instance = MethodChannelWifiScan();
 
-  /// The default instance of [WifiScan] to use.
+  /// The default instance of [WiFiScan] to use.
   ///
   /// Defaults to [MethodChannelWifiScan].
-  static WifiScan get instance => _instance;
+  static WiFiScan get instance => _instance;
 
   /// Platform-specific plugins should set this with their own platform-specific
-  /// class that extends [WifiScan] when they register themselves.
+  /// class that extends [WiFiScan] when they register themselves.
   // TODO(amirh): Extract common platform interface logic.
   // https://github.com/flutter/flutter/issues/43368
-  static set instance(WifiScan instance) {
+  static set instance(WiFiScan instance) {
     PlatformInterface.verifyToken(instance, _token);
     _instance = instance;
   }
