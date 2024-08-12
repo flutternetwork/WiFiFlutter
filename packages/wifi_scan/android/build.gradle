@@ -27,7 +27,7 @@ apply plugin: 'kotlin-android'
 android {
     namespace 'dev.flutternetwork.wifi.wifi_scan'
 
-    compileSdkVersion 30
+    compileSdkVersion 34
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
