@@ -31,14 +31,14 @@ class _MyAppState extends State<MyApp> {
       final can = await WiFiScan.instance.canStartScan();
       // if can-not, then show error
       if (can != CanStartScan.yes) {
-        if (mounted) kShowSnackBar(context, "Cannot start scan: $can");
+        if (context.mounted) kShowSnackBar(context, "Cannot start scan: $can");
         return;
       }
     }
 
     // call startScan API
     final result = await WiFiScan.instance.startScan();
-    if (mounted) kShowSnackBar(context, "startScan: $result");
+    if (context.mounted) kShowSnackBar(context, "startScan: $result");
     // reset access points.
     setState(() => accessPoints = <WiFiAccessPoint>[]);
   }
@@ -49,7 +49,9 @@ class _MyAppState extends State<MyApp> {
       final can = await WiFiScan.instance.canGetScannedResults();
       // if can-not, then show error
       if (can != CanGetScannedResults.yes) {
-        if (mounted) kShowSnackBar(context, "Cannot get scanned results: $can");
+        if (context.mounted) {
+          kShowSnackBar(context, "Cannot get scanned results: $can");
+        }
         accessPoints = <WiFiAccessPoint>[];
         return false;
       }

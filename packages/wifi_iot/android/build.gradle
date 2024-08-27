@@ -24,7 +24,7 @@ apply plugin: 'com.android.library'
 android {
     namespace 'com.alternadom.wifiiot'
 
-    compileSdkVersion 30
+    compileSdkVersion 34
 
     defaultConfig {
         minSdkVersion 16
