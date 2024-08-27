@@ -1,3 +1,7 @@
+## 0.4.1+1
+
+ - **FIX**: Update compileSdkVersion to fix Android release build with flutter 3.24 (#398).
+
 ## 0.4.1
 - 
 - **CHORE**: Update Gradle to 8.2 and AGP to 8.2.0 (#360)
