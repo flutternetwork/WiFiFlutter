@@ -568,6 +568,24 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "Bojan227",
+      "name": "Bojan Blazevski",
+      "avatar_url": "https://avatars.githubusercontent.com/u/80133862?v=4",
+      "profile": "https://github.com/Bojan227",
+      "contributions": [
+        "bug"
+      ]
+    },
+    {
+      "login": "UnluckyY1",
+      "name": "Yassine Ben Massaoud",
+      "avatar_url": "https://avatars.githubusercontent.com/u/48437666?v=4",
+      "profile": "https://github.com/UnluckyY1",
+      "contributions": [
+        "code"
+      ]
     }
   ]
 }
