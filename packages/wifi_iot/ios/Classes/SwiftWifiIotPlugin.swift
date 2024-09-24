@@ -124,14 +124,7 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
         let sPassword = (call.arguments as? [String : AnyObject])?["password"] as? String? ?? nil
         let bJoinOnce = (call.arguments as? [String : AnyObject])?["join_once"] as! Bool?
         let sSecurity = (call.arguments as? [String : AnyObject])?["security"] as! String?
-        
-        //        print("SSID : '\(sSSID)'")
-        //        print("PASSWORD : '\(sPassword)'")
-        //        print("JOIN_ONCE : '\(bJoinOnce)'")
-        //        if (bJoinOnce) {
-        //            print("The network will be forgotten!")
-        //        }
-        //        print("SECURITY : '\(sSecurity)'")
+
         if #available(iOS 11.0, *) {
             let configuration = initHotspotConfiguration(ssid: sSSID, passphrase: sPassword, security: sSecurity)
             configuration.joinOnce = bJoinOnce ?? false
@@ -142,19 +135,19 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
                     result(false)
                     return
                 }
-                this.getSSID { (sSSID) -> () in
+                this.getSSID { (connectedSSID) -> () in
                     if (error != nil) {
                         if (error?.localizedDescription == "already associated.") {
-                            print("Connected to '\(sSSID ?? "<Unknown Network>")'")
+                            print("Connected to '\(connectedSSID ?? "<Unknown Network>")'")
                             result(true)
                         } else {
                             print("Not Connected")
                             result(false)
                         }
-                    } else if let ssid = sSSID {
-                        print("Connected to " + ssid)
-                        // ssid check is required because if wifi not found (could not connect) there seems to be no error given
-                        result(ssid == sSSID)
+                    } else if let connectedSSID = connectedSSID {
+                        print("Connected to " + connectedSSID)
+                        // Emit result of [isConnected] by checking if targetSSID is the same as connectedSSID.
+                        result(sSSID == connectedSSID)
                     } else {
                         print("WiFi network not found")
                         result(false)
