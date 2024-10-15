@@ -3,6 +3,8 @@ name: wifi_scan
 
 on:
   pull_request:
+    branches:
+      - master
     paths:
       - "packages/wifi_scan/**"
       - ".github/workflows/wifi_scan.yaml"

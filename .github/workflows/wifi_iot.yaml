@@ -3,6 +3,8 @@ name: wifi_iot
 
 on:
   pull_request:
+    branches:
+      - master
     paths:
       - "packages/wifi_iot/**"
       - ".github/workflows/wifi_iot.yaml"
