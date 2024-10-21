@@ -40,12 +40,15 @@ import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
+import io.flutter.plugin.common.PluginRegistry.ActivityResultListener;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
 import io.flutter.plugin.common.PluginRegistry.RequestPermissionsResultListener;
 import io.flutter.plugin.common.PluginRegistry.ViewDestroyListener;
 import io.flutter.view.FlutterNativeView;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -56,7 +59,8 @@ public class WifiIotPlugin
         ActivityAware,
         MethodCallHandler,
         EventChannel.StreamHandler,
-        RequestPermissionsResultListener {
+        RequestPermissionsResultListener,
+        ActivityResultListener {
   /// This local reference serves to register the plugin with the Flutter Engine and unregister it
   /// when the Flutter Engine is detached from the Activity
   private MethodChannel channel;
@@ -84,6 +88,15 @@ public class WifiIotPlugin
   private static final int PERMISSIONS_REQUEST_CODE_ACCESS_FINE_LOCATION_FIND_AND_CONNECT =
       65655437;
   private static final int PERMISSIONS_REQUEST_CODE_ACCESS_NETWORK_STATE_IS_CONNECTED = 65655438;
+
+  // Activity results
+  private static final Map<Integer, Result> resultMap = new HashMap<Integer, Result>();
+  private static final int ACTIVITY_RESULT_REQUEST_CODE_ADD_NETWORKS = 66778899;
+
+  // Register network result flags
+  private static final int WIFI_REGISTER_NETWORK_RESULT_SUCCESS = 0;
+  private static final int WIFI_REGISTER_NETWORK_RESULT_FAILED = 1;
+  private static final int WIFI_REGISTER_NETWORK_RESULT_ALREADY_EXISTS = 2;
 
   // initialize members of this class with Context
   private void initWithContext(Context context) {
@@ -141,6 +154,7 @@ public class WifiIotPlugin
           }
         });
     registrar.addRequestPermissionsResultListener(wifiIotPlugin);
+    registrar.addActivityResultListener(wifiIotPlugin);
   }
 
   @Override
@@ -171,6 +185,7 @@ public class WifiIotPlugin
     // init with activity
     initWithActivity(binding.getActivity());
     binding.addRequestPermissionsResultListener(this);
+    binding.addActivityResultListener(this);
   }
 
   @Override
@@ -184,6 +199,7 @@ public class WifiIotPlugin
     // init with activity
     initWithActivity(binding.getActivity());
     binding.addRequestPermissionsResultListener(this);
+    binding.addActivityResultListener(this);
   }
 
   @Override
@@ -239,6 +255,44 @@ public class WifiIotPlugin
         return true;
     }
     requestingPermission = false;
+    return false;
+  }
+
+  @Override
+  public boolean onActivityResult(int requestCode, int resultCode, Intent data) {
+    if (resultMap.containsKey(requestCode)) {
+      final Result result = resultMap.get(requestCode);
+      if (requestCode == ACTIVITY_RESULT_REQUEST_CODE_ADD_NETWORKS) {
+        int resultValue = -1;
+        if ((data != null) && data.hasExtra(Settings.EXTRA_WIFI_NETWORK_RESULT_LIST)) {
+          for (int code : data.getIntegerArrayListExtra(Settings.EXTRA_WIFI_NETWORK_RESULT_LIST)) {
+            if (code == Settings.ADD_WIFI_RESULT_SUCCESS) {
+              resultValue = WIFI_REGISTER_NETWORK_RESULT_SUCCESS;
+              break;
+            }
+            else if (code == Settings.ADD_WIFI_RESULT_ADD_OR_UPDATE_FAILED) {
+              resultValue = WIFI_REGISTER_NETWORK_RESULT_FAILED;
+              break;
+            }
+            else if (code == Settings.ADD_WIFI_RESULT_ALREADY_EXISTS) {
+              resultValue = WIFI_REGISTER_NETWORK_RESULT_ALREADY_EXISTS;
+              break;
+            }
+          }
+          if (resultValue == -1) {
+            result.error("Error", "Unknown return value for ADD_WIFI_RESULT", "");
+          }
+          else {
+            result.success(resultValue);
+          }
+        }
+        else {
+          result.success(WIFI_REGISTER_NETWORK_RESULT_FAILED);
+        }
+      }
+      resultMap.remove(requestCode);
+      return true;
+    }
     return false;
   }
 
@@ -934,11 +988,12 @@ public class WifiIotPlugin
   }
 
   /**
-   * Registers a wifi network in the device wireless networks For API >= 30 uses intent to
-   * permanently store such network in user configuration For API <= 29 uses deprecated functions
-   * that manipulate directly *** registerWifiNetwork : param ssid, SSID to register param password,
-   * passphrase to use param security, security mode (WPA or null) to use return {@code true} if the
-   * operation succeeds, {@code false} otherwise
+   * Registers a wifi network in the device wireless networks. For API >= 30 uses intent to
+   * permanently store such network in user configuration. For API == 29 adds network as suggestion
+   * in the notification area. For API <= 28 uses deprecated functions that manipulate directly ***
+   * registerWifiNetwork : param ssid, SSID to register param password, passphrase to use param
+   * security, security mode (WPA or null) to use return {@code true} if the operation succeeds,
+   * {@code false} otherwise
    */
   private void registerWifiNetwork(final MethodCall poCall, final Result poResult) {
     String ssid = poCall.argument("ssid");
@@ -947,7 +1002,7 @@ public class WifiIotPlugin
     String security = poCall.argument("security");
     Boolean isHidden = poCall.argument("is_hidden");
 
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
       final WifiNetworkSuggestion.Builder suggestedNet = new WifiNetworkSuggestion.Builder();
       suggestedNet.setSsid(ssid);
       suggestedNet.setIsHiddenSsid(isHidden != null ? isHidden : false);
@@ -974,14 +1029,27 @@ public class WifiIotPlugin
       suggestionsList.add(suggestedNet.build());
 
       Bundle bundle = new Bundle();
-      bundle.putParcelableArrayList(
-          android.provider.Settings.EXTRA_WIFI_NETWORK_LIST, suggestionsList);
-      Intent intent = new Intent(android.provider.Settings.ACTION_WIFI_ADD_NETWORKS);
-      intent.putExtras(bundle);
-      intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-      moContext.startActivity(intent);
-
-      poResult.success(null);
+      bundle.putParcelableArrayList(Settings.EXTRA_WIFI_NETWORK_LIST, suggestionsList);
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        Intent intent = new Intent(Settings.ACTION_WIFI_ADD_NETWORKS);
+        intent.putExtras(bundle);
+        if (moActivity != null) {
+          // listen for activity result
+          resultMap.put(ACTIVITY_RESULT_REQUEST_CODE_ADD_NETWORKS, poResult);
+          moActivity.startActivityForResult(intent, ACTIVITY_RESULT_REQUEST_CODE_ADD_NETWORKS);
+        } else {
+          poResult.error(
+              "NoActivityError",
+              "Activity object is null, are you running this from background?",
+              "");
+        }
+      } else {
+        // on Android 10 the intent is not available yet; instead, a message is shown in the
+        // notification area
+        final int status = moWiFi.addNetworkSuggestions(networkSuggestions);
+        Log.e(WifiIotPlugin.class.getSimpleName(), "status: " + status);
+        poResult.success(status == WifiManager.STATUS_NETWORK_SUGGESTIONS_SUCCESS ? WIFI_REGISTER_NETWORK_RESULT_SUCCESS : WIFI_REGISTER_NETWORK_RESULT_FAILED);
+      }
     } else {
       // Deprecated version
       android.net.wifi.WifiConfiguration conf =
@@ -992,7 +1060,7 @@ public class WifiIotPlugin
       if (updateNetwork == -1) {
         poResult.error("Error", "Error updating network configuration", "");
       } else {
-        poResult.success(null);
+        poResult.success(WIFI_REGISTER_NETWORK_RESULT_SUCCESS);
       }
     }
   }
