@@ -1,2 +1,0 @@
-/home/bazookon/Dev/WiFiFlutter/packages/wifi_iot/example/android/app/.cxx/Debug/2f1x4t3d/x86/CMakeFiles/rebuild_cache.dir
-/home/bazookon/Dev/WiFiFlutter/packages/wifi_iot/example/android/app/.cxx/Debug/2f1x4t3d/x86/CMakeFiles/edit_cache.dir

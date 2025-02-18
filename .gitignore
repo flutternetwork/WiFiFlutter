@@ -39,6 +39,8 @@ linked_*.ds
 unlinked.ds
 unlinked_spec.ds
 **/pubspec.lock
+.fvm/
+.fvmrc
 
 # Coverage
 coverage/
