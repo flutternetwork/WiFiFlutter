@@ -40,10 +40,7 @@ import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
-import io.flutter.plugin.common.PluginRegistry.Registrar;
-import io.flutter.plugin.common.PluginRegistry.RequestPermissionsResultListener;
-import io.flutter.plugin.common.PluginRegistry.ViewDestroyListener;
-import io.flutter.view.FlutterNativeView;
+import io.flutter.plugin.common.PluginRegistry;
 import java.util.ArrayList;
 import java.util.List;
 import org.json.JSONArray;
@@ -56,7 +53,7 @@ public class WifiIotPlugin
         ActivityAware,
         MethodCallHandler,
         EventChannel.StreamHandler,
-        RequestPermissionsResultListener {
+        PluginRegistry.RequestPermissionsResultListener {
   /// This local reference serves to register the plugin with the Flutter Engine and unregister it
   /// when the Flutter Engine is detached from the Activity
   private MethodChannel channel;
@@ -119,28 +116,6 @@ public class WifiIotPlugin
     moContext = null;
     moWiFi = null;
     moWiFiAPManager = null;
-  }
-
-  /** Plugin registration. This is used for registering with v1 Android embedding. */
-  public static void registerWith(Registrar registrar) {
-    final MethodChannel channel = new MethodChannel(registrar.messenger(), "wifi_iot");
-    final EventChannel eventChannel =
-        new EventChannel(registrar.messenger(), "plugins.wififlutter.io/wifi_scan");
-    final WifiIotPlugin wifiIotPlugin = new WifiIotPlugin();
-    wifiIotPlugin.initWithActivity(registrar.activity());
-    wifiIotPlugin.initWithContext(registrar.activeContext());
-    eventChannel.setStreamHandler(wifiIotPlugin);
-    channel.setMethodCallHandler(wifiIotPlugin);
-
-    registrar.addViewDestroyListener(
-        new ViewDestroyListener() {
-          @Override
-          public boolean onViewDestroy(FlutterNativeView view) {
-            wifiIotPlugin.cleanup();
-            return false;
-          }
-        });
-    registrar.addRequestPermissionsResultListener(wifiIotPlugin);
   }
 
   @Override
