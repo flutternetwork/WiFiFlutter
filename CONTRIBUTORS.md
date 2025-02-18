@@ -1,5 +1,5 @@
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-<a href="https://github.com/flutternetwork/WiFiFlutter/blob/master/CONTRIBUTORS.md#contributors-"><img src="https://img.shields.io/badge/all_contributors-58-orange.svg" alt="All Contributors" /></a>
+<a href="https://github.com/flutternetwork/WiFiFlutter/blob/master/CONTRIBUTORS.md#contributors-"><img src="https://img.shields.io/badge/all_contributors-60-orange.svg" alt="All Contributors" /></a>
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## Contributors ✨
@@ -82,6 +82,8 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="11.11%"><a href="https://github.com/thearaks"><img src="https://avatars.githubusercontent.com/u/5188791?v=4?s=100" width="100px;" alt="Mattia Aracne"/><br /><sub><b>Mattia Aracne</b></sub></a><br /><a href="https://github.com/flutternetwork/WiFiFlutter/commits?author=thearaks" title="Code">💻</a></td>
       <td align="center" valign="top" width="11.11%"><a href="https://github.com/Bojan227"><img src="https://avatars.githubusercontent.com/u/80133862?v=4?s=100" width="100px;" alt="Bojan Blazevski"/><br /><sub><b>Bojan Blazevski</b></sub></a><br /><a href="https://github.com/flutternetwork/WiFiFlutter/issues?q=author%3ABojan227" title="Bug reports">🐛</a></td>
       <td align="center" valign="top" width="11.11%"><a href="https://github.com/UnluckyY1"><img src="https://avatars.githubusercontent.com/u/48437666?v=4?s=100" width="100px;" alt="Yassine Ben Massaoud"/><br /><sub><b>Yassine Ben Massaoud</b></sub></a><br /><a href="https://github.com/flutternetwork/WiFiFlutter/commits?author=UnluckyY1" title="Code">💻</a></td>
+      <td align="center" valign="top" width="11.11%"><a href="https://github.com/bazookon"><img src="https://avatars.githubusercontent.com/u/15639967?v=4?s=100" width="100px;" alt="Osvaldo Leiva"/><br /><sub><b>Osvaldo Leiva</b></sub></a><br /><a href="https://github.com/flutternetwork/WiFiFlutter/commits?author=bazookon" title="Code">💻</a></td>
+      <td align="center" valign="top" width="11.11%"><a href="https://github.com/ChanakyaHirpara"><img src="https://avatars.githubusercontent.com/u/16621205?v=4?s=100" width="100px;" alt="ChanakyaHirpara"/><br /><sub><b>ChanakyaHirpara</b></sub></a><br /><a href="https://github.com/flutternetwork/WiFiFlutter/issues?q=author%3AChanakyaHirpara" title="Bug reports">🐛</a></td>
     </tr>
   </tbody>
 </table>

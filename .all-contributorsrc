@@ -586,6 +586,24 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "bazookon",
+      "name": "Osvaldo Leiva",
+      "avatar_url": "https://avatars.githubusercontent.com/u/15639967?v=4",
+      "profile": "https://github.com/bazookon",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "ChanakyaHirpara",
+      "name": "ChanakyaHirpara",
+      "avatar_url": "https://avatars.githubusercontent.com/u/16621205?v=4",
+      "profile": "https://github.com/ChanakyaHirpara",
+      "contributions": [
+        "bug"
+      ]
     }
   ]
 }

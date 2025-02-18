@@ -1,3 +1,8 @@
+## 0.3.19+2
+
+ - **FIX**(wifi_iot): iOS isConnected always true even connection is failed - synced with master (#407).
+ - **FIX**: Update compileSdkVersion to fix Android release build with flutter 3.24 (#398).
+
 ## 0.3.19+1
 
  - **FIX**: Update compileSdkVersion to fix Android release build with flutter 3.24 (#398).

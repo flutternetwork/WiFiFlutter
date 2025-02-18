@@ -1,3 +1,7 @@
+## 0.4.1+2
+
+ - **FIX**: Update compileSdkVersion to fix Android release build with flutter 3.24 (#398).
+
 ## 0.4.1+1
 
  - **FIX**: Update compileSdkVersion to fix Android release build with flutter 3.24 (#398).
