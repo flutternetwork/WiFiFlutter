@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/services.dart';
+import 'package:wifi_iot/wifi_connect_windows.dart';
 
 enum WIFI_AP_STATE {
   WIFI_AP_STATE_DISABLING,
@@ -342,22 +343,30 @@ class WiFiForIoTPlugin {
       print("Invalid SSID");
       return false;
     }
-
-    if (!Platform.isIOS && !await isEnabled()) await setEnabled(true);
     bool? bResult;
-    try {
-      bResult = await _channel.invokeMethod('connect', {
-        "ssid": ssid.toString(),
-        "bssid": bssid?.toString(),
-        "password": password?.toString(),
-        "join_once": joinOnce,
-        "with_internet": withInternet,
-        "is_hidden": isHidden,
-        "timeout_in_seconds": timeoutInSeconds,
-        "security": serializeNetworkSecurityMap[security],
-      });
-    } on MissingPluginException catch (e) {
-      print("MissingPluginException : ${e.toString()}");
+
+    if (Platform.isWindows) {
+      bResult = await windowsConnectToNetwork(
+        ssid: ssid.toString(),
+        password: password ?? "",
+        security: serializeNetworkSecurityMap[security] ?? "NONE",
+      );
+    } else {
+      if (!Platform.isIOS && !await isEnabled()) await setEnabled(true);
+      try {
+        bResult = await _channel.invokeMethod('connect', {
+          "ssid": ssid.toString(),
+          "bssid": bssid?.toString(),
+          "password": password?.toString(),
+          "join_once": joinOnce,
+          "with_internet": withInternet,
+          "is_hidden": isHidden,
+          "timeout_in_seconds": timeoutInSeconds,
+          "security": serializeNetworkSecurityMap[security],
+        });
+      } on MissingPluginException catch (e) {
+        print("MissingPluginException : ${e.toString()}");
+      }
     }
     return bResult ?? false;
   }

@@ -4,12 +4,14 @@ version: 0.4.1+2
 homepage: https://github.com/flutternetwork/WiFiFlutter/tree/master/packages/wifi_scan
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=2.16.0 <3.0.0"
   flutter: ">=3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
+  win32: ^5.11.0
+  ffi: any
 
 dev_dependencies:
   flutter_test:

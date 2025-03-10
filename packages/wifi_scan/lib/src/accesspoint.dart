@@ -148,7 +148,8 @@ class WiFiAccessPoint {
   /// ranging requests.
   final bool? is80211mcResponder;
 
-  WiFiAccessPoint._fromMap(Map map)
+  /// build WiFiAccessPoint property
+  WiFiAccessPoint.fromMap(Map map)
       : ssid = map["ssid"],
         bssid = map["bssid"],
         capabilities = map["capabilities"],
