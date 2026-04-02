@@ -304,7 +304,7 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
 
     private func removeWifiNetwork(call: FlutterMethodCall, result: @escaping FlutterResult) {
         let arguments = call.arguments
-        let sPrefixSSID = (arguments as! [String : String])["prefix_ssid"] ?? ""
+        let sPrefixSSID = (arguments as! [String : String])["ssid"] ?? ""
         if (sPrefixSSID == "") {
             print("No prefix SSID was given!")
             result(nil)
