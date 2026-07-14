@@ -3,6 +3,39 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2026-07-13
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
+ - There are no breaking changes in this release.
+
+Packages with other changes:
+
+ - [`wifi_iot` - `v0.3.19+3`](#wifi_iot---v03193)
+ - [`wifi_scan` - `v0.4.1+3`](#wifi_scan---v0413)
+
+---
+
+#### `wifi_iot` - `v0.3.19+3`
+
+ - **CHORE**: Flutter 3.44 / Dart 3.12 SDK constraints.
+ - **FEAT**: Add Swift Package Manager support (CocoaPods retained).
+ - **CHORE**: Migrate Android Gradle scripts from Groovy to Kotlin DSL; bump AGP, Gradle, and Java toolchain.
+ - **CHORE**: Update dependencies.
+
+#### `wifi_scan` - `v0.4.1+3`
+
+ - **CHORE**: Flutter 3.44 / Dart 3.12 SDK constraints.
+ - **FEAT**: Add Swift Package Manager support (CocoaPods retained).
+ - **CHORE**: Migrate Android Gradle scripts from Groovy to Kotlin DSL; bump AGP, Gradle, and Java toolchain.
+ - **CHORE**: Migrate to built-in Kotlin.
+ - **CHORE**: Update dependencies.
+
+
 ## 2025-02-18
 
 ### Changes

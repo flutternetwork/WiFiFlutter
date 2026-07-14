@@ -11,7 +11,7 @@ void main() {
 /// Example app for wifi_scan plugin.
 class MyApp extends StatefulWidget {
   /// Default constructor for [MyApp] widget.
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -96,7 +96,7 @@ class _MyAppState extends State<MyApp> {
       Row(
         children: [
           if (label != null) Text(label),
-          Switch(value: value, onChanged: onChanged, activeColor: activeColor),
+          Switch(value: value, onChanged: onChanged, activeThumbColor: activeColor),
         ],
       );
 
@@ -169,8 +169,7 @@ class _MyAppState extends State<MyApp> {
 class _AccessPointTile extends StatelessWidget {
   final WiFiAccessPoint accessPoint;
 
-  const _AccessPointTile({Key? key, required this.accessPoint})
-      : super(key: key);
+  const _AccessPointTile({required this.accessPoint});
 
   // build row that can display info, based on label: value pair.
   Widget _buildInfo(String label, dynamic value) => Container(

@@ -1,3 +1,10 @@
+## 0.3.19+3
+
+ - **CHORE**: Flutter 3.44 / Dart 3.12 SDK constraints.
+ - **FEAT**: Add Swift Package Manager support (CocoaPods retained).
+ - **CHORE**: Migrate Android Gradle scripts from Groovy to Kotlin DSL; bump AGP, Gradle, and Java toolchain.
+ - **CHORE**: Update dependencies.
+
 ## 0.3.19+2
 
  - **FIX**(wifi_iot): iOS isConnected always true even connection is failed - synced with master (#407).

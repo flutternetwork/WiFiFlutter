@@ -43,6 +43,10 @@ unlinked_spec.ds
 .fvmrc
 .cxx/
 
+# Swift Package Manager
+.build/
+.swiftpm/
+
 # Coverage
 coverage/
 

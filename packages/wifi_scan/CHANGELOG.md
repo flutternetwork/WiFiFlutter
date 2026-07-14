@@ -1,3 +1,11 @@
+## 0.4.1+3
+
+ - **CHORE**: Flutter 3.44 / Dart 3.12 SDK constraints.
+ - **FEAT**: Add Swift Package Manager support (CocoaPods retained).
+ - **CHORE**: Migrate Android Gradle scripts from Groovy to Kotlin DSL; bump AGP, Gradle, and Java toolchain.
+ - **CHORE**: Migrate to built-in Kotlin.
+ - **CHORE**: Update dependencies.
+
 ## 0.4.1+2
 
  - **FIX**: Update compileSdkVersion to fix Android release build with flutter 3.24 (#398).

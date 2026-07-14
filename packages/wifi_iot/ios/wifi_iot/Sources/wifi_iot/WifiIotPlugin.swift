@@ -3,10 +3,10 @@ import UIKit
 import SystemConfiguration.CaptiveNetwork
 import NetworkExtension
 
-public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
+public class WifiIotPlugin: NSObject, FlutterPlugin {
     public static func register(with registrar: FlutterPluginRegistrar) {
         let channel = FlutterMethodChannel(name: "wifi_iot", binaryMessenger: registrar.messenger())
-        let instance = SwiftWifiIotPlugin()
+        let instance = WifiIotPlugin()
         registrar.addMethodCallDelegate(instance, channel: channel)
     }
     

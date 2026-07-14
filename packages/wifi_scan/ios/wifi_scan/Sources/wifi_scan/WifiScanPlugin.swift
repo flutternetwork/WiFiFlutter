@@ -3,9 +3,9 @@ import Flutter
 // Since no API for scanning or getting scanned results in iOS.
 // This class is just a "stub" implementation with sane returns.
 // It is maintained to avoid `MissingPluginException`.
-public class SwiftWifiScanPlugin: NSObject, FlutterPlugin {
+public class WifiScanPlugin: NSObject, FlutterPlugin {
   public static func register(with registrar: FlutterPluginRegistrar) {
-    let instance = SwiftWifiScanPlugin()
+    let instance = WifiScanPlugin()
     // set Flutter channels - 1 for method, 1 for event
     let channel = FlutterMethodChannel(
         name: "wifi_scan", binaryMessenger: registrar.messenger()
