@@ -1,7 +1,7 @@
-<h3><a href="https://wifi.flutternetwork.dev/" ><img src="https://raw.githubusercontent.com/flutternetwork/WiFiFlutter/master/logo/logo%2Bname_vertical_color.png" alt="WiFiFlutter" height="112"/></a>| <code>wifi_iot</code></h3>
+<h3><a href="https://github.com/flutternetwork/WiFiFlutter" ><img src="https://raw.githubusercontent.com/flutternetwork/WiFiFlutter/master/logo/logo%2Bname_vertical_color.png" alt="WiFiFlutter" height="112"/></a>| <code>wifi_iot</code></h3>
 
 <p>
-<a href="https://flutternetwork.dev"><img src="https://raw.githubusercontent.com/flutternetwork/.github/master/profile/badge.svg" alt="Flutter Network" /></a>
+<img src="https://raw.githubusercontent.com/flutternetwork/.github/master/profile/badge.svg" alt="Flutter Network" />
 <a href="https://pub.dev/packages/wifi_iot"><img src="https://img.shields.io/pub/v/wifi_iot?logo=dart" alt="pub.dev"></a>
 <a href="https://pub.dev/packages/wifi_iot/score"><img src="https://img.shields.io/pub/points/wifi_iot?logo=dart" alt="pub points"></a>
 <a href="https://pub.dev/packages/wifi_iot/score"><img src="https://img.shields.io/pub/popularity/wifi_iot?logo=dart" alt="popularity"></a>

@@ -9,9 +9,9 @@ Pod::Spec.new do |s|
   s.description      = <<-DESC
 Flutter plugin to scan for nearby visible WiFi access points.
                        DESC
-  s.homepage         = 'https://wifi.flutternetwork.dev'
+  s.homepage         = 'https://github.com/flutternetwork/WiFiFlutter'
   s.license          = { :file => '../LICENSE' }
-  s.author           = { 'WiFiFlutter' => 'contact@flutternetwork.dev' }
+  s.author           = { 'WiFiFlutter' => 'harsh@bhikadia.com' }
   s.source           = { :path => '.' }
   s.source_files = 'wifi_scan/Sources/wifi_scan/**/*.swift'
   s.dependency 'Flutter'

@@ -10,7 +10,7 @@ Flutter plugin which can handle WiFi connections and hotspot (AP, STA).
                        DESC
   s.homepage         = 'https://github.com/flutternetwork/WiFiFlutter'
   s.license          = { :file => '../LICENSE' }
-  s.author           = { 'WiFiFlutter' => 'contact@flutternetwork.dev' }
+  s.author           = { 'WiFiFlutter' => 'harsh@bhikadia.com' }
   s.source           = { :path => '.' }
   s.source_files = 'wifi_iot/Sources/wifi_iot/**/*.swift'
   s.dependency 'Flutter'

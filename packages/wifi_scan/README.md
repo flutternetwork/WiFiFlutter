@@ -1,9 +1,9 @@
-<h3><a href="https://wifi.flutternetwork.dev/" ><img src="https://raw.githubusercontent.com/flutternetwork/WiFiFlutter/master/logo/logo%2Bname_vertical_color.png" alt="WiFiFlutter" height="112"/></a>| <code>wifi_scan</code></h3>
+<h3><a href="https://github.com/flutternetwork/WiFiFlutter" ><img src="https://raw.githubusercontent.com/flutternetwork/WiFiFlutter/master/logo/logo%2Bname_vertical_color.png" alt="WiFiFlutter" height="112"/></a>| <code>wifi_scan</code></h3>
 
 <p>
-<a href="https://flutternetwork.dev">
+<!--<a href="https://flutternetwork.dev">-->
   <img src="https://raw.githubusercontent.com/flutternetwork/.github/master/profile/badge.svg" alt="Flutter Network" />
-</a>
+<!--</a>-->
 <a href="https://pub.dev/packages/wifi_scan">
   <img src="https://img.shields.io/pub/v/wifi_scan?logo=dart" alt="pub.dev">
 </a>
@@ -137,7 +137,7 @@ Thanks goes to [these 💖 people][wf_contributors] for their contributions.
 This project follows the [all-contributors][all_contributors] specification. Contributions of any kind welcome!
 
 <!-- links -->
-[wf_home]: https://wifi.flutternetwork.dev/
+[wf_home]: https://github.com/flutternetwork/WiFiFlutter
 [wf_issue]: https://github.com/flutternetwork/WiFiFlutter/issues/new
 [wf_contrib]: https://github.com/flutternetwork/WiFiFlutter/blob/master/CONTRIBUTING.md
 [wf_pull]: https://github.com/flutternetwork/WiFiFlutter/pulls
