@@ -42,6 +42,7 @@ unlinked_spec.ds
 .fvm/
 .fvmrc
 .cxx/
+.repo_tool_cache/
 
 # Swift Package Manager
 .build/
