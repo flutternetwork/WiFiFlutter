@@ -5,6 +5,10 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 
+import 'wifi_connect_codes.dart';
+
+export 'wifi_connect_codes.dart';
+
 enum WIFI_AP_STATE {
   WIFI_AP_STATE_DISABLING,
   WIFI_AP_STATE_DISABLED,
@@ -13,12 +17,14 @@ enum WIFI_AP_STATE {
   WIFI_AP_STATE_FAILED
 }
 
-enum NetworkSecurity { WPA, WEP, NONE }
+enum NetworkSecurity { WPA, WEP, NONE, WPA2, WPA3 }
 
 const serializeNetworkSecurityMap = <NetworkSecurity, String>{
   NetworkSecurity.WPA: "WPA",
   NetworkSecurity.WEP: "WEP",
   NetworkSecurity.NONE: "NONE",
+  NetworkSecurity.WPA2: "WPA2",
+  NetworkSecurity.WPA3: "WPA3",
 };
 
 const MethodChannel _channel = const MethodChannel('wifi_iot');
@@ -319,9 +325,11 @@ class WiFiForIoTPlugin {
   ///
   /// @param [isHidden] Whether the SSID is hidden (not broadcasted by the AP).
   ///
-  /// @returns True in case the requested network could be connected to, false
-  ///   otherwise.
-  static Future<bool> connect(
+  /// Returns a map with:
+  /// - `code`: `WiFiConnectCode.ok` (empty string) if the connection succeeded,
+  ///   otherwise a stable error code string; see `WiFiConnectCode`.
+  /// - `networkHandle`: Android network handle (long), `0` on iOS or when unavailable.
+  static Future<Map<String, dynamic>> connect(
     String ssid, {
     String? bssid,
     String? password,
@@ -340,13 +348,12 @@ class WiFiForIoTPlugin {
     // TODO: support any binary sequence as required instead of just strings.
     if (ssid.length == 0 || ssid.length > 32) {
       print("Invalid SSID");
-      return false;
+      return {'code': WiFiConnectCode.invalidSsid, 'networkHandle': 0};
     }
 
     if (!Platform.isIOS && !await isEnabled()) await setEnabled(true);
-    bool? bResult;
     try {
-      bResult = await _channel.invokeMethod('connect', {
+      final Object? raw = await _channel.invokeMethod('connect', {
         "ssid": ssid.toString(),
         "bssid": bssid?.toString(),
         "password": password?.toString(),
@@ -356,10 +363,20 @@ class WiFiForIoTPlugin {
         "timeout_in_seconds": timeoutInSeconds,
         "security": serializeNetworkSecurityMap[security],
       });
+      if (raw is Map) {
+        return {
+          'code': raw['code'] as String? ?? WiFiConnectCode.unknown,
+          'networkHandle': raw['networkHandle'] as int? ?? 0,
+        };
+      }
+      if (raw is String) {
+        return {'code': raw, 'networkHandle': 0};
+      }
+      return {'code': WiFiConnectCode.unknown, 'networkHandle': 0};
     } on MissingPluginException catch (e) {
       print("MissingPluginException : ${e.toString()}");
+      return {'code': WiFiConnectCode.missingPlugin, 'networkHandle': 0};
     }
-    return bResult ?? false;
   }
 
   /// Register a network with the system in the device's wireless networks.
@@ -482,9 +499,8 @@ class WiFiForIoTPlugin {
     if (!await isEnabled()) {
       await setEnabled(true);
     }
-    bool? bResult;
     try {
-      bResult = await _channel.invokeMethod('findAndConnect', {
+      final Object? raw = await _channel.invokeMethod('findAndConnect', {
         "ssid": ssid.toString(),
         "bssid": bssid?.toString(),
         "password": password?.toString(),
@@ -492,10 +508,16 @@ class WiFiForIoTPlugin {
         "with_internet": withInternet,
         "timeout_in_seconds": timeoutInSeconds,
       });
+      if (raw is Map) {
+        return WiFiConnectCode.isOk(raw['code'] as String? ?? '');
+      }
+      if (raw is String) {
+        return WiFiConnectCode.isOk(raw);
+      }
     } on MissingPluginException catch (e) {
       print("MissingPluginException : ${e.toString()}");
     }
-    return bResult ?? false;
+    return false;
   }
 
   /// Returns whether the device is connected to a Wi-Fi network.

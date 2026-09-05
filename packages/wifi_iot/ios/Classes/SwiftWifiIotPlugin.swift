@@ -131,33 +131,40 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
 
             NEHotspotConfigurationManager.shared.apply(configuration) { [weak self] (error) in
                 guard let this = self else {
-                    print("WiFi network not found")
-                    result(false)
+                    print("[wifi_iot] connect failed: plugin deallocated — \(WifiConnectCodes.pluginInternal)")
+                    result(["code": WifiConnectCodes.pluginInternal, "networkHandle": 0])
+                    return
+                }
+                if let error = error {
+                    let ns = error as NSError
+                    if ns.domain == "NEHotspotConfigurationErrorDomain",
+                       let neError = NEHotspotConfigurationError(rawValue: ns.code) {
+                        let codeStr = WifiConnectCodes.from(neError: neError)
+                        print("[wifi_iot] connect failed: NEHotspotConfigurationError \(neError) (code=\(ns.code)) → \(codeStr) | \(ns.localizedDescription)")
+                        result(["code": codeStr, "networkHandle": 0])
+                    } else {
+                        print("[wifi_iot] connect failed: unexpected NSError domain=\(ns.domain) code=\(ns.code) → \(WifiConnectCodes.unknownError) | \(ns.localizedDescription)")
+                        result(["code": WifiConnectCodes.unknownError, "networkHandle": 0])
+                    }
                     return
                 }
                 this.getSSID { (connectedSSID) -> () in
-                    if (error != nil) {
-                        if (error?.localizedDescription == "already associated.") {
-                            print("Connected to '\(connectedSSID ?? "<Unknown Network>")'")
-                            result(true)
+                    if let connectedSSID = connectedSSID {
+                        if sSSID == connectedSSID {
+                            result(["code": WifiConnectCodes.ok, "networkHandle": 0])
                         } else {
-                            print("Not Connected")
-                            result(false)
+                            print("[wifi_iot] connect failed: SSID mismatch expected='\(sSSID)' current='\(connectedSSID)' → \(WifiConnectCodes.postApplySsidMismatch)")
+                            result(["code": WifiConnectCodes.postApplySsidMismatch, "networkHandle": 0])
                         }
-                    } else if let connectedSSID = connectedSSID {
-                        print("Connected to " + connectedSSID)
-                        // Emit result of [isConnected] by checking if targetSSID is the same as connectedSSID.
-                        result(sSSID == connectedSSID)
                     } else {
-                        print("WiFi network not found")
-                        result(false)
+                        print("[wifi_iot] connect failed: current SSID unavailable after apply → \(WifiConnectCodes.postApplySsidUnavailable)")
+                        result(["code": WifiConnectCodes.postApplySsidUnavailable, "networkHandle": 0])
                     }
                 }
             }
         } else {
-            print("Not Connected")
-            result(nil)
-            return
+            print("[wifi_iot] connect failed: iOS < 11 — \(WifiConnectCodes.iosVersionUnsupported)")
+            result(["code": WifiConnectCodes.iosVersionUnsupported, "networkHandle": 0])
         }
     }
 
@@ -167,13 +174,30 @@ public class SwiftWifiIotPlugin: NSObject, FlutterPlugin {
 
     @available(iOS 11.0, *)
     private func initHotspotConfiguration(ssid: String, passphrase: String?, security: String? = nil) -> NEHotspotConfiguration {
-        switch security?.uppercased() {
-            case "WPA":
-                return NEHotspotConfiguration.init(ssid: ssid, passphrase: passphrase!, isWEP: false)
-            case "WEP":
-                return NEHotspotConfiguration.init(ssid: ssid, passphrase: passphrase!, isWEP: true)
-            default:
-                return NEHotspotConfiguration.init(ssid: ssid)
+        let sec = security?.uppercased() ?? ""
+
+        if sec.hasPrefix("WPA") {
+            // WPA / WPA2 / WPA3
+            guard let passphrase = passphrase else {
+                fatalError("WPA security requires passphrase")
+            }
+            return NEHotspotConfiguration(
+                ssid: ssid,
+                passphrase: passphrase,
+                isWEP: false
+            )
+        } else if sec.hasPrefix("WEP") {
+            guard let passphrase = passphrase else {
+                fatalError("WEP security requires passphrase")
+            }
+            return NEHotspotConfiguration(
+                ssid: ssid,
+                passphrase: passphrase,
+                isWEP: true
+            )
+        } else {
+            // Open network
+            return NEHotspotConfiguration(ssid: ssid)
         }
     }
 
