@@ -337,7 +337,8 @@ public class WifiIotPlugin
           } else {
             poResult.error(
                 "Exception [getWiFiAPSSID]",
-                "Security type is not WifiConfiguration.KeyMgmt.None or WifiConfiguration.KeyMgmt.WPA2_PSK",
+                "Security type is not WifiConfiguration.KeyMgmt.None or"
+                    + " WifiConfiguration.KeyMgmt.WPA2_PSK",
                 null);
           }
         } else {
@@ -395,7 +396,8 @@ public class WifiIotPlugin
           } else {
             poResult.error(
                 "Exception [isSSIDHidden]",
-                "Security type is not WifiConfiguration.KeyMgmt.None or WifiConfiguration.KeyMgmt.WPA2_PSK",
+                "Security type is not WifiConfiguration.KeyMgmt.None or"
+                    + " WifiConfiguration.KeyMgmt.WPA2_PSK",
                 null);
           }
         }
@@ -450,7 +452,8 @@ public class WifiIotPlugin
           } else {
             poResult.error(
                 "Exception [getWiFiAPPreSharedKey]",
-                "Security type is not WifiConfiguration.KeyMgmt.None or WifiConfiguration.KeyMgmt.WPA2_PSK",
+                "Security type is not WifiConfiguration.KeyMgmt.None or"
+                    + " WifiConfiguration.KeyMgmt.WPA2_PSK",
                 null);
           }
         } else {
@@ -714,11 +717,11 @@ public class WifiIotPlugin
             wifiObject.put("timestamp", 0);
           }
           /// Other fields not added
-          //wifiObject.put("operatorFriendlyName", result.operatorFriendlyName);
-          //wifiObject.put("venueName", result.venueName);
-          //wifiObject.put("centerFreq0", result.centerFreq0);
-          //wifiObject.put("centerFreq1", result.centerFreq1);
-          //wifiObject.put("channelWidth", result.channelWidth);
+          // wifiObject.put("operatorFriendlyName", result.operatorFriendlyName);
+          // wifiObject.put("venueName", result.venueName);
+          // wifiObject.put("centerFreq0", result.centerFreq0);
+          // wifiObject.put("centerFreq1", result.centerFreq1);
+          // wifiObject.put("channelWidth", result.channelWidth);
 
           wifiArray.put(wifiObject);
         }
@@ -1191,7 +1194,7 @@ public class WifiIotPlugin
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
       List<android.net.wifi.WifiConfiguration> mWifiConfigList = moWiFi.getConfiguredNetworks();
       for (android.net.wifi.WifiConfiguration wifiConfig : mWifiConfigList) {
-        String comparableSSID = ('"' + prefix_ssid); //Add quotes because wifiConfig.SSID has them
+        String comparableSSID = ('"' + prefix_ssid); // Add quotes because wifiConfig.SSID has them
         if (wifiConfig.SSID.startsWith(comparableSSID)) {
           moWiFi.removeNetwork(wifiConfig.networkId);
           moWiFi.saveConfiguration();
@@ -1223,7 +1226,7 @@ public class WifiIotPlugin
     String ssid = poCall.argument("ssid");
 
     List<android.net.wifi.WifiConfiguration> mWifiConfigList = moWiFi.getConfiguredNetworks();
-    String comparableSSID = ('"' + ssid + '"'); //Add quotes because wifiConfig.SSID has them
+    String comparableSSID = ('"' + ssid + '"'); // Add quotes because wifiConfig.SSID has them
     if (mWifiConfigList != null) {
       for (android.net.wifi.WifiConfiguration wifiConfig : mWifiConfigList) {
         if (wifiConfig.SSID.equals(comparableSSID)) {
@@ -1319,7 +1322,7 @@ public class WifiIotPlugin
           moWiFi.removeNetworkSuggestions(networkSuggestions);
         }
 
-        //builder.setIsAppInteractionRequired(true);
+        // builder.setIsAppInteractionRequired(true);
         final WifiNetworkSuggestion suggestion = builder.build();
 
         networkSuggestions = new ArrayList<>();

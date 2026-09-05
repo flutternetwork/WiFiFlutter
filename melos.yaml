@@ -23,7 +23,7 @@ scripts:
        - Note: you can also rely on your IDEs Dart Analysis / Issues window.
 
   format:
-    run: melos exec -c 5 -- dart format . && dart pub global run flutter_plugin_tools format
+    run: melos exec -c 5 -- dart format . && dart pub global run flutter_plugin_tools format --base-branch=master
     description: |
       activate flutter_plugin_tools
        - Requires `flutter_plugin_tools` (`pub global activate flutter_plugin_tools`).
