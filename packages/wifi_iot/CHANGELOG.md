@@ -1,3 +1,8 @@
+## 0.3.19+3
+
+ - **FIX**(wifi_iot): iOS mis-named removeWifiNetwork parameter (#429).
+ - **FIX**(wifi_iot): jcenter is discontinued, replace jcenter() with mavenCentral(). (#433).
+
 ## 0.3.19+2
 
  - **FIX**(wifi_iot): iOS isConnected always true even connection is failed - synced with master (#407).

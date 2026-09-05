@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2026-09-05
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
+ - There are no breaking changes in this release.
+
+Packages with other changes:
+
+ - [`wifi_iot` - `v0.3.19+3`](#wifi_iot---v03193)
+ - [`wifi_scan` - `0.4.1+3`](#wifi_scan---v0413)
+
+---
+
+#### `wifi_scan` - `v0.4.1+3`
+
+ - **FIX**(wifi_scan): add support for wifi 7 and 320 MHZ channel width (#420).
+
+#### `wifi_iot` - `v0.3.19+3`
+
+ - **FIX**(wifi_iot): iOS mis-named removeWifiNetwork parameter (#429).
+ - **FIX**(wifi_iot): jcenter is discontinued, replace jcenter() with mavenCentral(). (#433).
+
+
 ## 2025-02-18
 
 ### Changes

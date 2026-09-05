@@ -1,3 +1,7 @@
+## 0.4.1+3
+
+ - **FIX**(wifi_scan): add support for wifi 7 and 320 MHZ channel width (#420).
+
 ## 0.4.1+2
 
  - **FIX**: Update compileSdkVersion to fix Android release build with flutter 3.24 (#398).
