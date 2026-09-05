@@ -1,3 +1,9 @@
+## 0.4.0
+
+> Note: This release has breaking changes.
+
+ - **BREAKING** **BUILD**: Migration Swift package manager & Kotlin (#436).
+
 ## 0.3.19+3
 
  - **FIX**(wifi_iot): iOS mis-named removeWifiNetwork parameter (#429).

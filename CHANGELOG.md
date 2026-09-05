@@ -11,6 +11,32 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 Packages with breaking changes:
 
+ - [`wifi_iot` - `v0.4.0`](#wifi_iot---v040)
+ - [`wifi_scan` - `v0.5.0`](#wifi_scan---v050)
+
+Packages with other changes:
+
+ - There are no other changes in this release.
+
+---
+
+#### `wifi_iot` - `v0.4.0`
+
+ - **BREAKING** **BUILD**: Migration Swift package manager & Kotlin (#436).
+
+#### `wifi_scan` - `v0.5.0`
+
+ - **BREAKING** **BUILD**: Migration Swift package manager & Kotlin (#436).
+
+
+## 2026-09-05
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
  - There are no breaking changes in this release.
 
 Packages with other changes:

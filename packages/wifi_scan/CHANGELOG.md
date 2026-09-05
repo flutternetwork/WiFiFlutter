@@ -1,3 +1,9 @@
+## 0.5.0
+
+> Note: This release has breaking changes.
+
+ - **BREAKING** **BUILD**: Migration Swift package manager & Kotlin (#436).
+
 ## 0.4.1+3
 
  - **FIX**(wifi_scan): add support for wifi 7 and 320 MHZ channel width (#420).
