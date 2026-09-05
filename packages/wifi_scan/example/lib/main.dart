@@ -69,8 +69,9 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> _startListeningToScanResults(BuildContext context) async {
     if (await _canGetScannedResults(context)) {
-      subscription = WiFiScan.instance.onScannedResultsAvailable
-          .listen((result) => setState(() => accessPoints = result));
+      subscription = WiFiScan.instance.onScannedResultsAvailable.listen(
+        (result) => setState(() => accessPoints = result),
+      );
     }
   }
 
@@ -92,13 +93,12 @@ class _MyAppState extends State<MyApp> {
     bool value = false,
     ValueChanged<bool>? onChanged,
     Color? activeColor,
-  }) =>
-      Row(
-        children: [
-          if (label != null) Text(label),
-          Switch(value: value, onChanged: onChanged, activeThumbColor: activeColor),
-        ],
-      );
+  }) => Row(
+    children: [
+      if (label != null) Text(label),
+      Switch(value: value, onChanged: onChanged, activeThumbColor: activeColor),
+    ],
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -108,10 +108,11 @@ class _MyAppState extends State<MyApp> {
           title: const Text('Plugin example app'),
           actions: [
             _buildToggle(
-                label: "Check can?",
-                value: shouldCheckCan,
-                onChanged: (v) => setState(() => shouldCheckCan = v),
-                activeColor: Colors.purple)
+              label: "Check can?",
+              value: shouldCheckCan,
+              onChanged: (v) => setState(() => shouldCheckCan = v),
+              activeColor: Colors.purple,
+            ),
           ],
         ),
         body: Builder(
@@ -151,7 +152,8 @@ class _MyAppState extends State<MyApp> {
                         : ListView.builder(
                             itemCount: accessPoints.length,
                             itemBuilder: (context, i) =>
-                                _AccessPointTile(accessPoint: accessPoints[i])),
+                                _AccessPointTile(accessPoint: accessPoints[i]),
+                          ),
                   ),
                 ),
               ],
@@ -173,19 +175,16 @@ class _AccessPointTile extends StatelessWidget {
 
   // build row that can display info, based on label: value pair.
   Widget _buildInfo(String label, dynamic value) => Container(
-        decoration: const BoxDecoration(
-          border: Border(bottom: BorderSide(color: Colors.grey)),
-        ),
-        child: Row(
-          children: [
-            Text(
-              "$label: ",
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-            Expanded(child: Text(value.toString()))
-          ],
-        ),
-      );
+    decoration: const BoxDecoration(
+      border: Border(bottom: BorderSide(color: Colors.grey)),
+    ),
+    child: Row(
+      children: [
+        Text("$label: ", style: const TextStyle(fontWeight: FontWeight.bold)),
+        Expanded(child: Text(value.toString())),
+      ],
+    ),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -211,13 +210,19 @@ class _AccessPointTile extends StatelessWidget {
               _buildInfo("level", accessPoint.level),
               _buildInfo("standard", accessPoint.standard),
               _buildInfo(
-                  "centerFrequency0", "${accessPoint.centerFrequency0}MHz"),
+                "centerFrequency0",
+                "${accessPoint.centerFrequency0}MHz",
+              ),
               _buildInfo(
-                  "centerFrequency1", "${accessPoint.centerFrequency1}MHz"),
+                "centerFrequency1",
+                "${accessPoint.centerFrequency1}MHz",
+              ),
               _buildInfo("channelWidth", accessPoint.channelWidth),
               _buildInfo("isPasspoint", accessPoint.isPasspoint),
               _buildInfo(
-                  "operatorFriendlyName", accessPoint.operatorFriendlyName),
+                "operatorFriendlyName",
+                accessPoint.operatorFriendlyName,
+              ),
               _buildInfo("venueName", accessPoint.venueName),
               _buildInfo("is80211mcResponder", accessPoint.is80211mcResponder),
             ],

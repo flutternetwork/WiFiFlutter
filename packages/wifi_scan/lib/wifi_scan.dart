@@ -15,8 +15,9 @@ class WiFiScan {
   static final instance = WiFiScan._();
 
   final _channel = const MethodChannel('wifi_scan');
-  final _scannedResultsAvailableChannel =
-      const EventChannel('wifi_scan/onScannedResultsAvailable');
+  final _scannedResultsAvailableChannel = const EventChannel(
+    'wifi_scan/onScannedResultsAvailable',
+  );
   Stream<List<WiFiAccessPoint>>? _onScannedResultsAvailable;
 
   /// Checks if it is ok to invoke [startScan].
@@ -48,8 +49,9 @@ class WiFiScan {
   /// configuration, etc are checked.
   ///
   /// Set [askPermissions] flag to ask user for necessary permissions.
-  Future<CanGetScannedResults> canGetScannedResults(
-      {bool askPermissions = true}) async {
+  Future<CanGetScannedResults> canGetScannedResults({
+    bool askPermissions = true,
+  }) async {
     final canCode = await _channel.invokeMethod<int>("canGetScannedResults", {
       "askPermissions": askPermissions,
     });
@@ -62,8 +64,9 @@ class WiFiScan {
   ///
   /// Should call [canGetScannedResults] as a check before calling this method.
   Future<List<WiFiAccessPoint>> getScannedResults() async {
-    final scannedResults =
-        await _channel.invokeListMethod<Map>("getScannedResults");
+    final scannedResults = await _channel.invokeListMethod<Map>(
+      "getScannedResults",
+    );
     return scannedResults!
         .map((map) => WiFiAccessPoint._fromMap(map))
         .toList(growable: false);
@@ -76,14 +79,15 @@ class WiFiScan {
   ///
   /// Should call [canGetScannedResults] as a check before calling this method.
   Stream<List<WiFiAccessPoint>> get onScannedResultsAvailable =>
-      _onScannedResultsAvailable ??=
-          _scannedResultsAvailableChannel.receiveBroadcastStream().map((event) {
-        if (event is Error) throw event;
-        if (event is List) {
-          return event
-              .map((map) => WiFiAccessPoint._fromMap(map))
-              .toList(growable: false);
-        }
-        return const <WiFiAccessPoint>[];
-      });
+      _onScannedResultsAvailable ??= _scannedResultsAvailableChannel
+          .receiveBroadcastStream()
+          .map((event) {
+            if (event is Error) throw event;
+            if (event is List) {
+              return event
+                  .map((map) => WiFiAccessPoint._fromMap(map))
+                  .toList(growable: false);
+            }
+            return const <WiFiAccessPoint>[];
+          });
 }

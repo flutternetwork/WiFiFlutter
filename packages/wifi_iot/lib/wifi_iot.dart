@@ -10,7 +10,7 @@ enum WIFI_AP_STATE {
   WIFI_AP_STATE_DISABLED,
   WIFI_AP_STATE_ENABLING,
   WIFI_AP_STATE_ENABLED,
-  WIFI_AP_STATE_FAILED
+  WIFI_AP_STATE_FAILED,
 }
 
 enum NetworkSecurity { WPA, WEP, NONE }
@@ -23,10 +23,12 @@ const serializeNetworkSecurityMap = <NetworkSecurity, String>{
 
 const MethodChannel _channel = const MethodChannel('wifi_iot');
 @Deprecated(
-    "This is discontinued, switch to new `wifi_scan` plugin by WiFiFlutter. "
-    "Check - https://pub.dev/packages/wifi_scan")
-const EventChannel _eventChannel =
-    const EventChannel('plugins.wififlutter.io/wifi_scan');
+  "This is discontinued, switch to new `wifi_scan` plugin by WiFiFlutter. "
+  "Check - https://pub.dev/packages/wifi_scan",
+)
+const EventChannel _eventChannel = const EventChannel(
+  'plugins.wififlutter.io/wifi_scan',
+);
 
 class WiFiForIoTPlugin {
   /// Returns whether the WiFi AP is enabled or not
@@ -119,7 +121,9 @@ class WiFiForIoTPlugin {
   /// Get WiFi AP clients
   @Deprecated("This is will only work with < Android SDK 26.")
   static Future<List<APClient>> getClientList(
-      bool onlyReachables, int reachableTimeout) async {
+    bool onlyReachables,
+    int reachableTimeout,
+  ) async {
     final Map<String, Object> htArguments = Map();
     htArguments["onlyReachables"] = onlyReachables;
     htArguments["reachableTimeout"] = reachableTimeout;
@@ -171,8 +175,10 @@ class WiFiForIoTPlugin {
     final Map<String, String> htArguments = Map();
     String? sResult;
     try {
-      sResult =
-          await _channel.invokeMethod('getWiFiAPPreSharedKey', htArguments);
+      sResult = await _channel.invokeMethod(
+        'getWiFiAPPreSharedKey',
+        htArguments,
+      );
     } on MissingPluginException catch (e) {
       print("MissingPluginException : ${e.toString()}");
     }
@@ -192,25 +198,28 @@ class WiFiForIoTPlugin {
   }
 
   @Deprecated(
-      "This is discontinued, switch to new `wifi_scan` plugin by WiFiFlutter. "
-      "Check - https://pub.dev/packages/wifi_scan")
+    "This is discontinued, switch to new `wifi_scan` plugin by WiFiFlutter. "
+    "Check - https://pub.dev/packages/wifi_scan",
+  )
   static Stream<List<WifiNetwork>>? _onWifiScanResultReady;
 
   @Deprecated(
-      "This is discontinued, switch to new `wifi_scan` plugin by WiFiFlutter. "
-      "Check - https://pub.dev/packages/wifi_scan")
+    "This is discontinued, switch to new `wifi_scan` plugin by WiFiFlutter. "
+    "Check - https://pub.dev/packages/wifi_scan",
+  )
   static Stream<List<WifiNetwork>> get onWifiScanResultReady {
     if (_onWifiScanResultReady == null) {
-      _onWifiScanResultReady = _eventChannel
-          .receiveBroadcastStream()
-          .map((dynamic event) => WifiNetwork.parse(event));
+      _onWifiScanResultReady = _eventChannel.receiveBroadcastStream().map(
+        (dynamic event) => WifiNetwork.parse(event),
+      );
     }
     return _onWifiScanResultReady!;
   }
 
   @Deprecated(
-      "This is discontinued, switch to new `wifi_scan` plugin by WiFiFlutter. "
-      "Check - https://pub.dev/packages/wifi_scan")
+    "This is discontinued, switch to new `wifi_scan` plugin by WiFiFlutter. "
+    "Check - https://pub.dev/packages/wifi_scan",
+  )
   static Future<List<WifiNetwork>>? _loadWifiList() async {
     final Map<String, String> htArguments = Map();
     String? sResult;
@@ -225,8 +234,9 @@ class WiFiForIoTPlugin {
   }
 
   @Deprecated(
-      "This is discontinued, switch to new `wifi_scan` plugin by WiFiFlutter. "
-      "Check - https://pub.dev/packages/wifi_scan")
+    "This is discontinued, switch to new `wifi_scan` plugin by WiFiFlutter. "
+    "Check - https://pub.dev/packages/wifi_scan",
+  )
   static Future<List<WifiNetwork>> loadWifiList() async {
     final List<WifiNetwork> result = (await _loadWifiList() ?? <WifiNetwork>[]);
     if (result.length >= 1) return result;
@@ -554,8 +564,10 @@ class WiFiForIoTPlugin {
     final Map<String, String> htArguments = Map();
     int? iResult;
     try {
-      iResult =
-          await _channel.invokeMethod('getCurrentSignalStrength', htArguments);
+      iResult = await _channel.invokeMethod(
+        'getCurrentSignalStrength',
+        htArguments,
+      );
     } on MissingPluginException catch (e) {
       print("MissingPluginException : ${e.toString()}");
     }
@@ -604,8 +616,10 @@ class WiFiForIoTPlugin {
     htArguments["ssid"] = ssid;
     bool? bResult;
     try {
-      bResult =
-          await _channel.invokeMethod('isRegisteredWifiNetwork', htArguments);
+      bResult = await _channel.invokeMethod(
+        'isRegisteredWifiNetwork',
+        htArguments,
+      );
     } on MissingPluginException catch (e) {
       print("MissingPluginException : ${e.toString()}");
     }
@@ -627,17 +641,17 @@ class APClient {
   bool? isReachable;
 
   APClient.fromJson(Map<String, dynamic> json)
-      : ipAddr = json['IPAddr'],
-        hwAddr = json['HWAddr'],
-        device = json['Device'],
-        isReachable = json['isReachable'];
+    : ipAddr = json['IPAddr'],
+      hwAddr = json['HWAddr'],
+      device = json['Device'],
+      isReachable = json['isReachable'];
 
   Map<String, dynamic> toJson() => {
-        'IPAddr': ipAddr,
-        'HWAddr': hwAddr,
-        'Device': device,
-        'isReachable': isReachable,
-      };
+    'IPAddr': ipAddr,
+    'HWAddr': hwAddr,
+    'Device': device,
+    'isReachable': isReachable,
+  };
 
   static List<APClient> parse(String psString) {
     final List<APClient> htList = <APClient>[];
@@ -653,8 +667,9 @@ class APClient {
 }
 
 @Deprecated(
-    "This is discontinued, switch to new `wifi_scan` plugin by WiFiFlutter. "
-    "Check - https://pub.dev/packages/wifi_scan")
+  "This is discontinued, switch to new `wifi_scan` plugin by WiFiFlutter. "
+  "Check - https://pub.dev/packages/wifi_scan",
+)
 class WifiNetwork {
   String? ssid;
   String? bssid;
@@ -665,21 +680,21 @@ class WifiNetwork {
   String? password;
 
   WifiNetwork.fromJson(Map<String, dynamic> json)
-      : ssid = json['SSID'],
-        bssid = json['BSSID'],
-        capabilities = json['capabilities'],
-        frequency = json['frequency'],
-        level = json['level'],
-        timestamp = json['timestamp'];
+    : ssid = json['SSID'],
+      bssid = json['BSSID'],
+      capabilities = json['capabilities'],
+      frequency = json['frequency'],
+      level = json['level'],
+      timestamp = json['timestamp'];
 
   Map<String, dynamic> toJson() => {
-        'SSID': ssid,
-        'BSSID': bssid,
-        'capabilities': capabilities,
-        'frequency': frequency,
-        'level': level,
-        'timestamp': timestamp,
-      };
+    'SSID': ssid,
+    'BSSID': bssid,
+    'capabilities': capabilities,
+    'frequency': frequency,
+    'level': level,
+    'timestamp': timestamp,
+  };
 
   static List<WifiNetwork> parse(String psString) {
     /// [{"SSID":"Florian","BSSID":"30:7e:cb:8c:48:e4","capabilities":"[WPA-PSK-CCMP+TKIP][ESS]","frequency":2462,"level":-64,"timestamp":201307720907},{"SSID":"Pi3-AP","BSSID":"b8:27:eb:b1:fa:e1","capabilities":"[WPA2-PSK-CCMP][ESS]","frequency":2437,"level":-66,"timestamp":201307720892},{"SSID":"AlternaDom-SonOff","BSSID":"b8:27:eb:98:b4:81","capabilities":"[WPA2-PSK-CCMP][ESS]","frequency":2437,"level":-86,"timestamp":201307720897},{"SSID":"SFR_1CF0_2GEXT","BSSID":"9c:3d:cf:58:98:07","capabilities":"[WPA-PSK-CCMP+TKIP][WPA2-PSK-CCMP+TKIP][WPS][ESS]","frequency":2412,"level":-87,"timestamp":201307720887},{"SSID":"Freebox-5CC952","BSSID":"f4:ca:e5:96:71:c4","capabilities":"[WPA-PSK-CCMP][ESS]","frequency":2442,"level":-90,"timestamp":201307720902}]

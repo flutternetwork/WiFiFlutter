@@ -11,10 +11,10 @@ void main() {
   setUp(() {
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(channel, (call) {
-      final result = mockHandlers[call.method]?.call(call.arguments);
-      if (result is Future) return result;
-      return Future.value(result);
-    });
+          final result = mockHandlers[call.method]?.call(call.arguments);
+          if (result is Future) return result;
+          return Future.value(result);
+        });
   });
 
   tearDown(() {
@@ -40,8 +40,10 @@ void main() {
     final badCanCodes = [null, -1, 6, 7];
     for (int i = 0; i < badCanCodes.length; i++) {
       mockHandlers["canStartScan"] = (_) => badCanCodes[i];
-      expect(() async => await WiFiScan.instance.canStartScan(),
-          throwsUnsupportedError);
+      expect(
+        () async => await WiFiScan.instance.canStartScan(),
+        throwsUnsupportedError,
+      );
     }
   });
 
@@ -69,30 +71,32 @@ void main() {
     final badCanCodes = [null, -1, 6, 7];
     for (int i = 0; i < badCanCodes.length; i++) {
       mockHandlers["canGetScannedResults"] = (_) => badCanCodes[i];
-      expect(() async => await WiFiScan.instance.canGetScannedResults(),
-          throwsUnsupportedError);
+      expect(
+        () async => await WiFiScan.instance.canGetScannedResults(),
+        throwsUnsupportedError,
+      );
     }
   });
 
   test("getScannedResults", () async {
     mockHandlers["getScannedResults"] = (_) => [
-          {
-            "ssid": "my-ssid",
-            "bssid": "00:00:00:12",
-            "capabilities": "Unknown",
-            "frequency": 600,
-            "level": 5,
-            "timestamp": null,
-            "standard": null,
-            "centerFrequency0": null,
-            "centerFrequency1": null,
-            "channelWidth": null,
-            "isPasspoint": null,
-            "operatorFriendlyName": null,
-            "venueName": null,
-            "is80211mcResponder": null,
-          }
-        ];
+      {
+        "ssid": "my-ssid",
+        "bssid": "00:00:00:12",
+        "capabilities": "Unknown",
+        "frequency": 600,
+        "level": 5,
+        "timestamp": null,
+        "standard": null,
+        "centerFrequency0": null,
+        "centerFrequency1": null,
+        "channelWidth": null,
+        "isPasspoint": null,
+        "operatorFriendlyName": null,
+        "venueName": null,
+        "is80211mcResponder": null,
+      },
+    ];
     final scannedNetworks = await WiFiScan.instance.getScannedResults();
     expect(scannedNetworks.length, 1);
   });

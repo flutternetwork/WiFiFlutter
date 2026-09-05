@@ -91,5 +91,6 @@ CanGetScannedResults _deserializeCanGetScannedResults(int? canCode) {
       return CanGetScannedResults.noLocationServiceDisabled;
   }
   throw UnsupportedError(
-      "$canCode cannot be serialized to CanGetScannedNetworks");
+    "$canCode cannot be serialized to CanGetScannedNetworks",
+  );
 }
