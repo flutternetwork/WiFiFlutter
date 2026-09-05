@@ -3,7 +3,7 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## 2026-07-13
+## 2026-09-05
 
 ### Changes
 
@@ -16,24 +16,18 @@ Packages with breaking changes:
 Packages with other changes:
 
  - [`wifi_iot` - `v0.3.19+3`](#wifi_iot---v03193)
- - [`wifi_scan` - `v0.4.1+3`](#wifi_scan---v0413)
+ - [`wifi_scan` - `0.4.1+3`](#wifi_scan---v0413)
 
 ---
 
-#### `wifi_iot` - `v0.3.19+3`
-
- - **CHORE**: Flutter 3.44 / Dart 3.12 SDK constraints.
- - **FEAT**: Add Swift Package Manager support (CocoaPods retained).
- - **CHORE**: Migrate Android Gradle scripts from Groovy to Kotlin DSL; bump AGP, Gradle, and Java toolchain.
- - **CHORE**: Update dependencies.
-
 #### `wifi_scan` - `v0.4.1+3`
 
- - **CHORE**: Flutter 3.44 / Dart 3.12 SDK constraints.
- - **FEAT**: Add Swift Package Manager support (CocoaPods retained).
- - **CHORE**: Migrate Android Gradle scripts from Groovy to Kotlin DSL; bump AGP, Gradle, and Java toolchain.
- - **CHORE**: Migrate to built-in Kotlin.
- - **CHORE**: Update dependencies.
+ - **FIX**(wifi_scan): add support for wifi 7 and 320 MHZ channel width (#420).
+
+#### `wifi_iot` - `v0.3.19+3`
+
+ - **FIX**(wifi_iot): iOS mis-named removeWifiNetwork parameter (#429).
+ - **FIX**(wifi_iot): jcenter is discontinued, replace jcenter() with mavenCentral(). (#433).
 
 
 ## 2025-02-18

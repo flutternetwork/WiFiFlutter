@@ -1,10 +1,6 @@
 ## 0.4.1+3
 
- - **CHORE**: Flutter 3.44 / Dart 3.12 SDK constraints.
- - **FEAT**: Add Swift Package Manager support (CocoaPods retained).
- - **CHORE**: Migrate Android Gradle scripts from Groovy to Kotlin DSL; bump AGP, Gradle, and Java toolchain.
- - **CHORE**: Migrate to built-in Kotlin.
- - **CHORE**: Update dependencies.
+ - **FIX**(wifi_scan): add support for wifi 7 and 320 MHZ channel width (#420).
 
 ## 0.4.1+2
 

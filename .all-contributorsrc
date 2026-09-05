@@ -604,6 +604,33 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "liushuai42",
+      "name": "Shuai Liu",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2040481?v=4",
+      "profile": "https://github.com/liushuai42",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "icooke-syna",
+      "name": "Iain Cooke",
+      "avatar_url": "https://avatars.githubusercontent.com/u/74356531?v=4",
+      "profile": "https://github.com/icooke-syna",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "TimAlber",
+      "name": "Tim Alber",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8949601?v=4",
+      "profile": "https://github.com/TimAlber",
+      "contributions": [
+        "code"
+      ]
     }
   ]
 }

@@ -1,5 +1,5 @@
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-<a href="https://github.com/flutternetwork/WiFiFlutter/blob/master/CONTRIBUTORS.md#contributors-"><img src="https://img.shields.io/badge/all_contributors-60-orange.svg" alt="All Contributors" /></a>
+<a href="https://github.com/flutternetwork/WiFiFlutter/blob/master/CONTRIBUTORS.md#contributors-"><img src="https://img.shields.io/badge/all_contributors-63-orange.svg" alt="All Contributors" /></a>
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## Contributors ✨
@@ -84,6 +84,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="11.11%"><a href="https://github.com/UnluckyY1"><img src="https://avatars.githubusercontent.com/u/48437666?v=4?s=100" width="100px;" alt="Yassine Ben Massaoud"/><br /><sub><b>Yassine Ben Massaoud</b></sub></a><br /><a href="https://github.com/flutternetwork/WiFiFlutter/commits?author=UnluckyY1" title="Code">💻</a></td>
       <td align="center" valign="top" width="11.11%"><a href="https://github.com/bazookon"><img src="https://avatars.githubusercontent.com/u/15639967?v=4?s=100" width="100px;" alt="Osvaldo Leiva"/><br /><sub><b>Osvaldo Leiva</b></sub></a><br /><a href="https://github.com/flutternetwork/WiFiFlutter/commits?author=bazookon" title="Code">💻</a></td>
       <td align="center" valign="top" width="11.11%"><a href="https://github.com/ChanakyaHirpara"><img src="https://avatars.githubusercontent.com/u/16621205?v=4?s=100" width="100px;" alt="ChanakyaHirpara"/><br /><sub><b>ChanakyaHirpara</b></sub></a><br /><a href="https://github.com/flutternetwork/WiFiFlutter/issues?q=author%3AChanakyaHirpara" title="Bug reports">🐛</a></td>
+      <td align="center" valign="top" width="11.11%"><a href="https://github.com/liushuai42"><img src="https://avatars.githubusercontent.com/u/2040481?v=4?s=100" width="100px;" alt="Shuai Liu"/><br /><sub><b>Shuai Liu</b></sub></a><br /><a href="https://github.com/flutternetwork/WiFiFlutter/commits?author=liushuai42" title="Code">💻</a></td>
+      <td align="center" valign="top" width="11.11%"><a href="https://github.com/icooke-syna"><img src="https://avatars.githubusercontent.com/u/74356531?v=4?s=100" width="100px;" alt="Iain Cooke"/><br /><sub><b>Iain Cooke</b></sub></a><br /><a href="https://github.com/flutternetwork/WiFiFlutter/commits?author=icooke-syna" title="Code">💻</a></td>
+      <td align="center" valign="top" width="11.11%"><a href="https://github.com/TimAlber"><img src="https://avatars.githubusercontent.com/u/8949601?v=4?s=100" width="100px;" alt="Tim Alber"/><br /><sub><b>Tim Alber</b></sub></a><br /><a href="https://github.com/flutternetwork/WiFiFlutter/commits?author=TimAlber" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
