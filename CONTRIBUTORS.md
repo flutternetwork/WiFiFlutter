@@ -1,5 +1,5 @@
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-<a href="https://github.com/flutternetwork/WiFiFlutter/blob/master/CONTRIBUTORS.md#contributors-"><img src="https://img.shields.io/badge/all_contributors-64-orange.svg" alt="All Contributors" /></a>
+<a href="https://github.com/flutternetwork/WiFiFlutter/blob/master/CONTRIBUTORS.md#contributors-"><img src="https://img.shields.io/badge/all_contributors-65-orange.svg" alt="All Contributors" /></a>
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## Contributors ✨
@@ -90,6 +90,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     </tr>
     <tr>
       <td align="center" valign="top" width="11.11%"><a href="https://github.com/iTEEECH"><img src="https://avatars.githubusercontent.com/u/44985686?v=4?s=100" width="100px;" alt="Florentin Bouchez"/><br /><sub><b>Florentin Bouchez</b></sub></a><br /><a href="https://github.com/flutternetwork/WiFiFlutter/commits?author=iTEEECH" title="Code">💻</a></td>
+      <td align="center" valign="top" width="11.11%"><a href="https://github.com/srappose"><img src="https://avatars.githubusercontent.com/u/6022428?v=4?s=100" width="100px;" alt="srappose"/><br /><sub><b>srappose</b></sub></a><br /><a href="https://github.com/flutternetwork/WiFiFlutter/issues?q=author%3Asrappose" title="Bug reports">🐛</a></td>
     </tr>
   </tbody>
 </table>
