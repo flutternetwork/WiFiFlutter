@@ -89,7 +89,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="11.11%"><a href="https://github.com/TimAlber"><img src="https://avatars.githubusercontent.com/u/8949601?v=4?s=100" width="100px;" alt="Tim Alber"/><br /><sub><b>Tim Alber</b></sub></a><br /><a href="https://github.com/flutternetwork/WiFiFlutter/commits?author=TimAlber" title="Code">💻</a></td>
     </tr>
     <tr>
-      <td align="center" valign="top" width="11.11%"><a href="https://github.com/iTEEECH"><img src="https://avatars.githubusercontent.com/u/44985686?v=4?s=100" width="100px;" alt="Florentin Bouchez"/><br /><sub><b>Florentin Bouchez</b></sub></a><br /><a href="https://github.com/flutternetwork/WiFiFlutter/commits?author=iTEEECH" title="Code">💻</a></td>
+      <td align="center" valign="top" width="11.11%"><a href="https://github.com/iTEEECH"><img src="https://avatars.githubusercontent.com/u/44985686?v=4?s=100" width="100px;" alt="Florentin Bouchez"/><br /><sub><b>Florentin Bouchez</b></sub></a><br /><a href="https://github.com/flutternetwork/WiFiFlutter/search?q=iTEEECH&type=commits" title="Code">💻</a></td>
       <td align="center" valign="top" width="11.11%"><a href="https://github.com/srappose"><img src="https://avatars.githubusercontent.com/u/6022428?v=4?s=100" width="100px;" alt="srappose"/><br /><sub><b>srappose</b></sub></a><br /><a href="https://github.com/flutternetwork/WiFiFlutter/issues?q=author%3Asrappose" title="Bug reports">🐛</a></td>
     </tr>
   </tbody>
