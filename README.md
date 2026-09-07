@@ -39,8 +39,8 @@ WiFiFlutter is a suite of Flutter plugins that enable Flutter apps to use variou
 - [Basic (`wifi_basic`)](#wifi_basic)
 -->
 - [Scan (`wifi_scan`)](#wifi_scan)
+- [Connect (`wifi_connect_to`)](#wifi_connect_to)
 <!--
-- [Station (`wifi_sta`)](#wifi_sta)
 - [Access Point / Hotspot (`wifi_ap`)](#wifi_ap)
 - [Aware (`wifi_aware`)](#wifi_aware)
 - [Location / RTT  (`wifi_rtt`)](#wifi_rtt)
@@ -97,13 +97,12 @@ Flutter plugin to scan for nearby visible WiFi access points.
 
 ---
 
-<!-- HIDING until available
-### `wifi_sta`
-> [![wifi_sta][sta_workflow_badge]][sta_workflow] [![wifi_sta][sta_pub_badge]][sta_pub] [![pub points][sta_pub_points_badge]][sta_pub_points]
+### `wifi_connect_to`
+> [![wifi_connect_to][connect_workflow_badge]][connect_workflow] [![wifi_connect_to][connect_pub_badge]][connect_pub] [![pub points][connect_pub_points_badge]][connect_pub_points]
 
-Flutter plugin to connect or disconnect device to a traditional WiFi network.
+Flutter plugin to connect (and disconnect) to a WiFi access point.
 
-[[View Source][sta_code]]
+[[View Source][connect_code]]
 
 #### Platform Support
 | Android | iOS |
@@ -112,6 +111,7 @@ Flutter plugin to connect or disconnect device to a traditional WiFi network.
 
 ---
 
+<!-- HIDING until available
 ### `wifi_ap`
 > [![wifi_ap][ap_workflow_badge]][ap_workflow] [![wifi_ap][ap_pub_badge]][ap_pub] [![pub points][ap_pub_points_badge]][ap_pub_points]
 
@@ -211,13 +211,13 @@ This project follows the [all-contributors][all_contributors] specification. Con
 [scan_pub_points]: https://pub.dev/packages/wifi_scan/score
 [scan_pub_points_badge]: https://img.shields.io/pub/likes/wifi_scan.svg
 
-[sta_code]: https://github.com/flutternetwork/WiFiFlutter/tree/master/packages/wifi_sta
-[sta_workflow]: https://github.com/flutternetwork/WiFiFlutter/actions/workflows/wifi_sta.yaml
-[sta_workflow_badge]: https://github.com/flutternetwork/WiFiFlutter/actions/workflows/wifi_sta.yaml/badge.svg
-[sta_pub]: https://pub.dev/packages/wifi_sta
-[sta_pub_badge]: https://img.shields.io/pub/v/wifi_sta.svg
-[sta_pub_points]: https://pub.dev/packages/wifi_sta/score
-[sta_pub_points_badge]: https://img.shields.io/pub/likes/wifi_sta.svg
+[connect_code]: https://github.com/flutternetwork/WiFiFlutter/tree/master/packages/wifi_connect_to
+[connect_workflow]: https://github.com/flutternetwork/WiFiFlutter/actions/workflows/wifi_connect_to.yaml
+[connect_workflow_badge]: https://github.com/flutternetwork/WiFiFlutter/actions/workflows/wifi_connect_to.yaml/badge.svg
+[connect_pub]: https://pub.dev/packages/wifi_connect_to
+[connect_pub_badge]: https://img.shields.io/pub/v/wifi_connect_to.svg
+[connect_pub_points]: https://pub.dev/packages/wifi_connect_to/score
+[connect_pub_points_badge]: https://img.shields.io/pub/likes/wifi_connect_to.svg
 
 [ap_code]: https://github.com/flutternetwork/WiFiFlutter/tree/master/packages/wifi_ap
 [ap_workflow]: https://github.com/flutternetwork/WiFiFlutter/actions/workflows/wifi_ap.yaml
