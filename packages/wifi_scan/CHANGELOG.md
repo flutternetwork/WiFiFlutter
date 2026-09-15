@@ -1,3 +1,7 @@
+## 0.5.1-dev.0
+
+ - **FEAT**(wifi_scan): Implement Android modern Wi‑Fi scan API.
+
 ## 0.5.0
 
 > Note: This release has breaking changes.

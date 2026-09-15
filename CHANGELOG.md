@@ -3,6 +3,34 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2026-09-15
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
+ - There are no breaking changes in this release.
+
+Packages with other changes:
+
+ - [`wifi_iot` - `v0.4.1-dev.0`](#wifi_iot---v041-dev0)
+ - [`wifi_scan` - `v0.5.1-dev.0`](#wifi_scan---v051-dev0)
+
+---
+
+#### `wifi_iot` - `v0.4.1-dev.0`
+
+ - **FEAT**(wifi_iot): Implement Android modern Wi‑Fi API with Legacy/Modern platform split.
+ - **FIX**(wifi_iot): Resolve SSID from all Wi‑Fi networks on Android 12+.
+ - **FIX**(wifi_iot): Fix Android compile errors from shadowed `result` locals.
+
+#### `wifi_scan` - `v0.5.1-dev.0`
+
+ - **FEAT**(wifi_scan): Implement Android modern Wi‑Fi scan API.
+
+
 ## 2026-09-05
 
 ### Changes

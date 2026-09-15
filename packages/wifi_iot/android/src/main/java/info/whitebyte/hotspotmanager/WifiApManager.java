@@ -32,6 +32,7 @@ import java.lang.reflect.Method;
 import java.net.InetAddress;
 import java.util.ArrayList;
 
+@SuppressWarnings("deprecation") // API < 29
 public class WifiApManager {
   private final WifiManager mWifiManager;
   private Context context;

@@ -1,3 +1,9 @@
+## 0.4.1-dev.0
+
+ - **FEAT**(wifi_iot): Implement Android modern Wi‑Fi API with Legacy/Modern platform split.
+ - **FIX**(wifi_iot): Resolve SSID from all Wi‑Fi networks on Android 12+.
+ - **FIX**(wifi_iot): Fix Android compile errors from shadowed `result` locals.
+
 ## 0.4.0
 
 > Note: This release has breaking changes.
