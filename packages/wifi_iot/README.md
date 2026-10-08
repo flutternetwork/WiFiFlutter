@@ -48,6 +48,26 @@ Becareful, some commands as no effect on iOS because Apple don't let us to do wh
 
 Additional Wifi protocols on Android side like - Wifi Direct, Wifi Aware, etc are in active discussion at [#140](https://github.com/flutternetwork/WiFiFlutter/issues/140). Encourage you to engage if you want this features.
 
+## WPA2 and WPA3-Personal
+
+Use `NetworkSecurity.WPA2` for password-protected WPA2 networks or
+`NetworkSecurity.WPA3` for WPA3-Personal (SAE) networks. The existing
+`NetworkSecurity.WPA` value keeps its WPA2 behavior. WPA3-Enterprise is not
+supported by these password-based connection methods.
+
+```dart
+final connected = await WiFiForIoTPlugin.connect(
+  'My network',
+  password: 'My password',
+  security: NetworkSecurity.WPA3,
+);
+```
+
+On Android, WPA3-Personal requires Android 10 or later and SAE support on the
+device. `findAndConnect` falls back to WPA2 for WPA2/WPA3 transition networks
+when the device does not support SAE. On iOS, WPA2 and WPA3 use the system's
+password-based hotspot configuration.
+
 ## Access Point
 |                                       Description                                     |         Android        |         iOS          |
 | :------------------------------------------------------------------------------------ | :--------------------: | :------------------: |

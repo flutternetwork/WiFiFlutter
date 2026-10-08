@@ -171,7 +171,7 @@ public class WifiIotPlugin: NSObject, FlutterPlugin {
     -> NEHotspotConfiguration
   {
     switch security?.uppercased() {
-    case "WPA":
+    case "WPA", "WPA2", "WPA3":
       return NEHotspotConfiguration.init(ssid: ssid, passphrase: passphrase!, isWEP: false)
     case "WEP":
       return NEHotspotConfiguration.init(ssid: ssid, passphrase: passphrase!, isWEP: true)

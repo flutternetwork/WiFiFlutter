@@ -13,12 +13,14 @@ enum WIFI_AP_STATE {
   WIFI_AP_STATE_FAILED,
 }
 
-enum NetworkSecurity { WPA, WEP, NONE }
+enum NetworkSecurity { WPA, WEP, NONE, WPA2, WPA3 }
 
 const serializeNetworkSecurityMap = <NetworkSecurity, String>{
   NetworkSecurity.WPA: "WPA",
   NetworkSecurity.WEP: "WEP",
   NetworkSecurity.NONE: "NONE",
+  NetworkSecurity.WPA2: "WPA2",
+  NetworkSecurity.WPA3: "WPA3",
 };
 
 const MethodChannel _channel = const MethodChannel('wifi_iot');
@@ -320,7 +322,8 @@ class WiFiForIoTPlugin {
   /// @param [security] The security type of the network. [NetworkSecurity.NONE]
   ///   means no password is required.
   ///   On Android, from version 10 (Q) onward, [NetworkSecurity.WEP] is no
-  ///   longer supported.
+  ///   longer supported. WPA3-Personal requires Android 10 (Q) or later and
+  ///   a device that supports SAE. WPA remains an alias for WPA2.
   ///
   /// @param [joinOnce] If true, the network will be removed on exit.
   ///
@@ -397,7 +400,8 @@ class WiFiForIoTPlugin {
   /// @param [security] The security type of the network. [NetworkSecurity.NONE]
   ///   means no password is required.
   ///   On Android, from version 10 (Q) onward, [NetworkSecurity.WEP] is no
-  ///   longer supported.
+  ///   longer supported. WPA3-Personal requires Android 10 (Q) or later and
+  ///   a device that supports SAE. WPA remains an alias for WPA2.
   ///
   /// @param [isHidden] Whether the SSID is hidden (not broadcasted by the AP).
   ///
