@@ -29,6 +29,15 @@ public class WifiIotPlugin: NSObject, FlutterPlugin {
       findAndConnect(call: call, result: result)
       break
     case "connect":  // OK
+      connect(call: call) { value in
+        guard let value = value as? [String: Any], let code = value["code"] as? String else {
+          result(false)
+          return
+        }
+        result(code == WifiConnectCodes.ok)
+      }
+      break
+    case "connectWithResult":
       connect(call: call, result: result)
       break
     case "isConnected":  // OK
@@ -118,47 +127,67 @@ public class WifiIotPlugin: NSObject, FlutterPlugin {
     }
   }
 
+  private func connectResult(
+    _ code: String, nativeError: NSError? = nil
+  ) -> [String: Any] {
+    var value: [String: Any] = ["code": code]
+    if let nativeError = nativeError {
+      value["nativeCode"] = nativeError.code
+      value["nativeDomain"] = nativeError.domain
+      value["message"] = nativeError.localizedDescription
+    }
+    return value
+  }
+
   private func connect(call: FlutterMethodCall, result: @escaping FlutterResult) {
-    let sSSID = (call.arguments as? [String: AnyObject])?["ssid"] as! String
-    let _ = (call.arguments as? [String: AnyObject])?["bssid"] as? String?  // not used
-    let sPassword = (call.arguments as? [String: AnyObject])?["password"] as? String? ?? nil
-    let bJoinOnce = (call.arguments as? [String: AnyObject])?["join_once"] as! Bool?
-    let sSecurity = (call.arguments as? [String: AnyObject])?["security"] as! String?
+    let arguments = call.arguments as? [String: Any]
+    guard let ssid = arguments?["ssid"] as? String else {
+      result(connectResult(WifiConnectCodes.invalidSsid))
+      return
+    }
+    let password = arguments?["password"] as? String
+    let security = arguments?["security"] as? String
+    let joinOnce = arguments?["join_once"] as? Bool ?? false
+    if let security = security, security.uppercased() != "NONE", password == nil {
+      result(connectResult(WifiConnectCodes.invalidConfiguration))
+      return
+    }
 
     if #available(iOS 11.0, *) {
       let configuration = initHotspotConfiguration(
-        ssid: sSSID, passphrase: sPassword, security: sSecurity)
-      configuration.joinOnce = bJoinOnce ?? false
-
-      NEHotspotConfigurationManager.shared.apply(configuration) { [weak self] (error) in
-        guard let this = self else {
-          print("WiFi network not found")
-          result(false)
+        ssid: ssid, passphrase: password, security: security)
+      configuration.joinOnce = joinOnce
+      NEHotspotConfigurationManager.shared.apply(configuration) { [weak self] error in
+        guard let self = self else {
+          result(["code": WifiConnectCodes.pluginInternal])
           return
         }
-        this.getSSID { (connectedSSID) -> Void in
-          if error != nil {
-            if error?.localizedDescription == "already associated." {
-              print("Connected to '\(connectedSSID ?? "<Unknown Network>")'")
-              result(true)
-            } else {
-              print("Not Connected")
-              result(false)
-            }
-          } else if let connectedSSID = connectedSSID {
-            print("Connected to " + connectedSSID)
-            // Emit result of [isConnected] by checking if targetSSID is the same as connectedSSID.
-            result(sSSID == connectedSSID)
+        if let error = error {
+          let nativeError = error as NSError
+          let code: String
+          if nativeError.domain == NEHotspotConfigurationErrorDomain,
+            let hotspotError = NEHotspotConfigurationError(rawValue: nativeError.code)
+          {
+            code = WifiConnectCodes.from(neError: hotspotError)
           } else {
-            print("WiFi network not found")
-            result(false)
+            code = WifiConnectCodes.unknownError
           }
+          result(self.connectResult(code, nativeError: nativeError))
+          return
+        }
+        self.getSSID { connectedSSID in
+          let code: String
+          if let connectedSSID = connectedSSID {
+            code =
+              ssid == connectedSSID ? WifiConnectCodes.ok : WifiConnectCodes.postApplySsidMismatch
+          } else {
+            code = WifiConnectCodes.postApplySsidUnavailable
+          }
+          result(self.connectResult(code))
         }
       }
     } else {
-      print("Not Connected")
-      result(nil)
-      return
+      result(connectResult(WifiConnectCodes.iosVersionUnsupported))
     }
   }
 

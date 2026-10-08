@@ -115,6 +115,36 @@ Permission to configure WiFi AP SSID and password:
 ```
 --->
 
+## Connection results
+
+`connect()` continues to return `Future<bool>`. Use `connectWithResult()` with
+the same arguments when you need a stable error code and available native
+details:
+
+```dart
+final result = await WiFiForIoTPlugin.connectWithResult(
+  'My network',
+  password: 'My password',
+  security: NetworkSecurity.WPA,
+);
+if (!result.isSuccess) {
+  print(result.code);
+  print(result.nativeCode);
+  print(result.nativeDomain);
+  print(result.message);
+}
+```
+
+`WiFiConnectCode.ok` (an empty string) means success. Native details are nullable:
+Android suggestion results include the original `WifiManager` status, and iOS
+errors include their `NSError` code, domain and localized message. Other failures
+use stable plugin codes; Android `onUnavailable()` cannot reliably distinguish
+user rejection, wrong credentials and other connection failures.
+
+On Android 10 or later, `withInternet: true` uses the suggestion API. A successful
+result means the suggestion was accepted, and does not guarantee that the system
+has connected to the network.
+
 ## Troubleshooting
 
 Don't hesitate and come [here](https://github.com/flutternetwork/WiFiFlutter/issues), we will be happy to help you!
