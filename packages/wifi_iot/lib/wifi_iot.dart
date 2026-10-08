@@ -5,6 +5,12 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 
+import 'wifi_connect_codes.dart';
+import 'wifi_connect_result.dart';
+
+export 'wifi_connect_codes.dart';
+export 'wifi_connect_result.dart';
+
 enum WIFI_AP_STATE {
   WIFI_AP_STATE_DISABLING,
   WIFI_AP_STATE_DISABLED,
@@ -370,6 +376,72 @@ class WiFiForIoTPlugin {
       print("MissingPluginException : ${e.toString()}");
     }
     return bResult ?? false;
+  }
+
+  /// Connects to a Wi-Fi network and returns error details when available.
+  ///
+  /// Accepts the same parameters as [connect]. Existing callers can continue
+  /// using [connect], which returns a boolean.
+  ///
+  /// On Android 10 or later with [withInternet] enabled, a successful result
+  /// means the network suggestion was added, not that a connection is already
+  /// established. For local connections, Android's `onUnavailable` callback
+  /// cannot distinguish user rejection from other connection failures.
+  ///
+  /// Native codes, domains and messages are included only when the platform
+  /// supplies them. Errors without native details use [WiFiConnectCode].
+  static Future<WiFiConnectResult> connectWithResult(
+    String ssid, {
+    String? bssid,
+    String? password,
+    NetworkSecurity security = NetworkSecurity.NONE,
+    bool joinOnce = true,
+    bool withInternet = false,
+    bool isHidden = false,
+    int timeoutInSeconds = 30,
+  }) async {
+    if (ssid.isEmpty || utf8.encode(ssid).length > 32) {
+      return const WiFiConnectResult(code: WiFiConnectCode.invalidSsid);
+    }
+    if (security != NetworkSecurity.NONE && password == null) {
+      return const WiFiConnectResult(
+        code: WiFiConnectCode.invalidConfiguration,
+      );
+    }
+    if (timeoutInSeconds <= 0 || timeoutInSeconds > 2147483) {
+      return const WiFiConnectResult(
+        code: WiFiConnectCode.invalidConfiguration,
+      );
+    }
+
+    try {
+      if (!Platform.isIOS && !await isEnabled()) await setEnabled(true);
+      final raw = await _channel
+          .invokeMapMethod<String, dynamic>('connectWithResult', {
+            'ssid': ssid,
+            'bssid': bssid,
+            'password': password,
+            'join_once': joinOnce,
+            'with_internet': withInternet,
+            'is_hidden': isHidden,
+            'timeout_in_seconds': timeoutInSeconds,
+            'security': serializeNetworkSecurityMap[security],
+          });
+      return WiFiConnectResult(
+        code: raw?['code'] as String? ?? WiFiConnectCode.unknown,
+        nativeCode: raw?['nativeCode'],
+        nativeDomain: raw?['nativeDomain'] as String?,
+        message: raw?['message'] as String?,
+      );
+    } on MissingPluginException {
+      return const WiFiConnectResult(code: WiFiConnectCode.missingPlugin);
+    } on PlatformException catch (error) {
+      return WiFiConnectResult(
+        code: WiFiConnectCode.platformError,
+        nativeCode: error.code,
+        message: error.message,
+      );
+    }
   }
 
   /// Register a network with the system in the device's wireless networks.

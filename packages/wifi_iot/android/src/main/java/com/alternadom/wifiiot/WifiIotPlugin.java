@@ -42,7 +42,9 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 import io.flutter.plugin.common.PluginRegistry;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -233,13 +235,16 @@ public class WifiIotPlugin
         setEnabled(poCall, poResult);
         break;
       case "connect":
-        connect(poCall, poResult);
+        connect(poCall, connectResultAdapter(poResult, false));
+        break;
+      case "connectWithResult":
+        connect(poCall, connectResultAdapter(poResult, true));
         break;
       case "registerWifiNetwork":
         registerWifiNetwork(poCall, poResult);
         break;
       case "findAndConnect":
-        findAndConnect(poCall, poResult);
+        findAndConnect(poCall, connectResultAdapter(poResult, false));
         break;
       case "isConnected":
         isConnected(poResult);
@@ -878,16 +883,26 @@ public class WifiIotPlugin
         Boolean isHidden = poCall.argument("is_hidden");
         Integer timeoutInSeconds = poCall.argument("timeout_in_seconds");
 
-        connectTo(
-            poResult,
-            ssid,
-            bssid,
-            password,
-            security,
-            joinOnce,
-            withInternet,
-            isHidden,
-            timeoutInSeconds);
+        try {
+          connectTo(
+              poResult,
+              ssid,
+              bssid,
+              password,
+              security,
+              joinOnce,
+              withInternet,
+              isHidden,
+              timeoutInSeconds);
+        } catch (RuntimeException error) {
+          new Handler(Looper.getMainLooper())
+              .post(
+                  () ->
+                      poResult.error(
+                          error.getClass().getName(),
+                          error.getMessage(),
+                          error.getClass().getName()));
+        }
       }
     }.start();
   }
@@ -1255,6 +1270,103 @@ public class WifiIotPlugin
     return sb.toString();
   }
 
+  private static String networkSuggestionStatusToCode(int status) {
+    if (status == WifiManager.STATUS_NETWORK_SUGGESTIONS_SUCCESS) {
+      return WifiConnectCodes.OK;
+    }
+    if (status == WifiManager.STATUS_NETWORK_SUGGESTIONS_ERROR_INTERNAL) {
+      return WifiConnectCodes.NETWORK_SUGGESTION_INTERNAL;
+    }
+    if (status == WifiManager.STATUS_NETWORK_SUGGESTIONS_ERROR_APP_DISALLOWED) {
+      return WifiConnectCodes.NETWORK_SUGGESTION_APP_DISALLOWED;
+    }
+    if (status == WifiManager.STATUS_NETWORK_SUGGESTIONS_ERROR_ADD_DUPLICATE) {
+      return WifiConnectCodes.NETWORK_SUGGESTION_DUPLICATE;
+    }
+    if (status == WifiManager.STATUS_NETWORK_SUGGESTIONS_ERROR_ADD_EXCEEDS_MAX_PER_APP) {
+      return WifiConnectCodes.NETWORK_SUGGESTION_EXCEEDS_MAX_PER_APP;
+    }
+    if (status == WifiManager.STATUS_NETWORK_SUGGESTIONS_ERROR_REMOVE_INVALID) {
+      return WifiConnectCodes.NETWORK_SUGGESTION_REMOVE_INVALID;
+    }
+    if (status == WifiManager.STATUS_NETWORK_SUGGESTIONS_ERROR_ADD_NOT_ALLOWED) {
+      return WifiConnectCodes.NETWORK_SUGGESTION_ADD_NOT_ALLOWED;
+    }
+    if (status == WifiManager.STATUS_NETWORK_SUGGESTIONS_ERROR_ADD_INVALID) {
+      return WifiConnectCodes.NETWORK_SUGGESTION_INVALID;
+    }
+    if (status == WifiManager.STATUS_NETWORK_SUGGESTIONS_ERROR_RESTRICTED_BY_ADMIN) {
+      return WifiConnectCodes.NETWORK_SUGGESTION_RESTRICTED_BY_ADMIN;
+    }
+    return WifiConnectCodes.NETWORK_SUGGESTION_FAILED;
+  }
+
+  private static Map<String, Object> buildConnectResult(String code) {
+    return buildConnectResult(code, null, null, null);
+  }
+
+  private static Map<String, Object> buildConnectResult(
+      String code, Object nativeCode, String nativeDomain, String message) {
+    Map<String, Object> value = new HashMap<>();
+    value.put("code", code);
+    if (nativeCode != null) value.put("nativeCode", nativeCode);
+    if (nativeDomain != null) value.put("nativeDomain", nativeDomain);
+    if (message != null) value.put("message", message);
+    return value;
+  }
+
+  private Result connectResultAdapter(final Result result, final boolean detailed) {
+    return new Result() {
+      @Override
+      public void success(Object value) {
+        if (detailed) {
+          // Allow shared connection paths to report a boolean without losing
+          // the detailed method's map contract.
+          if (value instanceof Boolean) {
+            result.success(
+                buildConnectResult(
+                    (Boolean) value ? WifiConnectCodes.OK : WifiConnectCodes.UNKNOWN));
+          } else {
+            result.success(value);
+          }
+          return;
+        }
+        if (!(value instanceof Map)) {
+          result.success(value);
+          return;
+        }
+        final Object code = ((Map<?, ?>) value).get("code");
+        if (WifiConnectCodes.INVALID_BSSID.equals(code)) {
+          result.error("Error", "Invalid BSSID representation", "");
+        } else if (WifiConnectCodes.WEP_NOT_SUPPORTED.equals(code)) {
+          result.error(
+              "Error", "WEP is not supported for Android SDK " + Build.VERSION.SDK_INT, "");
+        } else {
+          result.success(WifiConnectCodes.OK.equals(code));
+        }
+      }
+
+      @Override
+      public void error(String code, String message, Object details) {
+        if (detailed) {
+          result.success(
+              buildConnectResult(
+                  "platform_error",
+                  code,
+                  details instanceof String ? (String) details : null,
+                  message));
+        } else {
+          result.error(code, message, details);
+        }
+      }
+
+      @Override
+      public void notImplemented() {
+        result.notImplemented();
+      }
+    };
+  }
+
   /// Method to connect to WIFI Network
   private void connectTo(
       final Result poResult,
@@ -1268,13 +1380,12 @@ public class WifiIotPlugin
       final Integer timeoutInSeconds) {
     final Handler handler = new Handler(Looper.getMainLooper());
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-      final boolean connected =
-          connectToDeprecated(ssid, bssid, password, security, joinOnce, isHidden);
+      final String code = connectToDeprecated(ssid, bssid, password, security, joinOnce, isHidden);
       handler.post(
           new Runnable() {
             @Override
             public void run() {
-              poResult.success(connected);
+              poResult.success(buildConnectResult(code));
             }
           });
     } else {
@@ -1284,8 +1395,7 @@ public class WifiIotPlugin
             new Runnable() {
               @Override
               public void run() {
-                poResult.error(
-                    "Error", "WEP is not supported for Android SDK " + Build.VERSION.SDK_INT, "");
+                poResult.success(buildConnectResult(WifiConnectCodes.WEP_NOT_SUPPORTED));
               }
             });
         return;
@@ -1304,7 +1414,7 @@ public class WifiIotPlugin
                 new Runnable() {
                   @Override
                   public void run() {
-                    poResult.error("Error", "Invalid BSSID representation", "");
+                    poResult.success(buildConnectResult(WifiConnectCodes.INVALID_BSSID));
                   }
                 });
             return;
@@ -1338,7 +1448,12 @@ public class WifiIotPlugin
             new Runnable() {
               @Override
               public void run() {
-                poResult.success(status == WifiManager.STATUS_NETWORK_SUGGESTIONS_SUCCESS);
+                poResult.success(
+                    buildConnectResult(
+                        networkSuggestionStatusToCode(status),
+                        status,
+                        "android.net.wifi.WifiManager",
+                        null));
               }
             });
       } else {
@@ -1354,7 +1469,7 @@ public class WifiIotPlugin
                 new Runnable() {
                   @Override
                   public void run() {
-                    poResult.error("Error", "Invalid BSSID representation", "");
+                    poResult.success(buildConnectResult(WifiConnectCodes.INVALID_BSSID));
                   }
                 });
             return;
@@ -1388,7 +1503,7 @@ public class WifiIotPlugin
                 super.onAvailable(network);
                 if (!resultSent) {
                   joinedNetwork = network;
-                  poResult.success(true);
+                  poResult.success(buildConnectResult(WifiConnectCodes.OK));
                   resultSent = true;
                 }
               }
@@ -1400,7 +1515,7 @@ public class WifiIotPlugin
                   connectivityManager.unregisterNetworkCallback(this);
                 }
                 if (!resultSent) {
-                  poResult.success(false);
+                  poResult.success(buildConnectResult(WifiConnectCodes.CONNECTION_UNAVAILABLE));
                   resultSent = true;
                 }
               }
@@ -1502,7 +1617,7 @@ public class WifiIotPlugin
   }
 
   @SuppressWarnings("deprecation")
-  private Boolean connectToDeprecated(
+  private String connectToDeprecated(
       String ssid,
       String bssid,
       String password,
@@ -1516,7 +1631,7 @@ public class WifiIotPlugin
     int updateNetwork = registerWifiNetworkDeprecated(conf);
 
     if (updateNetwork == -1) {
-      return false;
+      return WifiConnectCodes.NETWORK_CONFIGURATION_FAILED;
     }
 
     if (joinOnce != null && joinOnce.booleanValue()) {
@@ -1525,13 +1640,14 @@ public class WifiIotPlugin
 
     boolean disconnect = moWiFi.disconnect();
     if (!disconnect) {
-      return false;
+      return WifiConnectCodes.DISCONNECT_FAILED;
     }
 
     boolean enabled = moWiFi.enableNetwork(updateNetwork, true);
-    if (!enabled) return false;
+    if (!enabled) {
+      return WifiConnectCodes.ENABLE_NETWORK_FAILED;
+    }
 
-    boolean connected = false;
     for (int i = 0; i < 20; i++) {
       WifiInfo currentNet = moWiFi.getConnectionInfo();
       int networkId = currentNet.getNetworkId();
@@ -1540,16 +1656,18 @@ public class WifiIotPlugin
       // Wait for connection to reach state completed
       // to discard false positives like auth error
       if (networkId != -1 && netState == SupplicantState.COMPLETED) {
-        connected = networkId == updateNetwork;
-        break;
+        if (networkId == updateNetwork) {
+          return WifiConnectCodes.OK;
+        }
+        return WifiConnectCodes.CONNECTION_TIMEOUT;
       }
       try {
         Thread.sleep(500);
       } catch (InterruptedException ignored) {
-        break;
+        return WifiConnectCodes.CONNECTION_TIMEOUT;
       }
     }
 
-    return connected;
+    return WifiConnectCodes.CONNECTION_TIMEOUT;
   }
 }
